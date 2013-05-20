@@ -3,15 +3,14 @@
 </head>
 <body>
 	<input type="button" value="AJAX test button"></input>
-<p>nada</p>
 <div></div>
 <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	$('input').on('click', function(){
-		$.getJSON('ajax.php', function(data){
+		$.getJSON('ajaxpreg.php', function(data){
 			$.each(data, function (index, value) {
-	       		$('div').append('<p>'+value+'</p>');
+	       		$('div').append('<p>'+index+' - '+value+'</p>');
 	    	});
 		});
 		

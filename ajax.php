@@ -25,7 +25,7 @@ $datos = DBquery('select * from test');
 
 
 // Armo un array con varios datos
-$subdatos = array('1','2',array('a','b','c'));
+$subdatos = array('1','2',3);
 $datos = array('asdf', 'feo', $subdatos);
 
 $salida = $json->encode($datos);

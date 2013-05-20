@@ -32,14 +32,25 @@ AUI().use('aui-diagram-builder', function(A) {
 	rs.close;
 	connection.close;
 	*/
-	
+
+	preguntas = new Array();
+	$.getJSON('ajaxpreg.php', function(data){
+		$.each(data, function (index, value) {
+			alert(index+' '+value)
+       		preguntas[index] = value;
+    	});
+	});
+
+    alert(preguntas[0]);
+	/*
 	preguntas = new Array();
 	preguntas[0] = "¿Qué servicio desea probar sobre Cloud?";
 	preguntas[1] = "¿Cómo se desea comunicar entre su POC y su Cloud?";
 	preguntas[2] = "¿Qué tipo de conexión desea?";
 	preguntas[3] = "¿Cuentas IPs públicas?";
 	preguntas[4] = "¿Qué ancho de banda?";
-	
+	*/
+
 	respuestas = new Array();
 	respuestas[0] = "Web";
 	respuestas[1] = "App";
