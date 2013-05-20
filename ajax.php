@@ -11,57 +11,25 @@ if (isset($_GET[''])){
 }
 */
 
-
-
-//Creo el objeto $json para codificar datos mas adelante
-require_once('JSON.php');
-$json = new Services_JSON();
-
-require_once('db.php');
-$result = DBquery('SELECT name FROM test');
-//print $json->encode($result);
-
-
-//$link = mysql_connect('mysql3.000webhost.com', 'a5397912_root', 'pepito.P0');
-//mysql_select_db('a5397912_cloud');
-
-//$query = 'SELECT * FROM "test"';
-//$result = mysql_query($query) ;
-
-
-
-$datos = array();
-
-//lleno el array $datos con el resultado de la consulta a MySQL:
-while ($line = mysqli_fetch_array($result)) {
-$datos[]=$line;
-}
-
-print $json->encode($datos);
-
-
-
-//mysql_free_result($result);
-//mysql_close($link);
-
-
-
-
-/*
 //Creo en objeto
 
 require_once('JSON.php');
 
+
 $json = new Services_JSON();
 
-// Armo un array con varios datos
+/* esto no funciona )=
+require_once('db.php');
+$datos = DBquery('select * from test');
+*/
 
-$datos = array(1, 2, 'foo');
+
+// Armo un array con varios datos
+$subdatos = array('1','2',array('a','b','c'));
+$datos = array('asdf', 'feo', $subdatos);
 
 $salida = $json->encode($datos);
 
 print($salida);
-
-*/
 
 ?> 
