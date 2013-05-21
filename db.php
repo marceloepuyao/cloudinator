@@ -19,34 +19,39 @@
   		}
 	}
 	*/
+try {
+	echo var_dump(DBquery('SELECT * FROM nodes'));
+} catch (Exception $e) {
+	echo 'ERROR! '.$e;
+}
 
-	static function DBquery($sql_query){
-		$connection = DBconnect();
-		// Execute query
-		try{
-			return mysqli_query($connection,$sql);
-		}catch(Exception $e){
-			throw $e;
-		}
-  		DBclose_connection($connection);
+
+function DBquery($sql_query){
+	$connection = DBconnect();
+	// Execute query
+	try{
+		return mysqli_query($connection, $sql_query);
+	}catch(Exception $e){
+		throw $e;
 	}
 
-	static function DBconnect($mysql_host = "mysql3.000webhost.com", $mysql_database = "a5397912_cloud", $mysql_user = "a5397912_root", $mysql_password = "pepito.P0"){
+	DBclose_connection($connection);
+}
+function DBconnect($mysql_host = "localhost", $mysql_user = "root", $mysql_password = "", $mysql_database = "cloudinator"){
 
-		// Create connection
-		$con = mysqli_connect($mysql_host, $mysql_user, $mysql_password, $mysql_database);
+	// Create connection
+	$con = mysqli_connect($mysql_host, $mysql_user, $mysql_password, $mysql_database);
 
-		// Check connection
-		if (mysqli_connect_errno($con))
-  		{
-  			throw new Exception("Failed to connect to MySQL", 1);
-  		}else{
-  			return $con
-  		}
+	// Check connection
+	if (mysqli_connect_errno($con)){
+		throw new Exception("Failed to connect to MySQL", 1);
+	}else{
+		return $con;
 	}
+}
 
-	static function DBclose_connection($con){
-		mysqli_close($con);
-	}
+function DBclose_connection($con){
+	mysqli_close($con);
+}
 
 ?>

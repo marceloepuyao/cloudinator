@@ -1,12 +1,25 @@
-preguntas = new Array();
-AUI().use('aui-io-request', function(A){
+var preguntas = new Array();
+var AjaxPreguntas = AUI().use('aui-io-request', function(A){
 	A.io.request('ajaxpreg.php', {
 		dataType: 'json',   on: {   
 			success: function() {
 				var datos = this.get('responseData');
 				for (var i=0; i < datos.length; i++) {
 		   			preguntas[i] = datos[i];
-		   			//alert(datos[i]);
+	   			} 
+			}
+		}
+	});
+});
+
+var respuestas = new Array();
+var AjaxRespuestas = AUI().use('aui-io-request', function(A){
+	A.io.request('ajaxresp.php', {
+		dataType: 'json',   on: {   
+			success: function() {
+				var datos = this.get('responseData');
+				for (var i=0; i < datos.length; i++) {
+		   			respuestas[i] = datos[i];
 	   			} 
 			}
 		}
@@ -47,18 +60,8 @@ AUI().use('aui-diagram-builder', function(A) {
 	rs.close;
 	connection.close;
 	*/
-/*
-	preguntas = new Array();
-	$.getJSON('ajaxpreg.php', function(data){
-		$.each(data, function (index, value) {
-			alert(index+' '+value)
-       		preguntas[index] = value;
-    	});
-	});
-*/
 
-
-	/*
+	/* ahora se llama por ajax
 	preguntas = new Array();
 	preguntas[0] = "¿Qué servicio desea probar sobre Cloud?";
 	preguntas[1] = "¿Cómo se desea comunicar entre su POC y su Cloud?";
@@ -66,14 +69,14 @@ AUI().use('aui-diagram-builder', function(A) {
 	preguntas[3] = "¿Cuentas IPs públicas?";
 	preguntas[4] = "¿Qué ancho de banda?";
 	*/
-
+	/* ahora se llama por ajax
 	respuestas = new Array();
 	respuestas[0] = "Web";
 	respuestas[1] = "App";
 	respuestas[2] = "BBDD";
 	respuestas[3] = "TS";
 	respuestas[4] = "FServer";
-	
+	*/
 
 	db1 = new A.DiagramBuilder(
 		{
