@@ -9,7 +9,7 @@ try {
 	DBquery3('DROP DATABASE cloudinator');
 	echo 'Se ha borrado la database "cloudinator" exitosamente';
 } catch (Exception $e) {
-	echo 'Se intento borrar la database "cloudinator", pero probablemente no existía, ignore este error<br>';
+	echo 'Se intento borrar la database "cloudinator", pero probablemente no existia, ignore este error<br>';
 	echo $e;
 }
 echo '<hr>';
