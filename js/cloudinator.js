@@ -1,6 +1,7 @@
 var nodos = new Array();
-var AjaxNodos = AUI().use('aui-io-request', function(A){
-	A.io.request('ajaxnodos.php', {
+var links = new Array();
+AUI().use('aui-io-request', function(A){
+	var AjaxGetNodos = A.io.request('ajaxnodos.php', {
 		dataType: 'json',   on: {   
 			success: function() {
 				var datos = this.get('responseData');
@@ -10,11 +11,8 @@ var AjaxNodos = AUI().use('aui-io-request', function(A){
 			}
 		}
 	});
-});
 
-var links = new Array();
-var AjaxLinks = AUI().use('aui-io-request', function(A){
-	A.io.request('ajaxlinks.php', {
+	var AjaxGetLinks = A.io.request('ajaxlinks.php', {
 		dataType: 'json',   on: {   
 			success: function() {
 				var datos = this.get('responseData');
@@ -24,6 +22,38 @@ var AjaxLinks = AUI().use('aui-io-request', function(A){
 			}
 		}
 	});
+
+	var AjaxPostNodo = A.io.request('ajaxpost.php', {
+		method: 'POST',
+		data: {
+			nodo: 'true',
+			name: 'nueva pregunta',
+			type: 'condition',
+			posx: 1,
+			posy: 1
+	   	},
+	   	on: {
+	   		success: function(){
+	   			alert("bien! =O");
+	   		}
+	   	}
+	});
+
+	var AjaxPostLink = A.io.request('ajaxpost.php', {
+		method: 'POST',
+		data: {
+			link: 'true',
+			name: '',
+			source: 1,
+			target: 2
+	   },
+	   	on: {
+	   		success: function(){
+	   			alert("bien2! =O");
+	   		}
+	   	}
+	});
+
 });
 
 AUI().use('aui-diagram-builder', function(A) {
