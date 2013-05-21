@@ -19,18 +19,34 @@
   		}
 	}
 	*/
+
+/* ejemplo al cargar db.php
 try {
-	echo var_dump(DBquery('SELECT * FROM nodes'));
+	require_once('JSON.php');
+	$json = new Services_JSON();
+	$resultado = DBquery('SELECT * FROM nodes');
+	$salida = $json->encode($resultado);
+	echo '<br>';
+	echo $salida;
+	echo '<hr>';
+	foreach ($resultado as $key1 => $row) {
+		echo '| ';
+	 	foreach ($row as $key2 => $value) {
+	 		echo $key1.'-'.$key2.': '.$value.' | ';
+	 	}
+	 	echo '<hr>';
+	 }
 } catch (Exception $e) {
 	echo 'ERROR! '.$e;
 }
-
+*/
 
 function DBquery($sql_query){
 	$connection = DBconnect();
 	// Execute query
 	try{
-		return mysqli_query($connection, $sql_query);
+		$result = mysqli_query($connection, $sql_query);
+		return $result;
 	}catch(Exception $e){
 		throw $e;
 	}
@@ -43,15 +59,57 @@ function DBconnect($mysql_host = "localhost", $mysql_user = "root", $mysql_passw
 	$con = mysqli_connect($mysql_host, $mysql_user, $mysql_password, $mysql_database);
 
 	// Check connection
-	if (mysqli_connect_errno($con)){
-		throw new Exception("Failed to connect to MySQL", 1);
-	}else{
-		return $con;
-	}
+
+	return $con;
+
 }
 
 function DBclose_connection($con){
 	mysqli_close($con);
 }
 
+function DBquery2($query){
+	$link = mysql_connect('localhost', 'root', '');
+
+	mysql_select_db('cloudinator');
+
+	$result = mysql_query($query);
+
+	$datos = array();
+
+	//lleno el array $datos con el resultado de la consulta a MySQL:
+
+	while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
+
+	$datos[]=$line;
+
+	}
+	
+	mysql_free_result($result);
+
+	mysql_close($link);
+
+	return $datos;
+}
+
+function DBquery3($query){
+	$link = mysql_connect('localhost', 'root', '');
+
+	if(!mysql_query($query)){
+		throw new Exception("Error Processing Query", 1);
+	}
+
+	mysql_close($link);
+}
+function DBquery4($query){
+	$link = mysql_connect('localhost', 'root', '');
+
+	mysql_select_db('cloudinator');
+
+	if(!mysql_query($query)){
+		throw new Exception("Error Processing Query", 1);
+	}
+
+	mysql_close($link);
+}
 ?>

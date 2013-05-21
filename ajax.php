@@ -14,21 +14,19 @@ if (isset($_GET[''])){
 //Creo en objeto
 
 require_once('JSON.php');
-
+require_once('db.php');
 
 $json = new Services_JSON();
 
-/* esto no funciona )=
-require_once('db.php');
-$datos = DBquery('select * from test');
-*/
 
+try {	
+	$query = 'SELECT * FROM nodes';
+	$datos = DBquery2($query);
+	$salida = $json->encode($datos);
 
-// Armo un array con varios datos
-$subdatos = array('1','2',3);
-$datos = array('asdf', 'feo', $subdatos);
-
-$salida = $json->encode($datos);
+} catch (Exception $e) {
+	print('ERROR! '.$e);
+}
 
 print($salida);
 

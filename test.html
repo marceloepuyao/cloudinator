@@ -8,9 +8,12 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	$('input').on('click', function(){
-		$.getJSON('ajaxpreg.php', function(data){
+		$.getJSON('ajax.php', function(data){
 			$.each(data, function (index, value) {
-	       		$('div').append('<p>'+index+' - '+value+'</p>');
+				$.each(value, function(index2, value2){
+					$('div').append('<p>'+index2+' - '+value2+'</p>');
+				})
+	       		$('div').append('<hr>');
 	    	});
 		});
 		
