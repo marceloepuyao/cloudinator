@@ -1,3 +1,18 @@
+preguntas = new Array();
+AUI().use('aui-io-request', function(A){
+	A.io.request('ajaxpreg.php', {
+		dataType: 'json',   on: {   
+			success: function() {
+				var datos = this.get('responseData');
+				for (var i=0; i < datos.length; i++) {
+		   			preguntas[i] = datos[i];
+		   			//alert(datos[i]);
+	   			} 
+			}
+		}
+	});
+});
+
 AUI().use('aui-diagram-builder', function(A) {
 	var typepregunta = 'condition';
 	var typerespuesta = 'end';
@@ -32,7 +47,7 @@ AUI().use('aui-diagram-builder', function(A) {
 	rs.close;
 	connection.close;
 	*/
-
+/*
 	preguntas = new Array();
 	$.getJSON('ajaxpreg.php', function(data){
 		$.each(data, function (index, value) {
@@ -40,8 +55,9 @@ AUI().use('aui-diagram-builder', function(A) {
        		preguntas[index] = value;
     	});
 	});
+*/
 
-    alert(preguntas[0]);
+
 	/*
 	preguntas = new Array();
 	preguntas[0] = "¿Qué servicio desea probar sobre Cloud?";
