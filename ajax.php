@@ -18,9 +18,8 @@ require_once('db.php');
 
 $json = new Services_JSON();
 
-
 try {	
-	$query = 'SELECT * FROM nodes';
+	$query = 'SELECT * FROM nodos';
 	$datos = DBquery2($query);
 	$salida = $json->encode($datos);
 

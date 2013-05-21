@@ -1,25 +1,25 @@
-var preguntas = new Array();
-var AjaxPreguntas = AUI().use('aui-io-request', function(A){
-	A.io.request('ajaxpreg.php', {
+var nodos = new Array();
+var AjaxNodos = AUI().use('aui-io-request', function(A){
+	A.io.request('ajaxnodos.php', {
 		dataType: 'json',   on: {   
 			success: function() {
 				var datos = this.get('responseData');
 				for (var i=0; i < datos.length; i++) {
-		   			preguntas[i] = datos[i];
+		   			nodos[i] = datos[i];
 	   			} 
 			}
 		}
 	});
 });
 
-var respuestas = new Array();
-var AjaxRespuestas = AUI().use('aui-io-request', function(A){
-	A.io.request('ajaxresp.php', {
+var links = new Array();
+var AjaxLinks = AUI().use('aui-io-request', function(A){
+	A.io.request('ajaxlinks.php', {
 		dataType: 'json',   on: {   
 			success: function() {
 				var datos = this.get('responseData');
 				for (var i=0; i < datos.length; i++) {
-		   			respuestas[i] = datos[i];
+		   			links[i] = datos[i];
 	   			} 
 			}
 		}
@@ -41,25 +41,6 @@ AUI().use('aui-diagram-builder', function(A) {
 			iconClass: 'aui-diagram-node-condition-icon'
 		}
 	];
-
-	//var connection = new ActiveXObject("ADODB.Connection") ;
-	/*
-	var connectionstring="Data Source=localhost;Initial Catalog=<catalog>;User ID=root;Password=;Provider=SQLOLEDB";
-
-	connection.Open(connectionstring);
-	var rs = new ActiveXObject("ADODB.Recordset");
-
-	rs.Open("SELECT * FROM table", connection);
-	rs.MoveFirst;
-	while(!rs.eof)
-	{
-	   document.write(rs.fields(1));
-	   rs.movenext;
-	}
-
-	rs.close;
-	connection.close;
-	*/
 
 	/* ahora se llama por ajax
 	preguntas = new Array();
@@ -129,11 +110,6 @@ AUI().use('aui-diagram-builder', function(A) {
 					name: respuestas[4],
 					type: typerespuesta,
 					xy: [250, 350]
-				},
-				{
-					name: "asas",
-					type: typerespuesta,
-					xy: [600, 10]
 				}
 			],
 			render: true

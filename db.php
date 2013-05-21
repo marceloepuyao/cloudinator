@@ -1,45 +1,4 @@
 <?php
-	/*
-	static function create_database($mysql_host, $mysql_user, $mysql_password){
-		$con=mysqli_connect($mysql_host, $mysql_user, $mysql_password);
-		// Check connection
-		if (mysqli_connect_errno())
-  		{
-  			return "Failed to connect to MySQL: " . mysqli_connect_error();
-  		}
-
-		// Create database
-		$sql="CREATE DATABASE cloudinator";
-		if (mysqli_query($con, $sql))
-  		{
-		}
-		else
-  		{
-  			return "Error creating database: " . mysqli_error($con);
-  		}
-	}
-	*/
-
-/* ejemplo al cargar db.php
-try {
-	require_once('JSON.php');
-	$json = new Services_JSON();
-	$resultado = DBquery('SELECT * FROM nodes');
-	$salida = $json->encode($resultado);
-	echo '<br>';
-	echo $salida;
-	echo '<hr>';
-	foreach ($resultado as $key1 => $row) {
-		echo '| ';
-	 	foreach ($row as $key2 => $value) {
-	 		echo $key1.'-'.$key2.': '.$value.' | ';
-	 	}
-	 	echo '<hr>';
-	 }
-} catch (Exception $e) {
-	echo 'ERROR! '.$e;
-}
-*/
 
 function DBquery($sql_query){
 	$connection = DBconnect();
