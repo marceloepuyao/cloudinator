@@ -15,12 +15,8 @@ if ( array_key_exists('nodo', $_POST) ) {
 		$data = array(
 			'result' => 'true',
 		);
-	} catch (Exception $e) {
-		$data = array(
-			'result' => 'false',
-		);
-	}
-	print($json->encode($data));
+		print($json->encode($data));
+	} catch (Exception $e) {}
 }
 
 if ( array_key_exists('link', $_POST) ) {
@@ -34,12 +30,9 @@ if ( array_key_exists('link', $_POST) ) {
 		$data = array(
 			'result' => 'true',
 		);
-	} catch (Exception $e) {
-		$data = array(
-			'result' => 'false',
-		);
-	}
-	print($json->encode($data));
+		print($json->encode($data));
+	} catch (Exception $e) {}
+	
 }
 
 ?>

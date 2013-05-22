@@ -33,8 +33,10 @@ AUI().use('aui-io-request', function(A){
 			posy: 1
 	   	},
 	   	on: {
-	   		success: function(){
-	   			alert("bien! =O");
+	   		success: function(data){
+	   			if(data){
+	   				alert("AjaxPostNodo funcionó");
+	   			}
 	   		}
 	   	}
 	});
@@ -49,7 +51,9 @@ AUI().use('aui-io-request', function(A){
 	   },
 	   	on: {
 	   		success: function(){
-	   			alert("bien2! =O");
+	   			if(data){
+	   				alert("AjaxPostNodo funcionó");
+	   			}
 	   		}
 	   	}
 	});
@@ -72,22 +76,22 @@ AUI().use('aui-diagram-builder', function(A) {
 		}
 	];
 
-	/* ahora se llama por ajax
+	// ahora se llama por ajax
 	preguntas = new Array();
 	preguntas[0] = "¿Qué servicio desea probar sobre Cloud?";
 	preguntas[1] = "¿Cómo se desea comunicar entre su POC y su Cloud?";
 	preguntas[2] = "¿Qué tipo de conexión desea?";
 	preguntas[3] = "¿Cuentas IPs públicas?";
 	preguntas[4] = "¿Qué ancho de banda?";
-	*/
-	/* ahora se llama por ajax
+	
+	//ahora se llama por ajax
 	respuestas = new Array();
 	respuestas[0] = "Web";
 	respuestas[1] = "App";
 	respuestas[2] = "BBDD";
 	respuestas[3] = "TS";
 	respuestas[4] = "FServer";
-	*/
+	
 
 	db1 = new A.DiagramBuilder(
 		{
