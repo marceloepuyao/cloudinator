@@ -1,8 +1,8 @@
 <?php
-$mysql_host = "localhost";
-$mysql_user = "root";
-$mysql_password = "";
-$mysql_database = "cloudinator";
+$mysql_host = "mysql3.000webhost.com";
+$mysql_user = "a5397912_root";
+$mysql_password = "qwe456";
+$mysql_database = "a5397912_cloud";
 
 function DBquery($sql_query){
 	$connection = DBconnect();
