@@ -1,4 +1,8 @@
 <?php
+$mysql_host = "localhost";
+$mysql_user = "root";
+$mysql_password = "";
+$mysql_database = "cloudinator";
 
 function DBquery($sql_query){
 	$connection = DBconnect();
@@ -12,10 +16,10 @@ function DBquery($sql_query){
 
 	DBclose_connection($connection);
 }
-function DBconnect($mysql_host = "localhost", $mysql_user = "root", $mysql_password = "", $mysql_database = "cloudinator"){
+function DBconnect(){
 
 	// Create connection
-	$con = mysqli_connect($mysql_host, $mysql_user, $mysql_password, $mysql_database);
+	$con = mysqli_connect('localhost', 'root', '', 'cloudinator');
 
 	// Check connection
 

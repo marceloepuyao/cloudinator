@@ -1,7 +1,7 @@
 var nodos = new Array();
 var links = new Array();
 AUI().use('aui-io-request', function(A){
-	var AjaxGetNodos = A.io.request('ajaxnodos.php', {
+	A.io.request('ajaxnodos.php', {
 		dataType: 'json',   on: {   
 			success: function() {
 				var datos = this.get('responseData');
@@ -12,7 +12,7 @@ AUI().use('aui-io-request', function(A){
 		}
 	});
 
-	var AjaxGetLinks = A.io.request('ajaxlinks.php', {
+	A.io.request('ajaxlinks.php', {
 		dataType: 'json',   on: {   
 			success: function() {
 				var datos = this.get('responseData');
@@ -23,10 +23,11 @@ AUI().use('aui-io-request', function(A){
 		}
 	});
 
-	var AjaxPostNodo = A.io.request('ajaxpost.php', {
+	A.io.request('ajaxpost.php', {
+		autoLoad: true,
 		method: 'POST',
 		data: {
-			nodo: 'true',
+			nodo: 'add',
 			name: 'nueva pregunta',
 			type: 'condition',
 			posx: 1,
@@ -35,24 +36,25 @@ AUI().use('aui-io-request', function(A){
 	   	on: {
 	   		success: function(data){
 	   			if(data){
-	   				alert("AjaxPostNodo funcionó");
+	   				console.log("AJAX", data);
 	   			}
 	   		}
 	   	}
 	});
 
-	var AjaxPostLink = A.io.request('ajaxpost.php', {
+	A.io.request('ajaxpost.php', {
+		autoLoad: true,
 		method: 'POST',
 		data: {
-			link: 'true',
+			link: 'add',
 			name: '',
 			source: 1,
 			target: 2
 	   },
 	   	on: {
-	   		success: function(){
+	   		success: function(data){
 	   			if(data){
-	   				alert("AjaxPostNodo funcionó");
+	   				console.log("AJAX", data);
 	   			}
 	   		}
 	   	}
@@ -102,7 +104,27 @@ AUI().use('aui-diagram-builder', function(A) {
 				 '*:drag': function(event) {
 					 
 					 //aca se guardan los cambios de posición en la base de datos.
-				 	console.log('abc', event);
+					 AUI().use('aui-io-request', function(B){
+					 	B.io.request('ajaxpost.php', {
+							autoLoad: true,
+							method: 'POST',
+							data: {
+								nodo: 'add',
+								name: 'prueba add en medio del codigo',
+								type: 'end',
+								posx: 1,
+								posy: 1
+						   	},
+						   	on: {
+						   		success: function(data){
+						   			if(data){
+						   				console.log("AJAX", data);
+						   			}
+						   		}
+						   	}
+						});
+					 });
+				 	console.log('drag event', event);
 					 
 				 },
 				save: function(event) {
@@ -116,9 +138,9 @@ AUI().use('aui-diagram-builder', function(A) {
 					 	'Task1',
 					 	{ target: 'Task0' }
 					 ],*/
-					name: preguntas[0],
-					type: typepregunta,
-					xy: [10, 200]
+					name: nodos['name'],
+					type: nodos['type'],
+					xy: [nodos['posx'], nodos['posy']]
 				},
 				{
 					name: respuestas[0],

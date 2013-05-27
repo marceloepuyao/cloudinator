@@ -16,7 +16,7 @@ echo '<hr>';
 //crear database "cloudinator"
 echo '<h3>Creando DB "cloudinator"</h3>';
 try {
-	DBquery3('CREATE DATABASE cloudinator');
+	DBquery3('CREATE DATABASE cloudinator CHARACTER SET utf8 COLLATE utf8_general_ci');
 	echo 'Base de datos "cloudinator" creada exitosamente';
 } catch (Exception $e) {
 	echo 'Error al crear la base de datos "cloudinator", por favor creela manualmente<br>';
