@@ -84,23 +84,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 			iconClass: 'aui-diagram-node-condition-icon'
 		}
 	];
-/*
-	// ahora se llama por ajax
-	preguntas = new Array();
-	preguntas[0] = "¿Qué servicio desea probar sobre Cloud?";
-	preguntas[1] = "¿Cómo se desea comunicar entre su POC y su Cloud?";
-	preguntas[2] = "¿Qué tipo de conexión desea?";
-	preguntas[3] = "¿Cuentas IPs públicas?";
-	preguntas[4] = "¿Qué ancho de banda?";
-	
-	//ahora se llama por ajax
-	respuestas = new Array();
-	respuestas[0] = "Web";
-	respuestas[1] = "App";
-	respuestas[2] = "BBDD";
-	respuestas[3] = "TS";
-	respuestas[4] = "FServer";
-*/
+
 	function cargaNodos() {
 		console.log('nodos', nodos[0]);
 		db1 = new A.DiagramBuilder(
@@ -145,6 +129,26 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 						name: nodos[0].name,
 						type: nodos[0].type,
 						xy: [parseInt(nodos[0].posx), parseInt(nodos[0].posy)]
+					},
+					{
+						name: nodos[0].name,
+						type: nodos[0].type,
+						xy: [parseInt(nodos[1].posx), parseInt(nodos[1].posy)]
+					},
+					{
+						name: nodos[0].name,
+						type: nodos[0].type,
+						xy: [parseInt(nodos[2].posx), parseInt(nodos[2].posy)]
+					},
+					{
+						name: nodos[0].name,
+						type: nodos[0].type,
+						xy: [parseInt(nodos[3].posx), parseInt(nodos[3].posy)]
+					},
+					{
+						name: nodos[0].name,
+						type: nodos[0].type,
+						xy: [parseInt(nodos[4].posx), parseInt(nodos[4].posy)]
 					},
 					{
 						name: nodos[5].name,
@@ -213,11 +217,6 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 				connector: { name: links[4].name },
 				source: parseInt(links[4].source),
 				target: parseInt(links[4].target)
-			},
-			{//necesario este?
-				connector: { name: '' },
-				source: 'State0',
-				target: 'EndNode0'
 			}
 		]);
 	}
