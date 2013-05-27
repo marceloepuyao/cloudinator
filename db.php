@@ -19,7 +19,7 @@ function DBquery($sql_query){
 function DBconnect(){
 
 	// Create connection
-	$con = mysqli_connect($mysql_host, $mysql_user, $mysql_password, $mysql_database);
+	$con = mysqli_connect('localhost', 'root', '', 'cloudinator');
 
 	// Check connection
 
@@ -32,9 +32,9 @@ function DBclose_connection($con){
 }
 
 function DBquery2($query){
-	$link = mysql_connect($mysql_host, $mysql_user, $mysql_password);
+	$link = mysql_connect('localhost', 'root', '');
 
-	mysql_select_db($mysql_database);
+	mysql_select_db('cloudinator');
 
 	$result = mysql_query($query);
 
@@ -56,7 +56,7 @@ function DBquery2($query){
 }
 
 function DBquery3($query){
-	$link = mysql_connect($mysql_host, $mysql_user, $mysql_password);
+	$link = mysql_connect('localhost', 'root', '');
 
 	if(!mysql_query($query)){
 		throw new Exception("Error Processing Query", 1);
@@ -65,9 +65,9 @@ function DBquery3($query){
 	mysql_close($link);
 }
 function DBquery4($query){
-	$link = mysql_connect($mysql_host, $mysql_user, $mysql_password);
+	$link = mysql_connect('localhost', 'root', '');
 
-	mysql_select_db($mysql_database);
+	mysql_select_db('cloudinator');
 
 	if(!mysql_query($query)){
 		throw new Exception("Error Processing Query", 1);
