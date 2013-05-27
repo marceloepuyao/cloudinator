@@ -138,9 +138,9 @@ AUI().use('aui-diagram-builder', function(A) {
 					 	'Task1',
 					 	{ target: 'Task0' }
 					 ],*/
-					name: preguntas[0],
-					type: typepregunta,
-					xy: [10, 200]
+					name: nodos['name'],
+					type: nodos['type'],
+					xy: [nodos['posx'], nodos['posy']]
 				},
 				{
 					name: respuestas[0],
