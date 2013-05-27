@@ -1,6 +1,6 @@
 var nodos = new Array();
 var links = new Array();
-AUI().use('aui-io-request', function(A){
+AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 	A.io.request('ajaxnodos.php', {
 		dataType: 'json',   on: {   
 			success: function() {
@@ -8,10 +8,13 @@ AUI().use('aui-io-request', function(A){
 				for (var i=0; i < datos.length; i++) {
 		   			nodos[i] = datos[i];
 	   			} 
+				cargaNodos();
+				andaABuscarLosLinks();
 			}
 		}
 	});
 
+	function andaABuscarLosLinks() {
 	A.io.request('ajaxlinks.php', {
 		dataType: 'json',   on: {   
 			success: function() {
@@ -19,9 +22,11 @@ AUI().use('aui-io-request', function(A){
 				for (var i=0; i < datos.length; i++) {
 		   			links[i] = datos[i];
 	   			} 
+				cargaLinks();
 			}
 		}
 	});
+	}
 
 	A.io.request('ajaxpost.php', {
 		autoLoad: true,
@@ -60,9 +65,6 @@ AUI().use('aui-io-request', function(A){
 	   	}
 	});
 
-});
-
-AUI().use('aui-diagram-builder', function(A) {
 	var typepregunta = 'condition';
 	var typerespuesta = 'end';
 	var availableFields = [
@@ -94,7 +96,8 @@ AUI().use('aui-diagram-builder', function(A) {
 	respuestas[3] = "TS";
 	respuestas[4] = "FServer";
 	
-
+function cargaNodos() {
+	console.log("debbug",nodos);
 	db1 = new A.DiagramBuilder(
 		{
 			availableFields: availableFields,
@@ -133,14 +136,12 @@ AUI().use('aui-diagram-builder', function(A) {
 				}
 			},
 			fields: [
-				{	/*
-					 transitions: [
-					 	'Task1',
-					 	{ target: 'Task0' }
-					 ],*/
-					name: nodos['name'],
-					type: nodos['type'],
-					xy: [nodos['posx'], nodos['posy']]
+				{	
+					
+					
+					name: nodos[0].name,
+					type: nodos[0].type,
+					xy: [nodos[0].posx, nodos[0].posy]
 				},
 				{
 					name: respuestas[0],
@@ -171,7 +172,7 @@ AUI().use('aui-diagram-builder', function(A) {
 			render: true
 		}
 	);
-
+}
 	// db1.syncTargetsUI();
 
 	// var task2 = db1.addField({
@@ -182,6 +183,8 @@ AUI().use('aui-diagram-builder', function(A) {
 	// task2.addTransition('Task1');
 	// task2.connect('Task1');
 	console.log(preguntas[0],respuestas[0]);
+	
+	function cargaLinks() {
 	db1.connectAll([
 		{
 			connector: { name: '' },
@@ -220,7 +223,8 @@ AUI().use('aui-diagram-builder', function(A) {
 			target: 'EndNode0'
 		}
 	]);
-
+	}
+	
 	// db2 = new A.DiagramBuilder(
 	// 	{
 	// 		after: {
