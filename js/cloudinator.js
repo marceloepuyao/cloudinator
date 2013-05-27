@@ -1,12 +1,22 @@
+<<<<<<< HEAD
 var nodos = new Array();
 var links = new Array();
 AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
+=======
+AUI().use('aui-diagram-builder', 'aui-io-request', function(A) {
+	var nodes = Array();
+	var nodos = Array();
+	//A.one('#informacion').hide();
+>>>>>>> 26c409bd2f726b362677f636f3df501bdeb11439
 	A.io.request('ajaxnodos.php', {
+		cache: false,
+		autoLoad: true,
 		dataType: 'json',   on: {   
-			success: function() {
+			success: function() {					
 				var datos = this.get('responseData');
 				for (var i=0; i < datos.length; i++) {
 		   			nodos[i] = datos[i];
+<<<<<<< HEAD
 	   			} 
 				cargaNodos();
 				andaABuscarLosLinks();
@@ -15,9 +25,24 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 	});
 
 	function andaABuscarLosLinks() {
+=======
+		   			/*
+		   			A.one('#informacion').append('<div id=id'+i+'></div>');
+		   			A.one('#id'+i).append('<div id=name>'+nodos[i].name+'</div>');
+		   			A.one('#id'+i).append('<div id=type>'+nodos[i].type+'</div>');
+		   			A.one('#id'+i).append('<div id=posx>'+nodos[i].posx+'</div>');
+		   			A.one('#id'+i).append('<div id=posy>'+nodos[i].posy+'</div>');
+		   			*/
+	   			}
+	   			console.log('recien sacado', nodos[0].name);
+			}
+		}
+	});
+>>>>>>> 26c409bd2f726b362677f636f3df501bdeb11439
 	A.io.request('ajaxlinks.php', {
 		dataType: 'json',   on: {   
 			success: function() {
+				var links = Array();
 				var datos = this.get('responseData');
 				for (var i=0; i < datos.length; i++) {
 		   			links[i] = datos[i];
@@ -26,8 +51,11 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 			}
 		}
 	});
+<<<<<<< HEAD
 	}
 
+=======
+>>>>>>> 26c409bd2f726b362677f636f3df501bdeb11439
 	A.io.request('ajaxpost.php', {
 		autoLoad: true,
 		method: 'POST',
@@ -55,14 +83,14 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 			name: '',
 			source: 1,
 			target: 2
-	   },
-	   	on: {
-	   		success: function(data){
-	   			if(data){
-	   				console.log("AJAX", data);
-	   			}
-	   		}
-	   	}
+		},
+		on: {
+			success: function(data){
+				if(data){
+					console.log("AJAX", data);
+				}
+			}
+		}
 	});
 
 	var typepregunta = 'condition';
@@ -95,9 +123,13 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 	respuestas[2] = "BBDD";
 	respuestas[3] = "TS";
 	respuestas[4] = "FServer";
+<<<<<<< HEAD
 	
 function cargaNodos() {
 	console.log("debbug",nodos);
+=======
+
+>>>>>>> 26c409bd2f726b362677f636f3df501bdeb11439
 	db1 = new A.DiagramBuilder(
 		{
 			availableFields: availableFields,
@@ -107,34 +139,32 @@ function cargaNodos() {
 				 '*:drag': function(event) {
 					 
 					 //aca se guardan los cambios de posición en la base de datos.
-					 AUI().use('aui-io-request', function(B){
-					 	B.io.request('ajaxpost.php', {
-							autoLoad: true,
-							method: 'POST',
-							data: {
-								nodo: 'add',
-								name: 'prueba add en medio del codigo',
-								type: 'end',
-								posx: 1,
-								posy: 1
-						   	},
-						   	on: {
-						   		success: function(data){
-						   			if(data){
-						   				console.log("AJAX", data);
-						   			}
-						   		}
-						   	}
-						});
-					 });
-				 	console.log('drag event', event);
-					 
-				 },
+					A.io.request('ajaxpost.php', {
+						autoLoad: true,
+						method: 'POST',
+						data: {
+							nodo: 'add',
+							name: 'prueba add en medio del codigo',
+							type: 'end',
+							posx: 1,
+							posy: 1
+						},
+						on: {
+							success: function(data){
+								if(data){
+									console.log("AJAX", data);
+								}
+							}
+						}
+					});
+				console.log('drag event', event);
+				},
 				save: function(event) {
 					//aca se guardan los cambios
 					console.log('save', event);
 				}
 			},
+<<<<<<< HEAD
 			fields: [
 				{	
 					
@@ -142,6 +172,18 @@ function cargaNodos() {
 					name: nodos[0].name,
 					type: nodos[0].type,
 					xy: [nodos[0].posx, nodos[0].posy]
+=======
+			fields: [/*
+				{
+					name: nodos[0].name,
+					type: nodos[0].type,
+					xy: [nodos[0].posx, nodos[0].posy]
+				},*/
+				{
+					name: preguntas[0],
+					type: typepregunta,
+					xy: [50, 60]
+>>>>>>> 26c409bd2f726b362677f636f3df501bdeb11439
 				},
 				{
 					name: respuestas[0],
