@@ -1,68 +1,79 @@
-var nodos = new Array();
-var links = new Array();
-AUI().use('aui-io-request', function(A){
-	A.io.request('ajaxnodos.php', {
-		dataType: 'json',   on: {   
-			success: function() {
-				var datos = this.get('responseData');
-				for (var i=0; i < datos.length; i++) {
-		   			nodos[i] = datos[i];
-	   			} 
+AUI().use('aui-diagram-builder', 'aui-io-request', function(A) {
+	AUI().use('aui-io-request', function(B){
+		var nodes = Array();
+		var nodos = Array();
+		A.one('#informacion').hide();
+		A.io.request('ajaxnodos.php', {
+			cache: false,
+			autoLoad: true,
+			dataType: 'json',   on: {   
+				success: function() {					
+					var datos = this.get('responseData');
+					
+					for (var i=0; i < datos.length; i++) {
+			   			nodos[i] = datos[i];
+			   			/*
+			   			A.one('#informacion').append('<div id=id'+i+'></div>');
+			   			A.one('#id'+i).append('<div id=name>'+nodos[i].name+'</div>');
+			   			A.one('#id'+i).append('<div id=type>'+nodos[i].type+'</div>');
+			   			A.one('#id'+i).append('<div id=posx>'+nodos[i].posx+'</div>');
+			   			A.one('#id'+i).append('<div id=posy>'+nodos[i].posy+'</div>');
+			   			*/
+		   			}
+		   			console.log('recien sacado', nodos[0].name);
+
+				}
 			}
-		}
-	});
-
-	A.io.request('ajaxlinks.php', {
-		dataType: 'json',   on: {   
-			success: function() {
-				var datos = this.get('responseData');
-				for (var i=0; i < datos.length; i++) {
-		   			links[i] = datos[i];
-	   			} 
+		});
+		A.io.request('ajaxlinks.php', {
+			dataType: 'json',   on: {   
+				success: function() {
+					var links = Array();
+					var datos = this.get('responseData');
+					for (var i=0; i < datos.length; i++) {
+			   			links[i] = datos[i];
+		   			} 
+				}
 			}
-		}
-	});
+		});
 
-	A.io.request('ajaxpost.php', {
-		autoLoad: true,
-		method: 'POST',
-		data: {
-			nodo: 'add',
-			name: 'nueva pregunta',
-			type: 'condition',
-			posx: 1,
-			posy: 1
-	   	},
-	   	on: {
-	   		success: function(data){
-	   			if(data){
-	   				console.log("AJAX", data);
-	   			}
-	   		}
-	   	}
-	});
+		A.io.request('ajaxpost.php', {
+			autoLoad: true,
+			method: 'POST',
+			data: {
+				nodo: 'add',
+				name: 'nueva pregunta',
+				type: 'condition',
+				posx: 1,
+				posy: 1
+		   	},
+		   	on: {
+		   		success: function(data){
+		   			if(data){
+		   				console.log("AJAX", data);
+		   			}
+		   		}
+		   	}
+		});
 
-	A.io.request('ajaxpost.php', {
-		autoLoad: true,
-		method: 'POST',
-		data: {
-			link: 'add',
-			name: '',
-			source: 1,
-			target: 2
-	   },
-	   	on: {
-	   		success: function(data){
-	   			if(data){
-	   				console.log("AJAX", data);
-	   			}
-	   		}
-	   	}
-	});
-
-});
-
-AUI().use('aui-diagram-builder', function(A) {
+		A.io.request('ajaxpost.php', {
+			autoLoad: true,
+			method: 'POST',
+			data: {
+				link: 'add',
+				name: '',
+				source: 1,
+				target: 2
+		   },
+		   	on: {
+		   		success: function(data){
+		   			if(data){
+		   				console.log("AJAX", data);
+		   			}
+		   		}
+		   	}
+		});
+		
 	var typepregunta = 'condition';
 	var typerespuesta = 'end';
 	var availableFields = [
@@ -93,7 +104,6 @@ AUI().use('aui-diagram-builder', function(A) {
 	respuestas[2] = "BBDD";
 	respuestas[3] = "TS";
 	respuestas[4] = "FServer";
-	
 
 	db1 = new A.DiagramBuilder(
 		{
@@ -104,43 +114,37 @@ AUI().use('aui-diagram-builder', function(A) {
 				 '*:drag': function(event) {
 					 
 					 //aca se guardan los cambios de posición en la base de datos.
-					 AUI().use('aui-io-request', function(B){
-					 	B.io.request('ajaxpost.php', {
-							autoLoad: true,
-							method: 'POST',
-							data: {
-								nodo: 'add',
-								name: 'prueba add en medio del codigo',
-								type: 'end',
-								posx: 1,
-								posy: 1
-						   	},
-						   	on: {
-						   		success: function(data){
-						   			if(data){
-						   				console.log("AJAX", data);
-						   			}
-						   		}
-						   	}
-						});
-					 });
-				 	console.log('drag event', event);
-					 
-				 },
-				save: function(event) {
-					//aca se guardan los cambios
-					console.log('save', event);
-				}
+					A.io.request('ajaxpost.php', {
+						autoLoad: true,
+						method: 'POST',
+						data: {
+							nodo: 'add',
+							name: 'prueba add en medio del codigo',
+							type: 'end',
+							posx: 1,
+							posy: 1
+						},
+						on: {
+							success: function(data){
+								if(data){
+									console.log("AJAX", data);
+								}
+							}
+						}
+					});
+				});
+				console.log('drag event', event);
 			},
+			save: function(event) {
+				//aca se guardan los cambios
+				console.log('save', event);
+			}
+		},
 			fields: [
-				{	/*
-					 transitions: [
-					 	'Task1',
-					 	{ target: 'Task0' }
-					 ],*/
-					name: nodos['name'],
-					type: nodos['type'],
-					xy: [nodos['posx'], nodos['posy']]
+				{
+					name: nodos[0].name,
+					type: nodos[0].type,
+					xy: [nodos[0].posx, nodos[0].posy]
 				},
 				{
 					name: respuestas[0],
