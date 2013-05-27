@@ -1,13 +1,8 @@
-<<<<<<< HEAD
+
 var nodos = new Array();
 var links = new Array();
 AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
-=======
-AUI().use('aui-diagram-builder', 'aui-io-request', function(A) {
-	var nodes = Array();
-	var nodos = Array();
-	//A.one('#informacion').hide();
->>>>>>> 26c409bd2f726b362677f636f3df501bdeb11439
+
 	A.io.request('ajaxnodos.php', {
 		cache: false,
 		autoLoad: true,
@@ -16,7 +11,6 @@ AUI().use('aui-diagram-builder', 'aui-io-request', function(A) {
 				var datos = this.get('responseData');
 				for (var i=0; i < datos.length; i++) {
 		   			nodos[i] = datos[i];
-<<<<<<< HEAD
 	   			} 
 				cargaNodos();
 				andaABuscarLosLinks();
@@ -25,37 +19,19 @@ AUI().use('aui-diagram-builder', 'aui-io-request', function(A) {
 	});
 
 	function andaABuscarLosLinks() {
-=======
-		   			/*
-		   			A.one('#informacion').append('<div id=id'+i+'></div>');
-		   			A.one('#id'+i).append('<div id=name>'+nodos[i].name+'</div>');
-		   			A.one('#id'+i).append('<div id=type>'+nodos[i].type+'</div>');
-		   			A.one('#id'+i).append('<div id=posx>'+nodos[i].posx+'</div>');
-		   			A.one('#id'+i).append('<div id=posy>'+nodos[i].posy+'</div>');
-		   			*/
-	   			}
-	   			console.log('recien sacado', nodos[0].name);
+		A.io.request('ajaxlinks.php', {
+			dataType: 'json',   on: {   
+				success: function() {
+					var datos = this.get('responseData');
+					for (var i=0; i < datos.length; i++) {
+			   			links[i] = datos[i];
+		   			} 
+					cargaLinks();
+				}
 			}
-		}
-	});
->>>>>>> 26c409bd2f726b362677f636f3df501bdeb11439
-	A.io.request('ajaxlinks.php', {
-		dataType: 'json',   on: {   
-			success: function() {
-				var links = Array();
-				var datos = this.get('responseData');
-				for (var i=0; i < datos.length; i++) {
-		   			links[i] = datos[i];
-	   			} 
-				cargaLinks();
-			}
-		}
-	});
-<<<<<<< HEAD
+		});
 	}
-
-=======
->>>>>>> 26c409bd2f726b362677f636f3df501bdeb11439
+/*
 	A.io.request('ajaxpost.php', {
 		autoLoad: true,
 		method: 'POST',
@@ -92,7 +68,8 @@ AUI().use('aui-diagram-builder', 'aui-io-request', function(A) {
 			}
 		}
 	});
-
+*/
+//y esto? no va en funcion?
 	var typepregunta = 'condition';
 	var typerespuesta = 'end';
 	var availableFields = [
@@ -107,7 +84,7 @@ AUI().use('aui-diagram-builder', 'aui-io-request', function(A) {
 			iconClass: 'aui-diagram-node-condition-icon'
 		}
 	];
-
+/*
 	// ahora se llama por ajax
 	preguntas = new Array();
 	preguntas[0] = "¿Qué servicio desea probar sobre Cloud?";
@@ -123,98 +100,82 @@ AUI().use('aui-diagram-builder', 'aui-io-request', function(A) {
 	respuestas[2] = "BBDD";
 	respuestas[3] = "TS";
 	respuestas[4] = "FServer";
-<<<<<<< HEAD
-	
-function cargaNodos() {
-	console.log("debbug",nodos);
-=======
-
->>>>>>> 26c409bd2f726b362677f636f3df501bdeb11439
-	db1 = new A.DiagramBuilder(
-		{
-			availableFields: availableFields,
-			boundingBox: '#diagrambuilderBB',
-			srcNode: '#diagrambuilderCB',
-			on: {
-				 '*:drag': function(event) {
-					 
-					 //aca se guardan los cambios de posición en la base de datos.
-					A.io.request('ajaxpost.php', {
-						autoLoad: true,
-						method: 'POST',
-						data: {
-							nodo: 'add',
-							name: 'prueba add en medio del codigo',
-							type: 'end',
-							posx: 1,
-							posy: 1
-						},
-						on: {
-							success: function(data){
-								if(data){
-									console.log("AJAX", data);
+*/
+	function cargaNodos() {
+		console.log('nodos', nodos[0]);
+		db1 = new A.DiagramBuilder(
+			{
+				availableFields: availableFields,
+				boundingBox: '#diagrambuilderBB',
+				srcNode: '#diagrambuilderCB',
+				on: {
+					 '*:drag': function(event) {
+						 
+						//aca se guardan los cambios de posición en la base de datos.
+						/*
+						A.io.request('ajaxpost.php', {
+							autoLoad: true,
+							method: 'POST',
+							data: {
+								nodo: 'add',
+								name: 'prueba add en medio del codigo',
+								type: 'end',
+								posx: 1,
+								posy: 1
+							},
+							on: {
+								success: function(data){
+									if(data){
+										console.log("AJAX", data);
+									}
 								}
 							}
-						}
-					});
-				console.log('drag event', event);
+						});
+						*/
+					console.log('drag event', event);
+					},
+					save: function(event) {
+						//aca se guardan los cambios
+						console.log('save', event);
+					}
 				},
-				save: function(event) {
-					//aca se guardan los cambios
-					console.log('save', event);
-				}
-			},
-<<<<<<< HEAD
-			fields: [
-				{	
-					
-					
-					name: nodos[0].name,
-					type: nodos[0].type,
-					xy: [nodos[0].posx, nodos[0].posy]
-=======
-			fields: [/*
-				{
-					name: nodos[0].name,
-					type: nodos[0].type,
-					xy: [nodos[0].posx, nodos[0].posy]
-				},*/
-				{
-					name: preguntas[0],
-					type: typepregunta,
-					xy: [50, 60]
->>>>>>> 26c409bd2f726b362677f636f3df501bdeb11439
-				},
-				{
-					name: respuestas[0],
-					type: typerespuesta,
-					xy: [250, 60]
-				},
-				{
-					name: respuestas[1],
-					type: typerespuesta,
-					xy: [250, 130]
-				},
-				{
-					name: respuestas[2],
-					type: typerespuesta,
-					xy: [250, 200]
-				},
-				{
-					name: respuestas[3],
-					type: typerespuesta,
-					xy: [250, 270]
-				},
-				{
-					name: respuestas[4],
-					type: typerespuesta,
-					xy: [250, 350]
-				}
-			],
-			render: true
-		}
-	);
-}
+
+				fields: [
+					{
+						name: nodos[0].name,
+						type: nodos[0].type,
+						xy: [parseInt(nodos[0].posx), parseInt(nodos[0].posy)]
+					},
+					{
+						name: nodos[5].name,
+						type: nodos[5].type,
+						xy: [parseInt(nodos[5].posx), parseInt(nodos[5].posy)]
+					},
+					{
+						name: nodos[6].name,
+						type: nodos[6].type,
+						xy: [parseInt(nodos[6].posx), parseInt(nodos[6].posy)]
+					},
+					{
+						name: nodos[7].name,
+						type: nodos[7].type,
+						xy: [parseInt(nodos[7].posx), parseInt(nodos[7].posy)]
+					},
+					{
+						name: nodos[8].name,
+						type: nodos[8].type,
+						xy: [parseInt(nodos[8].posx), parseInt(nodos[8].posy)]
+					},
+					{
+						name: nodos[9].name,
+						type: nodos[9].type,
+						xy: [parseInt(nodos[9].posx), parseInt(nodos[9].posy)]
+					}
+				],
+				render: true
+			}
+		);
+	}
 	// db1.syncTargetsUI();
 
 	// var task2 = db1.addField({
@@ -224,47 +185,41 @@ function cargaNodos() {
 
 	// task2.addTransition('Task1');
 	// task2.connect('Task1');
-	console.log(preguntas[0],respuestas[0]);
 	
 	function cargaLinks() {
-	db1.connectAll([
-		{
-			connector: { name: '' },
-			source: preguntas[0],
-			target: respuestas[0]
-			
-		},
-		{
-			connector: { name: '' },
-			source: preguntas[0],
-			target: respuestas[1]
-		},
-		{
-			connector: { name: '' },
-			source: preguntas[0],
-			target: respuestas[2]
-		},
-		{
-			connector: { name: '' },
-			source: preguntas[0],
-			target: respuestas[3]
-		},
-		{
-			connector: { name: '' },
-			source: preguntas[0],
-			target: respuestas[4]
-		},
-		{
-			connector: { name: '' },
-			source: preguntas[0],
-			target: respuestas[5]
-		},
-		{
-			connector: { name: '' },
-			source: 'State0',
-			target: 'EndNode0'
-		}
-	]);
+		console.log('links', links[0]);
+		db1.connectAll([
+			{
+				connector: { name: links[0].name },
+				source: parseInt(links[0].source),
+				target: parseInt(links[0].target)
+			},
+			{
+				connector: { name: links[1].name },
+				source: parseInt(links[1].source),
+				target: parseInt(links[1].target)
+			},
+			{
+				connector: { name: links[2].name },
+				source: parseInt(links[2].source),
+				target: parseInt(links[2].target)
+			},
+			{
+				connector: { name: links[3].name },
+				source: parseInt(links[3].source),
+				target: parseInt(links[3].target)
+			},
+			{
+				connector: { name: links[4].name },
+				source: parseInt(links[4].source),
+				target: parseInt(links[4].target)
+			},
+			{//necesario este?
+				connector: { name: '' },
+				source: 'State0',
+				target: 'EndNode0'
+			}
+		]);
 	}
 	
 	// db2 = new A.DiagramBuilder(
