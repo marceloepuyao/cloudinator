@@ -31,45 +31,42 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 			}
 		});
 	}
-/*
-	A.io.request('ajaxpost.php', {
-		autoLoad: true,
-		method: 'POST',
-		data: {
-			nodo: 'add',
-			name: 'nueva pregunta',
-			type: 'condition',
-			posx: 1,
-			posy: 1
-	   	},
-	   	on: {
-	   		success: function(data){
-	   			if(data){
-	   				console.log("AJAX", data);
-	   			}
-	   		}
-	   	}
-	});
-
-	A.io.request('ajaxpost.php', {
-		autoLoad: true,
-		method: 'POST',
-		data: {
-			link: 'add',
-			name: '',
-			source: 1,
-			target: 2
-		},
-		on: {
-			success: function(data){
-				if(data){
-					console.log("AJAX", data);
+	function ajaxPostNodo(action, name, type, posx, posy){
+		A.io.request('ajaxpost.php', {
+			autoLoad: true,
+			method: 'POST',
+			data: {
+				nodo: action,
+				name: name,
+				type: type,
+				posx: posx,
+				posy: posy
+			},
+			on: {
+				success: function(data){
+					console.log('AJAX',data);
 				}
 			}
-		}
-	});
-*/
-//y esto? no va en funcion?
+		});
+	}
+
+	function ajaxPostLink(action, name, source, target){
+		A.io.request('ajaxpost.php', {
+			autoLoad: true,
+			method: 'POST',
+			data: {
+				link: action,
+				name: '',
+				source: source,
+				target: target
+			},
+			on: {
+				success: function(data){
+				}
+			}
+		});
+	}
+
 	var typepregunta = 'condition';
 	var typerespuesta = 'end';
 	var availableFields = [
@@ -96,26 +93,11 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 					 '*:drag': function(event) {
 						 
 						//aca se guardan los cambios de posición en la base de datos.
-						/*
-						A.io.request('ajaxpost.php', {
-							autoLoad: true,
-							method: 'POST',
-							data: {
-								nodo: 'add',
-								name: 'prueba add en medio del codigo',
-								type: 'end',
-								posx: 1,
-								posy: 1
-							},
-							on: {
-								success: function(data){
-									if(data){
-										console.log("AJAX", data);
-									}
-								}
-							}
-						});
-						*/
+						//estos son ejemplos, siente libre de sacarlos marcelo
+						//ajaxPostNodo('add', 'nombre del nodo', 'tipo del nodo', 10, 20);
+						ajaxPostNodo('modify', 'TS', 'tipo del nodo', 15, 25);
+						//ajaxPostLink('add', '', 1, 2);
+						
 					console.log('drag event', event);
 					},
 					save: function(event) {
@@ -194,29 +176,29 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 		console.log('links', links[0]);
 		db1.connectAll([
 			{
-				connector: { name: links[0].name },
+				connector: { name: links[0].name,
 				source: parseInt(links[0].source),
-				target: parseInt(links[0].target)
+				target: parseInt(links[0].target)}
 			},
 			{
-				connector: { name: links[1].name },
+				connector: { name: links[1].name,
 				source: parseInt(links[1].source),
-				target: parseInt(links[1].target)
+				target: parseInt(links[1].target)}
 			},
 			{
-				connector: { name: links[2].name },
+				connector: { name: links[2].name,
 				source: parseInt(links[2].source),
-				target: parseInt(links[2].target)
+				target: parseInt(links[2].target)}
 			},
 			{
-				connector: { name: links[3].name },
+				connector: { name: links[3].name,
 				source: parseInt(links[3].source),
-				target: parseInt(links[3].target)
+				target: parseInt(links[3].target)}
 			},
 			{
-				connector: { name: links[4].name },
+				connector: { name: links[4].name,
 				source: parseInt(links[4].source),
-				target: parseInt(links[4].target)
+				target: parseInt(links[4].target)}
 			}
 		]);
 	}
