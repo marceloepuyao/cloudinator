@@ -7,13 +7,16 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 		cache: false,
 		autoLoad: true,
 		dataType: 'json',   on: {   
+			start:function(){
+				//mostrar loading
+			},
 			success: function() {					
 				var datos = this.get('responseData');
 				for (var i=0; i < datos.length; i++) {
 		   			nodos[i] = datos[i];
 	   			} 
 				cargaNodos();
-				andaABuscarLosLinks();
+				
 			}
 		}
 	});
@@ -83,6 +86,18 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 	];
 
 	function cargaNodos() {
+		
+		var field = new Array();
+		console.log("field", nodos);
+		for (var i=0; i < nodos.length; i++) {
+			var x = {};
+			x.name = nodos[i].name;
+			x.type = nodos[i].type;
+			x.xy = [parseInt(nodos[i].posx), parseInt(nodos[i].posy)];
+			field.push(x);
+		} 
+		
+
 		console.log('nodos', nodos[0]);
 		db1 = new A.DiagramBuilder(
 			{
@@ -95,10 +110,10 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 						//aca se guardan los cambios de posición en la base de datos.
 						//estos son ejemplos, siente libre de sacarlos marcelo
 						//ajaxPostNodo('add', 'nombre del nodo', 'tipo del nodo', 10, 20);
-						ajaxPostNodo('modify', 'TS', 'tipo del nodo', 15, 25);
+						ajaxPostNodo('modify', 'TS', 'condition', 500, 25);
 						//ajaxPostLink('add', '', 1, 2);
 						
-					console.log('drag event', event);
+							console.log('drag event', event);
 					},
 					save: function(event) {
 						//aca se guardan los cambios
@@ -106,61 +121,12 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 					}
 				},
 
-				fields: [
-					{
-						name: nodos[0].name,
-						type: nodos[0].type,
-						xy: [parseInt(nodos[0].posx), parseInt(nodos[0].posy)]
-					},
-					{
-						name: nodos[0].name,
-						type: nodos[0].type,
-						xy: [parseInt(nodos[1].posx), parseInt(nodos[1].posy)]
-					},
-					{
-						name: nodos[0].name,
-						type: nodos[0].type,
-						xy: [parseInt(nodos[2].posx), parseInt(nodos[2].posy)]
-					},
-					{
-						name: nodos[0].name,
-						type: nodos[0].type,
-						xy: [parseInt(nodos[3].posx), parseInt(nodos[3].posy)]
-					},
-					{
-						name: nodos[0].name,
-						type: nodos[0].type,
-						xy: [parseInt(nodos[4].posx), parseInt(nodos[4].posy)]
-					},
-					{
-						name: nodos[5].name,
-						type: nodos[5].type,
-						xy: [parseInt(nodos[5].posx), parseInt(nodos[5].posy)]
-					},
-					{
-						name: nodos[6].name,
-						type: nodos[6].type,
-						xy: [parseInt(nodos[6].posx), parseInt(nodos[6].posy)]
-					},
-					{
-						name: nodos[7].name,
-						type: nodos[7].type,
-						xy: [parseInt(nodos[7].posx), parseInt(nodos[7].posy)]
-					},
-					{
-						name: nodos[8].name,
-						type: nodos[8].type,
-						xy: [parseInt(nodos[8].posx), parseInt(nodos[8].posy)]
-					},
-					{
-						name: nodos[9].name,
-						type: nodos[9].type,
-						xy: [parseInt(nodos[9].posx), parseInt(nodos[9].posy)]
-					}
-				],
+				fields: field,
 				render: true
 			}
 		);
+		//console.log('db1',db1);
+		andaABuscarLosLinks();
 	}
 	// db1.syncTargetsUI();
 
@@ -173,34 +139,20 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 	// task2.connect('Task1');
 	
 	function cargaLinks() {
-		console.log('links', links[0]);
-		db1.connectAll([
-			{
-				connector: { name: links[0].name,
-				source: parseInt(links[0].source),
-				target: parseInt(links[0].target)}
-			},
-			{
-				connector: { name: links[1].name,
-				source: parseInt(links[1].source),
-				target: parseInt(links[1].target)}
-			},
-			{
-				connector: { name: links[2].name,
-				source: parseInt(links[2].source),
-				target: parseInt(links[2].target)}
-			},
-			{
-				connector: { name: links[3].name,
-				source: parseInt(links[3].source),
-				target: parseInt(links[3].target)}
-			},
-			{
-				connector: { name: links[4].name,
-				source: parseInt(links[4].source),
-				target: parseInt(links[4].target)}
-			}
-		]);
+		
+		console.log('links', nodos[links[0].target].name.toString());
+		
+		var connectors = new Array();
+		for (var i=0; i < links.length; i++) {
+			var x = {};
+			x.connector = {};
+			x.connector.name = "";
+			x.source = nodos[links[i].source - 1 ].name;
+			x.target = nodos[links[i].target - 1].name;
+			connectors.push(x);
+		} 
+		
+		db1.connectAll(connectors);
 	}
 	
 	// db2 = new A.DiagramBuilder(
