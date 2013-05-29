@@ -18,8 +18,7 @@ if ( array_key_exists('nodo', $_POST) ) {
 			);
 			print($json->encode($data));
 		} catch (Exception $e) {}
-	}
-	if($nodo == 'modify'){
+	}elseif($nodo == 'modify'){
 		try {
 			$query = "UPDATE  `cloudinator`.`nodos` SET  `posx` =  ".$_POST['posx'].", `posy` =  ".$_POST['posy']." WHERE  `nodos`.`name` =".$_POST['name'].";";
 			
@@ -32,23 +31,34 @@ if ( array_key_exists('nodo', $_POST) ) {
 		} catch (Exception $e) {
 			print($json->encode($e));
 		}
+	}elseif($nodo == 'remove'){
+		try {
+			
+		} catch (Exception $e) {
+			
+		}
 	}
 }
 
 if ( array_key_exists('link', $_POST) ) {
-	
-	try {
-		$query = "INSERT INTO `cloudinator`.`links` (`id`, `name`, `source`, `target`) VALUES 
-		(NULL, '".$_POST['name']."', '".$_POST['source']."', '".$_POST['target']."');";
-		
-		DBquery4($query);
-		
-		$data = array(
-			'result' => 'true',
-		);
-		print($json->encode($data));
-	} catch (Exception $e) {}
-	
+	$link = $_POST['link'];
+	if($link == 'add'){
+		try {
+			$query = "INSERT INTO `cloudinator`.`links` (`id`, `name`, `source`, `target`) VALUES 
+			(NULL, '".$_POST['name']."', '".$_POST['source']."', '".$_POST['target']."');";
+			
+			DBquery4($query);
+			
+			$data = array(
+				'result' => 'true',
+			);
+			print($json->encode($data));
+		} catch (Exception $e) {}
+	}elseif ($link == 'modify') {
+		# code...
+	}elseif ($link == 'remove') {
+		# code...
+	}
 }
 
 ?>
