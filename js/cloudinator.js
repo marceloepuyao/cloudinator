@@ -102,18 +102,31 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 		db1 = new A.DiagramBuilder(
 			{
 				availableFields: availableFields,
+				useARIA: true,
 				boundingBox: '#diagrambuilderBB',
 				srcNode: '#diagrambuilderCB',
 				on: {
 					 '*:drag': function(event) {
-						 
-						//aca se guardan los cambios de posición en la base de datos.
+						 //funciones interesantes
+						 //db1.deleteSelectedNode();
+						 //db1.deleteSelectedConnectors ();
+						 //aca se guardan los cambios de posición en la base de datos.
 						//estos son ejemplos, siente libre de sacarlos marcelo
 						//ajaxPostNodo('add', 'nombre del nodo', 'tipo del nodo', 10, 20);
 						ajaxPostNodo('modify', 'TS', 'condition', 500, 25);
 						//ajaxPostLink('add', '', 1, 2);
 						
-							console.log('drag event', event);
+							console.log('drag', event);
+							
+							deleltelinesinfo();
+					},
+					'*:end': function(event){
+						console.log("final del drag");
+						deleltelinesinfo();
+					},
+					'*:hit': function(event){
+						console.log("hit drag", event);
+						deleltelinesinfo();
 					},
 					save: function(event) {
 						//aca se guardan los cambios
@@ -146,13 +159,19 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 		for (var i=0; i < links.length; i++) {
 			var x = {};
 			x.connector = {};
-			x.connector.name = "";
+			x.connector.name = links[i].name;
 			x.source = nodos[links[i].source - 1 ].name;
 			x.target = nodos[links[i].target - 1].name;
 			connectors.push(x);
 		} 
 		
 		db1.connectAll(connectors);
+		deleltelinesinfo();
+	}
+	
+	function deleltelinesinfo(){
+		var a = A.all('.aui-diagram-builder-connector-name');
+		a.remove();
 	}
 	
 	// db2 = new A.DiagramBuilder(
