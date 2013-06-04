@@ -13,6 +13,8 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 			success: function() {					
 				var datos = this.get('responseData');
 				for (var i=0; i < datos.length; i++) {
+					//var id = datos[i].id;
+					//console.log("iddd", id);
 		   			nodos[i] = datos[i];
 	   			} 
 				cargaNodos();
@@ -47,6 +49,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 			},
 			on: {
 				success: function(data){
+					
 					console.log('AJAX',data);
 				}
 			}
@@ -88,7 +91,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 	function cargaNodos() {
 		
 		var field = new Array();
-		console.log("field", nodos);
+		//console.log("field", nodos);
 		for (var i=0; i < nodos.length; i++) {
 			var x = {};
 			x.name = nodos[i].name;
@@ -98,7 +101,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 		} 
 		
 
-		console.log('nodos', nodos[0]);
+		console.log('nodos', nodos[1]);
 		db1 = new A.DiagramBuilder(
 			{
 				availableFields: availableFields,
@@ -110,18 +113,23 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 						 //funciones interesantes
 						 //db1.deleteSelectedNode();
 						 //db1.deleteSelectedConnectors ();
-						 //aca se guardan los cambios de posición en la base de datos.
+						 //aca se guardan los cambios de posiciï¿½n en la base de datos.
 						//estos son ejemplos, siente libre de sacarlos marcelo
 						//ajaxPostNodo('add', 'nombre del nodo', 'tipo del nodo', 10, 20);
-						ajaxPostNodo('modify', 'TS', 'condition', 500, 25);
+						
 						//ajaxPostLink('add', '', 1, 2);
 						
-							console.log('drag', event);
+							//console.log('drag', event);
 							
 							deleltelinesinfo();
 					},
 					'*:end': function(event){
-						console.log("final del drag");
+						ajaxPostNodo('modify', 'TS', 'condition', 0, 0);
+						//db1.selectedNode();
+						
+						//var diagramNode = A.Widget.getByNode(event.target.get("dragNode"));
+						
+						console.log("final del drag", event.target);
 						deleltelinesinfo();
 					},
 					'*:hit': function(event){
@@ -153,15 +161,19 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 	
 	function cargaLinks() {
 		
-		console.log('links', nodos[links[0].target].name.toString());
-		
 		var connectors = new Array();
 		for (var i=0; i < links.length; i++) {
 			var x = {};
 			x.connector = {};
 			x.connector.name = links[i].name;
-			x.source = nodos[links[i].source - 1 ].name;
-			x.target = nodos[links[i].target - 1].name;
+			
+			for(var j=0; j < nodos.length; j++) {
+				if(nodos[j].id == links[i].source){
+					x.source = nodos[j].name;
+				}else if(nodos[j].id == links[i].target){
+					x.target = nodos[j].name;
+				}
+			}
 			connectors.push(x);
 		} 
 		
@@ -171,6 +183,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 	
 	function deleltelinesinfo(){
 		var a = A.all('.aui-diagram-builder-connector-name');
+		//db1.connector.hide();
 		a.remove();
 	}
 	
