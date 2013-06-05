@@ -79,7 +79,7 @@ if ( array_key_exists('link', $_POST) ) {
 		}
 	}elseif ($link == 'update') {
 		try {
-			$query = "UPDATE  `cloudinator`.`links` SET  `target` = '".$_POST['source']."', `source` = '".$_POST['target']."' WHERE `nodos`.`name` ='".$_POST['name']."';";
+			$query = "UPDATE  `cloudinator`.`links` SET  `target` = '".$_POST['source']."', `source` = '".$_POST['target']."' WHERE `links`.`name` ='".$_POST['name']."';";
 			
 			DBquery4($query);
 			
@@ -94,7 +94,21 @@ if ( array_key_exists('link', $_POST) ) {
 			print($json->encode($data));
 		}
 	}elseif ($link == 'delete') {
-		# code...
+		try {
+			$query = "DELETE FROM `cloudinator`.`links` WHERE `links`.`name`='".$_POST['name']."';";
+			
+			DBquery4($query);
+
+			$data = array(
+				'result' => 'true'
+			);
+			print($json->encode($data));
+		} catch (Exception $e) {
+			$data = array(
+				'result' => 'false'
+			);
+			print($json->encode($data));
+		}
 	}
 }
 
