@@ -114,18 +114,20 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 						 //funciones interesantes
 						 //db1.deleteSelectedNode();
 						 //db1.deleteSelectedConnectors ();
+
 						 //aca se guardan los cambios de posici�n en la base de datos.
+
 						//estos son ejemplos, siente libre de sacarlos marcelo
-						//ajaxPostNodo('add', 'nombre del nodo', 'tipo del nodo', 10, 20);
-						
-						//ajaxPostLink('add', '', 1, 2);
+						//ajaxPostNodo('insert', 'nombre del nodo', 'tipo del nodo', 10, 20);
+						//insert, update, delete
+						//ajaxPostLink('insert', '', 1, 2);
 						
 							//console.log('drag', event);
 							
 							deleltelinesinfo();
 					},
 					'*:end': function(event){
-						ajaxPostNodo('remove', 'TS', 'condition', event.pageX, event.pageY);
+						ajaxPostNodo('update', 'TS', 'condition', event.pageX, event.pageY);
 						//db1.selectedNode();
 						
 						//var diagramNode = A.Widget.getByNode(event.target.get("dragNode"));
