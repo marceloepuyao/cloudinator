@@ -49,20 +49,21 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 			},
 			on: {
 				success: function(data){
-					
-					console.log('AJAX',data);
+					console.log('AJAXresponseData',this.get('responseData'));
+					//console.log('AJAX',data);
 				}
 			}
 		});
 	}
 
 	function ajaxPostLink(action, name, source, target){
+		//aca aun falta el "modify"
 		A.io.request('ajaxpost.php', {
 			autoLoad: true,
 			method: 'POST',
 			data: {
 				link: action,
-				name: '',
+				name: name,
 				source: source,
 				target: target
 			},
@@ -124,12 +125,12 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 							deleltelinesinfo();
 					},
 					'*:end': function(event){
-						ajaxPostNodo('modify', 'TS', 'condition', 0, 0);
+						ajaxPostNodo('remove', 'TS', 'condition', event.pageX, event.pageY);
 						//db1.selectedNode();
 						
 						//var diagramNode = A.Widget.getByNode(event.target.get("dragNode"));
-						
-						console.log("final del drag", event.target);
+						console.log("final del drag1", event);
+						console.log("final del drag2", event.target);
 						deleltelinesinfo();
 					},
 					'*:hit': function(event){
