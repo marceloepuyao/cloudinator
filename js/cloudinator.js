@@ -127,7 +127,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 							deleltelinesinfo();
 					},
 					'*:end': function(event){
-						ajaxPostNodo('update', 'TS', 'condition', event.pageX, event.pageY);
+						ajaxPostNodo('update', 'TS', 'condition', event.pageX, event.pageY); //event.pageX no es la posicion exacta, porque concidera todo
 						//db1.selectedNode();
 						
 						//var diagramNode = A.Widget.getByNode(event.target.get("dragNode"));
