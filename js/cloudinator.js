@@ -44,8 +44,8 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 				nodo: action,
 				name: name,
 				type: type,
-				posx: posx,
-				posy: posy
+				posx: posx - 261,
+				posy: posy-53
 			},
 			on: {
 				success: function(data){
@@ -131,8 +131,8 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 						//db1.selectedNode();
 						
 						//var diagramNode = A.Widget.getByNode(event.target.get("dragNode"));
-						console.log("final del drag1", event);
-						console.log("final del drag2", event.target);
+						console.log("final del drag1", event.pageX, event.pageY);
+						console.log("final del drag2", A.one('svg')); 
 						deleltelinesinfo();
 					},
 					'*:hit': function(event){
