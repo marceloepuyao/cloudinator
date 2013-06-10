@@ -15,28 +15,43 @@
 	<br>
 	<div class="col_3 column">
 		<ul class="menu vertical">
-		<li><a href="cloudinator.html"><i class="icon-file"></i> Nuevo Grafo</a></li>
+		<li id="new"><a href="#"><i class="icon-file"></i> Nuevo Grafo</a></li>
 		<li><a href=""><i class="icon-copy"></i> Nuevo Grafo a partir de uno ya existente</a>
-			<ul>
-			<li><a href="cloudinator.html">POC</a></li>
-			<li><a href="cloudinator.html">OTRO</a></li>
+			<ul id="copy">
 			</ul>
 		</li>
 		<li><a href=""><i class="icon-edit"></i> Editar Grafo</a>
-			<ul>
-			<li><a href="cloudinator.html">POC</a></li>
-			<li><a href="cloudinator.html">OTRO</a></li>
+			<ul id="edit">
 			</ul>
 		</li>
 		<li><a href=""><i class="icon-share"></i> Recorrer Grafo</a>
-			<ul>
-			<li><a href="cloudinator.html">POC</a></li>
-			<li><a href="cloudinator.html">OTRO</a></li>
+			<ul id="do">
+			<li><a href="#">Coming Soon</a></li>
 			</ul>
 		</li>
 		</ul>
 	</div>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script src="kickstart/js/kickstart.js"></script> <!-- KICKSTART -->
+	<script>
+		var ajaxTrees = $.getJSON( "ajaxTrees.php", function(data) {
+			
+		})
+		.done(function(data) {
+			$.each( data, function( i, item ) {
+				if(item.deleted == 0){
+					$('#copy').append('<li><a href="cloudinator.html&id='+item.id+'">'+item.name+'</a></li>');
+					$('#edit').append('<li><a href="cloudinator.html&id='+item.id+'">'+item.name+'</a></li>');
+				}
+	    	});
+		})
+		.fail(function(data) {
+			$('#copy').append('<li><a href="">ERROR</a></li>');
+			$('#edit').append('<li><a href="">ERROR</a></li>');
+		})
+		.always(function(data) {
+			//console.log( "complete", data ); 
+		});
+	</script>
 </body>
 </html>
