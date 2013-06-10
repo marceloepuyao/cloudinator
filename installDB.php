@@ -26,7 +26,16 @@ echo '<hr>';
 //crear tabla "nodos"
 echo '<h3>Creando Tabla "nodos"</h3>';
 try {
-	DBquery4("create table nodos (id int(50) not null auto_increment primary key,name varchar(55),type varchar(20),posx float(50),posy float(50))");
+	DBquery4("CREATE TABLE nodos (
+		id int(55) not null auto_increment primary key,
+		tree int(55) NOT NULL,
+		name varchar(55) NOT NULL,
+		type varchar(20) NOT NULL,
+		posx float(50) NOT NULL,
+		posy float(50) NOT NULL,
+		modified timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+	");
 	echo 'Tabla "nodos" creada exitosamente';
 } catch (Exception $e) {
 	echo 'Error al crear tabla "nodos"<br>';
@@ -36,10 +45,36 @@ echo '<hr>';
 //crear tabla "links" id, name, source, target
 echo '<h3>Creando Tabla "links"</h3>';
 try {
-	DBquery4("create table links (id int(50) not null auto_increment primary key,name varchar(55),source varchar(20),target varchar(50))");
+	DBquery4("CREATE TABLE links (
+		id int(55) not null auto_increment primary key,
+		tree int(55) NOT NULL,
+		name varchar(55),
+		source varchar(20),
+		target varchar(50),
+		modified timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+	");
 	echo 'Tabla "links" creada exitosamente';
 } catch (Exception $e) {
 	echo 'Error al crear tabla "links"<br>';
+	echo $e;
+}
+echo '<hr>';
+//crear tabla "trees" id, name, source, target
+echo '<h3>Creando Tabla "trees"</h3>';
+try {
+	DBquery4("CREATE TABLE IF NOT EXISTS `trees` (
+		`id` int(55) NOT NULL AUTO_INCREMENT,
+		`name` varchar(55) NOT NULL,
+		`deleted` tinyint(1) NOT NULL,
+		`created` datetime NOT NULL,
+		`modified` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
+		PRIMARY KEY (`id`)
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+	");
+	echo 'Tabla "trees" creada exitosamente';
+} catch (Exception $e) {
+	echo 'Error al crear tabla "trees"<br>';
 	echo $e;
 }
 echo '<hr><br>';
