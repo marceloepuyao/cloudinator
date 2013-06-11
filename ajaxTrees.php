@@ -10,6 +10,7 @@ if (isset($_POST['name'])) {
 			(NULL, '".$_POST['name']."', 0, '".date("Y-m-d H:i:s")."');
 			");
 
+		//la siguiente linea no esta funcionando )= se supone que envia el id de vuelta para poder ponerlo en el querystring
 		$data = DBquery4("SELECT id FROM trees WHERE name='".$_POST['name']."'");
 		
 		print($json->encode($data));

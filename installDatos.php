@@ -1,6 +1,6 @@
 <?php
 require_once('db.php');
-
+echo '<a href="index.html">Volver</a>';
 echo '<center><br><h2>Instalacion de datos</h2><br>';
 echo '<hr>';
 //borrar tablas si existen
@@ -41,10 +41,10 @@ echo '<h4>Creando datos en "trees"</h3>';
 try {
 	DBquery3("INSERT INTO `cloudinator`.`trees` (`id`, `name`, `deleted`, `created`) VALUES 
 		(NULL, 'POC', 0, '".date("Y-m-d H:i:s")."'),
-		(NULL, 'grafo 1', 0, '".date("Y-m-d H:i:s")."'),
-		(NULL, 'grafo 2', 0, '".date("Y-m-d H:i:s")."'),
-		(NULL, 'grafo 3', 0, '".date("Y-m-d H:i:s")."'),
-		(NULL, 'grafo 4', 0, '".date("Y-m-d H:i:s")."');
+		(NULL, 'ej. grafo 1', 0, '".date("Y-m-d H:i:s")."'),
+		(NULL, 'ej. grafo 2', 0, '".date("Y-m-d H:i:s")."'),
+		(NULL, 'ej. grafo 3', 0, '".date("Y-m-d H:i:s")."'),
+		(NULL, 'ej. grafo 4', 0, '".date("Y-m-d H:i:s")."');
 		");
 	echo 'Se han creado datos en "trees" exitosamente';
 } catch (Exception $e) {
@@ -52,4 +52,5 @@ try {
 }
 echo '<hr><br>';
 echo '<h2>La instalacion a finalizado</h2></center>';
+echo '<a href="index.html">Volver</a>';
 ?>

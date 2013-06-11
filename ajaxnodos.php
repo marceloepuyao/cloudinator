@@ -4,9 +4,8 @@ require_once('db.php');
 
 $json = new Services_JSON();
 
-
 try {	
-	$query = 'SELECT * FROM nodos';
+	$query = "SELECT * FROM nodos WHERE tree='".$_POST['tree']."'";
 	$datos = DBquery2($query);
 	$salida = $json->encode($datos);
 

@@ -1,13 +1,21 @@
-
 var nodos = new Array();
 var links = new Array();
 var movingnodename = "";
+function getQueryStringByName(name) {
+    name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
 AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 
 	A.io.request('ajaxnodos.php', {
 		cache: false,
 		autoLoad: true,
-		dataType: 'json',   on: {   
+		dataType: 'json',
+		method: 'POST',
+		data: {tree: getQueryStringByName('id')},
+		on: {   
 			start:function(){
 				//mostrar loading
 			},
@@ -24,9 +32,12 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 		}
 	});
 
-	function andaABuscarLosLinks() {
+	function andaABuscarLosLinks(treeID) {
 		A.io.request('ajaxlinks.php', {
-			dataType: 'json',   on: {   
+			dataType: 'json',
+			method: 'POST',
+			data: {tree: treeID},
+			on: {   
 				success: function() {
 					var datos = this.get('responseData');
 					for (var i=0; i < datos.length; i++) {
@@ -47,7 +58,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 				tree: tree,
 				type: type,
 				posx: posx - 261,
-				posy: posy-53
+				posy: posy - 53
 			},
 			on: {
 				success: function(data){
@@ -139,7 +150,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 						
 						
 						
-						ajaxPostNodo('update', movingnodename, 'condition', event.pageX, event.pageY, 1); //event.pageX no es la posicion exacta, porque concidera todo
+						ajaxPostNodo('update', movingnodename, 'condition', event.pageX, event.pageY, getQueryStringByName('id')); //event.pageX no es la posicion exacta, porque concidera todo
 						//db1.selectedNode();
 						//event.preventDefault();
 						/*
@@ -168,7 +179,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 			}
 		);
 		//console.log('db1',db1);
-		andaABuscarLosLinks();
+		andaABuscarLosLinks(getQueryStringByName('id'));
 	}
 	// db1.syncTargetsUI();
 

@@ -1,6 +1,6 @@
 <?php
 require_once('db.php');
-
+echo '<a href="index.html">Volver</a>';
 echo '<center><br><h2>Instalacion de la base de datos</h2><br>';
 echo '<hr>';
 //borrar tablas si existen
@@ -79,4 +79,5 @@ try {
 }
 echo '<hr><br>';
 echo '<h2>La instalacion a finalizado</h2></center>';
+echo '<a href="index.html">Volver</a>';
 ?>
