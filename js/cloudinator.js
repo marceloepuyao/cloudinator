@@ -1,6 +1,7 @@
 
 var nodos = new Array();
 var links = new Array();
+var movingnodename = "";
 AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 
 	A.io.request('ajaxnodos.php', {
@@ -110,7 +111,14 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 				boundingBox: '#diagrambuilderBB',
 				srcNode: '#diagrambuilderCB',
 				on: {
-					 '*:drag': function(event) {
+					 '*:drag': function(e, id) {
+						 
+						 var drag = e.target;
+						 var idnode = drag.get('node').getAttribute("id");
+						 console.log('drag', idnode );
+						 
+						 movingnodename = A.one('#'+idnode).get('children').slice(-2).get('text')[0];
+						 
 						 //funciones interesantes
 						 //db1.deleteSelectedNode();
 						 //db1.deleteSelectedConnectors ();
@@ -121,18 +129,25 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 						//ajaxPostNodo('insert', 'nombre del nodo', 'tipo del nodo', 10, 20);
 						//insert, update, delete
 						//ajaxPostLink('insert', '', 1, 2);
-						
-							//console.log('drag', event);
-							
-							deleltelinesinfo();
+
+						deleltelinesinfo();
 					},
-					'*:end': function(event){
-						ajaxPostNodo('update', 'TS', 'condition', event.pageX, event.pageY); //event.pageX no es la posicion exacta, porque concidera todo
+					'*:end': function(event, id){
+						
+						
+						
+						ajaxPostNodo('update', movingnodename, 'condition', event.pageX, event.pageY); //event.pageX no es la posicion exacta, porque concidera todo
 						//db1.selectedNode();
+						//event.preventDefault();
+						/*
+						var drag = event.drag;
+			            var data = drag.get('data');
+			            var out = ['id: ' + drag.get('node').get('id')];
+						*/
 						
 						//var diagramNode = A.Widget.getByNode(event.target.get("dragNode"));
-						console.log("final del drag1", event.pageX, event.pageY);
-						console.log("final del drag2", A.one('svg')); 
+						//console.log("final del drag1");
+						console.log("final del drag2", event.drag); 
 						deleltelinesinfo();
 					},
 					'*:hit': function(event){
