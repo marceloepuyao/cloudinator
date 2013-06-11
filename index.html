@@ -13,6 +13,7 @@
 		<img src="http://nearshoreamericas.com/wp-content/uploads/2010/07/sonda1.jpg" height=200px border=1px>
 	</center>
 	<br>
+	<div id="notices" style="cursor: pointer"></div>
 	<div class="col_3 column">
 		<ul class="menu vertical">
 		<li id="new"><a href="#"><i class="icon-file"></i> Nuevo Grafo</a></li>
@@ -31,27 +32,89 @@
 		</li>
 		</ul>
 	</div>
+	<div id="newTreeName" class="col_4 column">
+		<label for="textName">Name</label>
+		<input id="textName" type="text" />
+		<button id="buttonName">Create</button>
+	</div>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script src="kickstart/js/kickstart.js"></script> <!-- KICKSTART -->
 	<script>
-		var ajaxTrees = $.getJSON( "ajaxTrees.php", function(data) {
-			
-		})
-		.done(function(data) {
-			$.each( data, function( i, item ) {
-				if(item.deleted == 0){
-					$('#copy').append('<li><a href="cloudinator.html&id='+item.id+'">'+item.name+'</a></li>');
-					$('#edit').append('<li><a href="cloudinator.html&id='+item.id+'">'+item.name+'</a></li>');
-				}
-	    	});
-		})
-		.fail(function(data) {
+	$(document).ready(function() {
+		var ajax1 = $.ajax({
+			url: 'ajaxTrees.php',
+			dataType: 'json',
+			timeout: 2500,
+			success: function(data){
+				$.each( data, function( i, item ) {
+					if(item.deleted == 0){
+						$('#copy').append('<li data-id="'+item.id+'"><a href="#">'+item.name+'</a></li>');
+						$('#edit').append('<li><a href="cloudinator.html?id='+item.id+'">'+item.name+'</a></li>');
+					}
+				});
+			}
+		}).fail(function(data) {
+			$('#notices').append('<div class="notice error"><i class="icon-remove-sign icon-large"></i> Error al acceder a la lista de Grafos<a href="#close" class="icon-remove"></a></div>').hide().slideDown();
 			$('#copy').append('<li><a href="">ERROR</a></li>');
 			$('#edit').append('<li><a href="">ERROR</a></li>');
-		})
-		.always(function(data) {
-			//console.log( "complete", data ); 
 		});
+
+		$("#copy").on("click", "li", function(event){
+  			alert($(this).text()+' '+$(this).data('id'));
+  			//hacer llamada por ajax a la db para hacer una copia del arbol existente y que devuelva el nuevo id (POST) y posteriormente redireccionar a cloudinator.html?id=[algo]
+  			console.log(event);
+		});
+
+		$('#new').on('click', function(event){
+			alert("nuevo");
+			//abrir cuadro de dialogo para elegir nombre (?) o preguntar por el nombre despues de que se crea? (prefieron la primera)
+			//hacer llamada por ajax para generar el nuevo arbol en la DB y rescatar la id, para despues ir a cloudinator.html
+		});
+
+		$('#buttonName').on('click', function(event){
+			//enviar ajax creando el nombre, en caso de que no se pueda avisar (usar las cosas bonitas de kickstart)
+			var ajax2 = $.ajax({
+				url: 'ajaxTrees.php',
+				dataType: 'json',
+				timeout: 2500,
+				success: function(data){
+					var checker = 0;
+					$.each( data, function( i, item ) {
+						if(item.name == $('#textName').val()){
+							checker = 1;
+						}
+					});
+					if(checker == 0){
+						var ajax3 = $.ajax({
+							url: 'ajaxTrees.php',
+							dataType: 'json',
+							type: 'POST',
+							data: {name: $('#textName').val()},
+							timeout: 2500,
+							success: function(data){
+								console.log(data);
+								$('#notices').append('<div class="notice success"><i class="icon-ok icon-large"></i> Nuevo Grafo creado exitosamente<a href="#close" class="icon-remove"></a></div>').hide().slideDown();
+							}
+						}).fail(function(data) {
+							$('#notices').append('<div class="notice error"><i class="icon-remove-sign icon-large"></i> Error al Crear el Nuevo Grafo<a href="#close" class="icon-remove"></a></div>').hide().slideDown();
+						});
+					}else{
+						$('#notices').append('<div class="notice warning"><i class="icon-warning-sign icon-large"></i> Nombre ocupado<a href="#close" class="icon-remove"></a></div>').hide().slideDown()
+					}
+				}
+			}).fail(function(data) {
+				$('#notices').append('<div class="notice error"><i class="icon-remove-sign icon-large"></i> Error al acceder a la lista de Grafos<a href="#close" class="icon-remove"></a></div>').hide().slideDown();
+				$('#copy').append('<li><a href="">ERROR</a></li>');
+				$('#edit').append('<li><a href="">ERROR</a></li>');
+			});
+		});
+
+		$('#notices').on('click', 'div', function(event){
+			$(this).slideUp(function(){
+				$(this).remove();
+			});
+		});
+	});
 	</script>
 </body>
 </html>
