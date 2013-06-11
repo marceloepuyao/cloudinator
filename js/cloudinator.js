@@ -37,13 +37,14 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 			}
 		});
 	}
-	function ajaxPostNodo(action, name, type, posx, posy){
+	function ajaxPostNodo(action, name, type, posx, posy, tree){
 		A.io.request('ajaxpost.php', {
 			autoLoad: true,
 			method: 'POST',
 			data: {
 				nodo: action,
 				name: name,
+				tree: tree,
 				type: type,
 				posx: posx - 261,
 				posy: posy-53
@@ -57,14 +58,14 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 		});
 	}
 
-	function ajaxPostLink(action, name, source, target){
-		//aca aun falta el "modify"
+	function ajaxPostLink(action, name, source, target, tree){
 		A.io.request('ajaxpost.php', {
 			autoLoad: true,
 			method: 'POST',
 			data: {
 				link: action,
 				name: name,
+				tree: tree,
 				source: source,
 				target: target
 			},
@@ -113,22 +114,24 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 				on: {
 					 '*:drag': function(e, id) {
 						 
-						 var drag = e.target;
-						 var idnode = drag.get('node').getAttribute("id");
-						 console.log('drag', idnode );
+						var drag = e.target;
+						var idnode = drag.get('node').getAttribute("id");
+						console.log('drag', idnode );
 						 
-						 movingnodename = A.one('#'+idnode).get('children').slice(-2).get('text')[0];
+						movingnodename = A.one('#'+idnode).get('children').slice(-2).get('text')[0];
 						 
-						 //funciones interesantes
-						 //db1.deleteSelectedNode();
-						 //db1.deleteSelectedConnectors ();
+						//funciones interesantes
+						//db1.deleteSelectedNode();
+						//db1.deleteSelectedConnectors ();
 
-						 //aca se guardan los cambios de posici�n en la base de datos.
+						//aca se guardan los cambios de posici�n en la base de datos.
 
 						//estos son ejemplos, siente libre de sacarlos marcelo
-						//ajaxPostNodo('insert', 'nombre del nodo', 'tipo del nodo', 10, 20);
 						//insert, update, delete
-						//ajaxPostLink('insert', '', 1, 2);
+						//ajaxPostNodo('insert', 'nombre del nodo', 'tipo del nodo', 10, 20, treeID);
+
+						//insert, update, delete
+						//ajaxPostLink('insert', '', 1, 2, treeID);
 
 						deleltelinesinfo();
 					},
@@ -136,7 +139,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 						
 						
 						
-						ajaxPostNodo('update', movingnodename, 'condition', event.pageX, event.pageY); //event.pageX no es la posicion exacta, porque concidera todo
+						ajaxPostNodo('update', movingnodename, 'condition', event.pageX, event.pageY, 1); //event.pageX no es la posicion exacta, porque concidera todo
 						//db1.selectedNode();
 						//event.preventDefault();
 						/*
