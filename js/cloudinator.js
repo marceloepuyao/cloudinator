@@ -57,8 +57,8 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 				name: name,
 				tree: tree,
 				type: type,
-				posx: posx - 261,
-				posy: posy - 53
+				posx: posx,
+				posy: posy
 			},
 			on: {
 				success: function(data){
@@ -123,45 +123,41 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 				boundingBox: '#diagrambuilderBB',
 				srcNode: '#diagrambuilderCB',
 				on: {
-					 '*:drag': function(e, id) {
+					 '*:drag': function(event) {
 						 
-						var drag = e.target;
+						var drag = event.target;
 						var idnode = drag.get('node').getAttribute("id");
 						console.log('drag', idnode );
+						
+						console.log("final del drag2", drag.get('node').getAttribute("tagName")); 
+						
+						if(drag.get('node').getAttribute("title") == "Pregunta"){
+							movingnodename= drag.get('node').getAttribute("title") ;
+						}else if(drag.get('node').getAttribute("title")== "Respuesta"){
+							movingnodename= drag.get('node').getAttribute("title") ;
+						}else{
+							movingnodename = A.one('#'+idnode).get('children').slice(-2).get('text')[0];
+						}
 						 
-						movingnodename = A.one('#'+idnode).get('children').slice(-2).get('text')[0];
-						 
-						//funciones interesantes
-						//db1.deleteSelectedNode();
-						//db1.deleteSelectedConnectors ();
-
-						//aca se guardan los cambios de posici�n en la base de datos.
-
-						//estos son ejemplos, siente libre de sacarlos marcelo
-						//insert, update, delete
-						//ajaxPostNodo('insert', 'nombre del nodo', 'tipo del nodo', 10, 20, treeID);
-
-						//insert, update, delete
-						//ajaxPostLink('insert', '', 1, 2, treeID);
-
+						
+							
 						deleltelinesinfo();
 					},
-					'*:end': function(event, id){
+					'*:end': function(event){
 						
+						var posix = event.pageX - 261;
+						var posiy = event.pageY - 53;
 						
+						if(posix < 0 || posiy < 0){
+							//error message or simply do nothing
+						}else if(movingnodename =="Respuesta"){
+							ajaxPostNodo('insert', "nueva respuesta", 'end', posix, posiy, getQueryStringByName('id'));
+						}else if(movingnodename == "Pregunta"){
+							ajaxPostNodo('insert', "nueva pregunta", 'condition', posix, posiy, getQueryStringByName('id'));
+						}else{
+							ajaxPostNodo('update', movingnodename, 'condition', posix, posiy, getQueryStringByName('id')); //event.pageX no es la posicion exacta, porque concidera todo
+						}
 						
-						ajaxPostNodo('update', movingnodename, 'condition', event.pageX, event.pageY, getQueryStringByName('id')); //event.pageX no es la posicion exacta, porque concidera todo
-						//db1.selectedNode();
-						//event.preventDefault();
-						/*
-						var drag = event.drag;
-			            var data = drag.get('data');
-			            var out = ['id: ' + drag.get('node').get('id')];
-						*/
-						
-						//var diagramNode = A.Widget.getByNode(event.target.get("dragNode"));
-						//console.log("final del drag1");
-						console.log("final del drag2", event.drag); 
 						deleltelinesinfo();
 					},
 					'*:hit': function(event){
