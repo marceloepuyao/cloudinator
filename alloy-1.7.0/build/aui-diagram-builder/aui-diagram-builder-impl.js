@@ -487,7 +487,7 @@ var DiagramBuilder = A.Component.create({
 
 			if (diagramNode) {
 				var tabView = instance.tabView;
-
+				
 				instance.closeEditProperties();
 				tabView.enableTab(A.DiagramBuilder.SETTINGS_TAB);
 				tabView.selectTab(A.DiagramBuilder.SETTINGS_TAB);
@@ -1611,10 +1611,16 @@ var DiagramNode = A.Component.create({
 
 		_onNameChange: function(event) {
 			var instance = this;
-
+			
 			instance.eachConnector(function(connector, index, sourceNode) {
 				var transition = connector.get(TRANSITION);
-
+				//Código implantado por clodinator team
+				console.log(transition.target, "cambio a",  event.newVal);
+				//TODO: función de update Nodo tiene que soportar un nuevo nombre
+				//ajaxPostNodo('update', nameid, 'end', 0, 0, getQueryStringByName('id'));
+				
+				//Fin código implantado por clodinator team
+				
 				transition[(instance === sourceNode) ? SOURCE : TARGET] = event.newVal;
 				connector.set(TRANSITION, transition);
 			});
