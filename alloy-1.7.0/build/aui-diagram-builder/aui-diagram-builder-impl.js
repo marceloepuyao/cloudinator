@@ -369,6 +369,8 @@ var DiagramBuilder = A.Component.create({
 			if (diagramNode1 && diagramNode2) {
 				diagramNode1.connect(diagramNode2.get(NAME), optConnector);
 			}
+			
+			
 
 			return instance;
 		},
@@ -401,13 +403,25 @@ var DiagramBuilder = A.Component.create({
 			var instance = this;
 			var strings = instance.getStrings();
 			var selectedConnectors = instance.getSelectedConnectors();
+			
+			
 
 			if (selectedConnectors.length && confirm(strings[DELETE_CONNECTORS_MESSAGE])) {
 				AArray.each(selectedConnectors, function(connector) {
 					var transition = connector.get(TRANSITION);
+					
+					//Código implantado por cloudinator team
+					console.log('aca se elimina un conector', transition.source, transition.target);
+					//TODO:eliminar conector con función getNodeIdByName
+					//Fin Código implantado por cloudinator team
+					
 
 					A.DiagramNode.getNodeByName(transition.source).disconnect(transition);
+					
+				
 				});
+				
+				
 
 				instance.stopEditing();
 			}
@@ -1235,7 +1249,15 @@ var DiagramNode = A.Component.create({
 		connectNode: function(diagramNode) {
 			var instance = this;
 			var dd = instance.boundaryDragDelegate.dd;
-
+			
+			//Código implantado cloudinator team
+			var idstart = instance.get(BOUNDING_BOX).getAttribute("id");
+			var idend = diagramNode.get(BOUNDING_BOX).getAttribute("id");
+			//TODO: falta el getNodeIdByName y luego guardar el nuevo link en la base de datos
+			console.log("se conecta el izq",  idstart);
+			console.log("se conecta el der",idend);
+			//Fin código implantado cloudinator team
+			
 			instance.connect(
 				instance.prepareTransition({
 					sourceXY: getLeftTop(dd.startXY, instance.get(BOUNDING_BOX)),
