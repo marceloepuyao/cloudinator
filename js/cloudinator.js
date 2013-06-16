@@ -69,6 +69,62 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 		});
 	}
 
+	function ajaxChangeNodoNameTEST(oldname, newname, tree){
+		A.io.request('ajaxpost.php', {
+			autoLoad: true,
+			method: 'POST',
+			data: {
+				nodo: 'newnameTEST',
+				newname: newname,
+				oldname: oldname,
+				tree: tree
+			},
+			on: {
+				success: function(data){
+					console.log('AJAXresponseData',this.get('responseData'));
+					//console.log('AJAX',data);
+				}
+			}
+		});
+	}
+
+	function ajaxChangeNodoName(id, newname, tree){
+		A.io.request('ajaxpost.php', {
+			autoLoad: true,
+			method: 'POST',
+			data: {
+				nodo: 'newname',
+				name: newname,
+				id: id,
+				tree: tree
+			},
+			on: {
+				success: function(data){
+					console.log('AJAXresponseData',this.get('responseData'));
+					//console.log('AJAX',data);
+				}
+			}
+		});
+	}
+
+	function ajaxNodoGetIdFromName(name, tree){
+		A.io.request('ajaxpost.php', {
+			autoLoad: true,
+			method: 'POST',
+			data: {
+				getIdFromName: name,
+				tree: tree
+			},
+			on: {
+				success: function(data){
+					console.log('AJAXresponseData', this.get('responseData'));
+					//console.log('AJAX',data);
+					return this.get('responseData');
+				}
+			}
+		});
+	}
+
 	function ajaxPostLink(action, name, source, target, tree){
 		A.io.request('ajaxpost.php', {
 			autoLoad: true,
