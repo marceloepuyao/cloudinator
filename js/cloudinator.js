@@ -183,9 +183,9 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 						 
 						var drag = event.target;
 						var idnode = drag.get('node').getAttribute("id");
-						console.log('drag', idnode );
+						//console.log('drag', idnode );
 						
-						console.log("final del drag2", drag.get('node').getAttribute("tagName")); 
+						//console.log("final del drag2", drag.get('node').getAttribute("tagName")); 
 						
 						if(drag.get('node').getAttribute("title") == "Pregunta"){
 							movingnodename= drag.get('node').getAttribute("title") ;
@@ -222,7 +222,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 					},
 					save: function(event) {
 						//aca se guardan los cambios
-						console.log('save', event);
+						console.log('save', event.target);
 					}
 				},
 

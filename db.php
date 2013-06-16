@@ -57,9 +57,13 @@ function DBquery2($query){
 
 function DBquery3($query){
 	$link = mysql_connect('localhost', 'root', '');
-
-	if(!mysql_query($query)){
-		throw new Exception("Error Processing Query", 1);
+	mysql_select_db('cloudinator');
+	
+	try{
+		$result = mysql_query($query);
+		return $result;
+	}catch(Exception $e){
+		throw $e;
 	}
 
 	mysql_close($link);

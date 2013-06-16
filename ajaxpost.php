@@ -6,20 +6,19 @@ $json = new Services_JSON();
 if( array_key_exists('getIdFromName', $_POST)){
 	$name = $_POST['getIdFromName'];
 	try {
-		$query = "SELECT id FROM nodos WHERE name = $name AND tree = $_POST[tree];";
+		$query = "SELECT id FROM nodos WHERE name = '".$name."' AND tree = $_POST[tree];";
 		
 		$data = DBquery3($query);
-		/*
-		$data = array(
-			'result' => 'true'
-		);
-		*/
-		print($json->encode($data));
+		
+		print($json->encode(mysql_result($data, 0)));
 	} catch (Exception $e) {
+		
+		//throw $e;
 		$data = array(
 			'result' => 'false'
 		);
 		print($json->encode($data));
+		
 	}
 }
 
@@ -77,7 +76,7 @@ if ( array_key_exists('nodo', $_POST) ) {
 		}
 	}else if($nodo == 'newname'){
 		try {
-			$query = "UPDATE  `cloudinator`.`nodos` SET  `name` =  '$_POST[name]' WHERE  `nodos`.`id` ='$_POST[id]' AND `nodos`.`tree` ='$_POST[tree]';";
+			$query = "UPDATE  `cloudinator`.`nodos` SET  `name` =  '$_POST[name]' WHERE  `nodos`.`id` =$_POST[id] AND `nodos`.`tree` ='$_POST[tree]';";
 
 			DBquery4($query);
 
@@ -114,8 +113,16 @@ if ( array_key_exists('link', $_POST) ) {
 	$link = $_POST['link'];
 	if($link == 'insert'){
 		try {
+			$prequerysource = "SELECT id FROM nodos WHERE name = '".$_POST['source']."';";
+			$data1 = DBquery3($prequerysource);
+			$sourceid = mysql_result($data1, 0);
+			
+			$prequerytarget = "SELECT id FROM nodos WHERE name = '".$_POST['target']."';";
+			$data2 = DBquery3($prequerytarget);
+			$targetid = mysql_result($data2, 0);
+			
 			$query = "INSERT INTO `cloudinator`.`links` (`id`, `tree`, `name`, `source`, `target`) VALUES 
-			(NULL, '".$_POST['tree']."', '".$_POST['name']."', '".$_POST['source']."', '".$_POST['target']."');";
+			(NULL, '".$_POST['tree']."', '".$_POST['name']."', '".$sourceid."', '".$targetid."');";
 			
 			DBquery4($query);
 			
@@ -147,7 +154,16 @@ if ( array_key_exists('link', $_POST) ) {
 		}
 	}elseif ($link == 'delete') {
 		try {
-			$query = "DELETE FROM `cloudinator`.`links` WHERE `links`.`name`='".$_POST['name']."' AND `nodos`.`tree` ='".$_POST['tree']."';";
+			
+			$prequerysource = "SELECT id FROM nodos WHERE name = '".$_POST['source']."';";
+			$data1 = DBquery3($prequerysource);
+			$sourceid = mysql_result($data1, 0);
+			
+			$prequerytarget = "SELECT id FROM nodos WHERE name = '".$_POST['target']."';";
+			$data2 = DBquery3($prequerytarget);
+			$targetid = mysql_result($data2, 0);
+			
+			$query = "DELETE FROM `cloudinator`.`links` WHERE `links`.`source`='".$sourceid."' AND `links`.`target` ='".$targetid."' AND `links`.`tree` ='".$_POST['tree']."';";
 
 			DBquery4($query);
 

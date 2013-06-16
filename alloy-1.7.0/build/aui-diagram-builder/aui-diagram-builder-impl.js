@@ -1,5 +1,23 @@
 AUI.add('aui-diagram-builder-impl', function(A) {
 //codigo implantado cloudinator team
+function ajaxPostLink(action, name, source, target, tree){
+	A.io.request('ajaxpost.php', {
+		autoLoad: true,
+		method: 'POST',
+		data: {
+			link: action,
+			name: name,
+			tree: tree,
+			source: source,
+			target: target
+		},
+		on: {
+			success: function(data){
+			}
+		}
+	});
+}
+	
 function ajaxPostNodo(action, name, type, posx, posy, tree){
 	A.io.request('ajaxpost.php', {
 		autoLoad: true,
@@ -16,6 +34,45 @@ function ajaxPostNodo(action, name, type, posx, posy, tree){
 			success: function(data){
 				console.log('AJAXresponseData',this.get('responseData'));
 				//console.log('AJAX',data);
+			}
+		}
+	});
+}
+function ajaxChangeNodoName(id, newname, tree){
+	A.io.request('ajaxpost.php', {
+		autoLoad: true,
+		method: 'POST',
+		data: {
+			nodo: 'newname',
+			name: newname,
+			id: id,
+			tree: tree
+		},
+		on: {
+			success: function(data){
+				console.log('AJAXresponseDataChangeName',this.get('responseData'));
+				//console.log('AJAX',data);
+			}
+		}
+	});
+}
+function ajaxNodoGetIdFromName(name, tree, newname){
+	A.io.request('ajaxpost.php', {
+		autoLoad: true,
+		method: 'POST',
+		data: {
+			getIdFromName: name,
+			tree: tree
+		},
+		on: {
+			success: function(data){
+				console.log('AJAXresponseDataGetIdFromName', name, this.get('responseData'));
+				if(newname != null){
+					ajaxChangeNodoName(this.get('responseData'), newname, tree);
+				}else{
+					return this.get('responseData');
+				}
+
 			}
 		}
 	});
@@ -412,7 +469,7 @@ var DiagramBuilder = A.Component.create({
 					
 					//Código implantado por cloudinator team
 					console.log('aca se elimina un conector', transition.source, transition.target);
-					//TODO:eliminar conector con función getNodeIdByName
+					ajaxPostLink("delete", "", transition.source, transition.target, getQueryStringByName('id'));
 					//Fin Código implantado por cloudinator team
 					
 
@@ -1253,9 +1310,11 @@ var DiagramNode = A.Component.create({
 			//Código implantado cloudinator team
 			var idstart = instance.get(BOUNDING_BOX).getAttribute("id");
 			var idend = diagramNode.get(BOUNDING_BOX).getAttribute("id");
-			//TODO: falta el getNodeIdByName y luego guardar el nuevo link en la base de datos
-			console.log("se conecta el izq",  idstart);
-			console.log("se conecta el der",idend);
+			namestart = A.one('#'+idstart).get('children').slice(-2).get('text')[0];
+			nameend = A.one('#'+idend).get('children').slice(-2).get('text')[0];
+			console.log("nombrestart",namestart); 
+			console.log("nombreend",nameend); 
+			ajaxPostLink("insert", "", namestart, nameend, getQueryStringByName('id'))
 			//Fin código implantado cloudinator team
 			
 			instance.connect(
@@ -1615,11 +1674,13 @@ var DiagramNode = A.Component.create({
 			instance.eachConnector(function(connector, index, sourceNode) {
 				var transition = connector.get(TRANSITION);
 				//Código implantado por clodinator team
-				console.log(transition.target, "cambio a",  event.newVal);
-				//TODO: función de update Nodo tiene que soportar un nuevo nombre
-				//ajaxPostNodo('update', nameid, 'end', 0, 0, getQueryStringByName('id'));
+				console.log(transition[(instance === sourceNode) ? SOURCE : TARGET] , "cambio a",  event.newVal);
 				
-				//Fin código implantado por clodinator team
+
+				ajaxNodoGetIdFromName(transition[(instance === sourceNode) ? SOURCE : TARGET], getQueryStringByName('id'), event.newVal);
+
+				//TODO: solo cambia cuando estan con links :S
+	
 				
 				transition[(instance === sourceNode) ? SOURCE : TARGET] = event.newVal;
 				connector.set(TRANSITION, transition);
