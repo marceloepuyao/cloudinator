@@ -68,7 +68,24 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 			}
 		});
 	}
-
+	function ajaxUpdateMetadata(nombre, tree, metaname, metadata, metatype){
+		A.io.request('ajaxpost.php', {
+			autoLoad: true,
+			method: 'POST',
+			data: {
+				nodo: 'updateMeta',
+				newname: newname,
+				oldname: oldname,
+				tree: tree
+			},
+			on: {
+				success: function(data){
+					console.log('AJAXresponseData',this.get('responseData'));
+					//console.log('AJAX',data);
+				}
+			}
+		});
+	}
 	function ajaxChangeNodoNameTEST(oldname, newname, tree){
 		A.io.request('ajaxpost.php', {
 			autoLoad: true,

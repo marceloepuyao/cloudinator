@@ -5,17 +5,28 @@
 		body{
 			background-color: #d0e4fe;
 		}
-		#loading{
+		.loading{
 			position: absolute;
 			display: none;
 			top: 50%;
 		    left: 50%;
 		    z-index: 99998;
 		}
+		.blackout{
+			background-color: #DDDDDD;
+			position: absolute;
+			top: 0;
+			left: 0;
+			height: 100%;
+			width: 100%;
+			opacity: 0.5;
+			z-index: 99997
+		}
 	</style>
 	<title>Cloudinator - Inicio</title>
 </head>
 <body>
+	<div class="blackout loading"></div>
 	<center>
 		<img src="http://nearshoreamericas.com/wp-content/uploads/2010/07/sonda1.jpg" height=200px border=1px>
 	</center>
@@ -51,7 +62,7 @@
 	</div>
 	<br>
 	<div id="notices" style="cursor: pointer"></div>
-	<img id="loading" src="content/ajax-loader.gif">
+	<img class="loading" src="content/ajax-loader.gif">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script src="kickstart/js/kickstart.js"></script> <!-- KICKSTART -->
 	<script>
@@ -61,7 +72,7 @@
 			url: 'ajaxTrees.php',
 			dataType: 'json',
 			timeout: 2500,
-			beforeSend: function(){$('#loading').show();},
+			beforeSend: function(){$('.loading').fadeIn();},
 			success: function(data){
 				$('#copy').empty();
 				$('#edit').empty();
@@ -76,7 +87,7 @@
 			$('#notices').append('<div class="notice error"><i class="icon-remove-sign icon-large"></i> Error al acceder a la lista de Grafos<a href="#close" class="icon-remove"></a></div>').hide().slideDown();
 			$('#copy').append('<li><a href="">ERROR</a></li>');
 			$('#edit').append('<li><a href="">ERROR</a></li>');
-		}).always(function(){$('#loading').hide();});
+		}).always(function(){$('.loading').fadeOut();});
 	}
 	function enviarForm(){
 		$('#newTreeName').slideUp();
@@ -84,7 +95,7 @@
 			url: 'ajaxTrees.php',
 			dataType: 'json',
 			timeout: 2500,
-			beforeSend: function(){$('#loading').show();},
+			beforeSend: function(){$('.loading').fadeIn();},
 			success: function(data){
 				var checker = 0;
 				$.each( data, function( i, item ) {
@@ -99,7 +110,7 @@
 						type: 'POST',
 						data: {name: $('#textName').val()},
 						timeout: 2500,
-						beforeSend: function(){$('#loading').show();},
+						beforeSend: function(){$('.loading').fadeIn();},
 						success: function(data){
 							console.log(data);
 							cargarGrafos();
@@ -109,7 +120,7 @@
 					}).fail(function(data) {
 						$('#notices').append('<div class="notice error"><i class="icon-remove-sign icon-large"></i> Error al Crear el Nuevo Grafo<a href="#close" class="icon-remove"></a></div>');
 						$('.notice').hide().slideDown();
-					}).always(function(){$('#loading').hide();});
+					}).always(function(){$('.loading').fadeOut();});
 				}else{
 					$('#notices').append('<div class="notice warning"><i class="icon-warning-sign icon-large"></i> Nombre ocupado<a href="#close" class="icon-remove"></a></div>');
 					$('.notice').hide().slideDown();
