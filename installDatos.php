@@ -6,17 +6,17 @@ echo '<hr>';
 //borrar tablas si existen
 echo '<h4>Creando datos en "nodes"</h3>';
 try {
-	DBquery3("INSERT INTO `cloudinator`.`nodos` (`id`, `tree`, `name`, `type`, `posx`, `posy`) VALUES 
-		(NULL, 1, '¿Qué servicio desea probar sobre Cloud?', 'condition', 10, 200),
-		(NULL, 1, '¿Cómo se desea comunicar entre su POC y su Cloud?', 'condition', 500, 200),
-		(NULL, 1, '¿Qué tipo de conexión desea?', 'condition', 1000, 200),
-		(NULL, 1, '¿Cuentas IPs públicas?', 'condition', 1500, 200),
-		(NULL, 1, '¿Qué ancho de banda?', 'condition', 2000, 200),
-		(NULL, 1, 'Web', 'end', 250, 60),
-		(NULL, 1, 'App', 'end', 250, 130),
-		(NULL, 1, 'BBDD', 'end', 250, 200),
-		(NULL, 1, 'TS', 'end', 250, 270),
-		(NULL, 1, 'FServer', 'end', 250, 350);
+	DBquery3("INSERT INTO `cloudinator`.`nodos` (`id`, `tree`, `name`, `type`, `posx`, `posy`, `metaname`, `metadata`, `metatype`) VALUES 
+		(NULL, 1, '¿Qué servicio desea probar sobre Cloud?', 'condition', 10, 200, null, null, null),
+		(NULL, 1, '¿Cómo se desea comunicar entre su POC y su Cloud?', 'condition', 500, 200, null, null, null),
+		(NULL, 1, '¿Qué tipo de conexión desea?', 'condition', 1000, 200, null, null, null),
+		(NULL, 1, '¿Cuentas IPs públicas?', 'condition', 1500, 200, null, null, null),
+		(NULL, 1, '¿Qué ancho de banda?', 'condition', 2000, 200, null, null, null),
+		(NULL, 1, 'Web', 'end', 250, 60, null, null, null),
+		(NULL, 1, 'App', 'end', 250, 130, null, null, null),
+		(NULL, 1, 'BBDD', 'end', 250, 200, null, null, null),
+		(NULL, 1, 'TS', 'end', 250, 270, null, null, null),
+		(NULL, 1, 'FServer', 'end', 250, 350, null, null, null);
 		");
 	echo 'Se han creado datos en "nodos" exitosamente';
 } catch (Exception $e) {

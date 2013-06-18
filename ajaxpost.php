@@ -26,8 +26,8 @@ if ( array_key_exists('nodo', $_POST) ) {
 	$nodo = $_POST['nodo'];
 	if($nodo == 'insert'){
 		try {
-			$query = "INSERT INTO `cloudinator`.`nodos` (`id`, `tree`, `name`, `type`, `posx`, `posy`) VALUES 
-			(NULL, ".$_POST['tree'].", '".$_POST['name']."', '".$_POST['type']."', '".$_POST['posx']."', '".$_POST['posy']."');
+			$query = "INSERT INTO `cloudinator`.`nodos` (`id`, `tree`, `name`, `type`, `posx`, `posy`, `metaname`, `metadata`, `metatype`) VALUES 
+			(NULL, $_POST[tree], '$_POST[name]', '$_POST[type]', '$_POST[posx]', '$_POST[posy]', $_POST[metaname], $_POST[metadata], $_POST[metatype]);
 			";
 			
 			DBquery4($query);
@@ -45,6 +45,22 @@ if ( array_key_exists('nodo', $_POST) ) {
 	}else if($nodo == 'update'){
 		try {
 			$query = "UPDATE  `cloudinator`.`nodos` SET  `posx` =  ".$_POST['posx'].", `posy` =  ".$_POST['posy']." WHERE  `nodos`.`name` ='".$_POST['name']."' AND `nodos`.`tree` ='".$_POST['tree']."';";
+
+			DBquery4($query);
+
+			$data = array(
+				'result' => 'true'
+			);
+			print($json->encode($data));
+		} catch (Exception $e) {
+			$data = array(
+				'result' => 'false'
+			);
+			print($json->encode($data));
+		}
+	}else if($nodo == 'updateMeta'){
+		try {
+			$query = "UPDATE  `cloudinator`.`nodos` SET  `metaname` =  '$_POST[metaname]', `metadata` =  '$_POST[metadata]', `metatype` = '$_POST[metatype]' WHERE  `nodos`.`name` ='".$_POST['name']."' AND `nodos`.`tree` ='".$_POST['tree']."';";
 
 			DBquery4($query);
 

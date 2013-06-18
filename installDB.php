@@ -27,12 +27,15 @@ echo '<hr>';
 echo '<h3>Creando Tabla "nodos"</h3>';
 try {
 	DBquery4("CREATE TABLE nodos (
-		id int(55) not null auto_increment primary key,
-		tree int(55) NOT NULL,
-		name varchar(55) NOT NULL,
-		type varchar(20) NOT NULL,
+		id int(100) not null auto_increment primary key,
+		tree int(50) NOT NULL,
+		name varchar(50) NOT NULL,
+		type varchar(25) NOT NULL,
 		posx float(50) NOT NULL,
 		posy float(50) NOT NULL,
+		metaname varchar(50),
+		metadata varchar(400),
+		metatype varchar(25),
 		modified timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 	");
@@ -46,10 +49,10 @@ echo '<hr>';
 echo '<h3>Creando Tabla "links"</h3>';
 try {
 	DBquery4("CREATE TABLE links (
-		id int(55) not null auto_increment primary key,
-		tree int(55) NOT NULL,
-		name varchar(55),
-		source varchar(20),
+		id int(100) not null auto_increment primary key,
+		tree int(50) NOT NULL,
+		name varchar(50),
+		source varchar(50),
 		target varchar(50),
 		modified timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
@@ -64,8 +67,8 @@ echo '<hr>';
 echo '<h3>Creando Tabla "trees"</h3>';
 try {
 	DBquery4("CREATE TABLE IF NOT EXISTS `trees` (
-		`id` int(55) NOT NULL AUTO_INCREMENT,
-		`name` varchar(55) NOT NULL,
+		`id` int(100) NOT NULL AUTO_INCREMENT,
+		`name` varchar(50) NOT NULL,
 		`deleted` tinyint(1) NOT NULL,
 		`created` datetime NOT NULL,
 		`modified` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
