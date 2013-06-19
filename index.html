@@ -8,9 +8,9 @@
 		.loading{
 			position: absolute;
 			display: none;
-			top: 50%;
-		    left: 50%;
-		    z-index: 99998;
+			top: 45%;
+		    left: 45%;
+		    z-index: 90008;
 		}
 		.blackout{
 			background-color: #DDDDDD;
@@ -20,12 +20,44 @@
 			height: 100%;
 			width: 100%;
 			opacity: 0.5;
-			z-index: 99997
+			z-index: 90001;
+		}
+		#newTreeName{
+			display: none;
+			position: absolute;
+			top: 40%;
+			left: 35%;
+			height: 100px;
+			width: 300px;
+			text-align: center;
+			z-index: 90002;
+			background-color: #FFFFFF;
+			border: 5px groove #9090dd;
+		}
+		#notices{
+			position: absolute;
+			top: 0;
+			left: 40%;
+			width: 20%;
+			text-align: center;
+			z-index: 90007;
+			cursor: pointer;
+		}
+		.formElement{
+			margin: 5px;
 		}
 	</style>
 	<title>Cloudinator - Inicio</title>
 </head>
 <body>
+	<div id="notices"></div>
+	<div id="newTreeName" class="col_3 column">
+			<label for="textName" class="formElement">Nombre: </label>
+			<input id="textName" class="formElement" type="text" />
+			<button id="buttonName" class="formElement">Crear</button>
+			<button id="buttonCancel" class="formElement">Cancelar</button>
+		</div>
+		<img id="loadingGif" class="loading" src="content/ajax-loader.gif">
 	<div class="blackout loading"></div>
 	<center>
 		<img src="http://nearshoreamericas.com/wp-content/uploads/2010/07/sonda1.jpg" height=200px border=1px>
@@ -55,14 +87,7 @@
 		</li>
 		</ul>
 	</div>
-	<div id="newTreeName" class="col_4 column" style="display: none">
-		<label for="textName">Nombre: </label>
-		<input id="textName" type="text" />
-		<button id="buttonName">Create</button>
-	</div>
-	<br>
-	<div id="notices" style="cursor: pointer"></div>
-	<img class="loading" src="content/ajax-loader.gif">
+
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script src="kickstart/js/kickstart.js"></script> <!-- KICKSTART -->
 	<script>
@@ -84,7 +109,8 @@
 				});
 			}
 		}).fail(function(data) {
-			$('#notices').append('<div class="notice error"><i class="icon-remove-sign icon-large"></i> Error al acceder a la lista de Grafos<a href="#close" class="icon-remove"></a></div>').hide().slideDown();
+			$('#notices').append('<div class="notice error new"><i class="icon-remove-sign icon-large"></i> Error al acceder a la lista de Grafos<a href="#close" class="icon-remove"></a></div>').hide()
+			$('.new').slideDown().removeClass('new');
 			$('#copy').append('<li><a href="">ERROR</a></li>');
 			$('#edit').append('<li><a href="">ERROR</a></li>');
 		}).always(function(){$('.loading').fadeOut();});
@@ -114,22 +140,24 @@
 						success: function(data){
 							console.log(data);
 							cargarGrafos();
-							$('#notices').append('<div class="notice success"><i class="icon-ok icon-large"></i> Nuevo Grafo creado exitosamente<a href="#close" class="icon-remove"></a></div>');
-							$('.notice').hide().slideDown();
+							$('#notices').append('<div class="notice success new"><i class="icon-ok icon-large"></i> Nuevo Grafo creado exitosamente<a href="#close" class="icon-remove"></a></div>');
+							$('.new').hide().slideDown().removeClass('new');
 						}
 					}).fail(function(data) {
-						$('#notices').append('<div class="notice error"><i class="icon-remove-sign icon-large"></i> Error al Crear el Nuevo Grafo<a href="#close" class="icon-remove"></a></div>');
-						$('.notice').hide().slideDown();
+						$('#notices').append('<div class="notice error new"><i class="icon-remove-sign icon-large"></i> Error al Crear el Nuevo Grafo<a href="#close" class="icon-remove"></a></div>');
+						$('.new').hide().slideDown().removeClass('new');
+						console.log(data);
 					}).always(function(){$('.loading').fadeOut();});
 				}else{
-					$('#notices').append('<div class="notice warning"><i class="icon-warning-sign icon-large"></i> Nombre ocupado<a href="#close" class="icon-remove"></a></div>');
-					$('.notice').hide().slideDown();
+					$('#loadingGif').fadeOut();
+					$('#notices').append('<div class="notice warning new"><i class="icon-warning-sign icon-large"></i> Nombre ocupado<a href="#close" class="icon-remove"></a></div>');
+					$('.new').hide().slideDown().removeClass('new');
 					$('#newTreeName').slideDown();
 				}
 			}
 		}).fail(function(data) {
-			$('#notices').append('<div class="notice error"><i class="icon-remove-sign icon-large"></i> Error al acceder a la lista de Grafos<a href="#close" class="icon-remove"></a></div>');
-			$('.notice').hide().slideDown();
+			$('#notices').append('<div class="notice error new"><i class="icon-remove-sign icon-large"></i> Error al acceder a la lista de Grafos<a href="#close" class="icon-remove"></a></div>');
+			$('.new').hide().slideDown().removeClass('new');
 			$('#copy').append('<li><a href="">ERROR</a></li>');
 			$('#edit').append('<li><a href="">ERROR</a></li>');
 		});
@@ -146,17 +174,20 @@
 		});
 
 		$('#new').on('click', function(event){
+			$('.blackout').fadeIn();
 			$('#newTreeName').slideDown();
 			//abrir cuadro de dialogo para elegir nombre (?) o preguntar por el nombre despues de que se crea? (prefieron la primera)
 			//hacer llamada por ajax para generar el nuevo arbol en la DB y rescatar la id, para despues ir a cloudinator.html
 		});
-
+		$('#buttonCancel').on('click', function(){
+			$('#newTreeName').slideUp();
+			$('.blackout').fadeOut();
+		});
 		$("#textName").keypress(function(event) {
 			if(event.which == 13){
 				enviarForm();
 			}
 		});
-
 		$('#buttonName').on('click', function(event){
 			enviarForm();
 		});
