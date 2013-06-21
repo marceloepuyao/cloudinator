@@ -202,9 +202,11 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 						var idnode = drag.get('node').getAttribute("id");
 						//console.log('drag', idnode );
 						
-						//console.log("final del drag2", drag.get('node').getAttribute("tagName")); 
+						
 						
 						if(drag.get('node').getAttribute("title") == "Pregunta"){
+							
+							
 							movingnodename= drag.get('node').getAttribute("title") ;
 						}else if(drag.get('node').getAttribute("title")== "Respuesta"){
 							movingnodename= drag.get('node').getAttribute("title") ;
@@ -234,6 +236,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 						deleltelinesinfo();
 					},
 					'*:hit': function(event){
+						console.log("nueva pregunta: ", event.drag.get('node').getData('availableField')); 
 						console.log("hit drag", event);
 						deleltelinesinfo();
 					},

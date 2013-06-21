@@ -1032,6 +1032,14 @@ var DiagramNode = A.Component.create({
 		name: {
 			valueFn: function() {
 				var instance = this;
+				
+				//código implantado por cloudinator team
+				if(instance.get(TYPE) == 'end'){
+					return 'nueva respuesta';
+				}else if(instance.get(TYPE) == 'condition') {
+					return 'nueva pregunta';
+				}
+				//fin código implantado por cloudinator team
 
 				return instance.get(TYPE) + (++A.Env._uidx);
 			},
@@ -1315,11 +1323,13 @@ var DiagramNode = A.Component.create({
 			//console.log("nombrestart",instance.get(BOUNDING_BOX).getAttribute("class")); 
 			//console.log("nombreend",diagramNode.get(BOUNDING_BOX).getAttribute("class")); 
 			
-			//Fin código implantado cloudinator team
+			
 			
 			if(instance.get(BOUNDING_BOX).getAttribute("class") != diagramNode.get(BOUNDING_BOX).getAttribute("class"))	{
 				
 				ajaxPostLink("insert", "", namestart, nameend, getQueryStringByName('id'))
+				
+				//Fin código implantado cloudinator team
 				instance.connect(
 						instance.prepareTransition({
 							sourceXY: getLeftTop(dd.startXY, instance.get(BOUNDING_BOX)),
