@@ -491,7 +491,7 @@ var DiagramBuilder = A.Component.create({
 
 			if (selectedNode && !selectedNode.get(REQUIRED) && confirm(strings[DELETE_NODES_MESSAGE])) {
 				
-				//codigo implantado cloudinator team
+				//codigo implantado cloudinator team BORRAR NODO SELECCIONADO
 				var idparent = selectedNode.bodyNode.ancestor().getAttribute("id");
 				var nameid = A.one('#'+idparent).next().get('text');
 				ajaxPostNodo('delete', nameid, 'end', 0, 0, getQueryStringByName('id'));
@@ -1312,18 +1312,27 @@ var DiagramNode = A.Component.create({
 			var idend = diagramNode.get(BOUNDING_BOX).getAttribute("id");
 			namestart = A.one('#'+idstart).get('children').slice(-2).get('text')[0];
 			nameend = A.one('#'+idend).get('children').slice(-2).get('text')[0];
-			console.log("nombrestart",namestart); 
-			console.log("nombreend",nameend); 
-			ajaxPostLink("insert", "", namestart, nameend, getQueryStringByName('id'))
+			//console.log("nombrestart",instance.get(BOUNDING_BOX).getAttribute("class")); 
+			//console.log("nombreend",diagramNode.get(BOUNDING_BOX).getAttribute("class")); 
+			
 			//Fin código implantado cloudinator team
 			
-			instance.connect(
-				instance.prepareTransition({
-					sourceXY: getLeftTop(dd.startXY, instance.get(BOUNDING_BOX)),
-					target: diagramNode.get(NAME),
-					targetXY: getLeftTop(dd.mouseXY, diagramNode.get(BOUNDING_BOX))
-				})
-			);
+			if(instance.get(BOUNDING_BOX).getAttribute("class") != diagramNode.get(BOUNDING_BOX).getAttribute("class"))	{
+				
+				ajaxPostLink("insert", "", namestart, nameend, getQueryStringByName('id'))
+				instance.connect(
+						instance.prepareTransition({
+							sourceXY: getLeftTop(dd.startXY, instance.get(BOUNDING_BOX)),
+							target: diagramNode.get(NAME),
+							targetXY: getLeftTop(dd.mouseXY, diagramNode.get(BOUNDING_BOX))
+						})
+					);
+			}else{
+				
+				alert("no se puede conectar dos nodos del mismo tipo");
+			}
+			
+			
 		},
 
 		connectOutTarget: function(event) {
