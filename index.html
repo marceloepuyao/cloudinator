@@ -5,6 +5,9 @@
 		body{
 			background-color: #d0e4fe;
 		}
+		.backWhite{
+			background-color: #FFFFFF;
+		}
 		.loading{
 			position: absolute;
 			display: none;
@@ -50,19 +53,59 @@
 	<title>Cloudinator - Inicio</title>
 </head>
 <body>
+	<!-- ELEMENTOS FLOTANTES (inicio) -->
 	<div id="notices"></div>
+
 	<div id="newTreeName" class="col_3 column">
-			<label for="textName" class="formElement">Nombre: </label>
-			<input id="textName" class="formElement" type="text" />
-			<button id="buttonName" class="formElement">Crear</button>
-			<button id="buttonCancel" class="formElement">Cancelar</button>
-		</div>
-		<img id="loadingGif" class="loading" src="content/ajax-loader.gif">
+		<label for="textName" class="formElement">Nombre: </label>
+		<input id="textName" class="formElement" type="text" />
+		<button id="buttonName" class="formElement">Crear</button>
+		<button id="buttonCancel" class="formElement">Cancelar</button>
+	</div>
+
+	<img id="loadingGif" class="loading" src="content/ajax-loader.gif">
+
 	<div class="blackout loading"></div>
+	<!-- ELEMENTOS FLOTANTES (fin) -->
+
 	<center>
 		<img src="http://nearshoreamericas.com/wp-content/uploads/2010/07/sonda1.jpg" height=200px border=1px>
 	</center>
 	<br>
+	<!-- TABLA (inicio) -->
+	<!-- Table -->
+	<div class="col_4 column">
+		<table cellspacing="0" cellpadding="0" class="sortable striped backWhite">
+			<thead><tr>
+				<th>ID</th>
+				<th>Nombre</th>
+				<th>Acciones</th>
+			</tr></thead>
+			<tbody><tr>
+				<td>Item1</td>
+				<td>Item2</td>
+				<td><a href=""><i class="icon-pencil"></i></a>
+					<a href=""><i class="icon-minus-sign"></i></a></td>
+			</tr><tr>
+				<td>Item1</td>
+				<td>Item2</td>
+				<td><a href=""><i class="icon-pencil"></i></a>
+					<a href=""><i class="icon-minus-sign"></i></a></td>
+			</tr><tr>
+				<td>Item1</td>
+				<td>Item2</td>
+				<td><a href=""><i class="icon-pencil"></i></a>
+					<a href=""><i class="icon-minus-sign"></i></a></td>
+			</tr><tr>
+				<td>Item1</td>
+				<td>Item2</td>
+				<td><a href=""><i class="icon-pencil"></i></a>
+					<a href=""><i class="icon-minus-sign"></i></a></td>
+			</tr></tbody>
+		</table>
+	</div>
+	<!-- TABLA (fin) -->
+	<!-- MENU (inicio) -->
 	<div class="col_4 column">
 		<ul class="menu vertical">
 		<li id="new"><a href="#"><i class="icon-file"></i> Nuevo Grafo</a></li>
@@ -87,6 +130,7 @@
 		</li>
 		</ul>
 	</div>
+	<!-- MENU (fin) -->
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script src="kickstart/js/kickstart.js"></script> <!-- KICKSTART -->

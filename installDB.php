@@ -80,6 +80,25 @@ try {
 	echo 'Error al crear tabla "trees"<br>';
 	echo $e;
 }
+echo '<hr>';
+//crear tabla "megatrees" id, name, source, target
+echo '<h3>Creando Tabla "megatrees"</h3>';
+try {
+	DBquery4("CREATE TABLE IF NOT EXISTS `megatrees` (
+		`id` int(100) NOT NULL AUTO_INCREMENT,
+		`name` varchar(50) NOT NULL,
+		`chain` varchar(1000),
+		`deleted` tinyint(1) NOT NULL,
+		`created` datetime NOT NULL,
+		`modified` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
+		PRIMARY KEY (`id`)
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+	");
+	echo 'Tabla "megatrees" creada exitosamente';
+} catch (Exception $e) {
+	echo 'Error al crear tabla "megatrees"<br>';
+	echo $e;
+}
 echo '<hr><br>';
 echo '<h2>La instalacion a finalizado</h2></center>';
 echo '<a href="index.html">Volver</a>';
