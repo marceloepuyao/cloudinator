@@ -7,7 +7,14 @@ function getQueryStringByName(name) {
         results = regex.exec(location.search);
     return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
+
+
 AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
+	
+	
+	
+	
+
 
 	A.io.request('ajaxnodos.php', {
 		cache: false,
@@ -160,16 +167,19 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 		});
 	}
 
+	var typestart = 'start';
+	var typeend = 'state';
+	
 	var typepregunta = 'condition';
 	var typerespuesta = 'end';
 	var availableFields = [
 		{
-			type: 'end',
+			type: typerespuesta,
 			label: 'Respuesta',
 			iconClass: 'aui-diagram-node-end-icon'
 		},
 		{
-			type: 'condition',
+			type: typepregunta,
 			label: 'Pregunta',
 			iconClass: 'aui-diagram-node-condition-icon'
 		}
@@ -200,21 +210,14 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 						 
 						var drag = event.target;
 						var idnode = drag.get('node').getAttribute("id");
-						//console.log('drag', idnode );
-						
-						
 						
 						if(drag.get('node').getAttribute("title") == "Pregunta"){
-							
-							
-							movingnodename= drag.get('node').getAttribute("title") ;
+							movingnodename= "" ;
 						}else if(drag.get('node').getAttribute("title")== "Respuesta"){
-							movingnodename= drag.get('node').getAttribute("title") ;
+							movingnodename= "";
 						}else{
 							movingnodename = A.one('#'+idnode).get('children').slice(-2).get('text')[0];
 						}
-						 
-						
 							
 						deleltelinesinfo();
 					},
@@ -225,19 +228,49 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 						
 						if(posix < 0 || posiy < 0){
 							//error message or simply do nothing
-						}else if(movingnodename =="Respuesta"){
-							ajaxPostNodo('insert', "nueva respuesta", 'end', posix, posiy, getQueryStringByName('id'));
-						}else if(movingnodename == "Pregunta"){
-							ajaxPostNodo('insert', "nueva pregunta", 'condition', posix, posiy, getQueryStringByName('id'));
-						}else{
+						}else if(movingnodename != ""){
 							ajaxPostNodo('update', movingnodename, 'condition', posix, posiy, getQueryStringByName('id')); //event.pageX no es la posicion exacta, porque concidera todo
 						}
 						
 						deleltelinesinfo();
 					},
 					'*:hit': function(event){
-						console.log("nueva pregunta: ", event.drag.get('node').getData('availableField')); 
-						console.log("hit drag", event);
+						console.log("nueva pregunta: ", event.drag.get('node')); 
+						//console.log("hit drag", event.drag.get('node').getData);
+						
+						
+						var lastXY = event.drag.lastXY;
+						var containerXY = this.dropContainer.getXY();
+						
+						var posix = lastXY[0] - containerXY[0];
+						var posiy = lastXY[1]- containerXY[1];
+						
+						var nombre = "nuevonombre " + parseInt(Math.random()*100) ;
+						
+						var instance = this;
+						var drag = event.drag;
+
+						if (instance.isAvailableFieldsDrag(drag)) {
+							var availableField = drag.get('node').getData('availableField');
+
+							var newField = instance.addField({
+								xy: [posix, posiy] ,
+								type: availableField.get('type'),
+								name: nombre
+							});
+
+							instance.select(newField);
+						}
+						
+
+						if(posix < 0 || posiy < 0){
+							//error message or simply do nothing
+						}
+						else if(event.drag.get('node').getData('availableField').get("type") == "end"){
+							ajaxPostNodo('insert', nombre, 'end', posix, posiy, getQueryStringByName('id'));
+						}else if(event.drag.get('node').getData('availableField').get("type") == "condition"){
+							ajaxPostNodo('insert', nombre, 'condition', posix, posiy, getQueryStringByName('id'));
+						}
 						deleltelinesinfo();
 					},
 					save: function(event) {
@@ -283,6 +316,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 		
 		db1.connectAll(connectors);
 		deleltelinesinfo();
+		createmetadatatable();
 	}
 	
 	function deleltelinesinfo(){
@@ -290,32 +324,10 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 		//db1.connector.hide();
 		a.remove();
 	}
+
 	
-	// db2 = new A.DiagramBuilder(
-	// 	{
-	// 		after: {
-	// 			cancel: function(event) {
-	// 				console.log('cancel', event);
-	// 			},
-
-	// 			save: function(event) {
-	// 				console.log('save', event);
-	// 			}
-	// 		},
-	// 		availableFields: availableFields,
-	// 		fields: [
-	// 			{
-	// 				bodyContent: 'Node1',
-	// 				type: 'task',
-	// 				xy: [200, 200]
-	// 			},
-	// 			{
-	// 				bodyContent: 'Node2',
-	// 				type: 'task'
-	// 			}
-	// 		],
-	// 		render: '#diagramBuilder2'
-	// 	}
-	// );
-
+	function createmetadatatable(){
+		console.log("aaaa",A.one(".yui3-datatable-data"));
+	}
+	
 });

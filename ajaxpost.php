@@ -38,7 +38,7 @@ if ( array_key_exists('nodo', $_POST) ) {
 			print($json->encode($data));
 		} catch (Exception $e) {
 			$data = array(
-				'result' => 'false',
+				'result' =>$query ,
 				'exception' => $e
 			);
 			print($json->encode($data));
