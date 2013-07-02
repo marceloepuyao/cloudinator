@@ -772,6 +772,7 @@ var DiagramBuilder = A.Component.create({
 		},
 
 		_onDropHit: function(event) {
+			/*
 			var instance = this;
 			var drag = event.drag;
 
@@ -780,11 +781,13 @@ var DiagramBuilder = A.Component.create({
 
 				var newField = instance.addField({
 					xy: getLeftTop(drag.lastXY, instance.dropContainer),
-					type: availableField.get(TYPE)
+					type: availableField.get(TYPE),
+					name: "holaa"
 				});
 
 				instance.select(newField);
 			}
+			*/
 		},
 
 		_onEscKey: function(event) {
