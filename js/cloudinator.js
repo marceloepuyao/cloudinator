@@ -245,7 +245,8 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 						var posix = lastXY[0] - containerXY[0];
 						var posiy = lastXY[1]- containerXY[1];
 						
-						var nombre = "nuevonombre " + parseInt(Math.random()*100) ;
+
+						var nombre = "nuevonombre " + parseInt(Math.random()*10000) ;
 						
 						var instance = this;
 						var drag = event.drag;
@@ -260,16 +261,17 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 							});
 
 							instance.select(newField);
-						}
-						
 
-						if(posix < 0 || posiy < 0){
-							//error message or simply do nothing
-						}
-						else if(event.drag.get('node').getData('availableField').get("type") == "end"){
-							ajaxPostNodo('insert', nombre, 'end', posix, posiy, getQueryStringByName('id'));
-						}else if(event.drag.get('node').getData('availableField').get("type") == "condition"){
-							ajaxPostNodo('insert', nombre, 'condition', posix, posiy, getQueryStringByName('id'));
+							
+							if(posix < 0 || posiy < 0){
+								//error message or simply do nothing
+							}else if(event.drag.get('node').getData('availableField').get("type") == "end"){
+								ajaxPostNodo('insert', nombre, 'end', posix, posiy, getQueryStringByName('id'));
+							}else if(event.drag.get('node').getData('availableField').get("type") == "condition"){
+								ajaxPostNodo('insert', nombre, 'condition', posix, posiy, getQueryStringByName('id'));
+							}
+							
+							
 						}
 						deleltelinesinfo();
 					},

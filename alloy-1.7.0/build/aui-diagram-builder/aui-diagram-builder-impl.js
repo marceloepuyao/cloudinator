@@ -772,6 +772,7 @@ var DiagramBuilder = A.Component.create({
 		},
 
 		_onDropHit: function(event) {
+			/*
 			var instance = this;
 			var drag = event.drag;
 
@@ -780,11 +781,13 @@ var DiagramBuilder = A.Component.create({
 
 				var newField = instance.addField({
 					xy: getLeftTop(drag.lastXY, instance.dropContainer),
-					type: availableField.get(TYPE)
+					type: availableField.get(TYPE),
+					name: "holaa"
 				});
 
 				instance.select(newField);
 			}
+			*/
 		},
 
 		_onEscKey: function(event) {
@@ -1320,8 +1323,8 @@ var DiagramNode = A.Component.create({
 			var idend = diagramNode.get(BOUNDING_BOX).getAttribute("id");
 			namestart = A.one('#'+idstart).get('children').slice(-2).get('text')[0];
 			nameend = A.one('#'+idend).get('children').slice(-2).get('text')[0];
-			//console.log("nombrestart",instance.get(BOUNDING_BOX).getAttribute("class")); 
-			//console.log("nombreend",diagramNode.get(BOUNDING_BOX).getAttribute("class")); 
+			console.log("nombrestart",namestart); 
+			console.log("nombreend",nameend); 
 			
 			
 			

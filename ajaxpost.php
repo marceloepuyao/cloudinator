@@ -62,7 +62,7 @@ if ( array_key_exists('nodo', $_POST) ) {
 		}
 	}else if($nodo == 'updateMeta'){
 		try {
-			$query = "UPDATE  `cloudinator`.`nodos` SET  `metaname` =  '$_POST[metaname]', `metadata` =  '$_POST[metadata]', `metatype` = '$_POST[metatype]' WHERE  `nodos`.`name` ='".$_POST['name']."' AND `nodos`.`tree` ='".$_POST['tree']."';";
+			$query = "UPDATE  `cloudinator`.`nodos` SET  `metaname` =  '$_POST[metaname]', `metadata` =  '$_POST[metadata]', `metatype` = '$_POST[metatype]' WHERE  `nodos`.`name` ='$_POST[name]' AND `nodos`.`tree` =$_POST[tree];";
 
 			DBquery4($query);
 
@@ -135,11 +135,11 @@ if ( array_key_exists('link', $_POST) ) {
 	$link = $_POST['link'];
 	if($link == 'insert'){
 		try {
-			$prequerysource = "SELECT id FROM nodos WHERE name = '$_POST[source]';";
+			$prequerysource = "SELECT id FROM nodos WHERE name = '$_POST[source]' and tree = $_POST[tree];";
 			$data1 = DBquery3($prequerysource);
 			$sourceid = mysql_result($data1, 0);
 			
-			$prequerytarget = "SELECT id FROM nodos WHERE name = '$_POST[target]';";
+			$prequerytarget = "SELECT id FROM nodos WHERE name = '$_POST[target]' and tree = $_POST[tree];";
 			$data2 = DBquery3($prequerytarget);
 			$targetid = mysql_result($data2, 0);
 			
@@ -161,7 +161,7 @@ if ( array_key_exists('link', $_POST) ) {
 		}
 	}elseif ($link == 'update') {
 		try {
-			$query = "UPDATE  `cloudinator`.`links` SET  `target` = '$_POST[source]', `source` = '$_POST[target]' WHERE `links`.`name` ='$_POST[name]' AND `nodos`.`tree` ='$_POST[tree]';";
+			$query = "UPDATE  `cloudinator`.`links` SET  `target` = '$_POST[source]', `source` = '$_POST[target]' WHERE `links`.`name` ='$_POST[name]' AND `nodos`.`tree` =$_POST[tree];";
 
 			DBquery4($query);
 			
@@ -179,11 +179,11 @@ if ( array_key_exists('link', $_POST) ) {
 	}elseif ($link == 'delete') {
 		try {
 			
-			$prequerysource = "SELECT id FROM nodos WHERE name = '$_POST[source]';";
+			$prequerysource = "SELECT id FROM nodos WHERE name = '$_POST[source]' and tree = $_POST[tree];";
 			$data1 = DBquery3($prequerysource);
 			$sourceid = mysql_result($data1, 0);
 			
-			$prequerytarget = "SELECT id FROM nodos WHERE name = '$_POST[target]';";
+			$prequerytarget = "SELECT id FROM nodos WHERE name = '$_POST[target]' and tree = $_POST[tree];";
 			$data2 = DBquery3($prequerytarget);
 			$targetid = mysql_result($data2, 0);
 			
