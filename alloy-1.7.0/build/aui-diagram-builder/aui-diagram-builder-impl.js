@@ -1323,8 +1323,8 @@ var DiagramNode = A.Component.create({
 			var idend = diagramNode.get(BOUNDING_BOX).getAttribute("id");
 			namestart = A.one('#'+idstart).get('children').slice(-2).get('text')[0];
 			nameend = A.one('#'+idend).get('children').slice(-2).get('text')[0];
-			//console.log("nombrestart",instance.get(BOUNDING_BOX).getAttribute("class")); 
-			//console.log("nombreend",diagramNode.get(BOUNDING_BOX).getAttribute("class")); 
+			console.log("nombrestart",namestart); 
+			console.log("nombreend",nameend); 
 			
 			
 			
