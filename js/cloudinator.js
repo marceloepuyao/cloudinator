@@ -245,7 +245,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 						var posix = lastXY[0] - containerXY[0];
 						var posiy = lastXY[1]- containerXY[1];
 						
-						var nombre = "nuevonombre " + parseInt(Math.random()*100) ;
+						var nombre = "nuevonombre " + parseInt(Math.random()*10000) ;
 						
 						var instance = this;
 						var drag = event.drag;
