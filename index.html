@@ -72,52 +72,16 @@
 		<img src="http://nearshoreamericas.com/wp-content/uploads/2010/07/sonda1.jpg" height=200px border=1px>
 	</center>
 	<br>
-	<!-- TABLA (inicio) -->
-	<!-- Table -->
-	<div class="col_4 column">
-		<table cellspacing="0" cellpadding="0" class="sortable striped backWhite">
-			<thead><tr>
-				<th>ID</th>
-				<th>Nombre</th>
-				<th>Acciones</th>
-			</tr></thead>
-			<tbody><tr>
-				<td>Item1</td>
-				<td>Item2</td>
-				<td><a href=""><i class="icon-pencil"></i></a>
-					<a href=""><i class="icon-minus-sign"></i></a></td>
-			</tr><tr>
-				<td>Item1</td>
-				<td>Item2</td>
-				<td><a href=""><i class="icon-pencil"></i></a>
-					<a href=""><i class="icon-minus-sign"></i></a></td>
-			</tr><tr>
-				<td>Item1</td>
-				<td>Item2</td>
-				<td><a href=""><i class="icon-pencil"></i></a>
-					<a href=""><i class="icon-minus-sign"></i></a></td>
-			</tr><tr>
-				<td>Item1</td>
-				<td>Item2</td>
-				<td><a href=""><i class="icon-pencil"></i></a>
-					<a href=""><i class="icon-minus-sign"></i></a></td>
-			</tr></tbody>
-		</table>
-	</div>
-	<!-- TABLA (fin) -->
+
 	<!-- MENU (inicio) -->
 	<div class="col_4 column">
 		<ul class="menu vertical">
-		<li id="new"><a href="#"><i class="icon-file"></i> Nuevo Grafo</a></li>
-		<li><a href=""><i class="icon-copy"></i> Nuevo Grafo a partir de uno ya existente</a>
-			<ul id="copy">
-			</ul>
-		</li>
-		<li><a href=""><i class="icon-edit"></i> Editar Grafo</a>
+		<li id="new"><a href="#"><i class="icon-file"></i> Nuevo Subformulario</a></li>
+		<li><a href=""><i class="icon-edit"></i> Editar Subformulario</a>
 			<ul id="edit">
 			</ul>
 		</li>
-		<li><a href=""><i class="icon-share"></i> Recorrer Grafo</a>
+		<li><a href=""><i class="icon-share"></i> Recorrer Subformulario</a>
 			<ul id="do">
 			<li><a href="#">Coming Soon</a></li>
 			</ul>
@@ -188,8 +152,9 @@
 							$('.new').hide().slideDown().removeClass('new');
 						}
 					}).fail(function(data) {
-						$('#notices').append('<div class="notice error new"><i class="icon-remove-sign icon-large"></i> Error al Crear el Nuevo Grafo<a href="#close" class="icon-remove"></a></div>');
-						$('.new').hide().slideDown().removeClass('new');
+						//$('#notices').append('<div class="notice error new"><i class="icon-remove-sign icon-large"></i> Error al Crear el Nuevo Grafo<a href="#close" class="icon-remove"></a></div>');
+						//$('.new').hide().slideDown().removeClass('new');
+						window.location.reload();
 						console.log(data);
 					}).always(function(){$('.loading').fadeOut();});
 				}else{

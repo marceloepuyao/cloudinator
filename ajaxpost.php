@@ -79,8 +79,19 @@ if ( array_key_exists('nodo', $_POST) ) {
 		}
 	}else if($nodo == 'delete'){
 		try {
+			
+			
+			$queryidnodo = "SELECT id FROM `cloudinator`.`nodos`  WHERE `nodos`.`name`='$_POST[name]' AND `nodos`.`tree` = $_POST[tree];";
+			$dataqueryidnodo = DBquery3($queryidnodo);
+			$idnodo = mysql_result($dataqueryidnodo, 0);
+			
+			$linksources = "DELETE FROM `cloudinator`.`links` WHERE `links`.`source` = '$idnodo'  AND `links`.`tree` = $_POST[tree];";
+			DBquery4($linksources);
+			
+			$linktarget = "DELETE FROM `cloudinator`.`links` WHERE `links`.`target` = '$idnodo'  AND `links`.`tree` = $_POST[tree];";
+			DBquery4($linktarget);
+			
 			$query = "DELETE FROM `cloudinator`.`nodos` WHERE `nodos`.`name`='$_POST[name]' AND `nodos`.`tree` = $_POST[tree];";
-
 			DBquery4($query);
 
 			$data = array(
@@ -142,6 +153,18 @@ if ( array_key_exists('link', $_POST) ) {
 			$prequerytarget = "SELECT id FROM nodos WHERE name = '$_POST[target]' and tree = $_POST[tree];";
 			$data2 = DBquery3($prequerytarget);
 			$targetid = mysql_result($data2, 0);
+			
+			
+			if($targetid == null){
+				$insertnode = "INSERT INTO `cloudinator`.`nodos` (`id`, `tree`, `name`, `type`, `posx`, `posy`, `metaname`, `metadata`, `metatype`) VALUES 
+				(NULL, $_POST[tree], '$_POST[target]', '$_POST[typetarget]', '$_POST[xtarget]', '$_POST[ytarget]', null, null, null);";
+				DBquery4($insertnode);
+
+				
+				$prequerytarget = "SELECT id FROM nodos WHERE name = '$_POST[target]' and tree = $_POST[tree];";
+				$data2 = DBquery3($prequerytarget);
+				$targetid = mysql_result($data2, 0);
+			}
 			
 			$query = "INSERT INTO `cloudinator`.`links` (`id`, `tree`, `name`, `source`, `target`) VALUES 
 			(NULL, $_POST[tree], '$_POST[name]', '$sourceid', '$targetid');";

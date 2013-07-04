@@ -167,22 +167,28 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 		});
 	}
 
-	var typestart = 'start';
-	var typeend = 'state';
+	//var typestart = 'start';
+	var typeend = 'end';
 	
 	var typepregunta = 'condition';
-	var typerespuesta = 'end';
+	var typerespuesta = 'state';
 	var availableFields = [
 		{
 			type: typerespuesta,
 			label: 'Respuesta',
-			iconClass: 'aui-diagram-node-end-icon'
+			iconClass: 'aui-diagram-node-state-icon'
 		},
 		{
 			type: typepregunta,
 			label: 'Pregunta',
 			iconClass: 'aui-diagram-node-condition-icon'
+		},
+		{
+			type: typeend,
+			label: 'Fin',
+			iconClass: 'aui-diagram-node-end-icon'
 		}
+		
 	];
 
 	function cargaNodos() {
@@ -215,6 +221,8 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 							movingnodename= "" ;
 						}else if(drag.get('node').getAttribute("title")== "Respuesta"){
 							movingnodename= "";
+						}else if(drag.get('node').getAttribute("title")== "Fin"){
+							movingnodename= "";
 						}else{
 							movingnodename = A.one('#'+idnode).get('children').slice(-2).get('text')[0];
 						}
@@ -223,8 +231,10 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 					},
 					'*:end': function(event){
 						
-						var posix = event.pageX - 261;
-						var posiy = event.pageY - 53;
+						var containerXY = this.dropContainer.getXY();
+						
+						var posix = event.pageX - containerXY[0];
+						var posiy = event.pageY - containerXY[1];
 						
 						if(posix < 0 || posiy < 0){
 							//error message or simply do nothing
@@ -238,38 +248,38 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 						console.log("nueva pregunta: ", event.drag.get('node')); 
 						//console.log("hit drag", event.drag.get('node').getData);
 						
-						
 						var lastXY = event.drag.lastXY;
 						var containerXY = this.dropContainer.getXY();
 						
 						var posix = lastXY[0] - containerXY[0];
 						var posiy = lastXY[1]- containerXY[1];
 						
-
-						var nombre = "nuevonombre " + parseInt(Math.random()*10000) ;
-						
 						var instance = this;
 						var drag = event.drag;
 
 						if (instance.isAvailableFieldsDrag(drag)) {
 							var availableField = drag.get('node').getData('availableField');
+							
+							var nodetype = availableField.get("type");
+							
+							var nombre = "nuevonombre " + parseInt(Math.random()*10000) ;
 
+							if(posix < 0 || posiy < 0){
+								//error message or simply do nothing
+							}else if(nodetype == "state" || nodetype == "condition" || nodetype == "end" ){
+								ajaxPostNodo('insert', nombre, nodetype, posix, posiy, getQueryStringByName('id'));
+							}else if(nodetype == "start"){
+								
+								
+							}
+							
 							var newField = instance.addField({
 								xy: [posix, posiy] ,
-								type: availableField.get('type'),
+								type: nodetype,
 								name: nombre
 							});
 
-							instance.select(newField);
-
-							
-							if(posix < 0 || posiy < 0){
-								//error message or simply do nothing
-							}else if(event.drag.get('node').getData('availableField').get("type") == "end"){
-								ajaxPostNodo('insert', nombre, 'end', posix, posiy, getQueryStringByName('id'));
-							}else if(event.drag.get('node').getData('availableField').get("type") == "condition"){
-								ajaxPostNodo('insert', nombre, 'condition', posix, posiy, getQueryStringByName('id'));
-							}
+							//instance.select(newField);
 							
 							
 						}
