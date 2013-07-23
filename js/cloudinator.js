@@ -8,13 +8,7 @@ function getQueryStringByName(name) {
     return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
-
 AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
-	
-	
-	
-	
-
 
 	A.io.request('ajaxnodos.php', {
 		cache: false,
@@ -327,8 +321,9 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 		} 
 		
 		db1.connectAll(connectors);
-		deleltelinesinfo();
+		
 		createmetadatatable();
+		deleltelinesinfo();
 	}
 	
 	function deleltelinesinfo(){
@@ -339,7 +334,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 
 	
 	function createmetadatatable(){
-		console.log("aaaa",A.one(".yui3-datatable-data"));
+		console.log("aasasdsa",db1);
 	}
 	
 });

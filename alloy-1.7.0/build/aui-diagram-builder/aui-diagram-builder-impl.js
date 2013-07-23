@@ -1351,23 +1351,46 @@ var DiagramNode = A.Component.create({
 				alert("no se puede conectar dos nodos del mismo tipo");
 				
 			}else{
-				ajaxPostLink("insert", "", namestart, nameend, getQueryStringByName('id'), typetarget, diagramNode.get(BOUNDING_BOX).getXY()[0] - 278, diagramNode.get(BOUNDING_BOX).getXY()[1] -59);
+				//ajaxPostLink("insert", "", namestart, nameend, getQueryStringByName('id'), typetarget, diagramNode.get(BOUNDING_BOX).getXY()[0] - 278, diagramNode.get(BOUNDING_BOX).getXY()[1] -59);
+				A.io.request('ajaxpost.php', {
+					autoLoad: true,
+					method: 'POST',
+					data: {
+						link: "insert",
+						name: "",
+						tree: getQueryStringByName('id'),
+						source: namestart,
+						target: nameend,
+						typetarget: typetarget,
+						xtarget: diagramNode.get(BOUNDING_BOX).getXY()[0] - 278,
+						ytarget: diagramNode.get(BOUNDING_BOX).getXY()[1] -59
+					},
+					on: {
+						success: function(data){
+							console.log('el link ha sido generado',this.get('responseData'));
+							if(this.get('responseData') != '{"result":"true"}' ){
+								alert("you can't do that! ");
+							}else{
+								instance.connect(
+									instance.prepareTransition({
+										sourceXY: getLeftTop(dd.startXY, instance.get(BOUNDING_BOX)),
+										target: diagramNode.get(NAME),
+										targetXY: getLeftTop(dd.mouseXY, diagramNode.get(BOUNDING_BOX))
+									})
+								);
+							}
+						}
+					}
+				});
 				
 				//Fin código implantado cloudinator team
-				instance.connect(
-						instance.prepareTransition({
-							sourceXY: getLeftTop(dd.startXY, instance.get(BOUNDING_BOX)),
-							target: diagramNode.get(NAME),
-							targetXY: getLeftTop(dd.mouseXY, diagramNode.get(BOUNDING_BOX))
-						})
-					);
+				
 				
 				
 			}
 			
 			
 		},
-
 		connectOutTarget: function(event) {
 			var instance = this;
 			var builder = instance.get(BUILDER);
@@ -1715,16 +1738,39 @@ var DiagramNode = A.Component.create({
 			//Código implantado por cloudinator team
 			var nodeid = instance.get(BOUNDING_BOX)._node.getAttribute("id");
 			namestart = A.one('#'+nodeid).get('children').slice(-2).get('text')[0];
-			ajaxNodoGetIdFromName(namestart, getQueryStringByName('id'), event.newVal);
-			console.log(namestart, "cambio a",  event.newVal);
+			
+			
+			A.io.request('ajaxpost.php', {
+				autoLoad: true,
+				method: 'POST',
+				data: {
+					nodo: 'newname',
+					name: event.newVal,
+					id: namestart,
+					tree: getQueryStringByName('id')
+				},
+				on: {
+					success: function(data){
+						
+						if(this.get('responseData') =='{"result":"true"}'){
+							console.log(namestart, "cambio a",  event.newVal, this.get('responseData') );
+							instance.eachConnector(function(connector, index, sourceNode) {
+								var transition = connector.get(TRANSITION);				
+								transition[(instance === sourceNode) ? SOURCE : TARGET] = event.newVal;
+								connector.set(TRANSITION, transition);
+							});
+						}else{
+							alert("name already exist");
+							window.location.reload();
+						}						
+					}
+				}
+			});
+
 			//fin código implantado por cloudinator team
 			
 			
-			instance.eachConnector(function(connector, index, sourceNode) {
-				var transition = connector.get(TRANSITION);				
-				transition[(instance === sourceNode) ? SOURCE : TARGET] = event.newVal;
-				connector.set(TRANSITION, transition);
-			});
+			
 		},
 
 		_renderControls: function() {

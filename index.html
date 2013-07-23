@@ -37,6 +37,18 @@
 			background-color: #FFFFFF;
 			border: 5px groove #9090dd;
 		}
+		#copyTreeName{
+			display: none;
+			position: absolute;
+			top: 40%;
+			left: 35%;
+			height: 100px;
+			width: 300px;
+			text-align: center;
+			z-index: 90002;
+			background-color: #FFFFFF;
+			border: 5px groove #9090dd;
+		}
 		#notices{
 			position: absolute;
 			top: 0;
@@ -62,6 +74,12 @@
 		<button id="buttonName" class="formElement">Crear</button>
 		<button id="buttonCancel" class="formElement">Cancelar</button>
 	</div>
+	<div id="copyTreeName" class="col_3 column" data-copyid="">
+		<label for="textNameCopy" class="formElement">Nombre: </label>
+		<input id="textNameCopy" class="formElement" type="text" />
+		<button id="buttonNameCopy" class="formElement">Crear</button>
+		<button id="buttonCancelCopy" class="formElement">Cancelar</button>
+	</div>
 
 	<img id="loadingGif" class="loading" src="content/ajax-loader.gif">
 
@@ -81,6 +99,11 @@
 			<ul id="edit">
 			</ul>
 		</li>
+		<li id="new"><a href="#"><i class="icon-file"></i> Nuevo Grafo</a></li>
+   		<li><a href=""><i class="icon-copy"></i> Nuevo Grafo a partir de uno ya existente</a>
+      		<ul id="copy">
+      		</ul>
+	    </li> 
 		<li><a href=""><i class="icon-share"></i> Recorrer Subformulario</a>
 			<ul id="do">
 			<li><a href="#">Coming Soon</a></li>
@@ -122,6 +145,37 @@
 			$('#copy').append('<li><a href="">ERROR</a></li>');
 			$('#edit').append('<li><a href="">ERROR</a></li>');
 		}).always(function(){$('.loading').fadeOut();});
+	}
+	function clonar(){
+		
+		console.log("listo para clonar");
+		
+		$('#copyTreeName').slideUp();
+		
+					$.ajax({
+						url: 'ajaxTrees.php',
+						dataType: 'json',
+						type: 'POST',
+						data: {
+							name: $('#textNameCopy').val(),
+							clonename : $('#copyTreeName').data("copyid")
+								},
+						timeout: 2500,
+						beforeSend: function(){$('.loading').fadeIn();},
+						success: function(data){
+							console.log(data);
+							cargarGrafos();
+							$('#notices').append('<div class="notice success new"><i class="icon-ok icon-large"></i> Nuevo Grafo creado exitosamente<a href="#close" class="icon-remove"></a></div>');
+							//$('.new').hide().slideDown().removeClass('new');
+							//$('#newTreeName').slideDown();
+						}
+					}).fail(function(data) {
+						//$('#notices').append('<div class="notice error new"><i class="icon-remove-sign icon-large"></i> Error al Crear el Nuevo Grafo<a href="#close" class="icon-remove"></a></div>');
+						//$('.new').hide().slideDown().removeClass('new');
+						window.location.reload();
+						console.log( data);
+					}).always(function(){$('.loading').fadeOut();});
+		
 	}
 	function enviarForm(){
 		$('#newTreeName').slideUp();
@@ -176,7 +230,9 @@
 		cargarGrafos();
 
 		$("#copy").on("click", "li", function(event){
-  			alert('NO IMPLEMENTADO AUN!\rID: '+$(this).data('id')+' Nombre: '+$(this).text());
+			$('#copyTreeName').data("copyid", $(this).text());
+			$('#copyTreeName').slideDown();
+  			//alert('NO IMPLEMENTADO AUN!\rID: '+$(this).data('id')+' Nombre: '+$(this).text());
   			//hacer llamada por ajax a la db para hacer una copia del arbol existente y que devuelva el nuevo id (POST) y posteriormente redireccionar a cloudinator.html?id=[algo]
   			//tambien hay que preguntar el nuevo nombre!
   			console.log(event);
@@ -199,6 +255,22 @@
 		});
 		$('#buttonName').on('click', function(event){
 			enviarForm();
+		});
+		
+		
+		$('#buttonCancelCopy').on('click', function(){
+			$('#copyTreeName').slideUp();
+			$('.blackout').fadeOut();
+		});
+		$("#textNameCopy").keypress(function(event) {
+			if(event.which == 13){
+				console.log("assds");
+				clonar();
+			}
+		});
+		$('#buttonNameCopy').on('click', function(event){
+			console.log("assds");
+			clonar();
 		});
 
 		$('#notices').on('click', '.notice', function(event){

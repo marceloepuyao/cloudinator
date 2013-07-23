@@ -26,15 +26,26 @@ if ( array_key_exists('nodo', $_POST) ) {
 	$nodo = $_POST['nodo'];
 	if($nodo == 'insert'){
 		try {
-			$query = "INSERT INTO `cloudinator`.`nodos` (`id`, `tree`, `name`, `type`, `posx`, `posy`, `metaname`, `metadata`, `metatype`) VALUES 
-			(NULL, $_POST[tree], '$_POST[name]', '$_POST[type]', '$_POST[posx]', '$_POST[posy]', null, null, null);
-			";
+			$queryifexist = "SELECT count(id) FROM nodos WHERE name = '$_POST[name]'";
+			$ifexist = DBquery3($queryifexist);
+			$nifexist = mysql_result($ifexist, 0);
 			
-			DBquery4($query);
-
-			$data = array(
-				'result' => 'true'
-			);
+			if($nifexist > 0){
+				$data = array(
+					'result' => 'false'
+				);
+			}else{
+			
+				$query = "INSERT INTO `cloudinator`.`nodos` (`id`, `tree`, `name`, `type`, `posx`, `posy`, `metaname`, `metadata`, `metatype`) VALUES 
+				(NULL, $_POST[tree], '$_POST[name]', '$_POST[type]', '$_POST[posx]', '$_POST[posy]', null, null, null);
+				";
+				
+				DBquery4($query);
+	
+				$data = array(
+					'result' => 'true'
+				);
+			}
 			print($json->encode($data));
 		} catch (Exception $e) {
 			$data = array(
@@ -45,13 +56,21 @@ if ( array_key_exists('nodo', $_POST) ) {
 		}
 	}else if($nodo == 'update'){
 		try {
-			$query = "UPDATE  `cloudinator`.`nodos` SET  `posx` =  $_POST[posx], `posy` =  $_POST[posy] WHERE  `nodos`.`name` ='$_POST[name]' AND `nodos`.`tree` = $_POST[tree];";
-
-			DBquery4($query);
-
-			$data = array(
-				'result' => 'true'
-			);
+			$queryifexist = "SELECT count(id) FROM nodos WHERE name = '$_POST[name]'";
+			$ifexist = DBquery3($queryifexist);
+			$nifexist = mysql_result($ifexist, 0);
+			if($nifexist>1){
+				$data = array(
+					'result' => 'false'.$nifexist
+				);
+			}else{
+				$query = "UPDATE  `cloudinator`.`nodos` SET  `posx` =  $_POST[posx], `posy` =  $_POST[posy] WHERE  `nodos`.`name` ='$_POST[name]' AND `nodos`.`tree` = $_POST[tree];";
+				DBquery4($query);
+				$data = array(
+					'result' => 'true'.$nifexist
+				);
+			}
+			
 			print($json->encode($data));
 		} catch (Exception $e) {
 			$data = array(
@@ -107,13 +126,27 @@ if ( array_key_exists('nodo', $_POST) ) {
 		}
 	}else if($nodo == 'newname'){
 		try {
-			$query = "UPDATE  `cloudinator`.`nodos` SET  `name` =  '$_POST[name]' WHERE  `nodos`.`id` =$_POST[id] AND `nodos`.`tree` ='$_POST[tree]';";
-
-			DBquery4($query);
-
-			$data = array(
-				'result' => 'true'
-			);
+			$queryifexist = "SELECT count(id) FROM nodos WHERE name = '$_POST[name]'";
+			$ifexist = DBquery3($queryifexist);
+			$nifexist = mysql_result($ifexist, 0);
+			if($nifexist>0){
+				$data = array(
+					'result' => 'false'
+				);
+			}else{
+				$queryid = "SELECT id FROM nodos 
+				WHERE name = '$_POST[id]' AND tree = $_POST[tree];";
+				$dataid = DBquery3($queryid);
+				$id = mysql_result($dataid, 0);
+			
+				$query = "UPDATE  `cloudinator`.`nodos` SET  `name` =  '$_POST[name]' WHERE  `nodos`.`id` =$id AND `nodos`.`tree` ='$_POST[tree]';";
+	
+				DBquery4($query);
+	
+				$data = array(
+					'result' => 'true'
+				);
+			}
 			print($json->encode($data));
 		} catch (Exception $e) {
 			$data = array(
@@ -146,35 +179,68 @@ if ( array_key_exists('link', $_POST) ) {
 	$link = $_POST['link'];
 	if($link == 'insert'){
 		try {
-			$prequerysource = "SELECT id FROM nodos WHERE name = '$_POST[source]' and tree = $_POST[tree];";
+			$prequerysource = "SELECT id, type FROM nodos WHERE name = '$_POST[source]' and tree = $_POST[tree];";
 			$data1 = DBquery3($prequerysource);
-			$sourceid = mysql_result($data1, 0);
+			$sourceid = mysql_result($data1, 0,'nodos.id');
+			$sourcetype = mysql_result($data1, 0, 'nodos.type');
 			
-			$prequerytarget = "SELECT id FROM nodos WHERE name = '$_POST[target]' and tree = $_POST[tree];";
+			$prequerytarget = "SELECT count(id) FROM nodos WHERE name = '$_POST[target]' and tree = $_POST[tree];";
 			$data2 = DBquery3($prequerytarget);
-			$targetid = mysql_result($data2, 0);
+			$exist = mysql_result($data2, 0);
 			
-			
-			if($targetid == null){
+			if($exist > 0){
+				$prequerytarget = "SELECT id, type FROM nodos WHERE name = '$_POST[target]' and tree = $_POST[tree];";
+				$data3 = DBquery3($prequerytarget);
+				$targetid = mysql_result($data3, 0, 'nodos.id');
+				$targettype = mysql_result($data3, 0, 'nodos.type');
+			}else{
 				$insertnode = "INSERT INTO `cloudinator`.`nodos` (`id`, `tree`, `name`, `type`, `posx`, `posy`, `metaname`, `metadata`, `metatype`) VALUES 
 				(NULL, $_POST[tree], '$_POST[target]', '$_POST[typetarget]', '$_POST[xtarget]', '$_POST[ytarget]', null, null, null);";
 				DBquery4($insertnode);
-
 				
 				$prequerytarget = "SELECT id FROM nodos WHERE name = '$_POST[target]' and tree = $_POST[tree];";
 				$data2 = DBquery3($prequerytarget);
 				$targetid = mysql_result($data2, 0);
 			}
 			
-			$query = "INSERT INTO `cloudinator`.`links` (`id`, `tree`, `name`, `source`, `target`) VALUES 
-			(NULL, $_POST[tree], '$_POST[name]', '$sourceid', '$targetid');";
+			$problem = false;
+			if($sourcetype == "state"){
+				
+				$nodoublelinkquery = "SELECT count(id) FROM links WHERE source = $sourceid AND tree = $_POST[tree]";
+				$nodoublelinks = DBquery3($nodoublelinkquery);
+				
+				if(mysql_result($nodoublelinks, 0) >= 1){
+					$problem = true;
+				}
+			}
 			
-			DBquery4($query);
+			$queryloop = "SELECT count(id) FROM links WHERE source = $targetid AND target = $sourceid AND tree = $_POST[tree]";
+			$loop = DBquery3($queryloop);
+			 
+			if(mysql_result($loop, 0) >= 1){
+				$problem = true;
+			}
+				
 			
-			$data = array(
-				'result' => 'true',
-			);
-			print($json->encode($data));
+			
+			
+			if(!$problem){
+				
+				$query = "INSERT INTO `cloudinator`.`links` (`id`, `tree`, `name`, `source`, `target`) VALUES 
+				(NULL, $_POST[tree], '$_POST[name]', '$sourceid', '$targetid');";
+				
+				DBquery4($query);
+				
+				$data = array(
+					'result' => 'true',
+				);
+				print($json->encode($data));
+			}else{
+				$data = array(
+					'result' => 'false',
+				);
+				print($json->encode($data));
+			}
 		} catch (Exception $e) {
 			$data = array(
 				'result' => 'false',
