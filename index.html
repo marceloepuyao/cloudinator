@@ -3,7 +3,25 @@
 	<link rel="stylesheet" href="kickstart/css/kickstart.css" media="all" /> <!-- KICKSTART -->
 	<style type="text/css" media="screen">
 		body{
-			background-color: #d0e4fe;
+			display: block;
+			margin: 0px;
+		}
+		.header{
+			background-image: url("http://www.sonda.com/media/media2011/img/fondo-new.jpg");
+			background-repeat: repeat-x;
+			height: auto;
+			min-height: 90px;
+			width: 100%;
+		}
+		.bg_top {
+			background: url("http://www.sonda.com/media/media2011/img/fondo-header.jpg") repeat-x scroll 0;
+			width: 100%;
+			height: auto;
+			position: relative;
+			right: 0;
+			top: 0;
+			overflow: hidden;
+			min-width: 1024px;
 		}
 		.backWhite{
 			background-color: #FFFFFF;
@@ -37,12 +55,36 @@
 			background-color: #FFFFFF;
 			border: 5px groove #9090dd;
 		}
+		#newFormName{
+			display: none;
+			position: absolute;
+			top: 40%;
+			left: 35%;
+			height: 100px;
+			width: 300px;
+			text-align: center;
+			z-index: 90002;
+			background-color: #FFFFFF;
+			border: 5px groove #9090dd;
+		}
 		#copyTreeName{
 			display: none;
 			position: absolute;
 			top: 40%;
 			left: 35%;
 			height: 100px;
+			width: 300px;
+			text-align: center;
+			z-index: 90002;
+			background-color: #FFFFFF;
+			border: 5px groove #9090dd;
+		}
+		#cloneFormName{
+			display: none;
+			position: absolute;
+			top: 40%;
+			left: 35%;
+			height: 130px;
 			width: 300px;
 			text-align: center;
 			z-index: 90002;
@@ -80,38 +122,102 @@
 		<button id="buttonNameCopy" class="formElement">Crear</button>
 		<button id="buttonCancelCopy" class="formElement">Cancelar</button>
 	</div>
+	<div id="cloneFormName" class="col_3 column" data-copyid="0">
+		<label for="textNameCloneForm" class="formElement">Nombre: </label>
+		<input id="textNameCloneForm" class="formElement" type="text" />
+		<label for="formlist" class="formElement">Formulario: </label>
+		<select id="formlist">
+			  <option></option>
+		</select>
+		<button id="buttonNameCloneForm" class="formElement">Crear</button>
+		<button id="buttonCancelCloneForm" class="formElement">Cancelar</button>
+	</div>
+	
+	<div id="newFormName" class="col_3 column">
+		<label for="textNameForm" class="formElement">Nombre: </label>
+		<input id="textNameForm" class="formElement" type="text" />
+		<button id="buttonNameForm" class="formElement">Crear</button>
+		<button id="buttonCancelForm" class="formElement">Cancelar</button>
+	</div>
 
 	<img id="loadingGif" class="loading" src="content/ajax-loader.gif">
 
 	<div class="blackout loading"></div>
 	<!-- ELEMENTOS FLOTANTES (fin) -->
 
-	<center>
-		<img src="http://nearshoreamericas.com/wp-content/uploads/2010/07/sonda1.jpg" height=200px border=1px>
-	</center>
+	<div class="bg_top">
+		<div class='header'>
+			<a href="index.html"><img src="pic/logo-sonda-white.png" height=60px border=0px></a>
+		</div>
+	</div>
+	
 	<br>
-
-	<!-- MENU (inicio) -->
-	<div class="col_4 column">
+	
+	<!-- MENU FORMULARIOS(inicio) -->
+	<div class="col_4 column forms">
+		<ul class="menu vertical forms">
+			<li id="forms"><a href="#"><i class="icon-share"></i> Formularios</a>
+				<ul id="allforms">
+					</ul>
+			</li>
+			<li id="newform"><a href="#"><i class="icon-file"></i> Nuevo Formulario</a>
+			<li><a href=""><i class="icon-wrench"></i> Administracion (DEVELOPMENT ONLY)</a>
+				<ul>
+					<li><a href="installDB.php">Instalar DB</a></li>
+					<li><a href="installDatos.php">Instalar Datos (Dummy)</a></li>
+				</ul>
+			</li>
+		
+		</ul>
+	</div>
+	
+		
+	
+	
+	<!-- MENU FORMULARIOS(fin) -->
+	
+	<!-- MENU SUBFORMS (inicio) -->
+	<div class="col_4 column subforms">
 		<ul class="menu vertical">
-		<li id="new"><a href="#"><i class="icon-file"></i> Nuevo Subformulario</a></li>
-		<li><a href=""><i class="icon-edit"></i> Editar Subformulario</a>
-			<ul id="edit">
-			</ul>
-		</li>
-		<li id="new"><a href="#"><i class="icon-file"></i> Nuevo Grafo</a></li>
-   		<li><a href=""><i class="icon-copy"></i> Nuevo Grafo a partir de uno ya existente</a>
-      		<ul id="copy">
-      		</ul>
-	    </li> 
-		<li><a href=""><i class="icon-share"></i> Recorrer Subformulario</a>
-			<ul id="do">
-			<li><a href="#">Coming Soon</a></li>
-			</ul>
-		</li>
+			<li id="formname"><a href="#"> Nombre </a></li>
+			<li><a href=""><i class="icon-share"></i>Subformularios</a>
+				<ul id="allsubforms">
+				</ul>
+			</li>
+			<li id="new"><a href="#"><i class="icon-file"></i> Nuevo Subformulario</a></li>
+			<li id="deleteform"><a href="#" onclick='confirmdelete();'><i class="icon-remove-sign"></i> Eliminar Formulario</a></li>
+			<li id="cloneForm"><a href="#"><i class="icon-copy"></i> Clonar Subformulario</a>
+				<ul id="clone">
+      			</ul>
+      		</li> 
+			<li><a href="index.html"><i class="icon-arrow-left"></i> Volver</a></li> 
+
+		</ul>
+	</div>
+	
+	<!-- MENU SUBFORMS (fin) -->
+
+	<!-- MENU(inicio) -->
+	<div class="col_4 column fuck">
+		<ul class="menu vertical">
+			<li id="new"><a href="#"><i class="icon-file"></i> Nuevo Subformulario</a></li>
+			<li><a href=""><i class="icon-edit"></i> Editar Subformulario</a>
+				<ul id="edit">
+				</ul>
+			</li>
+			<li id="new"><a href="#"><i class="icon-file"></i> Nuevo Grafo</a></li>
+   			<li><a href=""><i class="icon-copy"></i> Nuevo Grafo a partir de uno ya existente</a>
+      			<ul id="copy">
+      			</ul>
+	   		</li> 
+			<li><a href=""><i class="icon-share"></i> Recorrer Subformulario</a>
+				<ul id="do">
+					<li><a href="#">Coming Soon</a></li>
+				</ul>
+			</li>
 		<li><a href=""><i class="icon-wrench"></i> Administracion (DEVELOPMENT ONLY)</a>
 			<ul>
-			<li><a href="installDB.php">Instalar DB</a></l(i>
+			<li><a href="installDB.php">Instalar DB</a></li>
 			<li><a href="installDatos.php">Instalar Datos (Dummy)</a></li>
 			</ul>
 		</li>
@@ -121,6 +227,9 @@
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script src="kickstart/js/kickstart.js"></script> <!-- KICKSTART -->
+	<script type="text/javascript" src="http://webcursos.uai.cl/jira/s/es_ES-jovvqt-418945332/850/3/1.2.9/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?collectorId=2ab5c7d9"></script>
+<style type="text/css">.atlwdg-trigger.atlwdg-RIGHT{background-color:red;top:70%;z-index:10001;}</style>
+	
 	<script>
 	function cargarGrafos(){
 		
@@ -130,12 +239,13 @@
 			timeout: 2500,
 			beforeSend: function(){$('.loading').fadeIn();},
 			success: function(data){
-				$('#copy').empty();
-				$('#edit').empty();
+				$('#allsubforms').empty();
+				//$('#edit').empty();
 				$.each( data, function( i, item ) {
-					if(item.deleted == 0){
-						$('#copy').append('<li data-id="'+item.id+'"><a href="#">'+item.name+'</a></li>');
-						$('#edit').append('<li><a href="cloudinator.html?id='+item.id+'">'+item.name+'</a></li>');
+					if(item.deleted == 0 && item.megatree == getQueryStringByName('id')){
+						//$('#allsubforms').append('<li data-id="'+item.id+'"><a href="#">'+item.name+'</a></li>');
+						$('#allsubforms').append('<li><a href="cloudinator.html?id='+item.id+'">'+item.name+'</a></li>');
+						$('#clone').append('<li data-id="'+item.id+'"><a href="#">'+item.name+'</a></li>');
 					}
 				});
 			}
@@ -146,9 +256,37 @@
 			$('#edit').append('<li><a href="">ERROR</a></li>');
 		}).always(function(){$('.loading').fadeOut();});
 	}
+	function loadMegaTrees(){
+		
+		$.ajax({
+			url: 'ajaxMegaTrees.php',
+			dataType: 'json',
+			timeout: 2500,
+			beforeSend: function(){$('.loading').fadeIn();},
+			success: function(data){
+				$('#allforms').empty();
+				$.each( data, function( i, item ) {
+					if(item.deleted == 0){
+						console.log(item.id);
+						$('#allforms').append('<li data-id="'+item.id+'"><a href="index.html?id='+item.id+'">'+item.name+'</a>  </li>');
+						$('#formlist').append('<option value="'+item.id+'">'+item.name+'</option>');
+					}
+				});
+			}
+		}).fail(function(data) {
+			console.log("asdasdasd", data);
+			$('#notices').append('<div class="notice error new"><i class="icon-remove-sign icon-large"></i> Error al acceder a la lista de Grafos<a href="#close" class="icon-remove"></a></div>').hide()
+			$('.new').slideDown().removeClass('new');
+			$('#copy').append('<li><a href="">ERROR</a></li>');
+			$('#edit').append('<li><a href="">ERROR</a></li>');
+		}).always(function(){$('.loading').fadeOut();});
+	}
 	function clonar(){
 		
-		console.log("listo para clonar");
+		console.log("listo para clonar", 
+				$('#formlist').val(), 
+				$('#cloneFormName').data("copyid"), 
+				$('#textNameCloneForm').val() );
 		
 		$('#copyTreeName').slideUp();
 		
@@ -157,8 +295,9 @@
 						dataType: 'json',
 						type: 'POST',
 						data: {
-							name: $('#textNameCopy').val(),
-							clonename : $('#copyTreeName').data("copyid")
+							name: $('#textNameCloneForm').val(),
+							clonename : $('#cloneFormName').data("copyid"),
+							to:  $('#formlist').val()
 								},
 						timeout: 2500,
 						beforeSend: function(){$('.loading').fadeIn();},
@@ -196,19 +335,22 @@
 						url: 'ajaxTrees.php',
 						dataType: 'json',
 						type: 'POST',
-						data: {name: $('#textName').val()},
+						data: {
+							name: $('#textName').val(),
+							megatree: getQueryStringByName('id')
+							},
 						timeout: 2500,
 						beforeSend: function(){$('.loading').fadeIn();},
 						success: function(data){
 							console.log(data);
 							cargarGrafos();
-							$('#notices').append('<div class="notice success new"><i class="icon-ok icon-large"></i> Nuevo Grafo creado exitosamente<a href="#close" class="icon-remove"></a></div>');
+							$('#notices').append('<div class="notice success new"><i class="icon-ok icon-large"></i> Nuevo Subformulario creado exitosamente<a href="#close" class="icon-remove"></a></div>');
 							$('.new').hide().slideDown().removeClass('new');
 						}
 					}).fail(function(data) {
 						//$('#notices').append('<div class="notice error new"><i class="icon-remove-sign icon-large"></i> Error al Crear el Nuevo Grafo<a href="#close" class="icon-remove"></a></div>');
 						//$('.new').hide().slideDown().removeClass('new');
-						window.location.reload();
+						//window.location.reload();
 						console.log(data);
 					}).always(function(){$('.loading').fadeOut();});
 				}else{
@@ -225,17 +367,163 @@
 			$('#edit').append('<li><a href="">ERROR</a></li>');
 		});
 	}
+	function createNewForm(){
+		$('#newFormName').slideUp();
+		
+		$.ajax({
+			url: 'ajaxTrees.php',
+			dataType: 'json',
+			type: 'POST',
+			data: {
+				name: $('#textNameForm').val(),
+				type : "megatree"
+					},
+			timeout: 2500,
+			beforeSend: function(){$('.loading').fadeIn();},
+			success: function(data){
+				//cargarGrafos();
+				$('#notices').append('<div class="notice success new"><i class="icon-ok icon-large"></i> Nuevo Formulario creado exitosamente<a href="#close" class="icon-remove"></a></div>');
+				$('.new').hide().slideDown().removeClass('new');
+				loadMegaTrees();
+			}
+		}).fail(function(data) {
+			//$('#notices').append('<div class="notice error new"><i class="icon-remove-sign icon-large"></i> Error al Crear el Nuevo Grafo<a href="#close" class="icon-remove"></a></div>');
+			//$('.new').hide().slideDown().removeClass('new');
+			//window.location.reload();
+			console.log( data);
+		}).always(function(){$('.loading').fadeOut();});
+	}
+	function getQueryStringByName(name) {
+	    name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+	    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+	        results = regex.exec(location.search);
+	    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+	}
+	function confirmdelete(){
+		
+		if(confirm("¿Está Seguro?")){
+			deleteform();
+			console.log("delete man");
+		}else{
+			return false
+		}
+		
+	}
+	function deleteform(){
+		console.log("entro a deleteform");
+		$.ajax({
+			url: 'ajaxMegaTrees.php',
+			dataType: 'json',
+			type: 'POST',
+			data: {
+				action: "delete",
+				id: getQueryStringByName('id')
+					},
+			timeout: 2500,
+			beforeSend: function(){$('.loading').fadeIn();},
+			success: function(data){
+				loadMegaTrees();
+				console.log(data);
+				window.location = "index.html";
+			}
+		}).fail(function(data) {
+			console.log( data);
+		}).always(function(){$('.loading').fadeOut();});
+		
+	}
+	function setNameToForm(){
+		
+		$.ajax({
+			url: 'ajaxMegaTrees.php',
+			dataType: 'json',
+			type: 'POST',
+			data: {
+				action: "setname",
+				id: getQueryStringByName('id')
+					},
+			timeout: 2500,
+			beforeSend: function(){$('.loading').fadeIn();},
+			success: function(data){
+				console.log("bien en setname");
+				$.each( data, function( i, item ) {
+					$('#formname').empty();
+					$('#formname').append("<a href='#'>Formulario: "+item.name+"</a>");
+					
+				});
+			}
+		}).fail(function(data) {
+			console.log("mal", data);
+		}).always(function(){$('.loading').fadeOut();});
+		
+	}
+	function clonarForm(){
+		
+		$.ajax({
+			url: 'ajaxMegaTrees.php',
+			dataType: 'json',
+			type: 'POST',
+			data: {
+				name: $('#textNameCloneForm').val(),
+				cloneid : getQueryStringByName('id')
+					},
+			timeout: 2500,
+			beforeSend: function(){$('.loading').fadeIn();},
+			success: function(data){
+				console.log(data);
+				cargarGrafos();
+				$('#notices').append('<div class="notice success new"><i class="icon-ok icon-large"></i> Nuevo Grafo creado exitosamente<a href="#close" class="icon-remove"></a></div>');
+				//$('.new').hide().slideDown().removeClass('new');
+				//$('#newTreeName').slideDown();
+			}
+		}).fail(function(data) {
+			//$('#notices').append('<div class="notice error new"><i class="icon-remove-sign icon-large"></i> Error al Crear el Nuevo Grafo<a href="#close" class="icon-remove"></a></div>');
+			//$('.new').hide().slideDown().removeClass('new');
+			window.location.reload();
+			console.log( data);
+		}).always(function(){$('.loading').fadeOut();});
+		alert("wena");
+	}
 	$(document).ready(function() {
+		
+		loadMegaTrees();
+		
+		if(getQueryStringByName('id')){
+			
+			setNameToForm();
+			console.log("el id es 1");
+			cargarGrafos();
+			$("div.col_4.column.forms").remove();
+			$("div.col_4.column.fuck").remove();
+			
+		}else{
+			
+			$("div.col_4.column.subforms").remove();
+			$("div.col_4.column.fuck").remove();
+		}
 
-		cargarGrafos();
+		$("#newform").on('click', function(event){
+			$('#newFormName').slideDown();
+		});
+		$('#buttonCancelForm').on('click', function(){
+			$('#newFormName').slideUp();
+			$('.blackout').fadeOut();
+		});
+		$("#textNameForm").keypress(function(event) {
+			if(event.which == 13){
+				console.log("llamo a la función");
+				createNewForm();
+			}
+		});
+		$("#buttonNameForm").on('click', function(event){
+			console.log("llamo a la función");
+			createNewForm();
+		});
+		
 
-		$("#copy").on("click", "li", function(event){
-			$('#copyTreeName').data("copyid", $(this).text());
-			$('#copyTreeName').slideDown();
-  			//alert('NO IMPLEMENTADO AUN!\rID: '+$(this).data('id')+' Nombre: '+$(this).text());
-  			//hacer llamada por ajax a la db para hacer una copia del arbol existente y que devuelva el nuevo id (POST) y posteriormente redireccionar a cloudinator.html?id=[algo]
-  			//tambien hay que preguntar el nuevo nombre!
-  			console.log(event);
+		$("#clone").on("click", "li", function(event){
+			$('#cloneFormName').data("copyid", $(this).data('id'));
+			$('#cloneFormName').slideDown();
+  			console.log($(this).data('id'),$('#cloneFormName').data("copyid") );
 		});
 
 		$('#new').on('click', function(event){
@@ -257,21 +545,36 @@
 			enviarForm();
 		});
 		
-		
-		$('#buttonCancelCopy').on('click', function(){
-			$('#copyTreeName').slideUp();
-			$('.blackout').fadeOut();
+		$('li').on('click', function(event){
+			if($(this).data("id") == 99){
+				$(this).toggle();
+			}
 		});
-		$("#textNameCopy").keypress(function(event) {
+		
+		$('#deleteform').on('click', function(event){
+			 confirm(function() {
+				// Put your own callback in here and return false to stop any link running
+				return false;
+				});
+				return false;
+		});
+		
+		
+		$('#textNameCloneForm').keypress(function(event) {
 			if(event.which == 13){
-				console.log("assds");
+				console.log("listo para clonar formulario");
 				clonar();
 			}
 		});
-		$('#buttonNameCopy').on('click', function(event){
-			console.log("assds");
-			clonar();
+		$('#buttonCancelCloneForm').on('click', function(){
+			$('#cloneFormName').slideUp();
+			$('.blackout').fadeOut();
 		});
+		$('#buttonNameCloneForm').on('click', function(event){
+			console.log("listo para clonar formulario");
+			clonar();
+		});		
+
 
 		$('#notices').on('click', '.notice', function(event){
 			$(this).slideUp(function(){

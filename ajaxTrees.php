@@ -4,7 +4,25 @@ require_once('db.php');
 
 $json = new Services_JSON();
 
-if(isset($_POST['clonename'])) {
+if(isset($_POST['type'])) {
+	try {
+		DBquery3("INSERT INTO `cloudinator`.`megatrees` (`id`, `name`, `chain`, `deleted`, `created`, `modified` ) VALUES 
+			(NULL, '$_POST[name]', NULL, 0, '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."' );
+			");
+
+		//$data = DBquery4("SELECT id FROM trees WHERE name = '$_POST[name]'");
+		//print($json->encode(mysql_result($data, 0)));
+		$data = array(
+		'result' => 'true',
+		);
+		print($json->encode($data));
+	
+	} catch (Exception $e) {
+		print($json->encode($e));
+	}
+	
+}
+else if(isset($_POST['clonename'])) {
 	
 	$sql = "SELECT id FROM trees WHERE name = '$_POST[clonename]'";
 	$data1 = DBquery3($sql);
@@ -17,8 +35,8 @@ if(isset($_POST['clonename'])) {
 	$data3 = DBquery3($sql3);
 	$max = mysql_result($data3, 0);
 	
-	DBquery3("INSERT INTO `cloudinator`.`trees` (`id`, `name`, `deleted`, `created`) VALUES 
-			(NULL, '$_POST[name]', 0, '".date("Y-m-d H:i:s")."');
+	DBquery3("INSERT INTO `cloudinator`.`trees` (`id`, `name`,`megatree`, `deleted`, `created`) VALUES 
+			(NULL, '$_POST[name]', $_POST[to] ,0,'".date("Y-m-d H:i:s")."');
 			");
 	
 	$sqlgettree = "SELECT id FROM trees WHERE name = '$_POST[name]'";
@@ -74,16 +92,20 @@ if(isset($_POST['clonename'])) {
 	
 	
 	$data = array(
-		'result' => 'false',
+		'result' => 'true',
 	);
 	print($json->encode($data));
 	
 	
 }else if (isset($_POST['name'])) {
 	try {
-		DBquery3("INSERT INTO `cloudinator`.`trees` (`id`, `name`, `deleted`, `created`) VALUES 
-			(NULL, '$_POST[name]', 0, '".date("Y-m-d H:i:s")."');
+		DBquery3("INSERT INTO `cloudinator`.`trees` (`id`, `name`, `megatree`,`deleted`, `created`) VALUES 
+			(NULL, '$_POST[name]',$_POST[megatree] ,0, '".date("Y-m-d H:i:s")."');
 			");
+		$data = array(
+			'result' => 'true',
+		);
+		print($json->encode($data));
 
 		//$data = DBquery4("SELECT id FROM trees WHERE name = '$_POST[name]'");
 		//print($json->encode(mysql_result($data, 0)));
@@ -102,4 +124,5 @@ if(isset($_POST['clonename'])) {
 
 	print($salida);
 }
+
 ?> 

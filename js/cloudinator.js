@@ -9,7 +9,7 @@ function getQueryStringByName(name) {
 }
 
 AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
-
+	A.one('.aui-diagram-builder-canvas').setStyle('background', 'white');
 	A.io.request('ajaxnodos.php', {
 		cache: false,
 		autoLoad: true,
@@ -136,8 +136,24 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 			on: {
 				success: function(data){
 					console.log('AJAXresponseData', this.get('responseData'));
-					//console.log('AJAX',data);
 					return this.get('responseData');
+				}
+			}
+		});
+	}
+	
+	function ajaxFormNamebyId(idForm){
+		A.io.request('ajaxpost.php', {
+			autoLoad: true,
+			method: 'POST',
+			data: {
+				formId: idForm,
+			},
+			on: {
+				success: function(data){
+					//console.log('name form ', this.get('responseData'));
+					A.one('#SubFormName').text('Subformulario: ' + this.get('responseData'));
+					//return this.get('responseData');
 				}
 			}
 		});
@@ -290,6 +306,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 			}
 		);
 		//console.log('db1',db1);
+		
 		andaABuscarLosLinks(getQueryStringByName('id'));
 	}
 	// db1.syncTargetsUI();
@@ -324,17 +341,22 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 		
 		createmetadatatable();
 		deleltelinesinfo();
+		ajaxFormNamebyId(getQueryStringByName('id'));
 	}
 	
 	function deleltelinesinfo(){
 		var a = A.all('.aui-diagram-builder-connector-name');
 		//db1.connector.hide();
 		a.remove();
+		
+		
 	}
 
 	
 	function createmetadatatable(){
-		console.log("aasasdsa",db1);
+		
+		
 	}
+
 	
 });

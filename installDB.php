@@ -69,6 +69,7 @@ try {
 	DBquery4("CREATE TABLE IF NOT EXISTS `trees` (
 		`id` int(100) NOT NULL AUTO_INCREMENT,
 		`name` varchar(50) NOT NULL,
+		`megatree` int(100) NOT NULL,
 		`deleted` tinyint(1) NOT NULL,
 		`created` datetime NOT NULL,
 		`modified` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,

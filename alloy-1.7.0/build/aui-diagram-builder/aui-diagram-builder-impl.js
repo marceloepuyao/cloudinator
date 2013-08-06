@@ -551,8 +551,18 @@ var DiagramBuilder = A.Component.create({
 				instance.closeEditProperties();
 				tabView.enableTab(A.DiagramBuilder.SETTINGS_TAB);
 				tabView.selectTab(A.DiagramBuilder.SETTINGS_TAB);
+				
+				var data = diagramNode.getProperties();
+				data.push({'attributeName': "description", 'editor': data[1].editor, 'name': "Metadata", 'value': ""}); 
+				data.push({'attributeName': "description", 'editor': data[1].editor, 'name': "Metatype", 'value': ""});
+				
+				instance.propertyList.set(DATA, data);
+	
+				
+				instance.propertyList.get(DATA).each(function(model) {
 
-				instance.propertyList.set(DATA, diagramNode.getProperties());
+					console.log(data[1].editor, model.get(ATTRIBUTE_NAME), model.get(VALUE));
+				});
 
 				diagramNode.get(BOUNDING_BOX).addClass(CSS_DIAGRAM_NODE_EDITING);
 

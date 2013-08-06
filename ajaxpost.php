@@ -294,4 +294,24 @@ if ( array_key_exists('link', $_POST) ) {
 	}
 }
 
+if(isset($_POST['formId'])){
+	$id = $_POST['formId'];
+	try {
+		$query = "SELECT name FROM trees WHERE id = $id";
+		
+		$data = DBquery3($query);
+		
+		print($json->encode(mysql_result($data, 0)));
+	} catch (Exception $e) {
+		
+		//throw $e;
+		$data = array(
+			'result' => 'false'
+		);
+		print($json->encode($data));
+		
+	}
+	
+}
+
 ?>
