@@ -119,6 +119,8 @@ var Lang = A.Lang,
 	DELETE_CONNECTORS_MESSAGE = 'deleteConnectorsMessage',
 	DELETE_NODES_MESSAGE = 'deleteNodesMessage',
 	DESCRIPTION = 'description',
+	METADATA = 'metadata',
+	METATYPE = 'metatype',
 	DIAGRAM = 'diagram',
 	DIAGRAM_BUILDER_NAME = 'diagram-builder',
 	DIAGRAM_NODE = 'diagramNode',
@@ -553,15 +555,15 @@ var DiagramBuilder = A.Component.create({
 				tabView.selectTab(A.DiagramBuilder.SETTINGS_TAB);
 				
 				var data = diagramNode.getProperties();
-				data.push({'attributeName': "description", 'editor': data[1].editor, 'name': "Metadata", 'value': ""}); 
-				data.push({'attributeName': "description", 'editor': data[1].editor, 'name': "Metatype", 'value': ""});
+				//data.push({'attributeName': "metadata", 'editor': new A.TextAreaCellEditor(), 'name': "Metadata", 'value': ""}); 
+				//data.push({'attributeName': "metatype", 'editor': new A.TextAreaCellEditor(), 'name': "Metatype", 'value': ""});
 				
 				instance.propertyList.set(DATA, data);
 	
 				
 				instance.propertyList.get(DATA).each(function(model) {
 
-					console.log(data[1].editor, model.get(ATTRIBUTE_NAME), model.get(VALUE));
+					//console.log(data[1].editor, model.get(ATTRIBUTE_NAME), model.get(VALUE));
 				});
 
 				diagramNode.get(BOUNDING_BOX).addClass(CSS_DIAGRAM_NODE_EDITING);
@@ -872,6 +874,7 @@ var DiagramBuilder = A.Component.create({
 			if (editingNode) {
 				modelList.each(function(model) {
 					editingNode.set(model.get(ATTRIBUTE_NAME), model.get(VALUE));
+					console.log('editing node', model.get(ATTRIBUTE_NAME), model.get(VALUE));
 				});
 			}
 			else if (editingConnector) {
@@ -1112,7 +1115,9 @@ var DiagramNode = A.Component.create({
 				description: 'Description',
 				editMessage: 'Edit',
 				name: 'Name',
-				type: 'Type'
+				type: 'Type',
+				metadata: 'Metadata',
+				metatype: 'Metatype'
 			}
 		},
 
@@ -1163,7 +1168,7 @@ var DiagramNode = A.Component.create({
 
 		CONTROLS_TEMPLATE: '<div class="' + CSS_DB_CONTROLS + '"></div>',
 
-		SERIALIZABLE_ATTRS: [DESCRIPTION, NAME, REQUIRED, TYPE, WIDTH, HEIGHT, Z_INDEX, XY],
+		SERIALIZABLE_ATTRS: [DESCRIPTION, NAME, METATYPE, METADATA, REQUIRED, TYPE, WIDTH, HEIGHT, Z_INDEX, XY],
 
 		initializer: function() {
 			var instance = this;
@@ -1526,6 +1531,24 @@ var DiagramNode = A.Component.create({
 					attributeName: TYPE,
 					editor: false,
 					name: strings[TYPE]
+				},
+				{
+					attributeName: METATYPE,
+					editor: new A.TextAreaCellEditor(),
+					name: strings[METATYPE]
+				},
+				{
+					attributeName: METADATA,
+					editor: new A.TextCellEditor({
+						validator: {
+							rules: {
+								value: {
+									required: true
+								}
+							}
+						}
+					}),
+					name: strings[METADATA]
 				}
 			];
 		},
@@ -1746,24 +1769,25 @@ var DiagramNode = A.Component.create({
 		_onNameChange: function(event) {
 			var instance = this;
 			//Código implantado por cloudinator team
-			var nodeid = instance.get(BOUNDING_BOX)._node.getAttribute("id");
-			namestart = A.one('#'+nodeid).get('children').slice(-2).get('text')[0];
+			//var nodeid = instance.get(BOUNDING_BOX)._node.getAttribute("id");
+			//namestart = A.one('#'+nodeid).get('children').slice(-2).get('text')[0];
+			console.log("details", event);
 			
-			
+			console.log(event);
 			A.io.request('ajaxpost.php', {
 				autoLoad: true,
 				method: 'POST',
 				data: {
 					nodo: 'newname',
 					name: event.newVal,
-					id: namestart,
+					id: event.prevVal,
 					tree: getQueryStringByName('id')
 				},
 				on: {
 					success: function(data){
 						
 						if(this.get('responseData') =='{"result":"true"}'){
-							console.log(namestart, "cambio a",  event.newVal, this.get('responseData') );
+							console.log(event.prevVal, "cambio a",  event.newVal, this.get('responseData') );
 							instance.eachConnector(function(connector, index, sourceNode) {
 								var transition = connector.get(TRANSITION);				
 								transition[(instance === sourceNode) ? SOURCE : TARGET] = event.newVal;
@@ -1771,7 +1795,7 @@ var DiagramNode = A.Component.create({
 							});
 						}else{
 							alert("name already exist");
-							window.location.reload();
+							//window.location.reload();
 						}						
 					}
 				}

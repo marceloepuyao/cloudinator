@@ -112,7 +112,37 @@ else if(isset($_POST['clonename'])) {
 	} catch (Exception $e) {
 		print($e);
 	}
+}else if(isset($_POST['action'])){
+	
+	try {
+		DBquery3("DELETE FROM links WHERE tree = $_POST[tree]");
+		DBquery3("DELETE FROM nodos WHERE tree = $_POST[tree]");
+		DBquery3("DELETE FROM trees WHERE id = $_POST[tree]");
+		$data = array(
+			'result' => 'true',
+		);
+		print($json->encode($data));
+	}catch (Exception $e){
+		print($e);
+	}
+
+	
+
+}else if(isset($_POST['nuevonombre'])){
+	try {
+		DBquery3("UPDATE trees SET name = '$_POST[nuevonombre]' WHERE id = $_POST[tree]");
+		$data = array(
+			'result' => 'true',
+		);
+		print($json->encode($data));
+	}catch (Exception $e){
+		print($e);
+	}
+	
+	
 }else{
+
+
 	try {	
 		$query = 'SELECT * FROM trees';
 		$datos = DBquery2($query);

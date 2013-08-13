@@ -10,6 +10,64 @@ function getQueryStringByName(name) {
 
 AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 	A.one('.aui-diagram-builder-canvas').setStyle('background', 'white');
+	A.one('#EditName').on('click', function(){
+		
+		cambianombre();
+	});
+	
+	A.one('#deleteForm').on('click', function(){
+		estaseguro();
+	});
+	
+	A.one('#back').on('click', function(){
+		window.location = "index.html";
+	});
+	function cambianombre(){
+		var newname = prompt("Nuevo Nombre","");
+		if (newname!=null && newname!=""){
+			
+			A.io.request('ajaxTrees.php', {
+				dataType: 'json',
+				method: 'POST',
+				data: {
+					tree: getQueryStringByName('id'),
+					nuevonombre: newname
+						},
+				on: {   
+					success: function(data) {
+						console.log(data);
+						window.location = "cloudinator.html?id="+getQueryStringByName('id');
+					}
+				}
+			});
+
+			
+		}
+		
+	}
+	function estaseguro(){
+		if(confirm("¿Esta Seguro que deseas eliminar el subformulario?")){
+			A.io.request('ajaxTrees.php', {
+				dataType: 'json',
+				method: 'POST',
+				data: {
+					tree: getQueryStringByName('id'),
+					action: "deleteTree"
+						},
+				on: {   
+					success: function(data) {
+						console.log(data);
+						window.location = "index.html";
+					}
+				}
+			});
+				
+		}else{
+			
+		}
+		
+	}
+	
 	A.io.request('ajaxnodos.php', {
 		cache: false,
 		autoLoad: true,
@@ -210,6 +268,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 			x.name = nodos[i].name;
 			x.type = nodos[i].type;
 			x.xy = [parseInt(nodos[i].posx), parseInt(nodos[i].posy)];
+			x.metadata =  'caca';
 			field.push(x);
 		} 
 		
@@ -297,7 +356,9 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 					},
 					save: function(event) {
 						//aca se guardan los cambios
-						console.log('save', event.target);
+						
+						
+						console.log('save', event.target.editingNode.get('name'));
 					}
 				},
 
@@ -305,7 +366,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 				render: true
 			}
 		);
-		//console.log('db1',db1);
+		console.log('db1',A.one('.aui-diagram-builder-drop-container.yui3-dd-drop').siblings('div').item(1).setStyle('top', '25'));
 		
 		andaABuscarLosLinks(getQueryStringByName('id'));
 	}
