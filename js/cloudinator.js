@@ -271,6 +271,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 			x.description =  '';
 			x.metadata = nodos[i].metadata;
 			x.metatype = nodos[i].metatype;
+			x.metaname = nodos[i].metaname;
 			field.push(x);
 		} 
 		

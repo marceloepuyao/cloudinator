@@ -121,6 +121,7 @@ var Lang = A.Lang,
 	DESCRIPTION = 'description',
 	METADATA = 'metadata',
 	METATYPE = 'metatype',
+	METANAME	= 'metaname',
 	DIAGRAM = 'diagram',
 	DIAGRAM_BUILDER_NAME = 'diagram-builder',
 	DIAGRAM_NODE = 'diagramNode',
@@ -887,7 +888,7 @@ var DiagramBuilder = A.Component.create({
 						name: attributes['name'],
 						metadata: attributes['metadata'],
 						metatype: attributes['metatype'],
-						metaname: "",
+						metaname: attributes['metaname'],
 						tree: getQueryStringByName('id'),
 	
 					},
@@ -1069,6 +1070,10 @@ var DiagramNode = A.Component.create({
 			value: _EMPTY_STR,
 			validator: isString
 		},
+		metaname: {
+			value: _EMPTY_STR,
+			validator: isString
+		},
 		metatype: {
 			value: _EMPTY_STR,
 			validator: isString
@@ -1155,6 +1160,7 @@ var DiagramNode = A.Component.create({
 				name: 'Name',
 				type: 'Type',
 				metadata: 'Metadata',
+				metaname: 'Metaname',
 				metatype: 'Metatype'
 			}
 		},
@@ -1206,7 +1212,7 @@ var DiagramNode = A.Component.create({
 
 		CONTROLS_TEMPLATE: '<div class="' + CSS_DB_CONTROLS + '"></div>',
 
-		SERIALIZABLE_ATTRS: [DESCRIPTION, NAME, METATYPE, METADATA, REQUIRED, TYPE, WIDTH, HEIGHT, Z_INDEX, XY],
+		SERIALIZABLE_ATTRS: [DESCRIPTION, NAME, METATYPE, METADATA,METANAME, REQUIRED, TYPE, WIDTH, HEIGHT, Z_INDEX, XY],
 
 		initializer: function() {
 			var instance = this;
@@ -1571,23 +1577,37 @@ var DiagramNode = A.Component.create({
 					name: strings[TYPE]
 				},
 				{
-					attributeName: METATYPE,
-					editor: new A.TextAreaCellEditor(),
-					name: strings[METATYPE]
-				},
-				{
-					attributeName: METADATA,
+					attributeName: METANAME,
 					editor: new A.TextCellEditor({
 						validator: {
 							rules: {
 								value: {
-									required: true
+									required: false
 								}
 							}
 						}
 					}),
+					name: strings[METANAME]
+				},
+				{
+					attributeName: METADATA,
+					editor: new A.TextAreaCellEditor(),
 					name: strings[METADATA]
+				},
+				{
+					attributeName: METATYPE,
+					editor: new A.DropDownCellEditor({
+						options : {
+							'':'',
+							array: 'array',
+							textarea: 'textarea'
+							
+						}
+						
+					}),
+					name: strings[METATYPE]
 				}
+				
 			];
 		},
 
@@ -1839,6 +1859,12 @@ var DiagramNode = A.Component.create({
 							}						
 						}
 					}
+				});
+			}else{
+				instance.eachConnector(function(connector, index, sourceNode) {
+					var transition = connector.get(TRANSITION);				
+					transition[(instance === sourceNode) ? SOURCE : TARGET] = event.newVal;
+					connector.set(TRANSITION, transition);
 				});
 			}
 
