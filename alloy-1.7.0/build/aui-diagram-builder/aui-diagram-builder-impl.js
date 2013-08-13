@@ -870,12 +870,42 @@ var DiagramBuilder = A.Component.create({
 			var editingNode = instance.editingNode;
 			var editingConnector = instance.editingConnector;
 			var modelList = instance.propertyList.get(DATA);
+			var attributes = [];
 
 			if (editingNode) {
 				modelList.each(function(model) {
 					editingNode.set(model.get(ATTRIBUTE_NAME), model.get(VALUE));
-					console.log('editing node', model.get(ATTRIBUTE_NAME), model.get(VALUE));
+					attributes[model.get(ATTRIBUTE_NAME)] = model.get(VALUE);
+					
 				});
+				
+				A.io.request('ajaxpost.php', {
+					autoLoad: true,
+					method: 'POST',
+					data: {
+						nodo: 'updateMeta',
+						name: attributes['name'],
+						metadata: attributes['metadata'],
+						metatype: attributes['metatype'],
+						metaname: "",
+						tree: getQueryStringByName('id'),
+	
+					},
+					on: {
+						success: function(data){
+							console.log('se ha guardado la metadata',this.get('responseData'));
+						
+						}
+					}
+				});
+				
+				
+				
+				
+				
+				
+				
+				console.log('editing node',attributes);
 			}
 			else if (editingConnector) {
 				modelList.each(function(model) {
@@ -1032,6 +1062,14 @@ var DiagramNode = A.Component.create({
 		},
 
 		description: {
+			value: _EMPTY_STR,
+			validator: isString
+		},
+		metadata: {
+			value: _EMPTY_STR,
+			validator: isString
+		},
+		metatype: {
 			value: _EMPTY_STR,
 			validator: isString
 		},
@@ -1774,32 +1812,35 @@ var DiagramNode = A.Component.create({
 			console.log("details", event);
 			
 			console.log(event);
-			A.io.request('ajaxpost.php', {
-				autoLoad: true,
-				method: 'POST',
-				data: {
-					nodo: 'newname',
-					name: event.newVal,
-					id: event.prevVal,
-					tree: getQueryStringByName('id')
-				},
-				on: {
-					success: function(data){
-						
-						if(this.get('responseData') =='{"result":"true"}'){
-							console.log(event.prevVal, "cambio a",  event.newVal, this.get('responseData') );
-							instance.eachConnector(function(connector, index, sourceNode) {
-								var transition = connector.get(TRANSITION);				
-								transition[(instance === sourceNode) ? SOURCE : TARGET] = event.newVal;
-								connector.set(TRANSITION, transition);
-							});
-						}else{
-							alert("name already exist");
-							//window.location.reload();
-						}						
+			
+			if(event.newVal != event.prevVal){
+				A.io.request('ajaxpost.php', {
+					autoLoad: true,
+					method: 'POST',
+					data: {
+						nodo: 'newname',
+						name: event.newVal,
+						id: event.prevVal,
+						tree: getQueryStringByName('id')
+					},
+					on: {
+						success: function(data){
+							
+							if(this.get('responseData') =='{"result":"true"}'){
+								console.log(event.prevVal, "cambio a",  event.newVal, this.get('responseData') );
+								instance.eachConnector(function(connector, index, sourceNode) {
+									var transition = connector.get(TRANSITION);				
+									transition[(instance === sourceNode) ? SOURCE : TARGET] = event.newVal;
+									connector.set(TRANSITION, transition);
+								});
+							}else{
+								alert("name already exist");
+								window.location.reload();
+							}						
+						}
 					}
-				}
-			});
+				});
+			}
 
 			//fin código implantado por cloudinator team
 			
@@ -2140,7 +2181,10 @@ A.DiagramNodeEnd = A.Component.create({
 	ATTRS: {
 		type: {
 			value: END
-		}
+		}/*,
+		metadata: {
+			value: "casacascas"
+		}*/
 	},
 
 	EXTENDS: A.DiagramNodeState

@@ -268,7 +268,9 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 			x.name = nodos[i].name;
 			x.type = nodos[i].type;
 			x.xy = [parseInt(nodos[i].posx), parseInt(nodos[i].posy)];
-			x.metadata =  'caca';
+			x.description =  '';
+			x.metadata = nodos[i].metadata;
+			x.metatype = nodos[i].metatype;
 			field.push(x);
 		} 
 		

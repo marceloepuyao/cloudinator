@@ -81,13 +81,24 @@ if ( array_key_exists('nodo', $_POST) ) {
 		}
 	}else if($nodo == 'updateMeta'){
 		try {
-			$query = "UPDATE  `cloudinator`.`nodos` SET  `metaname` =  '$_POST[metaname]', `metadata` =  '$_POST[metadata]', `metatype` = '$_POST[metatype]' WHERE  `nodos`.`name` ='$_POST[name]' AND `nodos`.`tree` =$_POST[tree];";
-
-			DBquery4($query);
-
-			$data = array(
-				'result' => 'true'
-			);
+			$queryifexist = "SELECT count(id) FROM nodos WHERE name = '$_POST[name]' AND tree =$_POST[tree]";
+			$ifexist = DBquery3($queryifexist);
+			$nifexist = mysql_result($ifexist, 0);			
+			if($nifexist){
+			
+				$query = "UPDATE  `cloudinator`.`nodos` SET  `metaname` =  '$_POST[metaname]', `metadata` =  '$_POST[metadata]', `metatype` = '$_POST[metatype]' WHERE  `nodos`.`name` ='$_POST[name]' AND `nodos`.`tree` =$_POST[tree];";
+	
+				DBquery4($query);
+	
+				$data = array(
+					'result' => 'true'
+				);
+				
+			}else{
+				$data = array(
+					'result' => 'false'
+				);
+			}
 			print($json->encode($data));
 		} catch (Exception $e) {
 			$data = array(
