@@ -36,7 +36,9 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 				on: {   
 					success: function(data) {
 						console.log(data);
+						
 						window.location = "cloudinator.html?id="+getQueryStringByName('id');
+						
 					}
 				}
 			});
@@ -177,6 +179,8 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 			on: {
 				success: function(data){
 					console.log('AJAXresponseData',this.get('responseData'));
+					
+					//A.one('#savechanges').show();
 					//console.log('AJAX',data);
 				}
 			}
@@ -230,6 +234,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 			},
 			on: {
 				success: function(data){
+					
 				}
 			}
 		});
@@ -300,6 +305,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 						}
 							
 						deleltelinesinfo();
+						A.one('#savechanges').setStyle('display', 'none');
 					},
 					'*:end': function(event){
 						
@@ -315,9 +321,10 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 						}
 						
 						deleltelinesinfo();
+						A.one('#savechanges').setStyle('display', '');
 					},
 					'*:hit': function(event){
-						console.log("nueva pregunta: ", event.drag.get('node')); 
+						//console.log("nueva pregunta: ", event.drag.get('node')); 
 						//console.log("hit drag", event.drag.get('node').getData);
 						
 						var lastXY = event.drag.lastXY;
@@ -355,6 +362,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 							
 							
 						}
+						A.one('#savechanges').setStyle('display', '');
 						deleltelinesinfo();
 					},
 					save: function(event) {
@@ -362,6 +370,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 						
 						
 						console.log('save', event.target.editingNode.get('name'));
+						A.one('#savechanges').setStyle('display', '');
 					}
 				},
 

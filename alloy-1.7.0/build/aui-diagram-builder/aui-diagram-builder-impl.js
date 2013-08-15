@@ -292,14 +292,14 @@ var DiagramBuilder = A.Component.create({
 
 		strings: {
 			value: {
-				addNode: 'Add node',
-				cancel: 'Cancel',
-				deleteConnectorsMessage: 'Are you sure you want to delete the selected connector(s)?',
-				deleteNodesMessage: 'Are you sure you want to delete the selected node(s)?',
-				propertyName: 'Property Name',
-				save: 'Save',
-				settings: 'Settings',
-				value: 'Value'
+				addNode: 'Agregar Nodo',
+				cancel: 'Cancelar',
+				deleteConnectorsMessage: 'Â¿EstÃ¡ seguro que desea eliminar los conectores seleccionados?',
+				deleteNodesMessage: 'Â¿EstÃ¡ seguro que desea eliminar los nodos seleccionados?',
+				propertyName: 'Propiedades',
+				save: 'Guardar',
+				settings: 'ConfiguraciÃ³n',
+				value: 'Valor'
 			}
 		},
 
@@ -473,10 +473,10 @@ var DiagramBuilder = A.Component.create({
 				AArray.each(selectedConnectors, function(connector) {
 					var transition = connector.get(TRANSITION);
 					
-					//Código implantado por cloudinator team
+					//Cï¿½digo implantado por cloudinator team
 					console.log('aca se elimina un conector', transition.source, transition.target);
 					ajaxPostLink("delete", "", transition.source, transition.target, getQueryStringByName('id'));
-					//Fin Código implantado por cloudinator team
+					//Fin Cï¿½digo implantado por cloudinator team
 					
 
 					A.DiagramNode.getNodeByName(transition.source).disconnect(transition);
@@ -1070,14 +1070,15 @@ var DiagramNode = A.Component.create({
 			value: _EMPTY_STR,
 			validator: isString
 		},
-		metaname: {
-			value: _EMPTY_STR,
-			validator: isString
-		},
 		metatype: {
 			value: _EMPTY_STR,
 			validator: isString
 		},
+		metaname: {
+			value: _EMPTY_STR,
+			validator: isString
+		},
+		
 
 		graphic: {
 			writeOnce: true,
@@ -1097,13 +1098,13 @@ var DiagramNode = A.Component.create({
 			valueFn: function() {
 				var instance = this;
 				
-				//código implantado por cloudinator team
+				//cï¿½digo implantado por cloudinator team
 				/*if(instance.get(TYPE) == 'end'){
 					return 'nueva respuesta';
 				}else if(instance.get(TYPE) == 'condition') {
 					return 'nueva pregunta';
 				}
-				*///fin código implantado por cloudinator team
+				*///fin cï¿½digo implantado por cloudinator team
 
 				return instance.get(TYPE) + (++A.Env._uidx);
 			},
@@ -1159,9 +1160,9 @@ var DiagramNode = A.Component.create({
 				editMessage: 'Edit',
 				name: 'Name',
 				type: 'Type',
-				metadata: 'Metadata',
-				metaname: 'Metaname',
-				metatype: 'Metatype'
+				metadata: 'Opciones',
+				metaname: 'Subpregunta',
+				metatype: 'Tipo'
 			}
 		},
 
@@ -1382,7 +1383,7 @@ var DiagramNode = A.Component.create({
 			var instance = this;
 			var dd = instance.boundaryDragDelegate.dd;
 			
-			//Código implantado cloudinator team
+			//Cï¿½digo implantado cloudinator team
 			var idstart = instance.get(BOUNDING_BOX).getAttribute("id");
 			var idend = diagramNode.get(BOUNDING_BOX).getAttribute("id");
 			namestart = A.one('#'+idstart).get('children').slice(-2).get('text')[0];
@@ -1442,7 +1443,7 @@ var DiagramNode = A.Component.create({
 					}
 				});
 				
-				//Fin código implantado cloudinator team
+				//Fin cï¿½digo implantado cloudinator team
 				
 				
 				
@@ -1588,12 +1589,8 @@ var DiagramNode = A.Component.create({
 						}
 					}),
 					name: strings[METANAME]
-				},
-				{
-					attributeName: METADATA,
-					editor: new A.TextAreaCellEditor(),
-					name: strings[METADATA]
-				},
+				}
+				,
 				{
 					attributeName: METATYPE,
 					editor: new A.DropDownCellEditor({
@@ -1606,6 +1603,11 @@ var DiagramNode = A.Component.create({
 						
 					}),
 					name: strings[METATYPE]
+				},
+				{
+					attributeName: METADATA,
+					editor: new A.TextAreaCellEditor(),
+					name: strings[METADATA]
 				}
 				
 			];
@@ -1826,7 +1828,7 @@ var DiagramNode = A.Component.create({
 
 		_onNameChange: function(event) {
 			var instance = this;
-			//Código implantado por cloudinator team
+			//Cï¿½digo implantado por cloudinator team
 			//var nodeid = instance.get(BOUNDING_BOX)._node.getAttribute("id");
 			//namestart = A.one('#'+nodeid).get('children').slice(-2).get('text')[0];
 			console.log("details", event);
@@ -1868,7 +1870,7 @@ var DiagramNode = A.Component.create({
 				});
 			}
 
-			//fin código implantado por cloudinator team
+			//fin cï¿½digo implantado por cloudinator team
 			
 			
 			
