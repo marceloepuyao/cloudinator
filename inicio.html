@@ -3,352 +3,77 @@
 
 <html>
 <head>
-	<script src="alloy-1.7.0/build/aui/aui.js"  type="text/javascript"></script>
-
-	<link rel="stylesheet" href="http://yui.yahooapis.com/3.5.0pr2/build/cssbutton/cssbutton.css" />
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css" />
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
+<style type="text/css" media="screen">
+		#inner {
+		    width: 50%;
+		    margin: 0 auto;
+		}
+		.jqm-content {
+			padding-right: 25%;
+			padding-left: 25%;
+		}
+</style>
+<title>Cloudinator</title>
+	
 </head>
 
-<style type="text/css" media="screen">
 
-	@CHARSET "UTF-8";
-		body{
-			display: block;
-			margin: 0px;
-		}
-        #navigation {
-        width:250px;
-        }
+<body>
 
-        #content {
-        width:700px;
-        }
+<section id="login" data-role="page">
+<div data-role="content" id="content" class="jqm-content ui-content" >
 
-        #navigation,
-        #content {
-        float:left;
-        margin:10px;
-        }
+<form action="">
 
-        .collapsible,
-        .page_collapsible {
-        margin: 0;
-        padding:10px;
-        height:20px;
+<CENTER> <h1 class="entry-title" >Cloudinator</h1></CENTER>
+<CENTER> <p>Inicie sesión antes de empezar levantamiento</p></CENTER> 
+<table style="width: 100%; margin: 0 auto;">
+	
+	<tr>
+		<td><label for="text-username">Nombre:</label></td>	
+		<td><input type="text" name="text-username" id="text-username" value=""></td>
+	</tr>
+	<tr>
+		<td><label for="passwordcloud">Contraseña:</label></td>
+		<td><input type="password" name="passwordcloud" id="passwordcloud" value="" ></td>
+	</tr>
+	<tr>
 
-        border-top:#f0f0f0 1px solid;
-        background: #cccccc;
+		<td><label for="select-choice-1" class="select">Empresa a entrevistar</label></td>
+		<td>
+			<select name="select-choice-1" id="select-choice-1">
+			    <option value="new">Nueva Empresa</option>
+			</select>
+		</td>
+	</tr>
+</table>
 
-        font-family: Arial, Helvetica, sans-serif;
-        text-decoration:none;
-        text-transform:uppercase;
-        color: #000;
-        font-size:1em;
-        }
-
-        .collapse-open {
-        background: #cccccc;
-        color: #000;
-        }
-
-        .collapse-open span {
-        display:block;
-        float:right;
-        padding:10px;
-        }
-
-        .collapse-open span {
-        background:url(images/minus.png) center center no-repeat;
-        }
-
-        .collapse-close span {
-        display:block;
-        float:right;
-        background:url(images/plus.png) center center no-repeat;
-        padding:10px;
-        }
-
-        div.container {
-        padding:0;
-        margin:0;
-        }
-
-        div.content {
-        background:#f0f0f0;
-        margin: 0;
-        padding:10px;
-        font-size:.9em;
-        line-height:1.5em;
-        font-family:"Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
-        }
-
-        div.content ul, div.content p {
-        margin:0;
-        padding:3px;
-        }
-
-        div.content ul li {
-        list-style-position:inside;
-        line-height:25px;
-        }
-
-        div.content ul li a {
-        color:#555555;
-        }
-
-        code {
-        overflow:auto;
-        }
-        .bg_top {
-			background: url("http://www.sonda.com/media/media2011/img/fondo-header.jpg") repeat-x scroll 0;
-			width: 100%;
-			height: auto;
-			position: relative;
-			right: 0;
-			top: 0;
-			overflow: hidden;
-			min-width: 1024px;
-		}
-		.header{
-			background-image: url("http://www.sonda.com/media/media2011/img/fondo-new.jpg");
-			background-repeat: repeat-x;
-			height: auto;
-			min-height: 90px;
-			width: 100%;
-		}
-		#newFormName{
-			display: none;
-			position: absolute;
-			top: 40%;
-			left: 35%;
-			height: 100px;
-			width: 300px;
-			text-align: center;
-			z-index: 90002;
-			background-color: #FFFFFF;
-			border: 5px groove #9090dd;
-		}
-		#notices{
-			position: absolute;
-			top: 0;
-			left: 40%;
-			width: 20%;
-			text-align: center;
-			z-index: 90007;
-			cursor: pointer;
-		}
-		}
-		.backWhite{
-			background-color: #FFFFFF;
-		}
-		.loading{
-			position: absolute;
-			display: none;
-			top: 45%;
-		    left: 45%;
-		    z-index: 90008;
-		}
-		.blackout{
-			background-color: #DDDDDD;
-			position: absolute;
-			top: 0;
-			left: 0;
-			height: 100%;
-			width: 100%;
-			opacity: 0.5;
-			z-index: 90001;
-		}
-
-</style>
-
-<body style="">
-<!-- ELEMENTOS FLOTANTES (inicio) -->
-	<div id="newFormName" class="col_3 column">
-		<label for="textNameForm" class="formElement">Nombre: </label>
-		<input id="textNameForm" class="formElement" type="text" />
-		<button id="buttonNameForm" class="formElement">Crear</button>
-		<button id="buttonCancelForm" class="formElement">Cancelar</button>
-	</div>
-	<div id="notices"></div>
-<!-- ELEMENTOS FLOTANTES (fin) -->
-
-<div class="bg_top">
-		<div class='header'>
-			<img src="pic/logo-sonda-white.png" height=60px border=0px>
-		</div>
-	</div>
-
-<!-- left column collapsible -->
-<div id="navigation">
-    <div class="collapsible collapse-close" id="section1">Inicio<span></span></div>
-    <div class="container" style="display: none;">
-        <div class="content">
-            <ul>
-                <li id="newform"><a href="#">Nuevo Formulario</a></li>
-                <li><a href="#">Navegar</a></li>
-                <li><a href="#">Instalar base de datos</a></li>
-            </ul>
-        </div>
-    </div>
+<table style="width: 100%; margin: 0 auto;">
+	
+	<tr>
+		<td><a href="#" id="btnLogin" data-role="button">Iniciar Sesión</a></td>
+	</tr>
+</table>
+</form>
 </div>
-<!-- /left column collapsible -->
+<div id="errorMsg" style="background-color:red;color: #FFFFFF;">Usuario o Contraseña no valida</div>
+</section>
 
-<div id="content">
+<!-- Aqui nuestro dialog con el mensaje de error  -->
+    <section id="pageError" data-role="dialog">
+        <header data-role="header">
+            <h1>Error</h1>
+        </header>
+        <article data-role="content">
+            <p>Usuario o contraseña no valida</p>
+            <a href="#" data-role="button" data-rel="back">Aceptar</a>
+        </article>
+    </section>
 
-<a href="#" id="closeAll" title="Close all">Close All</a> | <a href="#" id="openAll" title="Open All">Open All</a>
-
-</div>
-
-<!-- JS -->
-<script type="text/javascript" async="" src="http://utils.similargroup.com/countryscript?v=3"></script><script type="text/javascript" src="js/jquery.min.js"></script>
-<script type="text/javascript" src="js/highlight.pack.js"></script>
-<script type="text/javascript" src="js/jquery.cookie.js"></script>
-<script type="text/javascript" src="js/jquery.collapsible.min.js"></script>
-
-<script type="text/javascript">
-	var count = 1;
-	function loadMegaTrees(){
-		$.ajax({
-			url: 'ajaxMegaTrees.php',
-			dataType: 'json',
-			timeout: 2500,
-			beforeSend: function(){$('.loading').fadeIn();},
-			success: function(data){
-				//$('#copy').empty();
-				$('#content').empty();
-				$.each( data, function( i, item ) {
-					if(item.deleted == 0){
-						$('#content').append('<div class="page_collapsible collapse-close" id="body-section'+count+'" data-id="'+item.id+'"><table><tr><td scope="row">'+item.name+'</td><td>+++</td></tr></table><span></span></div><div class="container" style="display: none;"><div class="content"><pre class="css"></pre></div></div>');
-						count++;					
-					}
-				});
-				aaaa();
-			}
-		}).fail(function(data) {
-			$('#notices').append('<div class="notice error new"><i class="icon-remove-sign icon-large"></i> Error al acceder a la lista de Grafos<a href="#close" class="icon-remove"></a></div>').hide()
-			$('.new').slideDown().removeClass('new');
-			$('#copy').append('<li><a href="">ERROR</a></li>');
-			$('#edit').append('<li><a href="">ERROR</a></li>');
-		}).always(function(){$('.loading').fadeOut();});
-	}
-	function createNewForm(){
-		$('#newFormName').slideUp();
-		
-		$.ajax({
-			url: 'ajaxTrees.php',
-			dataType: 'json',
-			type: 'POST',
-			data: {
-				name: $('#textNameForm').val(),
-				type : "megatree"
-					},
-			timeout: 2500,
-			beforeSend: function(){$('.loading').fadeIn();},
-			success: function(data){
-				//cargarGrafos();
-				$('#notices').append('<div class="notice success new"><i class="icon-ok icon-large"></i> Nuevo Grafo creado exitosamente<a href="#close" class="icon-remove"></a></div>');
-				$('.new').hide().slideDown().removeClass('new');
-				loadMegaTrees();
-			}
-		}).fail(function(data) {
-			//$('#notices').append('<div class="notice error new"><i class="icon-remove-sign icon-large"></i> Error al Crear el Nuevo Grafo<a href="#close" class="icon-remove"></a></div>');
-			//$('.new').hide().slideDown().removeClass('new');
-			//window.location.reload();
-			console.log( data);
-		}).always(function(){$('.loading').fadeOut();});
-	}
-	function aaaa(){
-		//collapsible management
-        $('.collapsible').collapsible({
-            defaultOpen: 'section1',
-            cookieName: 'nav',
-            speed: 'slow',
-            animateOpen: function (elem, opts) { //replace the standard slideUp with custom function
-                elem.next().slideFadeToggle(opts.speed);
-            },
-            animateClose: function (elem, opts) { //replace the standard slideDown with custom function
-                elem.next().slideFadeToggle(opts.speed);
-            },
-            loadOpen: function (elem) { //replace the standard open state with custom function
-                elem.next().show();
-            },
-            loadClose: function (elem, opts) { //replace the close state with custom function
-                elem.next().hide();
-            }
-        });
-        $('.page_collapsible').collapsible({
-            defaultOpen: 'body_section1',
-            cookieName: 'body2',
-            speed: 'slow',
-            animateOpen: function (elem, opts) { //replace the standard slideUp with custom function
-                elem.next().slideFadeToggle(opts.speed);
-            },
-            animateClose: function (elem, opts) { //replace the standard slideDown with custom function
-                elem.next().slideFadeToggle(opts.speed);
-            },
-            loadOpen: function (elem) { //replace the standard open state with custom function
-                elem.next().show();
-            },
-            loadClose: function (elem, opts) { //replace the close state with custom function
-                elem.next().hide();
-            }
-
-        });
-		
-	}
-    $(document).ready(function() {
-    	loadMegaTrees();
-        //syntax highlighter
-        hljs.tabReplace = '    ';
-        hljs.initHighlightingOnLoad();
-
-        $.fn.slideFadeToggle = function(speed, easing, callback) {
-            return this.animate({opacity: 'toggle', height: 'toggle'}, speed, easing, callback);
-        };
-
-        
-
-        //assign open/close all to functions
-        function openAll() {
-            $('.page_collapsible').collapsible('openAll');
-        }
-        function closeAll() {
-            $('.page_collapsible').collapsible('closeAll');
-        }
-
-        //listen for close/open all
-        $('#closeAll').click(function(event) {
-            event.preventDefault();
-            closeAll();
-
-        });
-        $('#openAll').click(function(event) {
-            event.preventDefault();
-            openAll();
-        });
-        
-        $("#newform").on('click', function(event){
-			$('#newFormName').slideDown();
-		});
-		$('#buttonCancelForm').on('click', function(){
-			$('#newFormName').slideUp();
-			$('.blackout').fadeOut();
-		});
-		$("#textNameForm").keypress(function(event) {
-			if(event.which == 13){
-				console.log("llamo a la función");
-				createNewForm();
-			}
-		});
-		$("#buttonNameForm").on('click', function(event){
-			console.log("llamo a la función");
-			createNewForm();
-		});
-        
-
-    });
-</script>
-<!-- /JS -->
-
-
+<script src="js/cloudnav.js" type="text/javascript"></script>
+<script src="js/jquery.session.js" type="text/javascript"></script>
 </body>
 </html>

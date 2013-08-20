@@ -67,7 +67,7 @@ echo '<hr>';
 echo '<h3>Creando Tabla "trees"</h3>';
 try {
 	DBquery4("CREATE TABLE IF NOT EXISTS `trees` (
-		`id` int(100) NOT NULL AUTO_INCREMENT,
+		`id` int(100) NOT NULL AUTO_INCREMENT ,
 		`name` varchar(50) NOT NULL,
 		`megatree` int(100) NOT NULL,
 		`deleted` tinyint(1) NOT NULL,
@@ -98,6 +98,46 @@ try {
 	echo 'Tabla "megatrees" creada exitosamente';
 } catch (Exception $e) {
 	echo 'Error al crear tabla "megatrees"<br>';
+	echo $e;
+}
+echo '<hr>';
+echo '<h3>Creando Tabla "users"</h3>';
+try {
+	DBquery4("CREATE TABLE IF NOT EXISTS `users` (
+		`id` int(100) NOT NULL AUTO_INCREMENT,
+		`email` varchar(50) NOT NULL,
+		`name` varchar(50),
+		`lastname` varchar(50),
+		`password` varchar(50),
+		`firstaccess` datetime NOT NULL,
+		`lastaccess` datetime NOT NULL,
+		`lang` varchar(50),
+		`modified` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
+		PRIMARY KEY (`id`)
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+	");
+	echo 'Tabla "users" creada exitosamente';
+} catch (Exception $e) {
+	echo 'Error al crear tabla "users"<br>';
+	echo $e;
+}
+echo '<hr>';
+echo '<h3>Creando Tabla "empresas"</h3>';
+try {
+	DBquery4("CREATE TABLE IF NOT EXISTS `empresas` (
+		`id` int(100) NOT NULL AUTO_INCREMENT,
+		`nombre` varchar(50) NOT NULL,
+		`industria` varchar(50),
+		`contactado` varchar(50),
+		`areacontacto` varchar(50),
+		`infolevantamiento` varchar(5000),
+		`modified` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
+		PRIMARY KEY (`id`)
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+	");
+	echo 'Tabla "empresas" creada exitosamente';
+} catch (Exception $e) {
+	echo 'Error al crear tabla "empresas"<br>';
 	echo $e;
 }
 echo '<hr><br>';
