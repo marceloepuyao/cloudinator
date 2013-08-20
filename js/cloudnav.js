@@ -33,6 +33,17 @@ $(document).ready(function(){
     $("#backbutton").on('click', function(){
     	window.location.href = "inicio.html";
 	});
+    $(window).resize(function() {
+		  if($(window).width() < 800 ){
+			  $("#content").css('padding-right', '5%');
+			  $("#content").css('padding-left', '5%');
+			  //alert($(window).width());
+		  }else{
+			  $("#content").css('padding-right', '25%');
+			  $("#content").css('padding-left', '25%');
+		  }
+	
+	});
     $("#btnLogin").click(function(){
         var usu = $("#text-username").val();
         var pass = $("#passwordcloud").val();
@@ -48,8 +59,8 @@ $(document).ready(function(){
             		window.location.href = "nuevaempresa.html";
             		
             	}else{
-            		$.mobile.changePage("levantamiento.html");   
             		setSession(usu, pass, empresa);
+            		$.mobile.changePage("levantamiento.html");   
             	}
 
             }

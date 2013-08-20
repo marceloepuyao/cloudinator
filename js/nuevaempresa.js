@@ -33,7 +33,6 @@ function crearEmpresa(name,industry,contacted,areacontacto,textarea){
 			}
 		}
 	);
-	
 }
 
 $(document).ready(function(){
@@ -46,17 +45,15 @@ $(document).ready(function(){
 	//alert($(window).width() );
 	$(window).resize(function() {
 		  if($(window).width() < 800 ){
-			  $("#content").css('padding-right', 0);
-			  $("#content").css('padding-left', 0);
+			  $("#content").css('padding-right', '5%');
+			  $("#content").css('padding-left', '5%');
 			  //alert($(window).width());
 		  }else{
-			  $("#content").css('padding-right', 25);
-			  $("#content").css('padding-left', 25);
+			  $("#content").css('padding-right', '25%');
+			  $("#content").css('padding-left', '25%');
 		  }
 	
 	});
-	
-	
 	$("#btnNew").on('click', function(){
 		//se checkea si están todos los cambios llenos
 		var name = $("#new-name-empresa").val();
