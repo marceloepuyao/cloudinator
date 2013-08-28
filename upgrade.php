@@ -8,11 +8,11 @@ echo '<center><br><h2>Upgrade Base de datos</h2><br>';
 
 //si existe la tabla cloudinator saco la version de ahí si no la setteo 
 try{
-	$query = 'SELECT * FROM cloudinator';
-	if($datos = DBquery3($query)){
+	try{
+		$query = 'SELECT * FROM cloudinator';
+		$datos = DBquery3($query);
 		$version = mysql_result($datos, 0, 'cloudinator.version');
-
-	}else{
+	}catch(Exception $e){
 		DBquery4("	CREATE TABLE cloudinator (
 					id int(100) not null auto_increment primary key,
 					name varchar(50) NOT NULL,
@@ -20,7 +20,7 @@ try{
 					modified timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP) 
 					ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 		");
-		
+
 		DBquery3("INSERT INTO `cloudinator`.`cloudinator` (`id`, `name`, `version`, `modified`) VALUES 
 			(NULL, 'cloudinator', '2013082600', '".time()."');
 			");
@@ -76,5 +76,5 @@ if($version <  2013082701){
 
 echo '<hr>';
 echo "Todos los cambios han sido realizados";
-echo '</hr>';
-echo '<a href="index.html">Volver</a>';
+echo '</hr></center>';
+echo '<br><br><a href="index.html">Volver</a>';

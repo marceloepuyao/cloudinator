@@ -1,42 +1,37 @@
 <?php
-$mysql_host = "localhost";
-$mysql_user = "root";
-$mysql_password = "";
-$mysql_database = "cloudinator";
+function get_config(){
+	$config = parse_ini_file("config.ini", true);
+	return $config["mysql"];
+}
 
 function DBquery($sql_query){
-	$connection = DBconnect();
+	$connconf = get_config();
+	$connection = mysqli_connect($connconf['mysql_host'], $connconf['mysql_user'], $connconf['mysql_password'], $connconf['mysql_database']);
+
 	// Execute query
-	try{
-		$result = mysqli_query($connection, $sql_query);
-		return $result;
-	}catch(Exception $e){
+	$result = mysqli_query($connection, $sql_query);
+	
+	if($result === false){
+		mysqli_close($connection);
 		throw $e;
 	}
-
-	DBclose_connection($connection);
-}
-function DBconnect(){
-
-	// Create connection
-	$con = mysqli_connect('localhost', 'root', '', 'cloudinator');
-
-	// Check connection
-
-	return $con;
-
-}
-
-function DBclose_connection($con){
-	mysqli_close($con);
+	
+	return $result;
+	mysqli_close($connection);
 }
 
 function DBquery2($query){
-	$link = mysql_connect('localhost', 'root', '');
+	$connconf = get_config();
+	$link = mysql_connect($connconf['mysql_host'], $connconf['mysql_user'], $connconf['mysql_password']);
 
-	mysql_select_db('cloudinator');
+	mysql_select_db($connconf['mysql_database']);
 
 	$result = mysql_query($query);
+
+	if($result === false){
+		mysql_close($link);
+		throw new Exception("Error Processing Query", 1);
+	}
 
 	$datos = array();
 
@@ -56,24 +51,27 @@ function DBquery2($query){
 }
 
 function DBquery3($query){
-	$link = mysql_connect('localhost', 'root', '');
-	mysql_select_db('cloudinator');
-	
-	try{
-		$result = mysql_query($query);
-		return $result;
-	}catch(Exception $e){
-		throw $e;
-	}
+	$connconf = get_config();
+	$link = mysql_connect($connconf['mysql_host'], $connconf['mysql_user'], $connconf['mysql_password']);
+	mysql_select_db($connconf['mysql_database']);
 
+	$result = mysql_query($query);
+
+	if($result === false){
+		mysql_close($link);
+		throw new Exception("Error Processing Query", 1);
+	}
+	return $result;
 	mysql_close($link);
 }
 function DBquery4($query){
-	$link = mysql_connect('localhost', 'root', '');
+	$connconf = get_config();
+	$link = mysql_connect($connconf['mysql_host'], $connconf['mysql_user'], $connconf['mysql_password']);
 
-	mysql_select_db('cloudinator');
+	mysql_select_db($connconf['mysql_database']);
 
-	if(!mysql_query($query)){
+	if(mysql_query($query) === false){
+		mysql_close($link);
 		throw new Exception("Error Processing Query", 1);
 	}
 
