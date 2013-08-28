@@ -77,3 +77,4 @@ if($version <  2013082701){
 echo '<hr>';
 echo "Todos los cambios han sido realizados";
 echo '</hr>';
+echo '<a href="index.html">Volver</a>';

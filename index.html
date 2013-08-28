@@ -145,6 +145,7 @@
 	<div class="blackout loading"></div>
 	<!-- ELEMENTOS FLOTANTES (fin) -->
 
+	<!-- HEADER (inicio)-->
 	<div class="bg_top">
 		<div class='header'>
 			<a href="index.html"><img src="pic/logo-sonda-white.png" height=60px border=0px></a>
@@ -152,8 +153,9 @@
 	</div>
 	
 	<br>
+	<!-- HEADER (fin)-->
 	
-	<!-- MENU FORMULARIOS(inicio) -->
+	<!-- MENU FORMULARIOS (inicio) -->
 	<div class="col_4 column forms">
 		<ul class="menu vertical forms">
 			<li id="forms"><a href="#"><i class="icon-share"></i> Formularios</a>
@@ -169,12 +171,9 @@
 		
 		</ul>
 	</div>
+	<!-- MENU FORMULARIOS (fin) -->
 	
-		
-	
-	
-	<!-- MENU FORMULARIOS(fin) -->
-	
+
 	<!-- MENU SUBFORMS (inicio) -->
 	<div class="col_4 column subforms">
 		<ul class="menu vertical">
@@ -193,10 +192,11 @@
 
 		</ul>
 	</div>
-	
 	<!-- MENU SUBFORMS (fin) -->
 
-	<!-- MENU(inicio) -->
+
+	<!-- MENU (inicio) -->
+	<!--
 	<div class="col_4 column fuck">
 		<ul class="menu vertical">
 			<li id="new"><a href="#"><i class="icon-file"></i> Nuevo Subformulario</a></li>
@@ -214,7 +214,7 @@
 					<li><a href="#">Coming Soon</a></li>
 				</ul>
 			</li>
-		<li><a href=""><i class="icon-wrench"></i> Administracion (DEVELOPMENT ONLY)</a>
+		<li><a href=""><i class="icon-wrench"></i> Administracion</a>
 			<ul>
 			<li><a href="installDB.php">Instalar DB</a></li>
 			<li><a href="installDatos.php">Instalar Datos (Dummy)</a></li>
@@ -224,12 +224,13 @@
 		</li>
 		</ul>
 	</div>
+	-->
 	<!-- MENU (fin) -->
 
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<script src="kickstart/js/kickstart.js"></script> <!-- KICKSTART -->
-	<script type="text/javascript" src="http://webcursos.uai.cl/jira/s/es_ES-jovvqt-418945332/850/3/1.2.9/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?collectorId=2ab5c7d9"></script>
-<style type="text/css">.atlwdg-trigger.atlwdg-RIGHT{background-color:red;top:70%;z-index:10001;}</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> <!-- JQUERY (librerias javascript)-->
+	<script src="kickstart/js/kickstart.js"></script> <!-- KICKSTART (js del css) -->
+	<script type="text/javascript" src="http://webcursos.uai.cl/jira/s/es_ES-jovvqt-418945332/850/3/1.2.9/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?collectorId=2ab5c7d9"></script> <!-- JIRA (para reportar errores)-->
+	<style type="text/css">.atlwdg-trigger.atlwdg-RIGHT{background-color:red;top:70%;z-index:10001;}</style>
 	
 	<script>
 	function cargarGrafos(){
@@ -494,12 +495,12 @@
 			console.log("el id es 1");
 			cargarGrafos();
 			$("div.col_4.column.forms").remove();
-			$("div.col_4.column.fuck").remove();
+			//$("div.col_4.column.fuck").remove();
 			
 		}else{
 			
 			$("div.col_4.column.subforms").remove();
-			$("div.col_4.column.fuck").remove();
+			//$("div.col_4.column.fuck").remove();
 		}
 
 		$("#newform").on('click', function(event){
