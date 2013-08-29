@@ -103,6 +103,9 @@
 		.formElement{
 			margin: 5px;
 		}
+		.formPopUp{
+			height: auto;
+		}
 	</style>
 	<title>Cloudinator - Inicio</title>
 </head>
@@ -110,32 +113,37 @@
 	<!-- ELEMENTOS FLOTANTES (inicio) -->
 	<div id="notices"></div>
 
-	<div id="newTreeName" class="col_3 column">
+	<div id="newTreeName" class="col_3 column formPopUp">
 		<label for="textName" class="formElement">Nombre: </label>
 		<input id="textName" class="formElement" type="text" />
+		<br>
 		<button id="buttonName" class="formElement">Crear</button>
 		<button id="buttonCancel" class="formElement">Cancelar</button>
 	</div>
-	<div id="copyTreeName" class="col_3 column" data-copyid="">
+	<div id="copyTreeName" class="col_3 column formPopUp" data-copyid="">
 		<label for="textNameCopy" class="formElement">Nombre: </label>
 		<input id="textNameCopy" class="formElement" type="text" />
+		<br>
 		<button id="buttonNameCopy" class="formElement">Crear</button>
 		<button id="buttonCancelCopy" class="formElement">Cancelar</button>
 	</div>
-	<div id="cloneFormName" class="col_3 column" data-copyid="0">
+	<div id="cloneFormName" class="col_3 column formPopUp" data-copyid="0">
 		<label for="textNameCloneForm" class="formElement">Nombre: </label>
 		<input id="textNameCloneForm" class="formElement" type="text" />
 		<label for="formlist" class="formElement">Formulario: </label>
 		<select id="formlist">
 			  <option></option>
 		</select>
+		<br>
 		<button id="buttonNameCloneForm" class="formElement">Crear</button>
 		<button id="buttonCancelCloneForm" class="formElement">Cancelar</button>
+		<div class="clear"></div>
 	</div>
 	
-	<div id="newFormName" class="col_3 column">
+	<div id="newFormName" class="col_3 column formPopUp">
 		<label for="textNameForm" class="formElement">Nombre: </label>
 		<input id="textNameForm" class="formElement" type="text" />
+		<br>
 		<button id="buttonNameForm" class="formElement">Crear</button>
 		<button id="buttonCancelForm" class="formElement">Cancelar</button>
 	</div>
@@ -163,7 +171,7 @@
 					</ul>
 			</li>
 			<li id="newform"><a href="#"><i class="icon-file"></i> Nuevo Formulario</a>
-			<li><a href=""><i class="icon-wrench"></i> Administracion (DEVELOPMENT ONLY)</a>
+			<li><a href=""><i class="icon-wrench"></i> Administracion</a>
 				<ul>
 					<li><a href="upgrade.php">Upgrade</a></li>
 				</ul>
@@ -193,39 +201,6 @@
 		</ul>
 	</div>
 	<!-- MENU SUBFORMS (fin) -->
-
-
-	<!-- MENU (inicio) -->
-	<!--
-	<div class="col_4 column fuck">
-		<ul class="menu vertical">
-			<li id="new"><a href="#"><i class="icon-file"></i> Nuevo Subformulario</a></li>
-			<li><a href=""><i class="icon-edit"></i> Editar Subformulario</a>
-				<ul id="edit">
-				</ul>
-			</li>
-			<li id="new"><a href="#"><i class="icon-file"></i> Nuevo Grafo</a></li>
-   			<li><a href=""><i class="icon-copy"></i> Nuevo Grafo a partir de uno ya existente</a>
-      			<ul id="copy">
-      			</ul>
-	   		</li> 
-			<li><a href=""><i class="icon-share"></i> Recorrer Subformulario</a>
-				<ul id="do">
-					<li><a href="#">Coming Soon</a></li>
-				</ul>
-			</li>
-		<li><a href=""><i class="icon-wrench"></i> Administracion</a>
-			<ul>
-			<li><a href="installDB.php">Instalar DB</a></li>
-			<li><a href="installDatos.php">Instalar Datos (Dummy)</a></li>
-			
-			<li><a href="installDatos.php">Usuarios</a></li>
-			</ul>
-		</li>
-		</ul>
-	</div>
-	-->
-	<!-- MENU (fin) -->
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> <!-- JQUERY (librerias javascript)-->
 	<script src="kickstart/js/kickstart.js"></script> <!-- KICKSTART (js del css) -->
@@ -495,12 +470,10 @@
 			console.log("el id es 1");
 			cargarGrafos();
 			$("div.col_4.column.forms").remove();
-			//$("div.col_4.column.fuck").remove();
 			
 		}else{
 			
 			$("div.col_4.column.subforms").remove();
-			//$("div.col_4.column.fuck").remove();
 		}
 
 		$("#newform").on('click', function(event){

@@ -36,8 +36,8 @@ try{
 
 
 if($version < 2013082700){
-	//aqui se escribe el código
 	try{
+		//aqui se escribe el código
 		DBquery3("INSERT INTO `cloudinator`.`users` (`id`, `email`, `name`, `lastname`, `password`, `firstaccess` , `lastaccess`, `lang`, `modified`) VALUES 
 			(NULL, 'admin', 'Sr', 'Admin', 'pepito.P0', '".time()."', '".time()."' , 'es', '".time()."'  );
 			");
@@ -51,12 +51,9 @@ if($version < 2013082700){
 	}catch (Exception $e){
 		echo "Error en actualización<br>";
 	}
-	
-	
 }
 
 if($version <  2013082701){
-	
 	try{
 		//acá escribo el script de actualización
 		
@@ -71,7 +68,6 @@ if($version <  2013082701){
 	}catch (Exception $e){
 		echo "Error en actualización<br>";
 	}
-	
 }
 
 echo '<hr>';
