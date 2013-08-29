@@ -10,24 +10,24 @@ if(isset($_POST['action'])) {
 		try {
 			$id = $_POST['id'];
 			$sqltreescount = "SELECT count(id) FROM trees WHERE megatree=$id";
-			$data1 = DBquery3($sqltreescount);
+			$data1 = DBQuery($sqltreescount);
 			$maxtrees = mysql_result($data1, 0);
 			
 			$sqltrees = "SELECT id FROM trees WHERE megatree=$id";
-			$data2 = DBquery3($sqltrees);
+			$data2 = DBQuery($sqltrees);
 			
 			for ($i = 0; $i < $maxtrees; $i++) {
 				$idtree= mysql_result($data2, $i, 'trees.id');
 				$querydeletenodes = "DELETE FROM nodos WHERE tree=$idtree";	
-				DBquery3($querydeletenodes);
+				DBQuery($querydeletenodes);
 			}
 			//TODO:falta borrar links
 			
 			$querytree = "DELETE FROM trees WHERE megatree=$id;";
-			DBquery3($querytree);
+			DBQuery($querytree);
 			
 			$querymegatree = "DELETE FROM megatrees WHERE id=$id;";
-			DBquery3($querymegatree);
+			DBQuery($querymegatree);
 			
 			$data = array(
 			'result' => 'true',

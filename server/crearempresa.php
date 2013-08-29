@@ -15,7 +15,7 @@ try {
 	
 	$insertempresa = "INSERT INTO `cloudinator`.`empresas` (`id`, `nombre`, `industria`, `contactado`, `areacontacto`, `infolevantamiento`, `modified`) VALUES 
 				(NULL, '$name', '$industry', '$contacted', '$areacontacto', '$textarea', $modified );";
-	DBquery3($insertempresa);
+	DBQuery($insertempresa);
 	
 	$data = array(
 				'result' => true

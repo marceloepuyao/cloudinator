@@ -10,10 +10,10 @@ echo '<center><br><h2>Upgrade Base de datos</h2><br>';
 try{
 	try{
 		$query = 'SELECT * FROM cloudinator';
-		$datos = DBquery3($query);
+		$datos = DBQuery($query);
 		$version = mysql_result($datos, 0, 'cloudinator.version');
 	}catch(Exception $e){
-		DBquery3("	CREATE TABLE cloudinator (
+		DBQuery("	CREATE TABLE cloudinator (
 					id int(100) not null auto_increment primary key,
 					name varchar(50) NOT NULL,
 					version varchar(25) NOT NULL,
@@ -21,7 +21,7 @@ try{
 					ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 		");
 
-		DBquery3("INSERT INTO `cloudinator`.`cloudinator` (`id`, `name`, `version`, `modified`) VALUES 
+		DBQuery("INSERT INTO `cloudinator`.`cloudinator` (`id`, `name`, `version`, `modified`) VALUES 
 			(NULL, 'cloudinator', '2013082600', '".time()."');
 			");
 		echo '<hr>';
@@ -38,11 +38,11 @@ try{
 if($version < 2013082700){
 	try{
 		//aqui se escribe el código
-		DBquery3("INSERT INTO `cloudinator`.`users` (`id`, `email`, `name`, `lastname`, `password`, `firstaccess` , `lastaccess`, `lang`, `modified`) VALUES 
+		DBQuery("INSERT INTO `cloudinator`.`users` (`id`, `email`, `name`, `lastname`, `password`, `firstaccess` , `lastaccess`, `lang`, `modified`) VALUES 
 			(NULL, 'admin', 'Sr', 'Admin', 'pepito.P0', '".time()."', '".time()."' , 'es', '".time()."'  );
 			");
 		//actualiazo la versión
-		DBquery3("UPDATE cloudinator SET version = '2013082700' WHERE id = 1");
+		DBQuery("UPDATE cloudinator SET version = '2013082700' WHERE id = 1");
 		
 		echo '<hr>';
 		echo 'Se ha agregado un usuario para el navegador cloudinator';
@@ -58,7 +58,7 @@ if($version <  2013082701){
 		//acá escribo el script de actualización
 		
 		//actualiazo la versión
-		DBquery3("UPDATE cloudinator SET version = '2013082701' WHERE id = 1");
+		DBQuery("UPDATE cloudinator SET version = '2013082701' WHERE id = 1");
 		
 		//dejo mensaje
 		echo '<hr>';

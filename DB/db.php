@@ -25,7 +25,7 @@ function DBQueryReturnArray($query){
 	return $datos;
 }
 
-function DBquery3($query){
+function DBQuery($query){
 	$connconf = get_config();
 	$link = mysql_connect($connconf['mysql_host'], $connconf['mysql_user'], $connconf['mysql_password']);
 	mysql_select_db($connconf['mysql_database']);

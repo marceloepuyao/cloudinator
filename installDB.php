@@ -6,7 +6,7 @@ echo '<hr>';
 //borrar tablas si existen
 echo '<h3>Borrando DB "cloudinator"</h3>';
 try {
-	DBquery3('DROP DATABASE cloudinator');
+	DBQuery('DROP DATABASE cloudinator');
 	echo 'Se ha borrado la database "cloudinator" exitosamente';
 } catch (Exception $e) {
 	echo 'Se intento borrar la database "cloudinator", pero probablemente no existia, ignore este error<br>';
@@ -16,7 +16,7 @@ echo '<hr>';
 //crear database "cloudinator"
 echo '<h3>Creando DB "cloudinator"</h3>';
 try {
-	DBquery3('CREATE DATABASE cloudinator CHARACTER SET utf8 COLLATE utf8_general_ci');
+	DBQuery('CREATE DATABASE cloudinator CHARACTER SET utf8 COLLATE utf8_general_ci');
 	echo 'Base de datos "cloudinator" creada exitosamente';
 } catch (Exception $e) {
 	echo 'Error al crear la base de datos "cloudinator", por favor creela manualmente<br>';
@@ -26,7 +26,7 @@ echo '<hr>';
 //crear tabla "nodos"
 echo '<h3>Creando Tabla "nodos"</h3>';
 try {
-	DBquery3("CREATE TABLE nodos (
+	DBQuery("CREATE TABLE nodos (
 		id int(100) not null auto_increment primary key,
 		tree int(50) NOT NULL,
 		name varchar(50) NOT NULL,
@@ -48,7 +48,7 @@ echo '<hr>';
 //crear tabla "links" id, name, source, target
 echo '<h3>Creando Tabla "links"</h3>';
 try {
-	DBquery3("CREATE TABLE links (
+	DBQuery("CREATE TABLE links (
 		id int(100) not null auto_increment primary key,
 		tree int(50) NOT NULL,
 		name varchar(50),
@@ -66,7 +66,7 @@ echo '<hr>';
 //crear tabla "trees" id, name, source, target
 echo '<h3>Creando Tabla "trees"</h3>';
 try {
-	DBquery3("CREATE TABLE IF NOT EXISTS `trees` (
+	DBQuery("CREATE TABLE IF NOT EXISTS `trees` (
 		`id` int(100) NOT NULL AUTO_INCREMENT ,
 		`name` varchar(50) NOT NULL,
 		`megatree` int(100) NOT NULL,
@@ -85,7 +85,7 @@ echo '<hr>';
 //crear tabla "megatrees" id, name, source, target
 echo '<h3>Creando Tabla "megatrees"</h3>';
 try {
-	DBquery3("CREATE TABLE IF NOT EXISTS `megatrees` (
+	DBQuery("CREATE TABLE IF NOT EXISTS `megatrees` (
 		`id` int(100) NOT NULL AUTO_INCREMENT,
 		`name` varchar(50) NOT NULL,
 		`chain` varchar(1000),
@@ -103,7 +103,7 @@ try {
 echo '<hr>';
 echo '<h3>Creando Tabla "users"</h3>';
 try {
-	DBquery3("CREATE TABLE IF NOT EXISTS `users` (
+	DBQuery("CREATE TABLE IF NOT EXISTS `users` (
 		`id` int(100) NOT NULL AUTO_INCREMENT,
 		`email` varchar(50) NOT NULL,
 		`name` varchar(50),
@@ -124,7 +124,7 @@ try {
 echo '<hr>';
 echo '<h3>Creando Tabla "empresas"</h3>';
 try {
-	DBquery3("CREATE TABLE IF NOT EXISTS `empresas` (
+	DBQuery("CREATE TABLE IF NOT EXISTS `empresas` (
 		`id` int(100) NOT NULL AUTO_INCREMENT,
 		`nombre` varchar(50) NOT NULL,
 		`industria` varchar(50),

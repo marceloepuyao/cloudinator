@@ -8,7 +8,7 @@ try {
 		 
 	$sql = "SELECT * FROM empresas";
 	 
-	if ($empresas = DBquery3($sql)){
+	if ($empresas = DBQuery($sql)){
 	    if (mysql_num_rows($empresas) > 0){
 	    	
 	        $data = array(
