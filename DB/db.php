@@ -1,7 +1,20 @@
 <?php
 function get_config(){
-	$config = parse_ini_file("./config.ini", true);
+	$config = parse_ini_file("../config.ini", true);
 	return $config["mysql"];
+}
+
+function DBQuery($query){
+	$connconf = get_config();
+	$link = mysql_connect($connconf['mysql_host'], $connconf['mysql_user'], $connconf['mysql_password']);
+	mysql_select_db($connconf['mysql_database']);
+	$result = mysql_query($query);
+	if($result === false){
+		mysql_close($link);
+		throw new Exception("Error Processing Query", 1);
+	}
+	return $result;
+	mysql_close($link);
 }
 
 function DBQueryReturnArray($query){
@@ -23,18 +36,5 @@ function DBQueryReturnArray($query){
 	mysql_free_result($result);
 	mysql_close($link);
 	return $datos;
-}
-
-function DBQuery($query){
-	$connconf = get_config();
-	$link = mysql_connect($connconf['mysql_host'], $connconf['mysql_user'], $connconf['mysql_password']);
-	mysql_select_db($connconf['mysql_database']);
-	$result = mysql_query($query);
-	if($result === false){
-		mysql_close($link);
-		throw new Exception("Error Processing Query", 1);
-	}
-	return $result;
-	mysql_close($link);
 }
 ?>

@@ -1,9 +1,9 @@
 <?php
 
-require_once('JSON.php');
-require_once('DB/db.php');
+require_once('../JSON.php');
+require_once('db.php');
 
-echo '<a href="index.html">Volver</a>';
+echo '<a href="../index.html">Volver</a>';
 echo '<center><br><h2>Upgrade Base de datos</h2><br>';
 
 //si existe la tabla cloudinator saco la version de ahí si no la setteo 
@@ -73,4 +73,4 @@ if($version <  2013082701){
 echo '<hr>';
 echo "Todos los cambios han sido realizados";
 echo '</hr></center>';
-echo '<br><br><a href="index.html">Volver</a>';
+echo '<br><br><a href="../index.html">Volver</a>';
