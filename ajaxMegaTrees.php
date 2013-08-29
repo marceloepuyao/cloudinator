@@ -40,7 +40,7 @@ if(isset($_POST['action'])) {
 		try{
 			$id = $_POST['id'];
 			$query = "SELECT * FROM  megatrees WHERE id = $id";
-			$datos = DBquery2($query);
+			$datos = DBQueryReturnArray($query);
 		
 			$salida = $json->encode($datos);
 			
@@ -55,7 +55,7 @@ if(isset($_POST['action'])) {
 
 	try {	
 		$query = 'SELECT * FROM  megatrees';
-		$datos = DBquery2($query);
+		$datos = DBQueryReturnArray($query);
 		
 		$salida = $json->encode($datos);
 	

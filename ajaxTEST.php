@@ -20,7 +20,7 @@ $json = new Services_JSON();
 
 try {	
 	$query = 'SELECT * FROM nodos';
-	$datos = DBquery2($query);
+	$datos = DBQueryReturnArray($query);
 	$salida = $json->encode($datos);
 
 } catch (Exception $e) {

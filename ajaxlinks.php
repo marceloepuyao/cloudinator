@@ -6,7 +6,7 @@ $json = new Services_JSON();
 
 try {	
 	$query = "SELECT * FROM links WHERE tree='".$_POST['tree']."'";
-	$datos = DBquery2($query);
+	$datos = DBQueryReturnArray($query);
 	$salida = $json->encode($datos);
 
 } catch (Exception $e) {

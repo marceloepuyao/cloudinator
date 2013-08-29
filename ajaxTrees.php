@@ -145,7 +145,7 @@ else if(isset($_POST['clonename'])) {
 
 	try {	
 		$query = 'SELECT * FROM trees';
-		$datos = DBquery2($query);
+		$datos = DBQueryReturnArray($query);
 		$salida = $json->encode($datos);
 
 	} catch (Exception $e) {
