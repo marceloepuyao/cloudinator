@@ -14,7 +14,7 @@ if (isset($_GET[''])){
 //Creo en objeto
 
 require_once('JSON.php');
-require_once('db.php');
+require_once('DB/db.php');
 
 $json = new Services_JSON();
 

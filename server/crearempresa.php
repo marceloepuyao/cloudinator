@@ -1,5 +1,5 @@
 <?php
-require_once('../db.php');
+require_once('../DB/db.php');
  require_once('../JSON.php');
 
 $json = new Services_JSON();
@@ -15,7 +15,7 @@ try {
 	
 	$insertempresa = "INSERT INTO `cloudinator`.`empresas` (`id`, `nombre`, `industria`, `contactado`, `areacontacto`, `infolevantamiento`, `modified`) VALUES 
 				(NULL, '$name', '$industry', '$contacted', '$areacontacto', '$textarea', $modified );";
-	DBquery4($insertempresa);
+	DBquery3($insertempresa);
 	
 	$data = array(
 				'result' => true

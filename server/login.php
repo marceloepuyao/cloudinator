@@ -1,6 +1,6 @@
 <?php
 
-require_once('../db.php');
+require_once('../DB/db.php');
  require_once('../JSON.php');
 
 $json = new Services_JSON();

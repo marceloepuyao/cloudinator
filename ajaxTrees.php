@@ -1,6 +1,6 @@
 <?php
 require_once('JSON.php');
-require_once('db.php');
+require_once('DB/db.php');
 
 $json = new Services_JSON();
 
@@ -10,7 +10,7 @@ if(isset($_POST['type'])) {
 			(NULL, '$_POST[name]', NULL, 0, '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."' );
 			");
 
-		//$data = DBquery4("SELECT id FROM trees WHERE name = '$_POST[name]'");
+		//$data = DBquery3("SELECT id FROM trees WHERE name = '$_POST[name]'");
 		//print($json->encode(mysql_result($data, 0)));
 		$data = array(
 		'result' => 'true',
@@ -54,7 +54,7 @@ else if(isset($_POST['clonename'])) {
 		$query = "INSERT INTO `cloudinator`.`nodos` (`id`, `tree`, `name`, `type`, `posx`, `posy`, `metaname`, `metadata`, `metatype`) VALUES 
 				(NULL, $idnew, '$name', '$type', '$posx', '$posy', null, null, null);
 				";
-		DBquery4($query);
+		DBquery3($query);
 		
 		$num++;
 	}
@@ -86,7 +86,7 @@ else if(isset($_POST['clonename'])) {
 		$query = "INSERT INTO `cloudinator`.`links` (`id`, `tree`, `name`, `source`, `target`) VALUES 
 				(NULL, $idnew, '', '$idnewsource', '$idnewtarget');";
 				
-		DBquery4($query);
+		DBquery3($query);
 		
 	}
 	
@@ -107,7 +107,7 @@ else if(isset($_POST['clonename'])) {
 		);
 		print($json->encode($data));
 
-		//$data = DBquery4("SELECT id FROM trees WHERE name = '$_POST[name]'");
+		//$data = DBquery3("SELECT id FROM trees WHERE name = '$_POST[name]'");
 		//print($json->encode(mysql_result($data, 0)));
 	} catch (Exception $e) {
 		print($e);

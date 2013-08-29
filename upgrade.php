@@ -1,7 +1,7 @@
 <?php
 
 require_once('JSON.php');
-require_once('db.php');
+require_once('DB/db.php');
 
 echo '<a href="index.html">Volver</a>';
 echo '<center><br><h2>Upgrade Base de datos</h2><br>';
@@ -13,7 +13,7 @@ try{
 		$datos = DBquery3($query);
 		$version = mysql_result($datos, 0, 'cloudinator.version');
 	}catch(Exception $e){
-		DBquery4("	CREATE TABLE cloudinator (
+		DBquery3("	CREATE TABLE cloudinator (
 					id int(100) not null auto_increment primary key,
 					name varchar(50) NOT NULL,
 					version varchar(25) NOT NULL,

@@ -1,6 +1,6 @@
 <?php
 require_once('JSON.php');
-require_once('db.php');
+require_once('DB/db.php');
 
 $json = new Services_JSON();
 
@@ -19,15 +19,15 @@ if(isset($_POST['action'])) {
 			for ($i = 0; $i < $maxtrees; $i++) {
 				$idtree= mysql_result($data2, $i, 'trees.id');
 				$querydeletenodes = "DELETE FROM nodos WHERE tree=$idtree";	
-				DBquery4($querydeletenodes);
+				DBquery3($querydeletenodes);
 			}
 			//TODO:falta borrar links
 			
 			$querytree = "DELETE FROM trees WHERE megatree=$id;";
-			DBquery4($querytree);
+			DBquery3($querytree);
 			
 			$querymegatree = "DELETE FROM megatrees WHERE id=$id;";
-			DBquery4($querymegatree);
+			DBquery3($querymegatree);
 			
 			$data = array(
 			'result' => 'true',

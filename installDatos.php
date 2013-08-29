@@ -1,5 +1,5 @@
 <?php
-require_once('db.php');
+require_once('DB/db.php');
 echo '<a href="index.html">Volver</a>';
 echo '<center><br><h2>Instalacion de datos</h2><br>';
 echo '<hr>';
