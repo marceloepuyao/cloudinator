@@ -1,6 +1,9 @@
 <?php
 function get_config(){
+
+	//TODO hay que arreglar la llamada a ../config.ini, por que si se esta en un nivel distinto, no encuentra el archivo
 	$config = parse_ini_file("../config.ini", true);
+
 	return $config["mysql"];
 }
 

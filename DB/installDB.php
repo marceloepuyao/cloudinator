@@ -101,6 +101,7 @@ try {
 	echo $e;
 }
 echo '<hr>';
+//crear tabla "users"
 echo '<h3>Creando Tabla "users"</h3>';
 try {
 	DBQuery("CREATE TABLE IF NOT EXISTS `users` (
@@ -122,6 +123,7 @@ try {
 	echo $e;
 }
 echo '<hr>';
+//Crear tabla "empresas"
 echo '<h3>Creando Tabla "empresas"</h3>';
 try {
 	DBQuery("CREATE TABLE IF NOT EXISTS `empresas` (

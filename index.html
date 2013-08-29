@@ -156,7 +156,7 @@
 	<!-- HEADER (inicio)-->
 	<div class="bg_top">
 		<div class='header'>
-			<a href="index.html"><img src="pic/logo-sonda-white.png" height=60px border=0px></a>
+			<a href="index.html"><img src="content/logo-sonda-white.png" height=60px border=0px></a>
 		</div>
 	</div>
 	
@@ -211,7 +211,7 @@
 	function cargarGrafos(){
 		
 		$.ajax({
-			url: 'ajaxTrees.php',
+			url: '/cloudinator/ajax/ajaxTrees.php',
 			dataType: 'json',
 			timeout: 2500,
 			beforeSend: function(){$('.loading').fadeIn();},
@@ -236,7 +236,7 @@
 	function loadMegaTrees(){
 		
 		$.ajax({
-			url: 'ajaxMegaTrees.php',
+			url: '/cloudinator/ajax/ajaxMegaTrees.php',
 			dataType: 'json',
 			timeout: 2500,
 			beforeSend: function(){$('.loading').fadeIn();},
@@ -268,7 +268,7 @@
 		$('#copyTreeName').slideUp();
 		
 					$.ajax({
-						url: 'ajaxTrees.php',
+						url: '/cloudinator/ajax/ajaxTrees.php',
 						dataType: 'json',
 						type: 'POST',
 						data: {
@@ -296,7 +296,7 @@
 	function enviarForm(){
 		$('#newTreeName').slideUp();
 		$.ajax({
-			url: 'ajaxTrees.php',
+			url: '/cloudinator/ajax/ajaxTrees.php',
 			dataType: 'json',
 			timeout: 2500,
 			beforeSend: function(){$('.loading').fadeIn();},
@@ -309,7 +309,7 @@
 				});
 				if(checker == 0){
 					$.ajax({
-						url: 'ajaxTrees.php',
+						url: '/cloudinator/ajax/ajaxTrees.php',
 						dataType: 'json',
 						type: 'POST',
 						data: {
@@ -348,7 +348,7 @@
 		$('#newFormName').slideUp();
 		
 		$.ajax({
-			url: 'ajaxTrees.php',
+			url: '/cloudinator/ajax/ajaxTrees.php',
 			dataType: 'json',
 			type: 'POST',
 			data: {
@@ -389,7 +389,7 @@
 	function deleteform(){
 		console.log("entro a deleteform");
 		$.ajax({
-			url: 'ajaxMegaTrees.php',
+			url: '/cloudinator/ajax/ajaxMegaTrees.php',
 			dataType: 'json',
 			type: 'POST',
 			data: {
@@ -411,7 +411,7 @@
 	function setNameToForm(){
 		
 		$.ajax({
-			url: 'ajaxMegaTrees.php',
+			url: '/cloudinator/ajax/ajaxMegaTrees.php',
 			dataType: 'json',
 			type: 'POST',
 			data: {
@@ -436,7 +436,7 @@
 	function clonarForm(){
 		
 		$.ajax({
-			url: 'ajaxMegaTrees.php',
+			url: '/cloudinator/ajax/ajaxMegaTrees.php',
 			dataType: 'json',
 			type: 'POST',
 			data: {

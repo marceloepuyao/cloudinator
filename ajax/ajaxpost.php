@@ -1,6 +1,6 @@
 <?php
-require_once('JSON.php');
-require_once('DB/db.php');
+require_once('../JSON.php');
+require_once('../DB/db.php');
 $json = new Services_JSON();
 
 if( array_key_exists('getIdFromName', $_POST)){
