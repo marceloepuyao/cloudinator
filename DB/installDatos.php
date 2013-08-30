@@ -1,12 +1,12 @@
 <?php
 require_once('db.php');
-echo '<a href="index.html">Volver</a>';
+echo '<a href="../index.html">Volver</a>';
 echo '<center><br><h2>Instalacion de datos</h2><br>';
 echo '<hr>';
 //borrar tablas si existen
 echo '<h4>Creando datos en "nodes"</h3>';
 try {
-	DBquery3("INSERT INTO `cloudinator`.`nodos` (`id`, `tree`, `name`, `type`, `posx`, `posy`, `metaname`, `metadata`, `metatype`) VALUES 
+	DBQuery("INSERT INTO `cloudinator`.`nodos` (`id`, `tree`, `name`, `type`, `posx`, `posy`, `metaname`, `metadata`, `metatype`) VALUES 
 		(NULL, 1, '¿Qué servicio desea probar sobre Cloud?', 'condition', 10, 200, null, null, null),
 		(NULL, 1, '¿Cómo se desea comunicar entre su POC y su Cloud?', 'condition', 500, 200, null, null, null),
 		(NULL, 1, '¿Qué tipo de conexión desea?', 'condition', 1000, 200, null, null, null),
@@ -25,7 +25,7 @@ try {
 echo '<hr>';
 echo '<h4>Creando datos en "links"</h3>';
 try {
-	DBquery3("INSERT INTO `cloudinator`.`links` (`id`, `tree`, `name`, `source`, `target`) VALUES 
+	DBQuery("INSERT INTO `cloudinator`.`links` (`id`, `tree`, `name`, `source`, `target`) VALUES 
 		(NULL, 1, '', 1, 6),
 		(NULL, 1, '', 1, 7),
 		(NULL, 1, '', 1, 8),
@@ -39,7 +39,7 @@ try {
 echo '<hr>';
 echo '<h4>Creando datos en "trees"</h3>';
 try {
-	DBquery3("INSERT INTO `cloudinator`.`trees` (`id`, `name`, `deleted`, `created`) VALUES 
+	DBQuery("INSERT INTO `cloudinator`.`trees` (`id`, `name`, `deleted`, `created`) VALUES 
 		(NULL, 'POC', 0, '".date("Y-m-d H:i:s")."'),
 		(NULL, 'ej. grafo 1', 0, '".date("Y-m-d H:i:s")."'),
 		(NULL, 'ej. grafo 2', 0, '".date("Y-m-d H:i:s")."'),
@@ -52,5 +52,5 @@ try {
 }
 echo '<hr><br>';
 echo '<h2>La instalacion a finalizado</h2></center>';
-echo '<a href="index.html">Volver</a>';
+echo '<a href="../index.html">Volver</a>';
 ?>

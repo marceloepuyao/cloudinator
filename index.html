@@ -103,6 +103,9 @@
 		.formElement{
 			margin: 5px;
 		}
+		.formPopUp{
+			height: auto;
+		}
 	</style>
 	<title>Cloudinator - Inicio</title>
 </head>
@@ -110,32 +113,37 @@
 	<!-- ELEMENTOS FLOTANTES (inicio) -->
 	<div id="notices"></div>
 
-	<div id="newTreeName" class="col_3 column">
+	<div id="newTreeName" class="col_3 column formPopUp">
 		<label for="textName" class="formElement">Nombre: </label>
 		<input id="textName" class="formElement" type="text" />
+		<br>
 		<button id="buttonName" class="formElement">Crear</button>
 		<button id="buttonCancel" class="formElement">Cancelar</button>
 	</div>
-	<div id="copyTreeName" class="col_3 column" data-copyid="">
+	<div id="copyTreeName" class="col_3 column formPopUp" data-copyid="">
 		<label for="textNameCopy" class="formElement">Nombre: </label>
 		<input id="textNameCopy" class="formElement" type="text" />
+		<br>
 		<button id="buttonNameCopy" class="formElement">Crear</button>
 		<button id="buttonCancelCopy" class="formElement">Cancelar</button>
 	</div>
-	<div id="cloneFormName" class="col_3 column" data-copyid="0">
+	<div id="cloneFormName" class="col_3 column formPopUp" data-copyid="0">
 		<label for="textNameCloneForm" class="formElement">Nombre: </label>
 		<input id="textNameCloneForm" class="formElement" type="text" />
 		<label for="formlist" class="formElement">Formulario: </label>
 		<select id="formlist">
 			  <option></option>
 		</select>
+		<br>
 		<button id="buttonNameCloneForm" class="formElement">Crear</button>
 		<button id="buttonCancelCloneForm" class="formElement">Cancelar</button>
+		<div class="clear"></div>
 	</div>
 	
-	<div id="newFormName" class="col_3 column">
+	<div id="newFormName" class="col_3 column formPopUp">
 		<label for="textNameForm" class="formElement">Nombre: </label>
 		<input id="textNameForm" class="formElement" type="text" />
+		<br>
 		<button id="buttonNameForm" class="formElement">Crear</button>
 		<button id="buttonCancelForm" class="formElement">Cancelar</button>
 	</div>
@@ -145,15 +153,17 @@
 	<div class="blackout loading"></div>
 	<!-- ELEMENTOS FLOTANTES (fin) -->
 
+	<!-- HEADER (inicio)-->
 	<div class="bg_top">
 		<div class='header'>
-			<a href="index.html"><img src="pic/logo-sonda-white.png" height=60px border=0px></a>
+			<a href="index.html"><img src="content/logo-sonda-white.png" height=60px border=0px></a>
 		</div>
 	</div>
 	
 	<br>
+	<!-- HEADER (fin)-->
 	
-	<!-- MENU FORMULARIOS(inicio) -->
+	<!-- MENU FORMULARIOS (inicio) -->
 	<div class="col_4 column forms">
 		<ul class="menu vertical forms">
 			<li id="forms"><a href="#"><i class="icon-share"></i> Formularios</a>
@@ -161,20 +171,17 @@
 					</ul>
 			</li>
 			<li id="newform"><a href="#"><i class="icon-file"></i> Nuevo Formulario</a>
-			<li><a href=""><i class="icon-wrench"></i> Administracion (DEVELOPMENT ONLY)</a>
+			<li><a href=""><i class="icon-wrench"></i> Administracion</a>
 				<ul>
-					<li><a href="upgrade.php">Upgrade</a></li>
+					<li><a href="DB/upgrade.php">Upgrade</a></li>
 				</ul>
 			</li>
 		
 		</ul>
 	</div>
+	<!-- MENU FORMULARIOS (fin) -->
 	
-		
-	
-	
-	<!-- MENU FORMULARIOS(fin) -->
-	
+
 	<!-- MENU SUBFORMS (inicio) -->
 	<div class="col_4 column subforms">
 		<ul class="menu vertical">
@@ -193,49 +200,18 @@
 
 		</ul>
 	</div>
-	
 	<!-- MENU SUBFORMS (fin) -->
 
-	<!-- MENU(inicio) -->
-	<div class="col_4 column fuck">
-		<ul class="menu vertical">
-			<li id="new"><a href="#"><i class="icon-file"></i> Nuevo Subformulario</a></li>
-			<li><a href=""><i class="icon-edit"></i> Editar Subformulario</a>
-				<ul id="edit">
-				</ul>
-			</li>
-			<li id="new"><a href="#"><i class="icon-file"></i> Nuevo Grafo</a></li>
-   			<li><a href=""><i class="icon-copy"></i> Nuevo Grafo a partir de uno ya existente</a>
-      			<ul id="copy">
-      			</ul>
-	   		</li> 
-			<li><a href=""><i class="icon-share"></i> Recorrer Subformulario</a>
-				<ul id="do">
-					<li><a href="#">Coming Soon</a></li>
-				</ul>
-			</li>
-		<li><a href=""><i class="icon-wrench"></i> Administracion (DEVELOPMENT ONLY)</a>
-			<ul>
-			<li><a href="installDB.php">Instalar DB</a></li>
-			<li><a href="installDatos.php">Instalar Datos (Dummy)</a></li>
-			
-			<li><a href="installDatos.php">Usuarios</a></li>
-			</ul>
-		</li>
-		</ul>
-	</div>
-	<!-- MENU (fin) -->
-
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<script src="kickstart/js/kickstart.js"></script> <!-- KICKSTART -->
-	<script type="text/javascript" src="http://webcursos.uai.cl/jira/s/es_ES-jovvqt-418945332/850/3/1.2.9/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?collectorId=2ab5c7d9"></script>
-<style type="text/css">.atlwdg-trigger.atlwdg-RIGHT{background-color:red;top:70%;z-index:10001;}</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> <!-- JQUERY (librerias javascript)-->
+	<script src="kickstart/js/kickstart.js"></script> <!-- KICKSTART (js del css) -->
+	<script type="text/javascript" src="http://webcursos.uai.cl/jira/s/es_ES-jovvqt-418945332/850/3/1.2.9/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?collectorId=2ab5c7d9"></script> <!-- JIRA (para reportar errores)-->
+	<style type="text/css">.atlwdg-trigger.atlwdg-RIGHT{background-color:red;top:70%;z-index:10001;}</style>
 	
 	<script>
 	function cargarGrafos(){
 		
 		$.ajax({
-			url: 'ajaxTrees.php',
+			url: '/cloudinator/ajax/ajaxTrees.php',
 			dataType: 'json',
 			timeout: 2500,
 			beforeSend: function(){$('.loading').fadeIn();},
@@ -260,7 +236,7 @@
 	function loadMegaTrees(){
 		
 		$.ajax({
-			url: 'ajaxMegaTrees.php',
+			url: '/cloudinator/ajax/ajaxMegaTrees.php',
 			dataType: 'json',
 			timeout: 2500,
 			beforeSend: function(){$('.loading').fadeIn();},
@@ -292,7 +268,7 @@
 		$('#copyTreeName').slideUp();
 		
 					$.ajax({
-						url: 'ajaxTrees.php',
+						url: '/cloudinator/ajax/ajaxTrees.php',
 						dataType: 'json',
 						type: 'POST',
 						data: {
@@ -320,7 +296,7 @@
 	function enviarForm(){
 		$('#newTreeName').slideUp();
 		$.ajax({
-			url: 'ajaxTrees.php',
+			url: '/cloudinator/ajax/ajaxTrees.php',
 			dataType: 'json',
 			timeout: 2500,
 			beforeSend: function(){$('.loading').fadeIn();},
@@ -333,7 +309,7 @@
 				});
 				if(checker == 0){
 					$.ajax({
-						url: 'ajaxTrees.php',
+						url: '/cloudinator/ajax/ajaxTrees.php',
 						dataType: 'json',
 						type: 'POST',
 						data: {
@@ -372,7 +348,7 @@
 		$('#newFormName').slideUp();
 		
 		$.ajax({
-			url: 'ajaxTrees.php',
+			url: '/cloudinator/ajax/ajaxTrees.php',
 			dataType: 'json',
 			type: 'POST',
 			data: {
@@ -413,7 +389,7 @@
 	function deleteform(){
 		console.log("entro a deleteform");
 		$.ajax({
-			url: 'ajaxMegaTrees.php',
+			url: '/cloudinator/ajax/ajaxMegaTrees.php',
 			dataType: 'json',
 			type: 'POST',
 			data: {
@@ -435,7 +411,7 @@
 	function setNameToForm(){
 		
 		$.ajax({
-			url: 'ajaxMegaTrees.php',
+			url: '/cloudinator/ajax/ajaxMegaTrees.php',
 			dataType: 'json',
 			type: 'POST',
 			data: {
@@ -460,7 +436,7 @@
 	function clonarForm(){
 		
 		$.ajax({
-			url: 'ajaxMegaTrees.php',
+			url: '/cloudinator/ajax/ajaxMegaTrees.php',
 			dataType: 'json',
 			type: 'POST',
 			data: {
@@ -494,12 +470,10 @@
 			console.log("el id es 1");
 			cargarGrafos();
 			$("div.col_4.column.forms").remove();
-			$("div.col_4.column.fuck").remove();
 			
 		}else{
 			
 			$("div.col_4.column.subforms").remove();
-			$("div.col_4.column.fuck").remove();
 		}
 
 		$("#newform").on('click', function(event){

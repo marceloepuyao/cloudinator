@@ -1,6 +1,6 @@
 <?php
-require_once('JSON.php');
-require_once('db.php');
+require_once('../JSON.php');
+require_once('../DB/db.php');
 
 $json = new Services_JSON();
 
@@ -10,24 +10,24 @@ if(isset($_POST['action'])) {
 		try {
 			$id = $_POST['id'];
 			$sqltreescount = "SELECT count(id) FROM trees WHERE megatree=$id";
-			$data1 = DBquery3($sqltreescount);
+			$data1 = DBQuery($sqltreescount);
 			$maxtrees = mysql_result($data1, 0);
 			
 			$sqltrees = "SELECT id FROM trees WHERE megatree=$id";
-			$data2 = DBquery3($sqltrees);
+			$data2 = DBQuery($sqltrees);
 			
 			for ($i = 0; $i < $maxtrees; $i++) {
 				$idtree= mysql_result($data2, $i, 'trees.id');
 				$querydeletenodes = "DELETE FROM nodos WHERE tree=$idtree";	
-				DBquery4($querydeletenodes);
+				DBQuery($querydeletenodes);
 			}
 			//TODO:falta borrar links
 			
 			$querytree = "DELETE FROM trees WHERE megatree=$id;";
-			DBquery4($querytree);
+			DBQuery($querytree);
 			
 			$querymegatree = "DELETE FROM megatrees WHERE id=$id;";
-			DBquery4($querymegatree);
+			DBQuery($querymegatree);
 			
 			$data = array(
 			'result' => 'true',
@@ -40,7 +40,7 @@ if(isset($_POST['action'])) {
 		try{
 			$id = $_POST['id'];
 			$query = "SELECT * FROM  megatrees WHERE id = $id";
-			$datos = DBquery2($query);
+			$datos = DBQueryReturnArray($query);
 		
 			$salida = $json->encode($datos);
 			
@@ -55,7 +55,7 @@ if(isset($_POST['action'])) {
 
 	try {	
 		$query = 'SELECT * FROM  megatrees';
-		$datos = DBquery2($query);
+		$datos = DBQueryReturnArray($query);
 		
 		$salida = $json->encode($datos);
 	

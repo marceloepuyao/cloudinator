@@ -1,0 +1,4 @@
+Instrucciones:
+
+- Configurar el archivo "config.ini" y poner los datos de la base de datos
+- Recuerde configurar su servidor httpd para que no entregue archivos *.ini (Seguridad)

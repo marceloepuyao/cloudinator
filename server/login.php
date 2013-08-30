@@ -1,6 +1,6 @@
 <?php
 
-require_once('../db.php');
+require_once('../DB/db.php');
  require_once('../JSON.php');
 
 $json = new Services_JSON();
@@ -11,7 +11,7 @@ try {
 	 
 	$sql = "SELECT name, lastname FROM users WHERE email='$usu' AND password='$pass'";
 	 
-	if ($resultado = DBquery3($sql)){
+	if ($resultado = DBQuery($sql)){
 	    if (mysql_num_rows($resultado) > 0){
 	        $data = array(
 				'result' => 'true'
