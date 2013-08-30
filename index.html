@@ -166,12 +166,12 @@
 	<!-- MENU FORMULARIOS (inicio) -->
 	<div class="col_4 column forms">
 		<ul class="menu vertical forms">
-			<li id="forms"><a href="#"><i class="icon-share"></i> Formularios</a>
+			<li id="forms"><a href=""><i class="icon-share"></i> Formularios</a>
 				<ul id="allforms">
 					</ul>
 			</li>
 			<li id="newform"><a href="#"><i class="icon-file"></i> Nuevo Formulario</a>
-			<li><a href=""><i class="icon-wrench"></i> Administracion</a>
+			<li><a href="#"><i class="icon-wrench"></i> Administracion</a>
 				<ul>
 					<li><a href="DB/upgrade.php">Upgrade</a></li>
 				</ul>
@@ -208,7 +208,7 @@
 	<style type="text/css">.atlwdg-trigger.atlwdg-RIGHT{background-color:red;top:70%;z-index:10001;}</style>
 	
 	<script>
-	function cargarGrafos(){
+	function cargarGrafos(){ //Actualiza la lista de Subformularios [AJAX].
 		
 		$.ajax({
 			url: '/cloudinator/ajax/ajaxTrees.php',
@@ -217,7 +217,6 @@
 			beforeSend: function(){$('.loading').fadeIn();},
 			success: function(data){
 				$('#allsubforms').empty();
-				//$('#edit').empty();
 				$.each( data, function( i, item ) {
 					if(item.deleted == 0 && item.megatree == getQueryStringByName('id')){
 						//$('#allsubforms').append('<li data-id="'+item.id+'"><a href="#">'+item.name+'</a></li>');
@@ -226,15 +225,9 @@
 					}
 				});
 			}
-		}).fail(function(data) {
-			$('#notices').append('<div class="notice error new"><i class="icon-remove-sign icon-large"></i> Error al acceder a la lista de Grafos<a href="#close" class="icon-remove"></a></div>').hide()
-			$('.new').slideDown().removeClass('new');
-			$('#copy').append('<li><a href="">ERROR</a></li>');
-			$('#edit').append('<li><a href="">ERROR</a></li>');
-		}).always(function(){$('.loading').fadeOut();});
+		}).fail(function(data) {addNotice("error", "Error al acceder a la lista de Grafos");}).always(function(){$('.loading').fadeOut();});
 	}
-	function loadMegaTrees(){
-		
+	function loadMegaTrees(){ //Actualiza la lista de Formularios que se muestran [AJAX].
 		$.ajax({
 			url: '/cloudinator/ajax/ajaxMegaTrees.php',
 			dataType: 'json',
@@ -244,22 +237,16 @@
 				$('#allforms').empty();
 				$.each( data, function( i, item ) {
 					if(item.deleted == 0){
-						console.log(item.id);
 						$('#allforms').append('<li data-id="'+item.id+'"><a href="index.html?id='+item.id+'">'+item.name+'</a>  </li>');
 						$('#formlist').append('<option value="'+item.id+'">'+item.name+'</option>');
 					}
 				});
 			}
 		}).fail(function(data) {
-			console.log("asdasdasd", data);
-			$('#notices').append('<div class="notice error new"><i class="icon-remove-sign icon-large"></i> Error al acceder a la lista de Grafos<a href="#close" class="icon-remove"></a></div>').hide()
-			$('.new').slideDown().removeClass('new');
-			$('#copy').append('<li><a href="">ERROR</a></li>');
-			$('#edit').append('<li><a href="">ERROR</a></li>');
+			addNotice("error", "Error al acceder a la lista de Grafos");
 		}).always(function(){$('.loading').fadeOut();});
 	}
-	function clonar(){
-		
+	function clonar(){ //Llama a un form para clonar un Subformulario (y lo clona) [AJAX].
 		console.log("listo para clonar", 
 				$('#formlist').val(), 
 				$('#cloneFormName').data("copyid"), 
@@ -267,33 +254,30 @@
 		
 		$('#copyTreeName').slideUp();
 		
-					$.ajax({
-						url: '/cloudinator/ajax/ajaxTrees.php',
-						dataType: 'json',
-						type: 'POST',
-						data: {
-							name: $('#textNameCloneForm').val(),
-							clonename : $('#cloneFormName').data("copyid"),
-							to:  $('#formlist').val()
-								},
-						timeout: 2500,
-						beforeSend: function(){$('.loading').fadeIn();},
-						success: function(data){
-							console.log(data);
-							cargarGrafos();
-							$('#notices').append('<div class="notice success new"><i class="icon-ok icon-large"></i> Nuevo Grafo creado exitosamente<a href="#close" class="icon-remove"></a></div>');
-							//$('.new').hide().slideDown().removeClass('new');
-							//$('#newTreeName').slideDown();
-						}
-					}).fail(function(data) {
-						//$('#notices').append('<div class="notice error new"><i class="icon-remove-sign icon-large"></i> Error al Crear el Nuevo Grafo<a href="#close" class="icon-remove"></a></div>');
-						//$('.new').hide().slideDown().removeClass('new');
-						window.location.reload();
-						console.log( data);
-					}).always(function(){$('.loading').fadeOut();});
-		
+		$.ajax({
+			url: '/cloudinator/ajax/ajaxTrees.php',
+			dataType: 'json',
+			type: 'POST',
+			data: {
+				name: $('#textNameCloneForm').val(),
+				clonename : $('#cloneFormName').data("copyid"),
+				to:  $('#formlist').val()
+					},
+			timeout: 2500,
+			beforeSend: function(){$('.loading').fadeIn();},
+			success: function(data){
+				console.log("success on clonar()", data);
+				cargarGrafos();
+				addNotice("success", "Nuevo Subformulario clonado exitosamente");
+				//$('#newTreeName').slideDown();
+			}
+		}).fail(function(data) {
+			addNotice("error", "Error al clonar el Subformulario");
+			//window.location.reload(); //TODO: PORQUE EL RELOAD?
+			console.log("fail on clonar()", data);
+		}).always(function(){$('.loading').fadeOut();});
 	}
-	function enviarForm(){
+	function enviarForm(){ //Llama a un form para crear un Subformulario [AJAX].//TODO: POSIBLE COMPORTAMIENTO NO DESEADO DE NO PERMITIR NOMBRES DUPLICADOS ENTRE TODOS LOS SUBFORMULARIOS
 		$('#newTreeName').slideUp();
 		$.ajax({
 			url: '/cloudinator/ajax/ajaxTrees.php',
@@ -319,34 +303,28 @@
 						timeout: 2500,
 						beforeSend: function(){$('.loading').fadeIn();},
 						success: function(data){
-							console.log(data);
+							console.log("success on enviarForm()", data);
 							cargarGrafos();
-							$('#notices').append('<div class="notice success new"><i class="icon-ok icon-large"></i> Nuevo Subformulario creado exitosamente<a href="#close" class="icon-remove"></a></div>');
-							$('.new').hide().slideDown().removeClass('new');
+							addNotice("success", "Nuevo Subformulario creado exitosamente");
 						}
 					}).fail(function(data) {
-						//$('#notices').append('<div class="notice error new"><i class="icon-remove-sign icon-large"></i> Error al Crear el Nuevo Grafo<a href="#close" class="icon-remove"></a></div>');
-						//$('.new').hide().slideDown().removeClass('new');
+						addNotice("error", "Error al crear el Subformulario");
 						//window.location.reload();
-						console.log(data);
+						console.log("fail on enviarForm()", data);
 					}).always(function(){$('.loading').fadeOut();});
 				}else{
 					$('#loadingGif').fadeOut();
-					$('#notices').append('<div class="notice warning new"><i class="icon-warning-sign icon-large"></i> Nombre ocupado<a href="#close" class="icon-remove"></a></div>');
-					$('.new').hide().slideDown().removeClass('new');
+					addNotice("warning", "Nombre ocupado")
 					$('#newTreeName').slideDown();
 				}
 			}
 		}).fail(function(data) {
-			$('#notices').append('<div class="notice error new"><i class="icon-remove-sign icon-large"></i> Error al acceder a la lista de Grafos<a href="#close" class="icon-remove"></a></div>');
-			$('.new').hide().slideDown().removeClass('new');
-			$('#copy').append('<li><a href="">ERROR</a></li>');
-			$('#edit').append('<li><a href="">ERROR</a></li>');
+			$('.loading').fadeOut();
+			$addNotice("error", "Error al acceder a la lista de Grafos");
 		});
 	}
-	function createNewForm(){
+	function createNewForm(){ //Llama a un form para crear un Formulario [AJAX].
 		$('#newFormName').slideUp();
-		
 		$.ajax({
 			url: '/cloudinator/ajax/ajaxTrees.php',
 			dataType: 'json',
@@ -358,36 +336,22 @@
 			timeout: 2500,
 			beforeSend: function(){$('.loading').fadeIn();},
 			success: function(data){
-				//cargarGrafos();
-				$('#notices').append('<div class="notice success new"><i class="icon-ok icon-large"></i> Nuevo Formulario creado exitosamente<a href="#close" class="icon-remove"></a></div>');
-				$('.new').hide().slideDown().removeClass('new');
+				addNotice("success", "Nuevo Formulario creado exitosamente");
 				loadMegaTrees();
 			}
 		}).fail(function(data) {
-			//$('#notices').append('<div class="notice error new"><i class="icon-remove-sign icon-large"></i> Error al Crear el Nuevo Grafo<a href="#close" class="icon-remove"></a></div>');
-			//$('.new').hide().slideDown().removeClass('new');
-			//window.location.reload();
-			console.log( data);
+			addNotice("error", "Error al crear el Formulario");
+			console.log("error en createNewForm", data);
 		}).always(function(){$('.loading').fadeOut();});
 	}
-	function getQueryStringByName(name) {
-	    name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
-	    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-	        results = regex.exec(location.search);
-	    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-	}
-	function confirmdelete(){
-		
+	function confirmdelete(){ //Llama a deleteform() en caso de que el usuario acepte, de lo contrario retorna false.
 		if(confirm("¿Está Seguro?")){
 			deleteform();
-			console.log("delete man");
 		}else{
 			return false
 		}
-		
 	}
-	function deleteform(){
-		console.log("entro a deleteform");
+	function deleteform(){ //Llamada por ajax para borrar Formulario.
 		$.ajax({
 			url: '/cloudinator/ajax/ajaxMegaTrees.php',
 			dataType: 'json',
@@ -399,17 +363,17 @@
 			timeout: 2500,
 			beforeSend: function(){$('.loading').fadeIn();},
 			success: function(data){
-				loadMegaTrees();
-				console.log(data);
 				window.location = "index.html";
+				//TODO: En caso que se ocupe otro metodo que no sea "window.location" es probable que se usen las sig lineas:
+				//loadMegaTrees(); //actualizar la lista de Formularios
+				//addNotice("success", "Se ha borrado correctamente el Formulario"); //no tiene sentido porque con el window.location se elimina automaticamente
 			}
 		}).fail(function(data) {
-			console.log( data);
+			addNotice("error", "Error al intentar borrar el Formulario");
+			console.log("Error en deleteform", data);
 		}).always(function(){$('.loading').fadeOut();});
-		
 	}
-	function setNameToForm(){
-		
+	function setNameToForm(){ //Pone el nombre del formulario que se ha selecionado en el inicio del menu [AJAX].
 		$.ajax({
 			url: '/cloudinator/ajax/ajaxMegaTrees.php',
 			dataType: 'json',
@@ -421,20 +385,18 @@
 			timeout: 2500,
 			beforeSend: function(){$('.loading').fadeIn();},
 			success: function(data){
-				console.log("bien en setname");
+				console.log("success en setNameToForm");
 				$.each( data, function( i, item ) {
 					$('#formname').empty();
 					$('#formname').append("<a href='#'>Formulario: "+item.name+"</a>");
-					
 				});
 			}
 		}).fail(function(data) {
-			console.log("mal", data);
+			console.log("error al setNameToForm", data);
+			addNotice("error", "Se ha producido un error al rescatar el nombre del Formulario");
 		}).always(function(){$('.loading').fadeOut();});
-		
 	}
-	function clonarForm(){
-		
+	function clonarForm(){ //TODO: SE VA A OCUPAR ESTA FUNCION O NO? EN ESTE MOMENTO NO SE USA PORQUE NO HAY CLONACION DE FORMULARIOS
 		$.ajax({
 			url: '/cloudinator/ajax/ajaxMegaTrees.php',
 			dataType: 'json',
@@ -446,36 +408,56 @@
 			timeout: 2500,
 			beforeSend: function(){$('.loading').fadeIn();},
 			success: function(data){
-				console.log(data);
+				console.log("success al clonarForm", data);
 				cargarGrafos();
-				$('#notices').append('<div class="notice success new"><i class="icon-ok icon-large"></i> Nuevo Grafo creado exitosamente<a href="#close" class="icon-remove"></a></div>');
-				//$('.new').hide().slideDown().removeClass('new');
+				addNotice("success", "El Formulario se a clonado exitosamente");
 				//$('#newTreeName').slideDown();
 			}
 		}).fail(function(data) {
-			//$('#notices').append('<div class="notice error new"><i class="icon-remove-sign icon-large"></i> Error al Crear el Nuevo Grafo<a href="#close" class="icon-remove"></a></div>');
-			//$('.new').hide().slideDown().removeClass('new');
-			window.location.reload();
-			console.log( data);
+			window.location.reload(); //TODO: PORQUE EL RELOAD?
+			console.log("error al clonarForm", data);
+			addNotice("error", "Error al clonar el Formulario");
 		}).always(function(){$('.loading').fadeOut();});
-		alert("wena");
+		alert("Este mensaje debe ser eliminado del codigo, existe para confirmar el ingreso a una funcion especifica del codigo, si usted es un usuario final avise al administrador");
 	}
+	function addNotice(tipo, mensaje){ //tipo (string): "error", "success" o "warning". mensaje (string): cualquiera que se quiera mostrar.
+		if(tipo == "error"){ var icono = "icon-remove-sign";}
+		if(tipo == "success"){ var icono = "icon-ok";}
+		if(tipo == "warning"){ var icono = "icon-warning-sign";}
+
+		$('#notices').append('<div class="notice '+tipo+' new"><i class="'+icono+' icon-large"></i> '+mensaje+'<a href="#close" class="icon-remove"></a></div>');
+
+		$('.new').hide().slideDown(400, function () {
+			if($('.old').size()==0){
+				$('.notice').addClass('old');
+			}else{
+				$('.old').fadeOut(400,function(){
+				$('.notice').addClass('old');
+				});
+			}
+		}).removeClass('new');
+	}
+	function getQueryStringByName(name){ //Retorna el valor del querystring segun el "name" que se le ingrese.
+	    name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+	    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+	        results = regex.exec(location.search);
+	    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+	}
+
 	$(document).ready(function() {
 		
-		loadMegaTrees();
+		loadMegaTrees(); //Carga la lista de Formularios
 		
+		//decide si muestra el menu de Formularios o el de Subformularios
 		if(getQueryStringByName('id')){
-			
 			setNameToForm();
-			console.log("el id es 1");
 			cargarGrafos();
 			$("div.col_4.column.forms").remove();
-			
 		}else{
-			
 			$("div.col_4.column.subforms").remove();
 		}
 
+		//Comportamiento del form de creacion de Formularios
 		$("#newform").on('click', function(event){
 			$('#newFormName').slideDown();
 		});
@@ -485,26 +467,25 @@
 		});
 		$("#textNameForm").keypress(function(event) {
 			if(event.which == 13){
-				console.log("llamo a la función");
 				createNewForm();
 			}
 		});
 		$("#buttonNameForm").on('click', function(event){
-			console.log("llamo a la función");
 			createNewForm();
 		});
 		
-
+		//Inicia proceso de clonacion de Subformularios
 		$("#clone").on("click", "li", function(event){
 			$('#cloneFormName').data("copyid", $(this).data('id'));
 			$('#cloneFormName').slideDown();
-  			console.log($(this).data('id'),$('#cloneFormName').data("copyid") );
+  			console.log("#clone on click", $(this).data('id'),$('#cloneFormName').data("copyid") );
 		});
 
+		//Comportamiento del form de creacion de Subformularios
 		$('#new').on('click', function(event){
 			$('.blackout').fadeIn();
 			$('#newTreeName').slideDown();
-			//abrir cuadro de dialogo para elegir nombre (?) o preguntar por el nombre despues de que se crea? (prefieron la primera)
+			//abrir cuadro de dialogo para elegir nombre
 			//hacer llamada por ajax para generar el nuevo arbol en la DB y rescatar la id, para despues ir a cloudinator.html
 		});
 		$('#buttonCancel').on('click', function(){
@@ -520,37 +501,39 @@
 			enviarForm();
 		});
 		
+		//WTF IS THIS? //CREO QUE ACA ESTA EL ERROR DE CLONADO!
 		$('li').on('click', function(event){
 			if($(this).data("id") == 99){
 				$(this).toggle();
 			}
 		});
-		
+
+		/*
+		//NO SE ESTA USANDO (?)
 		$('#deleteform').on('click', function(event){
 			 confirm(function() {
 				// Put your own callback in here and return false to stop any link running
 				return false;
-				});
-				return false;
+			});
+			return false;
 		});
+		*/
 		
-		
+		//Comportamiento del form que Clona un Subformulario
 		$('#textNameCloneForm').keypress(function(event) {
 			if(event.which == 13){
-				console.log("listo para clonar formulario");
 				clonar();
 			}
+		});
+		$('#buttonNameCloneForm').on('click', function(event){
+			clonar();
 		});
 		$('#buttonCancelCloneForm').on('click', function(){
 			$('#cloneFormName').slideUp();
 			$('.blackout').fadeOut();
 		});
-		$('#buttonNameCloneForm').on('click', function(event){
-			console.log("listo para clonar formulario");
-			clonar();
-		});		
 
-
+		//Comportamiento al hacer click en las notificaciones
 		$('#notices').on('click', '.notice', function(event){
 			$(this).slideUp(function(){
 				$(this).remove();
