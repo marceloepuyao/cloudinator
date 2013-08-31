@@ -211,7 +211,7 @@
 	function cargarGrafos(){
 		
 		$.ajax({
-			url: '/cloudinator/ajax/ajaxTrees.php',
+			url: 'ajax/ajaxTrees.php',
 			dataType: 'json',
 			timeout: 2500,
 			beforeSend: function(){$('.loading').fadeIn();},
@@ -236,7 +236,7 @@
 	function loadMegaTrees(){
 		
 		$.ajax({
-			url: '/cloudinator/ajax/ajaxMegaTrees.php',
+			url: 'ajax/ajaxMegaTrees.php',
 			dataType: 'json',
 			timeout: 2500,
 			beforeSend: function(){$('.loading').fadeIn();},
@@ -268,7 +268,7 @@
 		$('#copyTreeName').slideUp();
 		
 					$.ajax({
-						url: '/cloudinator/ajax/ajaxTrees.php',
+						url: 'ajax/ajaxTrees.php',
 						dataType: 'json',
 						type: 'POST',
 						data: {
@@ -296,7 +296,7 @@
 	function enviarForm(){
 		$('#newTreeName').slideUp();
 		$.ajax({
-			url: '/cloudinator/ajax/ajaxTrees.php',
+			url: 'ajax/ajaxTrees.php',
 			dataType: 'json',
 			timeout: 2500,
 			beforeSend: function(){$('.loading').fadeIn();},
@@ -309,7 +309,7 @@
 				});
 				if(checker == 0){
 					$.ajax({
-						url: '/cloudinator/ajax/ajaxTrees.php',
+						url: 'ajax/ajaxTrees.php',
 						dataType: 'json',
 						type: 'POST',
 						data: {
@@ -348,7 +348,7 @@
 		$('#newFormName').slideUp();
 		
 		$.ajax({
-			url: '/cloudinator/ajax/ajaxTrees.php',
+			url: 'ajax/ajaxTrees.php',
 			dataType: 'json',
 			type: 'POST',
 			data: {
@@ -389,7 +389,7 @@
 	function deleteform(){
 		console.log("entro a deleteform");
 		$.ajax({
-			url: '/cloudinator/ajax/ajaxMegaTrees.php',
+			url: 'ajax/ajaxMegaTrees.php',
 			dataType: 'json',
 			type: 'POST',
 			data: {
@@ -411,7 +411,7 @@
 	function setNameToForm(){
 		
 		$.ajax({
-			url: '/cloudinator/ajax/ajaxMegaTrees.php',
+			url: 'ajax/ajaxMegaTrees.php',
 			dataType: 'json',
 			type: 'POST',
 			data: {
@@ -436,7 +436,7 @@
 	function clonarForm(){
 		
 		$.ajax({
-			url: '/cloudinator/ajax/ajaxMegaTrees.php',
+			url: 'ajax/ajaxMegaTrees.php',
 			dataType: 'json',
 			type: 'POST',
 			data: {
