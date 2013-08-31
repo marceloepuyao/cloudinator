@@ -1,14 +1,11 @@
 <?php
-function get_config(){
 
-	//TODO hay que arreglar la llamada a ../config.ini, por que si se esta en un nivel distinto, no encuentra el archivo
-	$config = parse_ini_file("../config.ini", true);
+$config = parse_ini_file(dirname(__FILE__)."/../config.ini", true);
+$connconf = $config["mysql"];
 
-	return $config["mysql"];
-}
 
 function DBQuery($query){
-	$connconf = get_config();
+	global $connconf;
 	$link = mysql_connect($connconf['mysql_host'], $connconf['mysql_user'], $connconf['mysql_password']);
 	mysql_select_db($connconf['mysql_database']);
 	$result = mysql_query($query);
@@ -21,7 +18,7 @@ function DBQuery($query){
 }
 
 function DBQueryReturnArray($query){
-	$connconf = get_config();
+	global $connconf;
 	$link = mysql_connect($connconf['mysql_host'], $connconf['mysql_user'], $connconf['mysql_password']);
 	mysql_select_db($connconf['mysql_database']);
 	$result = mysql_query($query);
