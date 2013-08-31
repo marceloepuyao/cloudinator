@@ -113,6 +113,7 @@
 	<!-- ELEMENTOS FLOTANTES (inicio) -->
 	<div id="notices"></div>
 
+	<!-- form de SUBFORMULARIO -->
 	<div id="newTreeName" class="col_3 column formPopUp">
 		<label for="textName" class="formElement">Nombre: </label>
 		<input id="textName" class="formElement" type="text" />
@@ -120,13 +121,8 @@
 		<button id="buttonName" class="formElement">Crear</button>
 		<button id="buttonCancel" class="formElement">Cancelar</button>
 	</div>
-	<div id="copyTreeName" class="col_3 column formPopUp" data-copyid="">
-		<label for="textNameCopy" class="formElement">Nombre: </label>
-		<input id="textNameCopy" class="formElement" type="text" />
-		<br>
-		<button id="buttonNameCopy" class="formElement">Crear</button>
-		<button id="buttonCancelCopy" class="formElement">Cancelar</button>
-	</div>
+
+	<!-- form de CLONAR -->
 	<div id="cloneFormName" class="col_3 column formPopUp" data-copyid="0">
 		<label for="textNameCloneForm" class="formElement">Nombre: </label>
 		<input id="textNameCloneForm" class="formElement" type="text" />
@@ -140,6 +136,7 @@
 		<div class="clear"></div>
 	</div>
 	
+	<!-- form de FORMULARIO -->
 	<div id="newFormName" class="col_3 column formPopUp">
 		<label for="textNameForm" class="formElement">Nombre: </label>
 		<input id="textNameForm" class="formElement" type="text" />
@@ -148,8 +145,8 @@
 		<button id="buttonCancelForm" class="formElement">Cancelar</button>
 	</div>
 
+	<!-- SmokeScreen -->
 	<img id="loadingGif" class="loading" src="content/ajax-loader.gif">
-
 	<div class="blackout loading"></div>
 	<!-- ELEMENTOS FLOTANTES (fin) -->
 
@@ -210,9 +207,8 @@
 	
 	<script>
 	function cargarGrafos(){ //Actualiza la lista de Subformularios [AJAX].
-		
 		$.ajax({
-			url: '/cloudinator/ajax/ajaxTrees.php',
+			url: 'ajax/ajaxTrees.php',
 			dataType: 'json',
 			timeout: 2500,
 			beforeSend: function(){$('.loading').fadeIn();},
@@ -230,7 +226,7 @@
 	}
 	function loadMegaTrees(){ //Actualiza la lista de Formularios que se muestran [AJAX].
 		$.ajax({
-			url: '/cloudinator/ajax/ajaxMegaTrees.php',
+			url: 'ajax/ajaxMegaTrees.php',
 			dataType: 'json',
 			timeout: 2500,
 			beforeSend: function(){$('.loading').fadeIn();},
@@ -253,10 +249,8 @@
 				$('#cloneFormName').data("copyid"), 
 				$('#textNameCloneForm').val() );
 		
-		$('#copyTreeName').slideUp();
-		
 		$.ajax({
-			url: '/cloudinator/ajax/ajaxTrees.php',
+			url: 'ajax/ajaxTrees.php',
 			dataType: 'json',
 			type: 'POST',
 			data: {
@@ -270,18 +264,15 @@
 				console.log("success on clonar()", data);
 				cargarGrafos();
 				addNotice("success", "Nuevo Subformulario clonado exitosamente");
-				//$('#newTreeName').slideDown();
 			}
 		}).fail(function(data) {
 			addNotice("error", "Error al clonar el Subformulario");
-			//window.location.reload(); //TODO: PORQUE EL RELOAD?
 			console.log("fail on clonar()", data);
 		}).always(function(){$('.loading').fadeOut();});
 	}
 	function enviarForm(){ //Llama a un form para crear un Subformulario [AJAX].//TODO: POSIBLE COMPORTAMIENTO NO DESEADO DE NO PERMITIR NOMBRES DUPLICADOS ENTRE TODOS LOS SUBFORMULARIOS
-		$('#newTreeName').slideUp();
 		$.ajax({
-			url: '/cloudinator/ajax/ajaxTrees.php',
+			url: 'ajax/ajaxTrees.php',
 			dataType: 'json',
 			timeout: 2500,
 			beforeSend: function(){$('.loading').fadeIn();},
@@ -294,7 +285,7 @@
 				});
 				if(checker == 0){
 					$.ajax({
-						url: '/cloudinator/ajax/ajaxTrees.php',
+						url: 'ajax/ajaxTrees.php',
 						dataType: 'json',
 						type: 'POST',
 						data: {
@@ -325,9 +316,8 @@
 		});
 	}
 	function createNewForm(){ //Llama a un form para crear un Formulario [AJAX].
-		$('#newFormName').slideUp();
 		$.ajax({
-			url: '/cloudinator/ajax/ajaxTrees.php',
+			url: 'ajax/ajaxTrees.php',
 			dataType: 'json',
 			type: 'POST',
 			data: {
@@ -354,7 +344,7 @@
 	}
 	function deleteform(){ //Llamada por ajax para borrar Formulario.
 		$.ajax({
-			url: '/cloudinator/ajax/ajaxMegaTrees.php',
+			url: 'ajax/ajaxMegaTrees.php',
 			dataType: 'json',
 			type: 'POST',
 			data: {
@@ -376,7 +366,7 @@
 	}
 	function setNameToForm(){ //Pone el nombre del formulario que se ha selecionado en el inicio del menu [AJAX].
 		$.ajax({
-			url: '/cloudinator/ajax/ajaxMegaTrees.php',
+			url: 'ajax/ajaxMegaTrees.php',
 			dataType: 'json',
 			type: 'POST',
 			data: {
@@ -399,7 +389,7 @@
 	}
 	function clonarForm(){ //TODO: SE VA A OCUPAR ESTA FUNCION O NO? EN ESTE MOMENTO NO SE USA PORQUE NO HAY CLONACION DE FORMULARIOS
 		$.ajax({
-			url: '/cloudinator/ajax/ajaxMegaTrees.php',
+			url: 'ajax/ajaxMegaTrees.php',
 			dataType: 'json',
 			type: 'POST',
 			data: {
@@ -460,7 +450,10 @@
 
 		//Comportamiento del form de creacion de Formularios
 		$("#newform").on('click', function(event){
+			$('.blackout').fadeIn();
 			$('#newFormName').slideDown();
+			$('#textNameForm').focus();
+
 		});
 		$('#buttonCancelForm').on('click', function(){
 			$('#newFormName').slideUp();
@@ -468,17 +461,21 @@
 		});
 		$("#textNameForm").keypress(function(event) {
 			if(event.which == 13){
+				$('#newFormName').slideUp();
 				createNewForm();
 			}
 		});
 		$("#buttonNameForm").on('click', function(event){
+			$('#newFormName').slideUp();
 			createNewForm();
 		});
 		
 		//Inicia proceso de clonacion de Subformularios
 		$("#clone").on("click", "li", function(event){
+			$('.blackout').fadeIn();
 			$('#cloneFormName').data("copyid", $(this).data('id'));
 			$('#cloneFormName').slideDown();
+			$('#textNameCloneForm').focus();
   			console.log("#clone on click", $(this).data('id'),$('#cloneFormName').data("copyid") );
 		});
 
@@ -486,6 +483,7 @@
 		$('#new').on('click', function(event){
 			$('.blackout').fadeIn();
 			$('#newTreeName').slideDown();
+			$('#textName').focus();
 			//abrir cuadro de dialogo para elegir nombre
 			//hacer llamada por ajax para generar el nuevo arbol en la DB y rescatar la id, para despues ir a cloudinator.html
 		});
@@ -495,10 +493,12 @@
 		});
 		$("#textName").keypress(function(event) {
 			if(event.which == 13){
+				$('#newTreeName').slideUp();
 				enviarForm();
 			}
 		});
 		$('#buttonName').on('click', function(event){
+			$('#newTreeName').slideUp();
 			enviarForm();
 		});
 		
@@ -523,10 +523,14 @@
 		//Comportamiento del form que Clona un Subformulario
 		$('#textNameCloneForm').keypress(function(event) {
 			if(event.which == 13){
+				$('#copyTreeName').slideUp();
+				$('.blackout').fadeOut();
 				clonar();
 			}
 		});
 		$('#buttonNameCloneForm').on('click', function(event){
+			$('#copyTreeName').slideUp();
+			$('.blackout').fadeOut();
 			clonar();
 		});
 		$('#buttonCancelCloneForm').on('click', function(){

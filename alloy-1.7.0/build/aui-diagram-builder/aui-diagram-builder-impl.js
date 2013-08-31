@@ -1,7 +1,7 @@
 AUI.add('aui-diagram-builder-impl', function(A) {
 //codigo implantado cloudinator team
 function ajaxPostLink(action, name, source, target, tree, typetarget, xtarget, ytarget){
-	A.io.request('/cloudinator/ajax/ajaxpost.php', {
+	A.io.request('ajax/ajaxpost.php', {
 		autoLoad: true,
 		method: 'POST',
 		data: {
@@ -22,7 +22,7 @@ function ajaxPostLink(action, name, source, target, tree, typetarget, xtarget, y
 }
 	
 function ajaxPostNodo(action, name, type, posx, posy, tree){
-	A.io.request('/cloudinator/ajax/ajaxpost.php', {
+	A.io.request('ajax/ajaxpost.php', {
 		autoLoad: true,
 		method: 'POST',
 		data: {
@@ -42,7 +42,7 @@ function ajaxPostNodo(action, name, type, posx, posy, tree){
 	});
 }
 function ajaxChangeNodoName(id, newname, tree){
-	A.io.request('/cloudinator/ajax/ajaxpost.php', {
+	A.io.request('ajax/ajaxpost.php', {
 		autoLoad: true,
 		method: 'POST',
 		data: {
@@ -60,7 +60,7 @@ function ajaxChangeNodoName(id, newname, tree){
 	});
 }
 function ajaxNodoGetIdFromName(name, tree, newname){
-	A.io.request('/cloudinator/ajax/ajaxpost.php', {
+	A.io.request('ajax/ajaxpost.php', {
 		autoLoad: true,
 		method: 'POST',
 		data: {
@@ -880,7 +880,7 @@ var DiagramBuilder = A.Component.create({
 					
 				});
 				
-				A.io.request('/cloudinator/ajax/ajaxpost.php', {
+				A.io.request('ajax/ajaxpost.php', {
 					autoLoad: true,
 					method: 'POST',
 					data: {
@@ -1412,7 +1412,7 @@ var DiagramNode = A.Component.create({
 				
 			}else{
 				//ajaxPostLink("insert", "", namestart, nameend, getQueryStringByName('id'), typetarget, diagramNode.get(BOUNDING_BOX).getXY()[0] - 278, diagramNode.get(BOUNDING_BOX).getXY()[1] -59);
-				A.io.request('/cloudinator/ajax/ajaxpost.php', {
+				A.io.request('ajax/ajaxpost.php', {
 					autoLoad: true,
 					method: 'POST',
 					data: {
@@ -1836,7 +1836,7 @@ var DiagramNode = A.Component.create({
 			console.log(event);
 			
 			if(event.newVal != event.prevVal){
-				A.io.request('/cloudinator/ajax/ajaxpost.php', {
+				A.io.request('ajax/ajaxpost.php', {
 					autoLoad: true,
 					method: 'POST',
 					data: {
