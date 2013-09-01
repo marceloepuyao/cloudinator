@@ -3,9 +3,39 @@
 $config = parse_ini_file(dirname(__FILE__)."/../config.ini", true);
 $connconf = $config["mysql"];
 
+function DBConnect(){
+	global $connconf;
+
+	$db = new mysqli($connconf['mysql_host'], $connconf['mysql_user'], $connconf['mysql_password'], $connconf['mysql_database']);
+	if($db->connect_errno > 0){
+		$db->close();
+		$db = new mysqli($connconf['mysql_host'], $connconf['mysql_user'], $connconf['mysql_password']);
+		if($db->connect_errno > 0){
+			throw new Exception('Unable to connect to database [' . $db->connect_error . ']', 1);
+		}
+	}
+
+	return $db;
+}
 
 function DBQuery($query){
 	global $connconf;
+
+	$db = new mysqli($connconf['mysql_host'], $connconf['mysql_user'], $connconf['mysql_password'], $connconf['mysql_database']);
+	if($db->connect_errno > 0){
+		$db->close();
+		$db = new mysqli($connconf['mysql_host'], $connconf['mysql_user'], $connconf['mysql_password']);
+		if($db->connect_errno > 0){
+			throw new Exception('Unable to connect to database [' . $db->connect_error . ']', 1);
+		}
+	}
+	if(!$result = $db->query($query)){
+	    throw new Exception('There was an error running the query [' . $db->error . ']', 1);
+	}
+	$db->close();
+	return $result;
+
+	/*
 	$link = mysql_connect($connconf['mysql_host'], $connconf['mysql_user'], $connconf['mysql_password']);
 	mysql_select_db($connconf['mysql_database']);
 	$result = mysql_query($query);
@@ -13,12 +43,35 @@ function DBQuery($query){
 		mysql_close($link);
 		throw new Exception("Error Processing Query", 1);
 	}
-	return $result;
 	mysql_close($link);
+	return $result;
+	*/
 }
 
 function DBQueryReturnArray($query){
 	global $connconf;
+
+	$db = new mysqli($connconf['mysql_host'], $connconf['mysql_user'], $connconf['mysql_password'], $connconf['mysql_database']);
+	if($db->connect_errno > 0){
+		$db->close();
+		$db = new mysqli($connconf['mysql_host'], $connconf['mysql_user'], $connconf['mysql_password']);
+		if($db->connect_errno > 0){
+			throw new Exception('Unable to connect to database [' . $db->connect_error . ']', 1);
+		}
+	}
+	if(!$result = $db->query($query)){
+	    throw new Exception('There was an error running the query [' . $db->error . ']', 1);
+	}
+	$datos = array();
+	while($row = $result->fetch_assoc()){
+    	$datos[]=$row;
+	}
+	$db->close();
+	$result->free();
+	return $datos;
+
+	
+	/*
 	$link = mysql_connect($connconf['mysql_host'], $connconf['mysql_user'], $connconf['mysql_password']);
 	mysql_select_db($connconf['mysql_database']);
 	$result = mysql_query($query);
@@ -36,5 +89,6 @@ function DBQueryReturnArray($query){
 	mysql_free_result($result);
 	mysql_close($link);
 	return $datos;
+	*/
 }
 ?>

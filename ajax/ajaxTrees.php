@@ -144,7 +144,7 @@ else if(isset($_POST['clonename'])) {
 
 
 	try {	
-		$query = 'SELECT * FROM trees';
+		$query = 'SELECT * FROM trees WHERE deleted = 0';
 		$datos = DBQueryReturnArray($query);
 		$salida = $json->encode($datos);
 

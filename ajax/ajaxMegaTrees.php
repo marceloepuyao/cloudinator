@@ -8,27 +8,34 @@ if(isset($_POST['action'])) {
 	
 	if($_POST['action']=="delete"){
 		try {
-			$id = $_POST['id'];
-			$sqltreescount = "SELECT count(id) FROM trees WHERE megatree=$id";
-			$data1 = DBQuery($sqltreescount);
-			$maxtrees = mysql_result($data1, 0);
-			
-			$sqltrees = "SELECT id FROM trees WHERE megatree=$id";
-			$data2 = DBQuery($sqltrees);
-			
-			for ($i = 0; $i < $maxtrees; $i++) {
-				$idtree= mysql_result($data2, $i, 'trees.id');
-				$querydeletenodes = "DELETE FROM nodos WHERE tree=$idtree";	
-				DBQuery($querydeletenodes);
+			$db = DBConnect();
+			$db->autocommit(FALSE);
+			try {
+				$id = $_POST['id'];
+				$sqltrees = "SELECT id FROM trees WHERE megatree=$id";
+
+				if(!$result = $db->query($sqltrees)){
+				    throw new Exception('There was an error running the query [' . $db->error . ']', 1);
+				}
+
+				$querytree = "UPDATE trees SET deleted = 1 WHERE megatree=$id;";
+				if(!$result = $db->query($querytree)){
+				    throw new Exception('There was an error running the query [' . $db->error . ']', 1);
+				}
+				$querymegatree = "UPDATE megatrees SET deleted = 1 WHERE id=$id;";
+				if(!$result = $db->query($querymegatree)){
+				    throw new Exception('There was an error running the query [' . $db->error . ']', 1);
+				}
+
+			} catch (Exception $e) {
+				$db->rollback();
+				$db->close();
+				throw new Exception("Error Processing Query", 1);
 			}
-			//TODO:falta borrar links
-			
-			$querytree = "DELETE FROM trees WHERE megatree=$id;";
-			DBQuery($querytree);
-			
-			$querymegatree = "DELETE FROM megatrees WHERE id=$id;";
-			DBQuery($querymegatree);
-			
+
+			$db->commit();
+			$db->close();
+			//$result->free();
 			$data = array(
 			'result' => 'true',
 			);
@@ -54,7 +61,7 @@ if(isset($_POST['action'])) {
 }else{
 
 	try {	
-		$query = 'SELECT * FROM  megatrees';
+		$query = 'SELECT * FROM  megatrees WHERE deleted = 0';
 		$datos = DBQueryReturnArray($query);
 		
 		$salida = $json->encode($datos);

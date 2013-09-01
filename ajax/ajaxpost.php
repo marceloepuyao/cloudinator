@@ -6,7 +6,7 @@ $json = new Services_JSON();
 if( array_key_exists('getIdFromName', $_POST)){
 	$name = $_POST['getIdFromName'];
 	try {
-		$query = "SELECT id FROM nodos WHERE name = '".$name."' AND tree = $_POST[tree];";
+		$query = "SELECT id FROM nodos WHERE name = '$name' AND tree = $_POST[tree];";
 		
 		$data = DBQuery($query);
 		
@@ -312,7 +312,7 @@ if(isset($_POST['formId'])){
 		
 		$data = DBQuery($query);
 		
-		print($json->encode(mysql_result($data, 0)));
+		print($json->encode($data->fetch_assoc()["name"]));
 	} catch (Exception $e) {
 		
 		//throw $e;
