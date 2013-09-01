@@ -6,7 +6,7 @@ $json = new Services_JSON();
 
 if(isset($_POST['type'])) {
 	try {
-		DBQuery("INSERT INTO `cloudinator`.`megatrees` (`id`, `name`, `chain`, `deleted`, `created`, `modified` ) VALUES 
+		DBQuery("INSERT INTO `megatrees` (`id`, `name`, `chain`, `deleted`, `created`, `modified` ) VALUES 
 			(NULL, '$_POST[name]', NULL, 0, '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."' );
 			");
 
@@ -35,7 +35,7 @@ else if(isset($_POST['clonename'])) {
 	$data3 = DBQuery($sql3);
 	$max = mysql_result($data3, 0);
 	
-	DBQuery("INSERT INTO `cloudinator`.`trees` (`id`, `name`,`megatree`, `deleted`, `created`) VALUES 
+	DBQuery("INSERT INTO `trees` (`id`, `name`,`megatree`, `deleted`, `created`) VALUES 
 			(NULL, '$_POST[name]', $_POST[to] ,0,'".date("Y-m-d H:i:s")."');
 			");
 	
@@ -51,7 +51,7 @@ else if(isset($_POST['clonename'])) {
 		$posx = mysql_result($data2, $i, 'nodos.posx');
 		$posy = mysql_result($data2, $i, 'nodos.posy');
 		
-		$query = "INSERT INTO `cloudinator`.`nodos` (`id`, `tree`, `name`, `type`, `posx`, `posy`, `metaname`, `metadata`, `metatype`) VALUES 
+		$query = "INSERT INTO `nodos` (`id`, `tree`, `name`, `type`, `posx`, `posy`, `metaname`, `metadata`, `metatype`) VALUES 
 				(NULL, $idnew, '$name', '$type', '$posx', '$posy', null, null, null);
 				";
 		DBQuery($query);
@@ -83,7 +83,7 @@ else if(isset($_POST['clonename'])) {
 		$idnewsource = mysql_result($newsource, 0);
 		
 		
-		$query = "INSERT INTO `cloudinator`.`links` (`id`, `tree`, `name`, `source`, `target`) VALUES 
+		$query = "INSERT INTO `links` (`id`, `tree`, `name`, `source`, `target`) VALUES 
 				(NULL, $idnew, '', '$idnewsource', '$idnewtarget');";
 				
 		DBQuery($query);
@@ -99,7 +99,7 @@ else if(isset($_POST['clonename'])) {
 	
 }else if (isset($_POST['name'])) {
 	try {
-		DBQuery("INSERT INTO `cloudinator`.`trees` (`id`, `name`, `megatree`,`deleted`, `created`) VALUES 
+		DBQuery("INSERT INTO `trees` (`id`, `name`, `megatree`,`deleted`, `created`) VALUES 
 			(NULL, '$_POST[name]',$_POST[megatree] ,0, '".date("Y-m-d H:i:s")."');
 			");
 		$data = array(

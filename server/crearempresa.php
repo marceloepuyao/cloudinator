@@ -13,7 +13,7 @@ try {
 	$textarea = mysql_real_escape_string($_POST["textarea"]);
 	$modified = time();
 	
-	$insertempresa = "INSERT INTO `cloudinator`.`empresas` (`id`, `nombre`, `industria`, `contactado`, `areacontacto`, `infolevantamiento`, `modified`) VALUES 
+	$insertempresa = "INSERT INTO `empresas` (`id`, `nombre`, `industria`, `contactado`, `areacontacto`, `infolevantamiento`, `modified`) VALUES 
 				(NULL, '$name', '$industry', '$contacted', '$areacontacto', '$textarea', $modified );";
 	DBQuery($insertempresa);
 	
