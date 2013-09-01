@@ -60,7 +60,8 @@ $(document).ready(function(){
             		
             	}else{
             		setSession(usu, pass, empresa);
-            		$.mobile.changePage("levantamiento.html");   
+            		window.location.href = "levantamiento.html";
+            		//$.mobile.changePage("levantamiento.html");   
             	}
 
             }

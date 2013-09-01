@@ -1850,11 +1850,14 @@ var DiagramNode = A.Component.create({
 							
 							if(this.get('responseData') =='{"result":"true"}'){
 								console.log(event.prevVal, "cambio a",  event.newVal, this.get('responseData') );
+								/*
 								instance.eachConnector(function(connector, index, sourceNode) {
 									var transition = connector.get(TRANSITION);				
+									console.log("newlog",event.newVal);
 									transition[(instance === sourceNode) ? SOURCE : TARGET] = event.newVal;
 									connector.set(TRANSITION, transition);
 								});
+								*/
 							}else{
 								alert("name already exist");
 								window.location.reload();
@@ -1863,12 +1866,16 @@ var DiagramNode = A.Component.create({
 					}
 				});
 			}else{
-				instance.eachConnector(function(connector, index, sourceNode) {
-					var transition = connector.get(TRANSITION);				
-					transition[(instance === sourceNode) ? SOURCE : TARGET] = event.newVal;
-					connector.set(TRANSITION, transition);
-				});
+				
 			}
+			
+			
+			instance.eachConnector(function(connector, index, sourceNode) {
+				var transition = connector.get(TRANSITION);	
+				console.log("newlog",event.newVal);
+				transition[(instance === sourceNode) ? SOURCE : TARGET] = event.newVal;
+				connector.set(TRANSITION, transition);
+			});
 
 			//fin c�digo implantado por cloudinator team
 			
