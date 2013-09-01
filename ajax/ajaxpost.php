@@ -135,11 +135,11 @@ if ( array_key_exists('nodo', $_POST) ) {
 			);
 			print($json->encode($data));
 		}
-	}else if($nodo == 'newname'){
+	}else if($nodo == 'newname'){ //METODO OFICIAL PARA CAMBIAR NOMBRE DE NODOS! (adivinando segun Klaus)
 		try {
-			$queryifexist = "SELECT count(id) FROM nodos WHERE name = '$_POST[name]'";
+			$queryifexist = "SELECT id FROM nodos WHERE name = '$_POST[name]'";
 			$ifexist = DBQuery($queryifexist);
-			$nifexist = mysql_result($ifexist, 0);
+			$nifexist = $ifexist->num_rows;
 			if($nifexist>0){
 				$data = array(
 					'result' => 'false'
@@ -148,9 +148,9 @@ if ( array_key_exists('nodo', $_POST) ) {
 				$queryid = "SELECT id FROM nodos 
 				WHERE name = '$_POST[id]' AND tree = $_POST[tree];";
 				$dataid = DBQuery($queryid);
-				$id = mysql_result($dataid, 0);
+				$id = $dataid->fetch_assoc()['id'];
 			
-				$query = "UPDATE  `nodos` SET  `name` =  '$_POST[name]' WHERE  `nodos`.`id` =$id AND `nodos`.`tree` ='$_POST[tree]';";
+				$query = "UPDATE `nodos` SET `name` = '$_POST[name]' WHERE `nodos`.`id` =$id AND `nodos`.`tree` ='$_POST[tree]';";
 	
 				DBQuery($query);
 	
