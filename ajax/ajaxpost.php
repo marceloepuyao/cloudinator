@@ -109,11 +109,9 @@ if ( array_key_exists('nodo', $_POST) ) {
 		}
 	}else if($nodo == 'delete'){
 		try {
-			
-			
 			$queryidnodo = "SELECT id FROM `nodos`  WHERE `nodos`.`name`='$_POST[name]' AND `nodos`.`tree` = $_POST[tree];";
 			$dataqueryidnodo = DBQuery($queryidnodo);
-			$idnodo = mysql_result($dataqueryidnodo, 0);
+			$idnodo = $dataqueryidnodo->fetch_assoc()['id'];
 			
 			$linksources = "DELETE FROM `links` WHERE `links`.`source` = '$idnodo'  AND `links`.`tree` = $_POST[tree];";
 			DBQuery($linksources);
