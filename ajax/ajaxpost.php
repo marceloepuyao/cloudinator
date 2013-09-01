@@ -26,9 +26,9 @@ if ( array_key_exists('nodo', $_POST) ) {
 	$nodo = $_POST['nodo'];
 	if($nodo == 'insert'){
 		try {
-			$queryifexist = "SELECT count(id) FROM nodos WHERE name = '$_POST[name]'";
+			$queryifexist = "SELECT id FROM nodos WHERE name = '$_POST[name]'";
 			$ifexist = DBQuery($queryifexist);
-			$nifexist = mysql_result($ifexist, 0);
+			$nifexist = $ifexist->num_rows;
 			
 			if($nifexist > 0){
 				$data = array(
@@ -56,9 +56,9 @@ if ( array_key_exists('nodo', $_POST) ) {
 		}
 	}else if($nodo == 'update'){
 		try {
-			$queryifexist = "SELECT count(id) FROM nodos WHERE name = '$_POST[name]'";
+			$queryifexist = "SELECT id FROM nodos WHERE name = '$_POST[name]'";
 			$ifexist = DBQuery($queryifexist);
-			$nifexist = mysql_result($ifexist, 0);
+			$nifexist = $ifexist->num_rows;
 			if($nifexist>1){
 				$data = array(
 					'result' => 'false'.$nifexist
@@ -192,49 +192,49 @@ if ( array_key_exists('link', $_POST) ) {
 		try {
 			$prequerysource = "SELECT id, type FROM nodos WHERE name = '$_POST[source]' and tree = $_POST[tree];";
 			$data1 = DBQuery($prequerysource);
-			$sourceid = mysql_result($data1, 0,'nodos.id');
-			$sourcetype = mysql_result($data1, 0, 'nodos.type');
+			$row = $data1->fetch_assoc();
+			$sourceid = $row['id'];
+			$sourcetype = $row['type'];
 			
-			$prequerytarget = "SELECT count(id) FROM nodos WHERE name = '$_POST[target]' and tree = $_POST[tree];";
+			$prequerytarget = "SELECT id, type FROM nodos WHERE name = '$_POST[target]' and tree = $_POST[tree];";
 			$data2 = DBQuery($prequerytarget);
-			$exist = mysql_result($data2, 0);
+			$exist = $data2->num_rows;
 			
 			if($exist > 0){
-				$prequerytarget = "SELECT id, type FROM nodos WHERE name = '$_POST[target]' and tree = $_POST[tree];";
-				$data3 = DBQuery($prequerytarget);
-				$targetid = mysql_result($data3, 0, 'nodos.id');
-				$targettype = mysql_result($data3, 0, 'nodos.type');
+				//$prequerytarget = "SELECT id, type FROM nodos WHERE name = '$_POST[target]' and tree = $_POST[tree];";
+				//$data3 = DBQuery($prequerytarget);
+				$row = $data2->fetch_assoc();
+				$targetid = $row['id'];
+				$targettype = $row['type'];
 			}else{
-				$insertnode = "INSERT INTO `cloudinator`.`nodos` (`id`, `tree`, `name`, `type`, `posx`, `posy`, `metaname`, `metadata`, `metatype`) VALUES 
+				$insertnode = "INSERT INTO `nodos` (`id`, `tree`, `name`, `type`, `posx`, `posy`, `metaname`, `metadata`, `metatype`) VALUES 
 				(NULL, $_POST[tree], '$_POST[target]', '$_POST[typetarget]', '$_POST[xtarget]', '$_POST[ytarget]', null, null, null);";
 				DBQuery($insertnode);
 				
-				$prequerytarget = "SELECT id FROM nodos WHERE name = '$_POST[target]' and tree = $_POST[tree];";
+				//$prequerytarget = "SELECT id FROM nodos WHERE name = '$_POST[target]' and tree = $_POST[tree];";
 				$data2 = DBQuery($prequerytarget);
-				$targetid = mysql_result($data2, 0);
+				$row = $data2->fetch_assoc();
+				$targetid = $row['id'];
+				$targettype = $row['type'];
 			}
 			
 			$problem = false;
 			if($sourcetype == "state"){
 				
-				$nodoublelinkquery = "SELECT count(id) FROM links WHERE source = $sourceid AND tree = $_POST[tree]";
+				$nodoublelinkquery = "SELECT id FROM links WHERE source = $sourceid AND tree = $_POST[tree]";
 				$nodoublelinks = DBQuery($nodoublelinkquery);
 				
-				if(mysql_result($nodoublelinks, 0) >= 1){
+				if($nodoublelinks->num_rows >= 1){
 					$problem = true;
 				}
 			}
 			
-			$queryloop = "SELECT count(id) FROM links WHERE source = $targetid AND target = $sourceid AND tree = $_POST[tree]";
+			$queryloop = "SELECT id FROM links WHERE source = $targetid AND target = $sourceid AND tree = $_POST[tree]";
 			$loop = DBQuery($queryloop);
-			 
-			if(mysql_result($loop, 0) >= 1){
+			if($loop->num_rows >= 1){
 				$problem = true;
 			}
-				
-			
-			
-			
+
 			if(!$problem){
 				
 				$query = "INSERT INTO `cloudinator`.`links` (`id`, `tree`, `name`, `source`, `target`) VALUES 
