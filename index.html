@@ -270,7 +270,7 @@
 			console.log("fail on clonar()", data);
 		}).always(function(){$('.loading').fadeOut();});
 	}
-	function enviarForm(){ //Llama a un form para crear un Subformulario [AJAX].//TODO: POSIBLE COMPORTAMIENTO NO DESEADO DE NO PERMITIR NOMBRES DUPLICADOS ENTRE TODOS LOS SUBFORMULARIOS
+	function enviarForm(){ //Llama a un form para crear un Subformulario [AJAX].//TODO: COMPORTAMIENTO NO DESEADO DE NO PERMITIR NOMBRES DUPLICADOS ENTRE TODOS LOS SUBFORMULARIOS
 		$.ajax({
 			url: 'ajax/ajaxTrees.php',
 			dataType: 'json',

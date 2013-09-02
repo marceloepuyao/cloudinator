@@ -21,17 +21,20 @@ if(isset($_POST['type'])) {
 	
 }
 else if(isset($_POST['clonename'])) {
-	
+	/* //segun vi, lo que se envia no es el nombre, es la id
 	$sql = "SELECT id FROM trees WHERE name = '$_POST[clonename]'";
 	$data1 = DBQuery($sql);
 	$idclone = $data1->fetch_assoc()['id'];
-	
+	*/
+
+	$idclone = $_POST['clonename'];
+
 	$sql2 = "SELECT name, type, posx, posy FROM nodos WHERE tree = $idclone";
 	$data2 = DBQuery($sql2);
 	
-	$sql3 = "SELECT count(id) FROM nodos WHERE tree = $idclone";
+	$sql3 = "SELECT id FROM nodos WHERE tree = $idclone";
 	$data3 = DBQuery($sql3);
-	$max = $data3->fetch_assoc()['id'];
+	$max = $data3->num_rows;
 	
 	DBQuery("INSERT INTO `trees` (`id`, `name`,`megatree`, `deleted`, `created`) VALUES 
 			(NULL, '$_POST[name]', $_POST[to] ,0,'".date("Y-m-d H:i:s")."');
