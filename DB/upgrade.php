@@ -1,6 +1,4 @@
 <?php
-
-require_once('../JSON.php');
 require_once('db.php');
 
 echo '<a href="../index.html">Volver</a>';
@@ -74,3 +72,4 @@ echo '<hr>';
 echo "Todos los cambios han sido realizados";
 echo '</hr></center>';
 echo '<br><br><a href="../index.html">Volver</a>';
+?>

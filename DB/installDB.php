@@ -4,7 +4,7 @@ echo '<a href="../index.html">Volver</a>';
 echo '<center><br><h2>Instalacion de la base de datos</h2><br>';
 echo '<hr>';
 //borrar tablas si existen
-echo '<h3>Borrando DB "'.$connconf['mysql_database'].'</h3>';
+echo '<h3>Borrando DB "'.$connconf['mysql_database'].'"</h3>';
 try {
 	DBQuery('DROP DATABASE '.$connconf['mysql_database']);
 	echo 'Se ha borrado la database "'.$connconf['mysql_database'].'" exitosamente';
