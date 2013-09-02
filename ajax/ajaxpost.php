@@ -9,8 +9,8 @@ if( array_key_exists('getIdFromName', $_POST)){
 		$query = "SELECT id FROM nodos WHERE name = '$name' AND tree = $_POST[tree];";
 		
 		$data = DBQuery($query);
-		
-		print($json->encode($data->fetch_assoc()['id']));
+		$aux = $data->fetch_assoc();
+		print($json->encode($aux['id']));
 	} catch (Exception $e) {
 		
 		//throw $e;
@@ -111,7 +111,8 @@ if ( array_key_exists('nodo', $_POST) ) {
 		try {
 			$queryidnodo = "SELECT id FROM `nodos`  WHERE `nodos`.`name`='$_POST[name]' AND `nodos`.`tree` = $_POST[tree];";
 			$dataqueryidnodo = DBQuery($queryidnodo);
-			$idnodo = $dataqueryidnodo->fetch_assoc()['id'];
+			$aux = $dataqueryidnodo->fetch_assoc();
+			$idnodo = $aux['id'];
 			
 			$linksources = "DELETE FROM `links` WHERE `links`.`source` = '$idnodo'  AND `links`.`tree` = $_POST[tree];";
 			DBQuery($linksources);
@@ -146,7 +147,8 @@ if ( array_key_exists('nodo', $_POST) ) {
 				$queryid = "SELECT id FROM nodos 
 				WHERE name = '$_POST[id]' AND tree = $_POST[tree];";
 				$dataid = DBQuery($queryid);
-				$id = $dataid->fetch_assoc()['id'];
+				$aux = $dataid->fetch_assoc();
+				$id = $aux['id'];
 			
 				$query = "UPDATE `nodos` SET `name` = '$_POST[name]' WHERE `nodos`.`id` =$id AND `nodos`.`tree` ='$_POST[tree]';";
 	
@@ -279,11 +281,13 @@ if ( array_key_exists('link', $_POST) ) {
 			
 			$prequerysource = "SELECT id FROM nodos WHERE name = '$_POST[source]' and tree = $_POST[tree];";
 			$data1 = DBQuery($prequerysource);
-			$sourceid = $data1->fetch_assoc()['id'];
+			$aux1 = $data1->fetch_assoc();
+			$sourceid = $aux1['id'];
 			
 			$prequerytarget = "SELECT id FROM nodos WHERE name = '$_POST[target]' and tree = $_POST[tree];";
 			$data2 = DBQuery($prequerytarget);
-			$targetid = $data2->fetch_assoc()['id'];
+			$aux2 = $data2->fetch_assoc();
+			$targetid = $aux2['id'];
 			
 			$query = "DELETE FROM `links` WHERE `links`.`source`='$sourceid' AND `links`.`target` ='$targetid' AND `links`.`tree` =$_POST[tree];";
 
@@ -309,8 +313,8 @@ if(isset($_POST['formId'])){
 		$query = "SELECT name FROM trees WHERE id = $id";
 		
 		$data = DBQuery($query);
-		
-		print($json->encode($data->fetch_assoc()["name"]));
+		$aux = $data->fetch_assoc();
+		print($json->encode($aux["name"]));
 	} catch (Exception $e) {
 		
 		//throw $e;

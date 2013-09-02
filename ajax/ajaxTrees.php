@@ -42,7 +42,8 @@ else if(isset($_POST['clonename'])) {
 	
 	$sqlgettree = "SELECT id FROM trees WHERE name = '$_POST[name]'";
 	$data4 = DBQuery($sqlgettree);
-	$idnew = $data4->fetch_assoc()['id'];
+	$aux4 = $data4->fetch_assoc();
+	$idnew = $aux4['id'];
 	
 	while ($fetch = $data2->fetch_assoc()) {
 		$name = $fetch['name'];
@@ -72,14 +73,16 @@ else if(isset($_POST['clonename'])) {
 						FROM nodos
 						WHERE name = (SELECT name FROM nodos WHERE id = $targeta ) order by id desc";
 		$newtarget = DBQuery($querytarget);
-		$idnewtarget = $newtarget->fetch_assoc()['id'];
+		$aux = $newtarget->fetch_assoc();
+		$idnewtarget = $aux['id'];
 		
 		$sourca = $fetch['source'];
 		$querysource = "SELECT id
 						FROM nodos
 						WHERE name = (SELECT name FROM nodos WHERE id = $sourca ) order by id desc";
 		$newsource = DBQuery($querysource);
-		$idnewsource = $newsource->fetch_assoc()['id'];
+		$aux = $newsource->fetch_assoc();
+		$idnewsource = $aux['id'];
 		
 		
 		$query = "INSERT INTO `links` (`id`, `tree`, `name`, `source`, `target`) VALUES 
