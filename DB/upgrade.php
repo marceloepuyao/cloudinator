@@ -9,19 +9,21 @@ try{
 	try{
 		$query = 'SELECT * FROM cloudinator_upgrades';
 		$datos = DBQuery($query);
-		$version = $datos->fetch_assoc()['version'];
+		$aux = $datos->fetch_assoc();
+		$version = $aux['version'];
 	}catch(Exception $e){
-		DBQuery("	CREATE TABLE cloudinator_upgrades (
-					id int(100) not null auto_increment primary key,
-					name varchar(50) NOT NULL,
-					version varchar(25) NOT NULL,
-					modified timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP) 
-					ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+		DBQuery("CREATE TABLE cloudinator_upgrades (
+				id int(100) not null auto_increment primary key,
+				name varchar(50) NOT NULL,
+				version varchar(25) NOT NULL,
+				modified timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP) 
+				ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 		");
 
 		DBQuery("INSERT INTO `cloudinator_upgrades` (`id`, `name`, `version`, `modified`) VALUES 
 			(NULL, 'cloudinator', '2013082600', '".time()."');
 			");
+		
 		echo '<hr>';
 		echo 'Se ha creado la tabla cloudinator_upgrades';
 		echo '</hr>';
