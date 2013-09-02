@@ -4,22 +4,22 @@ echo '<a href="../index.html">Volver</a>';
 echo '<center><br><h2>Instalacion de la base de datos</h2><br>';
 echo '<hr>';
 //borrar tablas si existen
-echo '<h3>Borrando DB "cloudinator"</h3>';
+echo '<h3>Borrando DB "'.$connconf['mysql_database'].'</h3>';
 try {
-	DBQuery('DROP DATABASE cloudinator');
-	echo 'Se ha borrado la database "cloudinator" exitosamente';
+	DBQuery('DROP DATABASE '.$connconf['mysql_database']);
+	echo 'Se ha borrado la database "'.$connconf['mysql_database'].'" exitosamente';
 } catch (Exception $e) {
-	echo 'Se intento borrar la database "cloudinator", pero probablemente no existia, ignore este error<br>';
+	echo 'Se intento borrar la database "'.$connconf['mysql_database'].'", si esta es su primera instalacion ignore este error<br>';
 	echo $e;
 }
 echo '<hr>';
 //crear database "cloudinator"
-echo '<h3>Creando DB "cloudinator"</h3>';
+echo '<h3>Creando DB "'.$connconf['mysql_database'].'"</h3>';
 try {
-	DBQuery('CREATE DATABASE cloudinator CHARACTER SET utf8 COLLATE utf8_general_ci');
-	echo 'Base de datos "cloudinator" creada exitosamente';
+	DBQuery('CREATE DATABASE '.$connconf['mysql_database'].' CHARACTER SET utf8 COLLATE utf8_general_ci');
+	echo 'Base de datos "'.$connconf['mysql_database'].'" creada exitosamente';
 } catch (Exception $e) {
-	echo 'Error al crear la base de datos "cloudinator", por favor creela manualmente<br>';
+	echo 'Error al crear la base de datos "'.$connconf['mysql_database'].'", por favor creela manualmente<br>';
 	echo $e;
 }
 echo '<hr>';
