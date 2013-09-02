@@ -10,8 +10,6 @@ if(isset($_POST['type'])) {
 			(NULL, '$_POST[name]', NULL, 0, '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."' );
 			");
 
-		//$data = DBQuery("SELECT id FROM trees WHERE name = '$_POST[name]'");
-		//print($json->encode(mysql_result($data, 0)));
 		$data = array(
 		'result' => 'true',
 		);
@@ -26,14 +24,14 @@ else if(isset($_POST['clonename'])) {
 	
 	$sql = "SELECT id FROM trees WHERE name = '$_POST[clonename]'";
 	$data1 = DBQuery($sql);
-	$idclone = mysql_result($data1, 0);
+	$idclone = $data1->fetch_assoc()['id'];
 	
 	$sql2 = "SELECT name, type, posx, posy FROM nodos WHERE tree = $idclone";
 	$data2 = DBQuery($sql2);
 	
 	$sql3 = "SELECT count(id) FROM nodos WHERE tree = $idclone";
 	$data3 = DBQuery($sql3);
-	$max = mysql_result($data3, 0);
+	$max = $data3->fetch_assoc()['id'];
 	
 	DBQuery("INSERT INTO `trees` (`id`, `name`,`megatree`, `deleted`, `created`) VALUES 
 			(NULL, '$_POST[name]', $_POST[to] ,0,'".date("Y-m-d H:i:s")."');
@@ -41,32 +39,52 @@ else if(isset($_POST['clonename'])) {
 	
 	$sqlgettree = "SELECT id FROM trees WHERE name = '$_POST[name]'";
 	$data4 = DBQuery($sqlgettree);
-	$idnew = mysql_result($data4, 0);
+	$idnew = $data4->fetch_assoc()['id'];
 	
-	
-	$num = 0;
-	for ($i = 0; $i < $max; $i++) {
-		$name = mysql_result($data2, $i, 'nodos.name');
-		$type = mysql_result($data2, $i, 'nodos.type');
-		$posx = mysql_result($data2, $i, 'nodos.posx');
-		$posy = mysql_result($data2, $i, 'nodos.posy');
-		
+	while ($fetch = $data2->fetch_assoc()) {
+		$name = $fetch['name'];
+		$type = $fetch['type'];
+		$posx = $fetch['posx'];
+		$posy = $fetch['posy'];
+		$metaname = $fetch['metaname'];
+		$metadata = $fetch['metadata'];
+		$metatype = $fetch['metatype'];
+
 		$query = "INSERT INTO `nodos` (`id`, `tree`, `name`, `type`, `posx`, `posy`, `metaname`, `metadata`, `metatype`) VALUES 
-				(NULL, $idnew, '$name', '$type', '$posx', '$posy', null, null, null);
+				(NULL, $idnew, '$name', '$type', '$posx', '$posy', '$metaname', '$metadata', '$metatype');
 				";
 		DBQuery($query);
-		
-		$num++;
 	}
-	
-	
+
 	$linksprevquery = "SELECT source, target FROM links WHERE tree = $idclone";
 	$linksprev= DBQuery($linksprevquery);
 	
-	$countprevquery = "SELECT count(id) FROM links WHERE tree = $idclone";
+	$countprevquery = "SELECT id FROM links WHERE tree = $idclone";
 	$countprev = DBQuery($countprevquery);
-	$maxlinks = mysql_result($countprev, 0);
-	
+	$maxlinks = $countprev->num_rows;
+
+	while ($fetch = $linksprev->fetch_assoc()) {
+		$targeta = $fetch['target'];
+		$querytarget = "SELECT id
+						FROM nodos
+						WHERE name = (SELECT name FROM nodos WHERE id = $targeta ) order by id desc";
+		$newtarget = DBQuery($querytarget);
+		$idnewtarget = $newtarget->fetch_assoc()['id'];
+		
+		$sourca = $fetch['source'];
+		$querysource = "SELECT id
+						FROM nodos
+						WHERE name = (SELECT name FROM nodos WHERE id = $sourca ) order by id desc";
+		$newsource = DBQuery($querysource);
+		$idnewsource = $newsource->fetch_assoc()['id'];
+		
+		
+		$query = "INSERT INTO `links` (`id`, `tree`, `name`, `source`, `target`) VALUES 
+				(NULL, $idnew, '', '$idnewsource', '$idnewtarget');";
+				
+		DBQuery($query);
+	}
+	/* //ESTO SE DEBE BORRAR
 	for ($i = 0; $i < $maxlinks; $i++) {
 		$targeta = mysql_result($linksprev, $i, 'links.target');
 		$querytarget = "select id
@@ -89,7 +107,7 @@ else if(isset($_POST['clonename'])) {
 		DBQuery($query);
 		
 	}
-	
+	*/
 	
 	$data = array(
 		'result' => 'true',

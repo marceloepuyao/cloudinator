@@ -164,7 +164,7 @@ if ( array_key_exists('nodo', $_POST) ) {
 			);
 			print($json->encode($data));
 		}
-	}else if($nodo == 'newnameTEST'){
+	}else if($nodo == 'newnameTEST'){ //ESTO SE USA? DEBE SER BORRADO ?
 		try {
 			$query = "UPDATE  `nodos` SET  `name` =  '$_POST[newname]' WHERE  `nodos`.`name` ='$_POST[oldname]' AND `nodos`.`tree` ='$_POST[tree]';";
 
@@ -279,11 +279,11 @@ if ( array_key_exists('link', $_POST) ) {
 			
 			$prequerysource = "SELECT id FROM nodos WHERE name = '$_POST[source]' and tree = $_POST[tree];";
 			$data1 = DBQuery($prequerysource);
-			$sourceid = mysql_result($data1, 0);
+			$sourceid = $data1->fetch_assoc()['id'];
 			
 			$prequerytarget = "SELECT id FROM nodos WHERE name = '$_POST[target]' and tree = $_POST[tree];";
 			$data2 = DBQuery($prequerytarget);
-			$targetid = mysql_result($data2, 0);
+			$targetid = $data2->fetch_assoc()['id'];
 			
 			$query = "DELETE FROM `links` WHERE `links`.`source`='$sourceid' AND `links`.`target` ='$targetid' AND `links`.`tree` =$_POST[tree];";
 

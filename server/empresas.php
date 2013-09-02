@@ -10,11 +10,11 @@ if(isset($_POST["action"])){
 	try{
 		$sql = "SELECT * FROM empresas WHERE id = $_POST[id] ";
 		
-		$response = DBquery3($sql);
-		
+		$result = DBquery($sql);
+		$response = $result->fetch_assoc();
 		$data = array(
-				'nombre' => mysql_result($response, 0, 'empresas.nombre'), 
-				'id' =>mysql_result($response, 0, 'empresas.id')
+				'nombre' => $response['nombre'],
+				'id' => $response['id']
 				);
 
 		print($json->encode($data));
@@ -33,29 +33,18 @@ if(isset($_POST["action"])){
 			 
 		$sql = "SELECT * FROM empresas";
 		 
-		if ($empresas = DBquery3($sql)){
-		    if (mysql_num_rows($empresas) > 0){
-		    	
-		        $data = array(
-		        	'total' => mysql_num_rows($empresas)
+		if ($empresas = DBquery($sql)){
+			$data = array(
+				'total' => $empresas->num_rows
+			);
+			$i = 0;
+			while ($fetch = $empresas->fetch_assoc()) {
+				$data[$i] = array(
+					'nombre' => $fetch['nombre'],
+					'id' => $fetch['id']
 				);
-				
-				for ($i = 0; $i < mysql_num_rows($empresas); $i++) {
-					$data[$i] = array(
-						'nombre' => mysql_result($empresas, $i, 'empresas.nombre'),
-						'id' => mysql_result($empresas, $i, 'empresas.id')
-					);
-				}
-				
-				
-				
-		    }else{
-		    	$data = array(
-					'total' => 0
-				);
-		    	
-		    }
-		    
+				$i++;
+			}
 		}
 		else{
 		    $data = array(
