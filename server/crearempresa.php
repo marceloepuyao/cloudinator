@@ -16,9 +16,12 @@ try {
 	$insertempresa = "INSERT INTO `empresas` (`id`, `nombre`, `industria`, `contactado`, `areacontacto`, `infolevantamiento`, `modified`) VALUES 
 				(NULL, '$name', '$industry', '$contacted', '$areacontacto', '$textarea', $modified );";
 	DBQuery($insertempresa);
-	
+
+	$nueva = DBQuery("SELECT * FROM empresas WHERE nombre = '$name'");
+	$response = $nueva->fetch_array(MYSQLI_ASSOC);
 	$data = array(
-				'result' => true
+				'result' => true,
+				'id'=>$response['id']
 			);
 
 	print($json->encode($data));

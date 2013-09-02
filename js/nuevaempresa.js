@@ -23,9 +23,12 @@ function crearEmpresa(name,industry,contacted,areacontacto,textarea){
 		textarea: textarea
 		},
 		function(respuesta){
+			console.log(respuesta);
 			var resp = jQuery.parseJSON(respuesta);
-			console.log(resp);
+			
 			if(resp.result){
+				$.session.set('empresa', resp.id);
+				 
 				alert("empresa creada con éxito");
 				window.location.href = "levantamiento.html";
 			}else{

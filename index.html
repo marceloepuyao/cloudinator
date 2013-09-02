@@ -268,7 +268,7 @@
 			}
 		}).fail(function(data) {
 			addNotice("error", "Error al clonar el Subformulario");
-			console.log("fail on clonar()", data);
+			console.log("fail on clonar()", data.responseText);
 		}).always(function(){$('.loading').fadeOut();$('#copyTreeName').slideUp();});
 	}
 	function enviarForm(){ //Llama a un form para crear un Subformulario [AJAX].//TODO: COMPORTAMIENTO NO DESEADO DE NO PERMITIR NOMBRES DUPLICADOS ENTRE TODOS LOS SUBFORMULARIOS
@@ -337,7 +337,7 @@
 		}).always(function(){$('.loading').fadeOut();});
 	}
 	function confirmdelete(){ //Llama a deleteform() en caso de que el usuario acepte, de lo contrario retorna false.
-		if(confirm("¿Está Seguro?")){
+		if(confirm("ï¿½Estï¿½ Seguro?")){
 			deleteform();
 		}else{
 			return false

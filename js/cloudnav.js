@@ -26,6 +26,38 @@ function checkSession(){
 	}
 	
 }
+function login(){
+	 var usu = $("#text-username").val();
+     var pass = $("#passwordcloud").val();
+     var empresa = $("#select-choice-1").val();
+     $.post("server/login.php",{ usu : usu, pass : pass},function(respuesta){
+     	
+     	var obj = jQuery.parseJSON(respuesta);
+     	console.log(obj);
+         if (obj.result == "true") {
+         	
+         	if(empresa == "new"){
+         		setSession(usu, pass, null);
+         		window.location.href = "nuevaempresa.html";
+         		
+         	}else{
+         		setSession(usu, pass, empresa);
+         		window.location.href = "levantamiento.html";
+         		//$.mobile.changePage("levantamiento.html");   
+         	}
+
+         }
+         else{
+         	//$("#pageError").show();
+             $.mobile.changePage('#pageError', 'pop', true, true);
+             //$("#errorMsg").fadeIn(300);
+             //$("#errorMsg").css("display", "block");
+         }
+     
+     });
+	
+	
+}
 $(document).ready(function(){
 	checkSession();
 	llamaempresas();
@@ -45,33 +77,21 @@ $(document).ready(function(){
 	
 	});
     $("#btnLogin").click(function(){
-        var usu = $("#text-username").val();
-        var pass = $("#passwordcloud").val();
-        var empresa = $("#select-choice-1").val();
-        $.post("server/login.php",{ usu : usu, pass : pass},function(respuesta){
-        	
-        	var obj = jQuery.parseJSON(respuesta);
-        	console.log(obj);
-            if (obj.result == "true") {
-            	
-            	if(empresa == "new"){
-            		setSession(usu, pass, null);
-            		window.location.href = "nuevaempresa.html";
-            		
-            	}else{
-            		setSession(usu, pass, empresa);
-            		window.location.href = "levantamiento.html";
-            		//$.mobile.changePage("levantamiento.html");   
-            	}
-
-            }
-            else{
-            	//$("#pageError").show();
-                $.mobile.changePage('#pageError', 'pop', true, true);
-                //$("#errorMsg").fadeIn(300);
-                //$("#errorMsg").css("display", "block");
-            }
-        
-        });
+    	login();
     });
+    $('#text-username').bind('keypress', function(e) {
+    	var code = (e.keyCode ? e.keyCode : e.which);
+    	 if(code == 13) { //Enter keycode
+    		 login();
+    	 }
+    	
+    });
+    $('#passwordcloud').bind('keypress', function(e) {
+    	var code = (e.keyCode ? e.keyCode : e.which);
+    	 if(code == 13) { //Enter keycode
+    		 login();
+    	 }
+    	
+    });
+    
 });
