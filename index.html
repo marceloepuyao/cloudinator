@@ -268,7 +268,7 @@
 		}).fail(function(data) {
 			addNotice("error", "Error al clonar el Subformulario");
 			console.log("fail on clonar()", data);
-		}).always(function(){$('.loading').fadeOut();});
+		}).always(function(){$('.loading').fadeOut();$('#copyTreeName').slideUp();});
 	}
 	function enviarForm(){ //Llama a un form para crear un Subformulario [AJAX].//TODO: COMPORTAMIENTO NO DESEADO DE NO PERMITIR NOMBRES DUPLICADOS ENTRE TODOS LOS SUBFORMULARIOS
 		$.ajax({
