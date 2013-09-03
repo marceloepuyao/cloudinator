@@ -262,9 +262,17 @@
 			timeout: 2500,
 			beforeSend: function(){$('.loading').fadeIn();},
 			success: function(data){
-				console.log("success on clonar()", data);
-				cargarGrafos();
-				addNotice("success", "Nuevo Subformulario clonado exitosamente");
+				if(data.result){
+					console.log("success on clonar()", data);
+					cargarGrafos();
+					addNotice("success", "Nuevo Subformulario clonado exitosamente");
+				}else{
+					$('#loadingGif').fadeOut();
+					addNotice("warning", "Nombre ocupado")
+					$('#newTreeName').slideDown();
+				}
+				
+				
 			}
 		}).fail(function(data) {
 			addNotice("error", "Error al clonar el Subformulario");
@@ -272,6 +280,7 @@
 		}).always(function(){$('.loading').fadeOut();$('#copyTreeName').slideUp();});
 	}
 	function enviarForm(){ //Llama a un form para crear un Subformulario [AJAX].//TODO: COMPORTAMIENTO NO DESEADO DE NO PERMITIR NOMBRES DUPLICADOS ENTRE TODOS LOS SUBFORMULARIOS
+		/*
 		$.ajax({
 			url: 'ajax/ajaxTrees.php',
 			dataType: 'json',
@@ -284,7 +293,7 @@
 						checker = 1;
 					}
 				});
-				if(checker == 0){
+				if(checker == 0){*/
 					$.ajax({
 						url: 'ajax/ajaxTrees.php',
 						dataType: 'json',
@@ -296,25 +305,31 @@
 						timeout: 2500,
 						beforeSend: function(){$('.loading').fadeIn();},
 						success: function(data){
-							console.log("success on enviarForm()", data);
-							cargarGrafos();
-							addNotice("success", "Nuevo Subformulario creado exitosamente");
+							
+							if(data.result){
+								console.log("success on enviarForm()", data);
+								cargarGrafos();
+								addNotice("success", "Nuevo Subformulario creado exitosamente");
+							}else{
+								$('#loadingGif').fadeOut();
+								addNotice("warning", "Nombre ocupado")
+								$('#newTreeName').slideDown();
+							}
 						}
 					}).fail(function(data) {
 						addNotice("error", "Error al crear el Subformulario");
 						//window.location.reload();
 						console.log("fail on enviarForm()", data);
 					}).always(function(){$('.loading').fadeOut();});
-				}else{
-					$('#loadingGif').fadeOut();
-					addNotice("warning", "Nombre ocupado")
-					$('#newTreeName').slideDown();
+				/*}else{
+					
 				}
 			}
 		}).fail(function(data) {
 			$('.loading').fadeOut();
 			$addNotice("error", "Error al acceder a la lista de Grafos");
 		});
+	*/
 	}
 	function createNewForm(){ //Llama a un form para crear un Formulario [AJAX].
 		$.ajax({

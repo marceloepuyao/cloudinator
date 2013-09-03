@@ -136,7 +136,7 @@ if ( array_key_exists('nodo', $_POST) ) {
 		}
 	}else if($nodo == 'newname'){ //METODO OFICIAL PARA CAMBIAR NOMBRE DE NODOS! (adivinando segun Klaus)
 		try {
-			$queryifexist = "SELECT id FROM nodos WHERE name = '$_POST[name]'";
+			$queryifexist = "SELECT id FROM nodos WHERE name = '$_POST[name]' AND tree = $_POST[tree] ";
 			$ifexist = DBQuery($queryifexist);
 			$nifexist = $ifexist->num_rows;
 			if($nifexist>0){
