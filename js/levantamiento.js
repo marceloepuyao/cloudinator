@@ -18,20 +18,23 @@ function checkSessionorDie(){
 	}
 	
 	$("#usernamebutton").text($.session.get('usu'));
-	setEmpresaNombre($.session.get('empresa'));
+	setEmpresaInfo($.session.get('empresa'));
 	console.log("asdasd");
 }
 
-function setEmpresaNombre(id){
+function setEmpresaInfo(id){
 	
 	$.post("server/empresas.php",{ 
 		action : "getById", 
 		id: id
 		},function(empresas){
 			
+			
 			var emp = jQuery.parseJSON(empresas);
+			console.log(emp);
 			//console.log("hola", empresas);
 			$("#empresanombre").text(emp.nombre);
+			$("#infoempresa").text(emp.infolevantamiento);
 		});
 	
 	
@@ -60,6 +63,8 @@ $(document).ready(function(){
 	});
 
 	
-	
+	$("#nuevolevantamiento").click(function(){
+		window.location.href = "nuevolevantamiento.html";
+	});
 	
 });

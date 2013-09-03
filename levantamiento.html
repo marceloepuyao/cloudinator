@@ -22,15 +22,50 @@
 	</div>
 	
 	<h4>información de la empresa</h4>
-	<br><br>
+	<p id="infoempresa" > </p>
+	<br>
 	<h4>Historial de levantamiento</h4>
-	<br><br>
 	
+	<table data-role="table" id="table-column-toggle" data-mode="columntoggle" class="ui-responsive table-stroke">
+	     <thead>
+	       <tr>
+	         <th data-priority="1">Visita</th>
+	         <th data-priority="2">Fecha</th>
+	         <th>Título Visita</th>
+	         <th data-priority="4"><abbr title="Rotten Tomato Rating">Completitud</abbr></th>
+	         <th data-priority="5">Completar</th>
+	         <th data-priority="6">Recorrer</th>
+	         <th data-priority="7">más info</th>
+	          <th data-priority="8">Borrar</th>
+	       </tr>
+	     </thead>
+	     <tbody>
+	       <tr>
+	         <th>1</th>
+	         <td>19/09/2004</td>
+	         <td>Levantamiento con Jefe de Desarrollo </td>
+	         <td>70%</td>
+	         <td><a href="#">Ir</a></td>
+	         <td><a href="#">Ir</a></td>
+	         <td><a href="#">+</a></td>
+	         <td><a href="#">X</a></td>
+	       </tr>
+	       <tr>
+	         <th>2</th>
+	         <td>12/08/2011</td>
+	         <td>Levantamiento X</td>
+	         <td>97%</td>
+	         <td><a href="#">Ir</a></td>
+	         <td><a href="#">Ir</a></td>
+	         <td><a href="#">+</a></td>
+	         <td><a href="#">X</a></td>
+	       </tr>
+	       
+	     </tbody>
+	   </table>
+	<br><br>
 	<div data-role="controlgroup">
-	    <a href="#" data-role="button">Empezar Levantamiento</a>
-	    <a href="#" data-role="button">Completar Levantamiento</a>
-	    <a href="#" data-role="button">Borrar Levantamiento</a>
-	    <a href="#" data-role="button">Recorrer Levantamiento</a>
+	    <a id="nuevolevantamiento" href="#" data-role="button">Empezar Nuevo Levantamiento</a>
 	</div>
 
 </section>

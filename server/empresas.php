@@ -14,7 +14,12 @@ if(isset($_POST["action"])){
 		$response = $result->fetch_assoc();
 		$data = array(
 				'nombre' => $response['nombre'],
-				'id' => $response['id']
+				'id' => $response['id'],
+				'industria' => $response['industria'],
+				'contactado'=> $response['contactado'],
+				'areacontacto'=> $response['areacontacto'],
+				'infolevantamiento'=> $response['infolevantamiento'],
+				'modified'=> $response['modified']	
 				);
 
 		print($json->encode($data));
@@ -41,7 +46,12 @@ if(isset($_POST["action"])){
 			while ($fetch = $empresas->fetch_assoc()) {
 				$data[$i] = array(
 					'nombre' => $fetch['nombre'],
-					'id' => $fetch['id']
+					'id' => $fetch['id'], 
+					'industria' => $fetch['industria'],
+					'contactado'=> $fetch['contactado'],
+					'areacontacto'=> $fetch['areacontacto'],
+					'infolevantamiento'=> $fetch['contactado'],
+					'modified'=> $fetch['modified']
 				);
 				$i++;
 			}
