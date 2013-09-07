@@ -216,6 +216,7 @@
 			beforeSend: function(){$('.loading').fadeIn();},
 			success: function(data){
 				$('#allsubforms').empty();
+				$('#clone').empty();
 				$.each( data, function( i, item ) {
 					if(item.deleted == 0 && item.megatree == getQueryStringByName('id')){
 						//$('#allsubforms').append('<li data-id="'+item.id+'"><a href="#">'+item.name+'</a></li>');
