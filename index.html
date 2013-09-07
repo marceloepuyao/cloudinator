@@ -266,70 +266,50 @@
 					console.log("success on clonar()", data);
 					cargarGrafos();
 					addNotice("success", "Nuevo Subformulario clonado exitosamente");
+					$('.loading').fadeOut();
+					$('#cloneFormName').slideUp();
 				}else{
 					$('#loadingGif').fadeOut();
-					addNotice("warning", "Nombre ocupado")
-					$('#newTreeName').slideDown();
+					addNotice("warning", "Nombre ocupado");
+					$('#cloneFormName').slideDown();
 				}
-				
-				
 			}
 		}).fail(function(data) {
 			addNotice("error", "Error al clonar el Subformulario");
-			console.log("fail on clonar()", data.responseText);
-		}).always(function(){$('.loading').fadeOut();$('#copyTreeName').slideUp();});
+			$('.loading').fadeOut();
+			$('#cloneFormName').slideUp();
+			console.log("fail on clonar()", data);
+		});
 	}
-	function enviarForm(){ //Llama a un form para crear un Subformulario [AJAX].//TODO: COMPORTAMIENTO NO DESEADO DE NO PERMITIR NOMBRES DUPLICADOS ENTRE TODOS LOS SUBFORMULARIOS
-		/*
+	function enviarForm(){ //Llama a un form para crear un Subformulario [AJAX].
 		$.ajax({
 			url: 'ajax/ajaxTrees.php',
 			dataType: 'json',
+			type: 'POST',
+			data: {
+				name: $('#textName').val(),
+				megatree: getQueryStringByName('id')
+				},
 			timeout: 2500,
 			beforeSend: function(){$('.loading').fadeIn();},
 			success: function(data){
-				var checker = 0;
-				$.each( data, function( i, item ) {
-					if(item.name == $('#textName').val()){
-						checker = 1;
-					}
-				});
-				if(checker == 0){*/
-					$.ajax({
-						url: 'ajax/ajaxTrees.php',
-						dataType: 'json',
-						type: 'POST',
-						data: {
-							name: $('#textName').val(),
-							megatree: getQueryStringByName('id')
-							},
-						timeout: 2500,
-						beforeSend: function(){$('.loading').fadeIn();},
-						success: function(data){
-							
-							if(data.result){
-								console.log("success on enviarForm()", data);
-								cargarGrafos();
-								addNotice("success", "Nuevo Subformulario creado exitosamente");
-							}else{
-								$('#loadingGif').fadeOut();
-								addNotice("warning", "Nombre ocupado")
-								$('#newTreeName').slideDown();
-							}
-						}
-					}).fail(function(data) {
-						addNotice("error", "Error al crear el Subformulario");
-						//window.location.reload();
-						console.log("fail on enviarForm()", data);
-					}).always(function(){$('.loading').fadeOut();});
-				/*}else{
-					
+				if(data.result){
+					console.log("success on enviarForm()", data);
+					cargarGrafos();
+					$('.loading').fadeOut();
+					addNotice("success", "Nuevo Subformulario creado exitosamente");
+				}else{
+					$('#loadingGif').fadeOut();
+					addNotice("warning", "Nombre ocupado");
+					$('#newTreeName').slideDown();
 				}
 			}
 		}).fail(function(data) {
+			addNotice("error", "Error al crear el Subformulario");
 			$('.loading').fadeOut();
-			$addNotice("error", "Error al acceder a la lista de Grafos");
+			//window.location.reload();
+			console.log("fail on enviarForm()", data);
 		});
-	*/
 	}
 	function createNewForm(){ //Llama a un form para crear un Formulario [AJAX].
 		$.ajax({
@@ -352,10 +332,10 @@
 		}).always(function(){$('.loading').fadeOut();});
 	}
 	function confirmdelete(){ //Llama a deleteform() en caso de que el usuario acepte, de lo contrario retorna false.
-		if(confirm("�Est� Seguro?")){
+		if(confirm("¿Está Seguro?")){
 			deleteform();
 		}else{
-			return false
+			return false;
 		}
 	}
 	function deleteform(){ //Llamada por ajax para borrar Formulario.
@@ -518,7 +498,7 @@
 			enviarForm();
 		});
 		
-		//WTF IS THIS? //CREO QUE ACA ESTA EL ERROR DE CLONADO!
+		//WTF IS THIS?
 		$('li').on('click', function(event){
 			if($(this).data("id") == 99){
 				$(this).toggle();
@@ -539,13 +519,13 @@
 		//Comportamiento del form que Clona un Subformulario
 		$('#textNameCloneForm').keypress(function(event) {
 			if(event.which == 13){
-				$('#copyTreeName').slideUp();
+				$('#cloneFormName').slideUp();
 				$('.blackout').fadeOut();
 				clonar();
 			}
 		});
 		$('#buttonNameCloneForm').on('click', function(event){
-			$('#copyTreeName').slideUp();
+			$('#cloneFormName').slideUp();
 			$('.blackout').fadeOut();
 			clonar();
 		});
