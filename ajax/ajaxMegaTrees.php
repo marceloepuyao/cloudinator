@@ -55,7 +55,27 @@ if(isset($_POST['action'])) {
 			print('ERROR! '.$e);
 		}
 		print($salida);
-		
+	}else if($_POST['action']=="add"){
+		try {
+			//primero comprobamos si existe un subform con el mismo nombre en el form
+			$check = DBQuery("SELECT * FROM megatrees WHERE name = '$_POST[name]'");
+			if($check->num_rows > 0){
+				$data = array(
+					'result' => false,
+				);
+				print($json->encode($data));
+			}else{
+				DBQuery("INSERT INTO `megatrees` (`id`, `name`, `chain`, `deleted`, `created`, `modified` ) VALUES 
+					(NULL, '$_POST[name]', NULL, 0, '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."' );
+					");
+				$data = array(
+					'result' => true,
+				);
+				print($json->encode($data));
+			}
+		} catch (Exception $e) {
+			print($e);
+		}
 	}
 		
 }else{
