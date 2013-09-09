@@ -4,8 +4,7 @@ require_once('../DB/db.php');
 
 $json = new Services_JSON();
 
-
-if(isset($_POST['type'])) {
+if(isset($_POST['type'])) { //DEPRICATED: por favor usar ajaxMegaTrees.php, action="add", name="<newname>"
 	try {
 		DBQuery("INSERT INTO `megatrees` (`id`, `name`, `chain`, `deleted`, `created`, `modified` ) VALUES 
 			(NULL, '$_POST[name]', NULL, 0, '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."' );
@@ -19,9 +18,7 @@ if(isset($_POST['type'])) {
 	} catch (Exception $e) {
 		print($json->encode($e));
 	}
-	
-}
-else if(isset($_POST['clonename'])) {
+}else if(isset($_POST['clonename'])) {
 	/* //segun vi, lo que se envia no es el nombre, es la id
 	$sql = "SELECT id FROM trees WHERE name = '$_POST[clonename]'";
 	$data1 = DBQuery($sql);
@@ -129,13 +126,7 @@ else if(isset($_POST['clonename'])) {
 		);
 		print($json->encode($data));
 	}
-
-	
-
-	
-	
-	
-}else if (isset($_POST['name'])) {
+}else if(isset($_POST['name'])) {
 	try {
 		//primero comprobamos si existe un subform con el mismo nombre en el form
 		$check = DBQuery("SELECT * FROM trees WHERE name = '$_POST[name]' AND megatree = $_POST[megatree]");
@@ -144,9 +135,7 @@ else if(isset($_POST['clonename'])) {
 				'result' => false,
 			);
 			print($json->encode($data));
-			
 		}else{
-		
 			DBQuery("INSERT INTO `trees` (`id`, `name`, `megatree`,`deleted`, `created`) VALUES 
 				(NULL, '$_POST[name]',$_POST[megatree] ,0, '".date("Y-m-d H:i:s")."');
 				");
@@ -155,14 +144,10 @@ else if(isset($_POST['clonename'])) {
 			);
 			print($json->encode($data));
 		}
-
-		//$data = DBQuery("SELECT id FROM trees WHERE name = '$_POST[name]'");
-		//print($json->encode(mysql_result($data, 0)));
 	} catch (Exception $e) {
 		print($e);
 	}
-}else if(isset($_POST['action'])){
-	
+}else if(isset($_POST['action'])) {
 	try {
 		DBQuery("DELETE FROM links WHERE tree = $_POST[tree]");
 		DBQuery("DELETE FROM nodos WHERE tree = $_POST[tree]");
@@ -174,10 +159,7 @@ else if(isset($_POST['clonename'])) {
 	}catch (Exception $e){
 		print($e);
 	}
-
-	
-
-}else if(isset($_POST['nuevonombre'])){
+}else if(isset($_POST['nuevonombre'])) {
 	try {
 		DBQuery("UPDATE trees SET name = '$_POST[nuevonombre]' WHERE id = $_POST[tree]");
 		$data = array(
@@ -187,11 +169,7 @@ else if(isset($_POST['clonename'])) {
 	}catch (Exception $e){
 		print($e);
 	}
-	
-	
 }else{
-
-
 	try {	
 		$query = 'SELECT * FROM trees WHERE deleted = 0';
 		$datos = DBQueryReturnArray($query);
@@ -200,8 +178,6 @@ else if(isset($_POST['clonename'])) {
 	} catch (Exception $e) {
 		print('ERROR! '.$e);
 	}
-
 	print($salida);
 }
-
 ?> 

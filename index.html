@@ -7,43 +7,6 @@
 			display: block;
 			margin: 0px;
 		}
-		.header{
-			background-image: url("http://www.sonda.com/media/media2011/img/fondo-new.jpg");
-			background-repeat: repeat-x;
-			height: auto;
-			min-height: 90px;
-			width: 100%;
-		}
-		.bg_top {
-			background: url("http://www.sonda.com/media/media2011/img/fondo-header.jpg") repeat-x scroll 0;
-			width: 100%;
-			height: auto;
-			position: relative;
-			right: 0;
-			top: 0;
-			overflow: hidden;
-			min-width: 1024px;
-		}
-		.backWhite{
-			background-color: #FFFFFF;
-		}
-		.loading{
-			position: absolute;
-			display: none;
-			top: 45%;
-		    left: 45%;
-		    z-index: 90008;
-		}
-		.blackout{
-			background-color: #DDDDDD;
-			position: absolute;
-			top: 0;
-			left: 0;
-			height: 100%;
-			width: 100%;
-			opacity: 0.5;
-			z-index: 90001;
-		}
 		#newTreeName{
 			display: none;
 			position: absolute;
@@ -101,11 +64,54 @@
 			z-index: 90007;
 			cursor: pointer;
 		}
+		#menu_subformularios{
+			display: none;
+		}
+		#menu_formularios{
+			display: none;
+		}
 		.formElement{
 			margin: 5px;
 		}
 		.formPopUp{
 			height: auto;
+		}
+		.header{
+			background-image: url("http://www.sonda.com/media/media2011/img/fondo-new.jpg");
+			background-repeat: repeat-x;
+			height: auto;
+			min-height: 90px;
+			width: 100%;
+		}
+		.bg_top {
+			background: url("http://www.sonda.com/media/media2011/img/fondo-header.jpg") repeat-x scroll 0;
+			width: 100%;
+			height: auto;
+			position: relative;
+			right: 0;
+			top: 0;
+			overflow: hidden;
+			min-width: 1024px;
+		}
+		.backWhite{
+			background-color: #FFFFFF;
+		}
+		.loading{
+			position: absolute;
+			display: none;
+			top: 45%;
+		    left: 45%;
+		    z-index: 90008;
+		}
+		.blackout{
+			background-color: #DDDDDD;
+			position: absolute;
+			top: 0;
+			left: 0;
+			height: 100%;
+			width: 100%;
+			opacity: 0.5;
+			z-index: 90001;
 		}
 	</style>
 	<title>Cloudinator - Inicio</title>
@@ -163,7 +169,7 @@
 	<!-- HEADER (fin)-->
 	
 	<!-- MENU FORMULARIOS (inicio) -->
-	<div class="col_4 column forms">
+	<div id="menu_formularios" class="col_4 column forms">
 		<ul class="menu vertical forms">
 			<li id="forms"><a href="#"><i class="icon-share"></i> Formularios</a>
 				<ul id="allforms">
@@ -183,7 +189,7 @@
 	
 
 	<!-- MENU SUBFORMS (inicio) -->
-	<div class="col_4 column subforms">
+	<div id="menu_subformularios" class="col_4 column subforms">
 		<ul class="menu vertical">
 			<li id="formname"><a href="#"> Nombre </a></li>
 			<li><a href="#"><i class="icon-share"></i>Subformularios</a>
@@ -216,6 +222,7 @@
 			beforeSend: function(){$('.loading').fadeIn();},
 			success: function(data){
 				$('#allsubforms').empty();
+				$('#clone').empty();
 				$.each( data, function( i, item ) {
 					if(item.deleted == 0 && item.megatree == getQueryStringByName('id')){
 						//$('#allsubforms').append('<li data-id="'+item.id+'"><a href="#">'+item.name+'</a></li>');
@@ -266,96 +273,83 @@
 					console.log("success on clonar()", data);
 					cargarGrafos();
 					addNotice("success", "Nuevo Subformulario clonado exitosamente");
+					$('.loading').fadeOut();
 				}else{
 					$('#loadingGif').fadeOut();
-					addNotice("warning", "Nombre ocupado")
-					$('#newTreeName').slideDown();
+					addNotice("warning", "Nombre ocupado");
+					$('#cloneFormName').slideDown();
 				}
-				
-				
 			}
 		}).fail(function(data) {
 			addNotice("error", "Error al clonar el Subformulario");
-			console.log("fail on clonar()", data.responseText);
-		}).always(function(){$('.loading').fadeOut();$('#copyTreeName').slideUp();});
-	}
-	function enviarForm(){ //Llama a un form para crear un Subformulario [AJAX].//TODO: COMPORTAMIENTO NO DESEADO DE NO PERMITIR NOMBRES DUPLICADOS ENTRE TODOS LOS SUBFORMULARIOS
-		/*
-		$.ajax({
-			url: 'ajax/ajaxTrees.php',
-			dataType: 'json',
-			timeout: 2500,
-			beforeSend: function(){$('.loading').fadeIn();},
-			success: function(data){
-				var checker = 0;
-				$.each( data, function( i, item ) {
-					if(item.name == $('#textName').val()){
-						checker = 1;
-					}
-				});
-				if(checker == 0){*/
-					$.ajax({
-						url: 'ajax/ajaxTrees.php',
-						dataType: 'json',
-						type: 'POST',
-						data: {
-							name: $('#textName').val(),
-							megatree: getQueryStringByName('id')
-							},
-						timeout: 2500,
-						beforeSend: function(){$('.loading').fadeIn();},
-						success: function(data){
-							
-							if(data.result){
-								console.log("success on enviarForm()", data);
-								cargarGrafos();
-								addNotice("success", "Nuevo Subformulario creado exitosamente");
-							}else{
-								$('#loadingGif').fadeOut();
-								addNotice("warning", "Nombre ocupado")
-								$('#newTreeName').slideDown();
-							}
-						}
-					}).fail(function(data) {
-						addNotice("error", "Error al crear el Subformulario");
-						//window.location.reload();
-						console.log("fail on enviarForm()", data);
-					}).always(function(){$('.loading').fadeOut();});
-				/*}else{
-					
-				}
-			}
-		}).fail(function(data) {
 			$('.loading').fadeOut();
-			$addNotice("error", "Error al acceder a la lista de Grafos");
+			$('#cloneFormName').slideUp();
+			console.log("fail on clonar()", data);
 		});
-	*/
 	}
-	function createNewForm(){ //Llama a un form para crear un Formulario [AJAX].
+	function enviarForm(){ //Llama a un form para crear un Subformulario [AJAX].
 		$.ajax({
 			url: 'ajax/ajaxTrees.php',
 			dataType: 'json',
 			type: 'POST',
 			data: {
+				name: $('#textName').val(),
+				megatree: getQueryStringByName('id')
+				},
+			timeout: 2500,
+			beforeSend: function(){$('.loading').fadeIn();},
+			success: function(data){
+				if(data.result){
+					console.log("success on enviarForm()", data);
+					cargarGrafos();
+					$('.loading').fadeOut();
+					addNotice("success", "Nuevo Subformulario creado exitosamente");
+				}else{
+					$('#loadingGif').fadeOut();
+					addNotice("warning", "Nombre ocupado");
+					$('#newTreeName').slideDown();
+				}
+			}
+		}).fail(function(data) {
+			addNotice("error", "Error al crear el Subformulario");
+			$('.loading').fadeOut();
+			//window.location.reload();
+			console.log("fail on enviarForm()", data);
+		});
+	}
+	function createNewForm(){ //Llama a un form para crear un Formulario [AJAX].
+		$.ajax({
+			url: 'ajax/ajaxMegaTrees.php',
+			dataType: 'json',
+			type: 'POST',
+			data: {
 				name: $('#textNameForm').val(),
-				type : "megatree"
+				action : "add"
 					},
 			timeout: 2500,
 			beforeSend: function(){$('.loading').fadeIn();},
 			success: function(data){
-				addNotice("success", "Nuevo Formulario creado exitosamente");
-				loadMegaTrees();
+				if(data.result){
+					addNotice("success", "Nuevo Formulario creado exitosamente");
+					loadMegaTrees();
+					$('.loading').fadeOut();
+				}else{
+					$('#loadingGif').fadeOut();
+					addNotice("warning", "Nombre ocupado");
+					$('#newFormName').slideDown();
+				}
 			}
 		}).fail(function(data) {
 			addNotice("error", "Error al crear el Formulario");
 			console.log("error en createNewForm", data);
-		}).always(function(){$('.loading').fadeOut();});
+			$('.loading').fadeOut();
+		});
 	}
 	function confirmdelete(){ //Llama a deleteform() en caso de que el usuario acepte, de lo contrario retorna false.
-		if(confirm("�Est� Seguro?")){
+		if(confirm("¿Está Seguro?")){
 			deleteform();
 		}else{
-			return false
+			return false;
 		}
 	}
 	function deleteform(){ //Llamada por ajax para borrar Formulario.
@@ -459,9 +453,11 @@
 		if(getQueryStringByName('id')){
 			setNameToForm();
 			cargarGrafos();
-			$("div.col_4.column.forms").remove();
+			$('#menu_subformularios').show();
+			$('#menu_formularios').remove();
 		}else{
-			$("div.col_4.column.subforms").remove();
+			$('#menu_subformularios').remove();
+			$('#menu_formularios').show();
 		}
 
 		//Comportamiento del form de creacion de Formularios
@@ -518,7 +514,7 @@
 			enviarForm();
 		});
 		
-		//WTF IS THIS? //CREO QUE ACA ESTA EL ERROR DE CLONADO!
+		//WTF IS THIS?
 		$('li').on('click', function(event){
 			if($(this).data("id") == 99){
 				$(this).toggle();
@@ -539,13 +535,13 @@
 		//Comportamiento del form que Clona un Subformulario
 		$('#textNameCloneForm').keypress(function(event) {
 			if(event.which == 13){
-				$('#copyTreeName').slideUp();
+				$('#cloneFormName').slideUp();
 				$('.blackout').fadeOut();
 				clonar();
 			}
 		});
 		$('#buttonNameCloneForm').on('click', function(event){
-			$('#copyTreeName').slideUp();
+			$('#cloneFormName').slideUp();
 			$('.blackout').fadeOut();
 			clonar();
 		});
