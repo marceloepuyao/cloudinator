@@ -333,6 +333,11 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 						var posix = lastXY[0] - containerXY[0];
 						var posiy = lastXY[1]- containerXY[1];
 						
+						if(posix<0 || posiy< 0){
+							alert("No se puede crear nodos fuera del área de trabajo");
+							window.location = "";
+						}
+						
 						var instance = this;
 						var drag = event.drag;
 
