@@ -149,8 +149,6 @@ if(isset($_POST['type'])) { //DEPRICATED: por favor usar ajaxMegaTrees.php, acti
 	}
 }else if(isset($_POST['action'])) {
 	try {
-		//TODO: aca falta usar rollback y commit (MYSQLI)
-		DBQuery("UPDATE links SET deleted = 1 FROM links WHERE tree = $_POST[tree]");
 		DBQuery("UPDATE trees SET deleted = 1 FROM trees WHERE id = $_POST[tree]");
 		$data = array(
 			'result' => 'true',
