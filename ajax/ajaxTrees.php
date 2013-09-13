@@ -141,11 +141,13 @@ if(isset($_POST['type'])) { //DEPRICATED: por favor usar ajaxMegaTrees.php, acti
 	try {	
 		$query = 'SELECT * FROM trees WHERE deleted = 0';
 		$datos = DBQueryReturnArray($query);
-		$salida = $json->encode($datos);
-
+		try {
+			$salida = $json->encode($datos);
+			print($salida);
+		} catch (Exception $e) {
+		}
 	} catch (Exception $e) {
 		print('ERROR! '.$e);
 	}
-	print($salida);
 }
 ?> 
