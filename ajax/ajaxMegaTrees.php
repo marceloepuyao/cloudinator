@@ -58,7 +58,7 @@ if(isset($_POST['action'])) {
 	}else if($_POST['action']=="add"){
 		try {
 			//primero comprobamos si existe un subform con el mismo nombre en el form
-			$check = DBQuery("SELECT * FROM megatrees WHERE name = '$_POST[name]'");
+			$check = DBQuery("SELECT * FROM megatrees WHERE name = '$_POST[name]' AND deleted = 0");
 			if($check->num_rows > 0){
 				$data = array(
 					'result' => false,

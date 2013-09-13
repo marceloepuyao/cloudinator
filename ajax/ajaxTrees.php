@@ -28,7 +28,7 @@ if(isset($_POST['type'])) { //DEPRICATED: por favor usar ajaxMegaTrees.php, acti
 	//primero comprobamos si existe un subform con el mismo nombre en el form
 	$idclone = $_POST['clonename'];
 	
-	$check = DBQuery("SELECT * FROM trees WHERE name = '$_POST[name]' AND megatree = $_POST[to]");
+	$check = DBQuery("SELECT * FROM trees WHERE name = '$_POST[name]' AND megatree = $_POST[to] AND deleted = 0");
 	if($check->num_rows > 0){
 		$data = array(
 			'result' => false
@@ -129,7 +129,7 @@ if(isset($_POST['type'])) { //DEPRICATED: por favor usar ajaxMegaTrees.php, acti
 }else if(isset($_POST['name'])) {
 	try {
 		//primero comprobamos si existe un subform con el mismo nombre en el form
-		$check = DBQuery("SELECT * FROM trees WHERE name = '$_POST[name]' AND megatree = $_POST[megatree]");
+		$check = DBQuery("SELECT * FROM trees WHERE name = '$_POST[name]' AND megatree = $_POST[megatree] AND deleted = 1");
 		if($check->num_rows > 0){
 			$data = array(
 				'result' => false,
@@ -149,9 +149,9 @@ if(isset($_POST['type'])) { //DEPRICATED: por favor usar ajaxMegaTrees.php, acti
 	}
 }else if(isset($_POST['action'])) {
 	try {
-		DBQuery("DELETE FROM links WHERE tree = $_POST[tree]");
-		DBQuery("DELETE FROM nodos WHERE tree = $_POST[tree]");
-		DBQuery("DELETE FROM trees WHERE id = $_POST[tree]");
+		//TODO: aca falta usar rollback y commit (MYSQLI)
+		DBQuery("UPDATE links SET deleted = 1 FROM links WHERE tree = $_POST[tree]");
+		DBQuery("UPDATE trees SET deleted = 1 FROM trees WHERE id = $_POST[tree]");
 		$data = array(
 			'result' => 'true',
 		);
