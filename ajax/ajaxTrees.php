@@ -19,12 +19,6 @@ if(isset($_POST['type'])) { //DEPRICATED: por favor usar ajaxMegaTrees.php, acti
 		print($json->encode($e));
 	}
 }else if(isset($_POST['clonename'])) {
-	/* //segun vi, lo que se envia no es el nombre, es la id
-	$sql = "SELECT id FROM trees WHERE name = '$_POST[clonename]'";
-	$data1 = DBQuery($sql);
-	$idclone = $data1->fetch_assoc()['id'];
-	*/
-	
 	//primero comprobamos si existe un subform con el mismo nombre en el form
 	$idclone = $_POST['clonename'];
 	
@@ -96,31 +90,7 @@ if(isset($_POST['type'])) { //DEPRICATED: por favor usar ajaxMegaTrees.php, acti
 					
 			DBQuery($query);
 		}
-		/* //ESTO SE DEBE BORRAR
-		for ($i = 0; $i < $maxlinks; $i++) {
-			$targeta = mysql_result($linksprev, $i, 'links.target');
-			$querytarget = "select id
-							from nodos
-							where name= (select name from nodos where id = $targeta ) order by id desc";
-			$newtarget = DBQuery($querytarget);
-			$idnewtarget = mysql_result($newtarget, 0);
-			
-			$sourca = mysql_result($linksprev, $i, 'links.source');
-			$querysource = "select id
-							from nodos
-							where name= (select name from nodos where id = $sourca ) order by id desc";
-			$newsource = DBQuery($querysource);
-			$idnewsource = mysql_result($newsource, 0);
-			
-			
-			$query = "INSERT INTO `links` (`id`, `tree`, `name`, `source`, `target`) VALUES 
-					(NULL, $idnew, '', '$idnewsource', '$idnewtarget');";
-					
-			DBQuery($query);
-			
-		}
-		*/
-		
+
 		$data = array(
 			'result' => true,
 		);
@@ -147,9 +117,9 @@ if(isset($_POST['type'])) { //DEPRICATED: por favor usar ajaxMegaTrees.php, acti
 	} catch (Exception $e) {
 		print($e);
 	}
-}else if(isset($_POST['action'])) {
+}else if(isset($_POST['action']) && $_POST['action'] == "deleteTree") {
 	try {
-		DBQuery("UPDATE trees SET deleted = 1 FROM trees WHERE id = $_POST[tree]");
+		DBQuery("UPDATE trees SET deleted = 1 WHERE id = $_POST[tree]");
 		$data = array(
 			'result' => 'true',
 		);

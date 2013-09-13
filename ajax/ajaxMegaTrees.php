@@ -12,12 +12,12 @@ if(isset($_POST['action'])) {
 			$db->autocommit(FALSE);
 			try {
 				$id = $_POST['id'];
+/* //Esto no hace nada, creo. (Klaus)
 				$sqltrees = "SELECT id FROM trees WHERE megatree=$id";
-
 				if(!$result = $db->query($sqltrees)){
 				    throw new Exception('There was an error running the query [' . $db->error . ']', 1);
 				}
-
+*/
 				$querytree = "UPDATE trees SET deleted = 1 WHERE megatree=$id;";
 				if(!$result = $db->query($querytree)){
 				    throw new Exception('There was an error running the query [' . $db->error . ']', 1);
