@@ -12,12 +12,12 @@ if(isset($_POST['action'])) {
 			$db->autocommit(FALSE);
 			try {
 				$id = $_POST['id'];
+/* //Esto no hace nada, creo. (Klaus)
 				$sqltrees = "SELECT id FROM trees WHERE megatree=$id";
-
 				if(!$result = $db->query($sqltrees)){
 				    throw new Exception('There was an error running the query [' . $db->error . ']', 1);
 				}
-
+*/
 				$querytree = "UPDATE trees SET deleted = 1 WHERE megatree=$id;";
 				if(!$result = $db->query($querytree)){
 				    throw new Exception('There was an error running the query [' . $db->error . ']', 1);
@@ -58,7 +58,7 @@ if(isset($_POST['action'])) {
 	}else if($_POST['action']=="add"){
 		try {
 			//primero comprobamos si existe un subform con el mismo nombre en el form
-			$check = DBQuery("SELECT * FROM megatrees WHERE name = '$_POST[name]'");
+			$check = DBQuery("SELECT * FROM megatrees WHERE name = '$_POST[name]' AND deleted = 0");
 			if($check->num_rows > 0){
 				$data = array(
 					'result' => false,
