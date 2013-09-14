@@ -34,6 +34,7 @@ function setEmpresaInfo(id){
 			console.log(emp);
 			//console.log("hola", empresas);
 			$("#empresanombre").text(emp.nombre);
+			$("#empresanombre2").text(emp.nombre);
 			$("#infoempresa").text(emp.infolevantamiento);
 		});
 	
