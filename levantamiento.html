@@ -42,15 +42,15 @@
 	         <td>19/09/2004</td>
 	         <td>Levantamiento Web Empresarial </td>
 	         <td>20%</td>
-	         <td><a href="#">Ir</a></td>
-	         <td><a href="#">X</a></td>
+	         <td><a data-id="1" href="#recorrer">Ir</a></td>
+	         <td><a class="delete" data-id="1" href="#">X</a></td>
 	       </tr>
 	       <tr>
 	         <td>12/08/2011</td>
 	         <td>Levantamiento X</td>
 	         <td>97%</td>
-	         <td><a href="#">Ir</a></td>
-	         <td><a href="#">X</a></td>
+	         <td><a data-id="2" href="#recorrer">Ir</a></td>
+	         <td><a class="delete" data-id="2" href="#">X</a></td>
 	       </tr>
 	       
 	     </tbody>
@@ -93,26 +93,103 @@
 				<td><label for="formularios">Formlararios</label></td>
 				<td><fieldset data-role="controlgroup" id="formularios">
 					    <input name="checkbox-1a" id="checkbox-1a" checked="" type="checkbox">
-					    <label for="checkbox-1a">Cheetos</label>
-					    <input name="checkbox-2a" id="checkbox-2a" type="checkbox">
-					    <label for="checkbox-2a">Doritos</label>
-					    <input name="checkbox-3a" id="checkbox-3a" type="checkbox">
-					    <label for="checkbox-3a">Fritos</label>
+					    <label for="checkbox-1a">POC</label>
+					    <input name="checkbox-2a" id="checkbox-2a" checked="" type="checkbox">
+					    <label for="checkbox-2a">Form 1</label>
+					    <input name="checkbox-3a" id="checkbox-3a" checked="" type="checkbox">
+					    <label for="checkbox-3a">Form 2</label>
 					    <input name="checkbox-4a" id="checkbox-4a" type="checkbox">
-					    <label for="checkbox-4a">Sun Chips</label>
+					    <label for="checkbox-4a">Form 3</label>
 					</fieldset>
 				</td>
 			</tr>
 		
 		</table>
 		
-		
+		<table style="width: 100%; margin: 0 auto;">
+			<tr>
+				<td><a href="#recorrer" id="saveinfolevantamiento" data-role="button">Continuar</a></td>
+			</tr>
+		</table>
 		
 	</div><!-- /content -->
 	
 	
 	
 </div>
+
+<div id="recorrer" data-role="page" >
+	<div data-role="header" data-theme="b">
+	    <a href="#levantamiento" id="backbutton" data-icon="arrow-l">atrás</a>
+	    <h1 id ="empresanombre3"></h1>
+	    <a href="#" id="usernamebutton" data-icon="check" class="ui-btn-right"></a>
+	</div>
+	
+	<div data-role="content">
+		<h1>Levantamiento para migración servidores</h1>
+		<p>La empresa se comunicó con sonda para migrar sus servidores físicos que dan soporte al área de procesos</p>
+		<div data-role="collapsible-set" data-theme="b" data-content-theme="d">
+	    <div data-role="collapsible">
+	        <h2>POC</h2>
+	        <ul data-role="listview" data-theme="d" data-divider-theme="d">
+	            <li data-role="list-divider">Subformularios <span class="ui-li-count">2</span></li>
+	            <li><a href="index.html">
+	                <h3>Comunicaciones</h3>
+	                <p><strong>Última visita el 19/09/2013</strong></p>
+	                <p>Siguiente pregunta: ¿Están los servidores distribuidos en distintos segmentos de redes?</p>
+	                <p class="ui-li-aside"><strong>Completitud: 20%</strong></p>
+	            </a></li>
+	            <li><a href="index.html">
+	                <h3>Administración</h3>
+	                <p><strong>Última visita el 19/09/2013</strong></p>
+	                <p>Siguiente pregunta: ¿Requiere monitoreo de servicio?</p>
+	                <p class="ui-li-aside"><strong>Completitud: 42%</strong></p>
+	            </a></li>
+	        </ul>
+	    </div>
+	    <div data-role="collapsible">
+	        <h2>Form 2</h2>
+	        <ul data-role="listview" data-theme="d" data-divider-theme="d">
+	            <li data-role="list-divider">Subformularios <span class="ui-li-count">2</span></li>
+	            <li><a href="index.html">
+	                <h3>Comunicaciones</h3>
+	                <p><strong>Última visita el 19/09/2013</strong></p>
+	                <p>Siguiente pregunta: ¿Están los servidores distribuidos en distintos segmentos de redes?</p>
+	                <p class="ui-li-aside"><strong>Completitud: 20%</strong></p>
+	            </a></li>
+	            <li><a href="index.html">
+	                <h3>Administración</h3>
+	                <p><strong>Última visita el 19/09/2013</strong></p>
+	                <p>Siguiente pregunta: ¿Requiere monitoreo de servicio?</p>
+	                <p class="ui-li-aside"><strong>Completitud: 42%</strong></p>
+	            </a></li>
+	        </ul>
+	    </div>
+	    <div data-role="collapsible">
+	        <h2>Form 3</h2>
+	        <ul data-role="listview" data-theme="d" data-divider-theme="d">
+	            <li data-role="list-divider">Subformularios <span class="ui-li-count">2</span></li>
+	            <li><a href="index.html">
+	                <h3>Comunicaciones</h3>
+	                <p><strong>Última visita el 19/09/2013</strong></p>
+	                <p>Siguiente pregunta: ¿Están los servidores distribuidos en distintos segmentos de redes?</p>
+	                <p class="ui-li-aside"><strong>Completitud: 20%</strong></p>
+	            </a></li>
+	            <li><a href="index.html">
+	                <h3>Administración</h3>
+	                <p><strong>Última visita el 19/09/2013</strong></p>
+	                <p>Siguiente pregunta: ¿Requiere monitoreo de servicio?</p>
+	                <p class="ui-li-aside"><strong>Completitud: 42%</strong></p>
+	            </a></li>
+	        </ul>
+	    </div>
+	</div>
+	</div>
+	
+	
+	
+</div>
+
 
 
 <script src="js/levantamiento.js" type="text/javascript"></script>

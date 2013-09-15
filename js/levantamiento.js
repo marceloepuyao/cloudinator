@@ -35,6 +35,7 @@ function setEmpresaInfo(id){
 			//console.log("hola", empresas);
 			$("#empresanombre").text(emp.nombre);
 			$("#empresanombre2").text(emp.nombre);
+			$("#empresanombre3").text(emp.nombre);
 			$("#infoempresa").text(emp.infolevantamiento);
 		});
 	
@@ -62,10 +63,15 @@ $(document).ready(function(){
 		  */
 	
 	});
-
 	
-	$("#nuevolevantamiento").click(function(){
-		window.location.href = "nuevolevantamiento.html";
+	$(".delete").on('click', function(){
+		
+		if(confirm("Are you sure?")) { 
+			//delete
+			$.mobile.changePage("levantamiento.html"); 
+		}
+
 	});
+
 	
 });
