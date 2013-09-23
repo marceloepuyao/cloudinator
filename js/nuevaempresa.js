@@ -13,13 +13,11 @@ function checkSessionorDie(){
 	
 	$("#usernamebutton").text($.session.get('usu'));
 }
-function crearEmpresa(name,industry,contacted,areacontacto,textarea){
+function crearEmpresa(name,industry,textarea){
 	
 	$.post("server/crearempresa.php",{ 
 		name : name, 
-		industry : industry, 
-		contacted:contacted,
-		areacontacto:areacontacto,  
+		industry : industry,   
 		textarea: textarea
 		},
 		function(respuesta){
@@ -61,20 +59,21 @@ $(document).ready(function(){
 		//se checkea si están todos los cambios llenos
 		var name = $("#new-name-empresa").val();
         var industry = $("#industry").val();
-        var contacted = $("#contacted").val();
-        var areacontacto = $("#areacontacto").val();
         var textarea = $("#textarea").val();
         //console.log(name,industry , contacted, areacontacto, textarea);
 		
-        if(name &&  industry && contacted && areacontacto && textarea){
-        	crearEmpresa(name,industry,contacted,areacontacto,textarea);
+        if(name &&  industry && textarea){
+        	crearEmpresa(name,industry,textarea);
         }else{
         	alert("Tienes que llenar todos los campos");
         }
 		
 		
 	});
-	
+	$("#cancel").on('click', function(){
+		
+		window.location.href = "inicio.html";
+	});
 	
 	
 });

@@ -8,13 +8,11 @@ try {
 	
 	$name = mysql_real_escape_string($_POST["name"]);
 	$industry = mysql_real_escape_string($_POST["industry"]);
-	$contacted = mysql_real_escape_string($_POST["contacted"]);
-	$areacontacto = mysql_real_escape_string($_POST["areacontacto"]);
 	$textarea = mysql_real_escape_string($_POST["textarea"]);
 	$modified = time();
 	
 	$insertempresa = "INSERT INTO `empresas` (`id`, `nombre`, `industria`, `contactado`, `areacontacto`, `infolevantamiento`, `modified`) VALUES 
-				(NULL, '$name', '$industry', '$contacted', '$areacontacto', '$textarea', $modified );";
+				(NULL, '$name', '$industry', '', '', '$textarea', $modified );";
 	DBQuery($insertempresa);
 
 	$nueva = DBQuery("SELECT * FROM empresas WHERE nombre = '$name'");

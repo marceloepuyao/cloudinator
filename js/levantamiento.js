@@ -72,6 +72,12 @@ $(document).ready(function(){
 		}
 
 	});
+	$("#submit").on('click', function(){
+
+			$.mobile.changePage("levantamiento.html#recorrer"); 
+
+	});
+	
 
 	
 });

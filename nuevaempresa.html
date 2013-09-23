@@ -24,55 +24,50 @@
 <div data-role="content" id="content" class="jqm-content ui-content" >
 
 <CENTER> <p><strong>Ingrese una nueva empresa</strong></p></CENTER> 
-<table style="width: 100%; margin: 0 auto;">
+<div style="width: 100%; margin: 0 auto;">
+	
 
-	<tr>
-		<td><label for="new-name-empresa">Nombre Empresa:</label></td>	
-		<td><input type="text" name="new-name-empresa" id="new-name-empresa" value=""></td>
-	</tr>
-	<tr>
-		<td><label for="industry">Industria</label></td>
-		<td><select name="industry" id="industry">
-			    <option value="pesada">Industria Pesada</option>
-			    <option value="siderúrgicas">Siderúrgicas</option>
-			    <option value="metalúrgicas">Metalúrgicas</option>
-			    <option value="cementeras">Cementeras</option>
-			    <option value="químicas">Químicas de base</option>
-			    <option value="petroquímicas">Petroquímicas</option>
-			    <option value="automovilística">Automovilística</option>
-			    <option value="ligera">Industria ligera</option>
-			    <option value="alimentación">Alimentación</option>
-			    <option value="textil">Textil</option>
-			    <option value="farmacéutica">Farmacéutica</option>
-			    <option value="agroindustria">Agroindustria</option>
-			    <option value="armamentística">Armamentística</option>
-			    <option value="punta">Industria punta</option>
-			    <option value="robótica">Robótica</option>
-			    <option value="informática">Informática</option>
-			    <option value="astronáutica">Astronáutica</option>
-			    <option value="mecánica">Mecánica</option>
-			</select>
-		</td>
-	</tr>
-	<tr>
-		<td><label for="contacted">Contactado por</label></td>	
-		<td><input type="text" name="contacted" id="contacted" value=""></td>
-	</tr>
-	<tr>
-		<td><label for="areacontacto">Área de contacto</label></td>	
-		<td><input type="text" name="areacontacto" id="areacontacto" value=""></td>
-	</tr>
-	<tr>
-		<td><label for="textarea">Información básica del levantamiento:</label></td>
-		<td><textarea cols="40" rows="20" name="textarea" id="textarea"></textarea></td>
-	</tr>
+		    <ul data-role="listview" data-inset="true">
+		        <li data-role="fieldcontain">
+		            <label for="new-name-empresa">Nombre Empresa:</label>
+		            <input name="new-name-empresa" id="new-name-empresa" value="" data-clear-btn="true" type="text">
+		        </li>
+		        <li data-role="fieldcontain">
+		            <label for="industry" class="select">Industria:</label>
+		            <select name="industry" id="industry">
+		                <option value="pesada">Industria Pesada</option>
+					    <option value="siderúrgicas">Siderúrgicas</option>
+					    <option value="metalúrgicas">Metalúrgicas</option>
+					    <option value="cementeras">Cementeras</option>
+					    <option value="químicas">Químicas de base</option>
+					    <option value="petroquímicas">Petroquímicas</option>
+					    <option value="automovilística">Automovilística</option>
+					    <option value="ligera">Industria ligera</option>
+					    <option value="alimentación">Alimentación</option>
+					    <option value="textil">Textil</option>
+					    <option value="farmacéutica">Farmacéutica</option>
+					    <option value="agroindustria">Agroindustria</option>
+					    <option value="armamentística">Armamentística</option>
+					    <option value="punta">Industria punta</option>
+					    <option value="robótica">Robótica</option>
+					    <option value="informática">Informática</option>
+					    <option value="astronáutica">Astronáutica</option>
+					    <option value="mecánica">Mecánica</option>
+		            </select>
+		        </li>
+		        <li data-role="fieldcontain">
+		            <label for="textarea">Información de la Empresa:</label>
+		        <textarea cols="40" rows="8" name="textarea" id="textarea"></textarea>
+		        </li>
+		        <li class="ui-body ui-body-b">
+		            <fieldset class="ui-grid-a">
+		                    <div class="ui-block-a"><button id="cancel" data-theme="d">Cancel</button></div>
+		                    <div class="ui-block-b"><button id="btnNew" data-theme="b">Submit</button></div>
+		            </fieldset>
+		        </li>
+		   </ul>
 
-</table>
-<table style="width: 100%; margin: 0 auto;">
-	<tr>
-		<td><a href="#" id="btnNew" data-role="button">Ingresar</a></td>
-	</tr>
-</table>
+</div>
 
 </div>
 </section>
