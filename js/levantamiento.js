@@ -18,26 +18,9 @@ function checkSessionorDie(){
 	}
 	
 	$("#usernamebutton").text($.session.get('usu'));
-	setEmpresaInfo($.session.get('empresa'));
 	console.log("asdasd");
 }
-
-function setEmpresaInfo(id){
-	
-	$.post("server/empresas.php",{ 
-		action : "getById", 
-		id: id
-		},function(empresas){
-			
-			
-			var emp = jQuery.parseJSON(empresas);
-			console.log(emp);
-			//console.log("hola", empresas);
-			$("#empresanombre").text(emp.nombre);
-			$("#empresanombre2").text(emp.nombre);
-			$("#empresanombre3").text(emp.nombre);
-			$("#infoempresa").text(emp.infolevantamiento);
-		});
+function guardarlevantamiento(titulos, info, contactado, area, forms){
 	
 	
 }
@@ -68,16 +51,39 @@ $(document).ready(function(){
 		
 		if(confirm("Are you sure?")) { 
 			//delete
-			$.mobile.changePage("levantamiento.html"); 
+			$.mobile.changePage("levantamiento.php"); 
 		}
 
 	});
 	$("#submit").on('click', function(){
 
-			$.mobile.changePage("levantamiento.html#recorrer"); 
+			$.mobile.changePage("levantamiento.php#recorrer"); 
 
 	});
 	
+	$(".goto").on('click', function(){
+		var id = $(this).data('id');
+		window.location.href = "responder.php?subform="+id;
+
+
+	});
+	
+	$("#addlevantamiento").on('click', function(){
+		var titulo = $("#titulo-levantamiento").val();
+		var info =$("#info-levantamiento").val();
+		var contactado = $("#contactado-por").val();
+		var area = $("#area-contacto").val();
+		var forms = $("#formularios").val();
+		//falta checkear que estén marcados los formularios.
+		//guardarlevantamiento(titulos, info, contactado, area, forms);
+		
+		window.location.href = "levantamiento.php?emp="+$.session.get('empresa')+'#recorrer';
+
+
+	});
+	$("#cancel").on('click', function(){
+		window.location.href = "levantamiento.php?emp="+$.session.get('empresa');
+	});
 
 	
 });

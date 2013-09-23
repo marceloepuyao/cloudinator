@@ -11,15 +11,15 @@ $subform->nombre = "Comunicaciones";
 if(false){
 	
 }else{
-	
+	//saco la pregunta
+	$pregunta = "¿Qué tal?";
+	//saco las respuestas
+	$respuestas = array("2" =>"Bien", "3" => "Más o menos", "4"=> "Mal");
 }
 
 
 
-//saco la pregunta
-$pregunta = "¿Qué tal?";
-//saco las respuestas
-$respuestas = array("Bien", "Más o menos", "Mal");
+
 
 
 
@@ -45,9 +45,32 @@ $respuestas = array("Bien", "Más o menos", "Mal");
 <div data-role="page" id="pregunta">
 	<div data-role="header" data-theme="b">
 	    <a href="#" id="backbutton" data-icon="arrow-l">atrás</a>
-	    <h1 id ="empresanombre">	</h1>
+	    <h1 id ="empresanombre"> </h1>
 	    <a href="#" id="usernamebutton" data-icon="check" class="ui-btn-right"></a>
 	</div>
+	
+	<div data-role="content">
+		<h1><?php echo $pregunta?></h1>
+		<div data-role="collapsible-set" data-theme="c" data-content-theme="d" data-iconpos="right">
+		    <? foreach($respuestas as $key => $respuesta) : ?>
+		    	<div data-id=<?php echo $key?> class="answer" data-role="button" data-iconpos="top">
+					<h3><?php echo $respuesta?></h3>
+				</div>
+			<? endforeach ?>
+		<fieldset class="ui-grid-a">
+		                    <div class="ui-block-a"><button data-theme="d">Pregunta anterior</button></div>
+		                    <div class="ui-block-b"><button data-theme="d">Abandonar</button></div>
+		 </fieldset>
+		</div>
+		
+	
+	
+	
+	</div>
+	
+	
 </div>
+<script src="js/responder.js" type="text/javascript"></script>
+<script src="js/jquery.session.js" type="text/javascript"></script>
 </body>
 </html>

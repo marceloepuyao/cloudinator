@@ -42,8 +42,7 @@ function login(){
          		
          	}else{
          		setSession(usu, pass, empresa);
-         		window.location.href = "levantamiento.html";
-         		//$.mobile.changePage("levantamiento.html");   
+         		window.location.href = "levantamiento.php?emp="+empresa; 
          	}
 
          }
