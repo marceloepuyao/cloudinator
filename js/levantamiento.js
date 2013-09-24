@@ -20,9 +20,20 @@ function checkSessionorDie(){
 	$("#usernamebutton").text($.session.get('usu'));
 	console.log("asdasd");
 }
-function guardarlevantamiento(titulos, info, contactado, area, forms){
+function guardarlevantamiento(titulo, info, contactado, area, forms){
 	
-	
+	$.post("ajax/ajaxlevantamientos.php",{ 
+		titulo : titulo, 
+		info : info, 
+		contactado : contactado, 
+		area : area, 
+		forms : forms,
+		empresaid : $.session.get('empresa')
+		},function(respuesta){
+		
+			console.log(respuesta);
+		}
+	);
 }
 
 $(document).ready(function(){
@@ -32,20 +43,7 @@ $(document).ready(function(){
 	$("#backbutton").on('click', function(){
 		window.location.href = "inicio.html";
 	});
-	//alert($(window).width() );
-	$(window).resize(function() {
-		/*
-		  if($(window).width() < 800 ){
-			  $("#content").css('padding-right', '5%');
-			  $("#content").css('padding-left', '5%');
-			  //alert($(window).width());
-		  }else{
-			  $("#content").css('padding-right', '25%');
-			  $("#content").css('padding-left', '25%');
-		  }
-		  */
-	
-	});
+
 	
 	$(".delete").on('click', function(){
 		
@@ -57,7 +55,7 @@ $(document).ready(function(){
 	});
 	$("#submit").on('click', function(){
 
-			$.mobile.changePage("levantamiento.php#recorrer"); 
+		$.mobile.changePage("levantamiento.php#recorrer"); 
 
 	});
 	
@@ -73,12 +71,27 @@ $(document).ready(function(){
 		var info =$("#info-levantamiento").val();
 		var contactado = $("#contactado-por").val();
 		var area = $("#area-contacto").val();
-		var forms = $("#formularios").val();
-		//falta checkear que estén marcados los formularios.
-		//guardarlevantamiento(titulos, info, contactado, area, forms);
+		//$("#formularios").val();
+		var forms = [];
 		
-		window.location.href = "levantamiento.php?emp="+$.session.get('empresa')+'#recorrer';
+		$("#formularios").each(function() {
+	        var checkboxes = $(this).find(".ui-checkbox-on");
+	        checkboxes.each(function() {
+	            var checkbox = $(this);
+	            // Highlight pre-selected checkboxes
+	            
+	            forms.push({name: checkbox.attr('for'), value: checkbox.attr('for')});
+	        });
+	    });
+		if(titulo && info && contactado && area && forms){
+			console.log($.param(forms));
+			guardarlevantamiento(titulo, info, contactado, area, $.param(forms));
+			window.location.href = "levantamiento.php?emp="+$.session.get('empresa')+'#recorrer';
 
+		}else{
+			alert("faltan campos por llenar");
+		}
+	
 
 	});
 	$("#cancel").on('click', function(){

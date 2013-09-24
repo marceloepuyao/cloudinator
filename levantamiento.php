@@ -61,21 +61,23 @@ $formularios = DBQueryReturnArray($queryformularios);
 	<table data-role="table" id="table-column-toggle" data-mode="columntoggle" class="ui-responsive table-stroke">
 	     <thead>
 	       <tr>
-	         <th data-priority="1">Fecha</th>
-	         <th>Título Visita</th>
+	       	<th>Título Visita</th>
+	         <th data-priority="2">Fecha</th>
 	         <th data-priority="3"><abbr title="Rotten Tomato Rating">Completitud</abbr></th>
 	         <th>Recorrer</th>
 	          <th data-priority="5">Borrar</th>
+	          <th data-priority="6">Editar</th>
 	       </tr>
 	     </thead>
 	     <tbody>
 	      	<? foreach($levantamientos as $key => $levantamiento) : ?>
 		    	<tr>
-		         <td><?php echo $levantamiento['id']?></td>
-		         <td><?php echo $key?></td>
-		         <td><?php echo $key?></td>
-		         <td><a data-id="1" href="#recorrer"><?php echo $key?></a></td>
-		         <td><a class="delete" data-id="1" href="#"><?php echo $key?></a></td>
+		    	<td><?php echo $levantamiento['titulo']?></td>
+		         <td><?php echo $levantamiento['created']?></td>
+		         <td><?php echo $levantamiento['completitud']?>%</td>
+		         <td><a data-id="1" href="#recorrer">ir</a></td>
+		         <td><a class="delete" data-id="1" href="#">X</a></td>
+		         <td><a class="delete" data-id="1" href="#">editar</a></td>
 		       </tr>
 			<? endforeach ?>
 	       
