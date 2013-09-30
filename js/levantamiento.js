@@ -30,8 +30,12 @@ function guardarlevantamiento(titulo, info, contactado, area, forms){
 		forms : forms,
 		empresaid : $.session.get('empresa')
 		},function(respuesta){
-		
-			console.log(respuesta);
+			
+			console.log("pee", respuesta);
+			var obj = jQuery.parseJSON(respuesta);
+	        console.log("la respuesta es", obj.id );
+			window.location.href = "recorrer.php?emp="+$.session.get('empresa')+'&idlev='+obj.id;
+			
 		}
 	);
 }
@@ -44,6 +48,15 @@ $(document).ready(function(){
 		window.location.href = "inicio.html";
 	});
 
+	$("#backbutton2").on('click', function(){
+		window.location.href = "levantamiento.php?emp="+$.session.get('empresa');
+	});
+	$(".ira").on('click', function(){
+		var idempresa = $(this).data('empresa');
+		var idlevantamiento = $(this).data('levantamiento');
+		window.location.href = "recorrer.php?emp="+idempresa+"&idlev="+idlevantamiento;
+	});
+	
 	
 	$(".delete").on('click', function(){
 		
@@ -60,8 +73,10 @@ $(document).ready(function(){
 	});
 	
 	$(".goto").on('click', function(){
-		var id = $(this).data('id');
-		window.location.href = "responder.php?subform="+id;
+		var subform = $(this).data('subform');
+		var lev = $(this).data('levantamiento');
+		var emp = $(this).data('empresa');
+		window.location.href = "responder.php?idsubform="+subform+"&idlev="+lev+"&emp="+emp;
 
 
 	});
@@ -80,13 +95,12 @@ $(document).ready(function(){
 	            var checkbox = $(this);
 	            // Highlight pre-selected checkboxes
 	            
-	            forms.push({name: checkbox.attr('for'), value: checkbox.attr('for')});
+	            forms.push(checkbox.attr('for'));
 	        });
 	    });
 		if(titulo && info && contactado && area && forms){
-			console.log($.param(forms));
-			guardarlevantamiento(titulo, info, contactado, area, $.param(forms));
-			window.location.href = "levantamiento.php?emp="+$.session.get('empresa')+'#recorrer';
+			console.log("cambio", JSON.stringify(forms));
+			guardarlevantamiento(titulo, info, contactado, area, JSON.stringify(forms));
 
 		}else{
 			alert("faltan campos por llenar");

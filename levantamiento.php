@@ -24,9 +24,6 @@ $levantamientos = DBQueryReturnArray($querylevantamientos);
 $queryformularios = "SELECT * FROM megatrees";
 $formularios = DBQueryReturnArray($queryformularios);
 
-//levantamientos previos
-
-
 
 ?>
 
@@ -75,7 +72,7 @@ $formularios = DBQueryReturnArray($queryformularios);
 		    	<td><?php echo $levantamiento['titulo']?></td>
 		         <td><?php echo $levantamiento['created']?></td>
 		         <td><?php echo $levantamiento['completitud']?>%</td>
-		         <td><a data-id="1" href="#recorrer">ir</a></td>
+		         <td><a class="ira" data-empresa="<?php echo $idempresa?>" data-levantamiento="<?php echo $levantamiento['id']?>" href="#">ir</a></td>
 		         <td><a class="delete" data-id="1" href="#">X</a></td>
 		         <td><a class="delete" data-id="1" href="#">editar</a></td>
 		       </tr>
@@ -136,80 +133,6 @@ $formularios = DBQueryReturnArray($queryformularios);
 		
 	</div><!-- /content -->
 </div>
-
-<div id="recorrer" data-role="page" >
-	<div data-role="header" data-theme="b">
-	    <a href="#levantamiento" id="backbutton" data-icon="arrow-l">atrás</a>
-	    <h1 id ="empresanombre3"><?php echo $nombre?>	</h1>
-	    <a href="#" id="usernamebutton" data-icon="check" class="ui-btn-right"></a>
-	</div>
-	
-	<div data-role="content">
-		<h1>Levantamiento para migración servidores</h1>
-		<p>La empresa se comunicación sonda para migrar sus servidores físicos que dan soporte al área de procesos</p>
-		<div data-role="collapsible-set" data-theme="b" data-content-theme="d">
-	    <div data-role="collapsible">
-	        <h2>POC</h2>
-	        <ul data-role="listview" data-theme="d" data-divider-theme="d">
-	            <li data-role="list-divider">Subformularios <span class="ui-li-count">2</span></li>
-	            <li class="goto" data-id="2"><a href="#">
-	                <h3>Comunicaciones</h3>
-	                <p><strong>última visita el 19/09/2013</strong></p>
-	                <p>Siguiente pregunta: ¿Están los servidores distribuidos en distintos segmentos de redes?</p>
-	                <p class="ui-li-aside"><strong>Completitud: 20%</strong></p>
-	            </a></li>
-	            <li><a href="#">
-	                <h3>Administración</h3>
-	                <p><strong>última visita el 19/09/2013</strong></p>
-	                <p>Siguiente pregunta: ¿Requiere monitoreo de servicio?</p>
-	                <p class="ui-li-aside"><strong>Completitud: 42%</strong></p>
-	            </a></li>
-	        </ul>
-	    </div>
-	    <div data-role="collapsible">
-	        <h2>Form 2</h2>
-	        <ul data-role="listview" data-theme="d" data-divider-theme="d">
-	            <li data-role="list-divider">Subformularios <span class="ui-li-count">2</span></li>
-	            <li><a href="#">
-	                <h3>Comunicaciones</h3>
-	                <p><strong>ï¿½ltima visita el 19/09/2013</strong></p>
-	                <p>Siguiente pregunta: ï¿½Estï¿½n los servidores distribuidos en distintos segmentos de redes?</p>
-	                <p class="ui-li-aside"><strong>Completitud: 20%</strong></p>
-	            </a></li>
-	            <li><a href="#">
-	                <h3>Administraciï¿½n</h3>
-	                <p><strong>ï¿½ltima visita el 19/09/2013</strong></p>
-	                <p>Siguiente pregunta: ï¿½Requiere monitoreo de servicio?</p>
-	                <p class="ui-li-aside"><strong>Completitud: 42%</strong></p>
-	            </a></li>
-	        </ul>
-	    </div>
-	    <div data-role="collapsible">
-	        <h2>Form 3</h2>
-	        <ul data-role="listview" data-theme="d" data-divider-theme="d">
-	            <li data-role="list-divider">Subformularios <span class="ui-li-count">2</span></li>
-	            <li><a href="#">
-	                <h3>Comunicaciones</h3>
-	                <p><strong>ï¿½ltima visita el 19/09/2013</strong></p>
-	                <p>Siguiente pregunta: ï¿½Estï¿½n los servidores distribuidos en distintos segmentos de redes?</p>
-	                <p class="ui-li-aside"><strong>Completitud: 20%</strong></p>
-	            </a></li>
-	            <li><a href="#">
-	                <h3>Administraciï¿½n</h3>
-	                <p><strong>ï¿½ltima visita el 19/09/2013</strong></p>
-	                <p>Siguiente pregunta: ï¿½Requiere monitoreo de servicio?</p>
-	                <p class="ui-li-aside"><strong>Completitud: 42%</strong></p>
-	            </a></li>
-	        </ul>
-	    </div>
-	</div>
-	</div>
-	
-	
-	
-</div>
-
-
 
 <script src="js/levantamiento.js" type="text/javascript"></script>
 <script src="js/jquery.session.js" type="text/javascript"></script>

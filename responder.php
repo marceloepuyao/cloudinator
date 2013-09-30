@@ -3,6 +3,8 @@
 $idsubform = 1;
 //Obtengo el id del levantamiento.
 $idlevantamiento = 1;
+//id de la empresa
+$idempresa = 1;
 
 
 $subform->nombre = "Comunicaciones";
