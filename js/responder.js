@@ -45,7 +45,9 @@ $(document).ready(function(){
 	checkSessionorDie();
 	
 	$("#backbutton").on('click', function(){
-		window.location.href = "levantamiento.php?emp="+$.session.get('empresa')+"&idlev="+;
+		var emp = $(this).data('emp');
+		var idlev = $(this).data('idlev');
+		window.location.href = "levantamiento.php?emp="+emp+"&idlev="+idlev;
 	});
 	console.log("hago click");
 	

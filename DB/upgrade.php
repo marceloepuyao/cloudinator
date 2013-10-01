@@ -98,6 +98,36 @@ if($version <  2013092401){
 		echo "<hr>Error en actualización<br>$e<br></hr>";
 	}
 }
+if($version <  2013093000){
+	try{
+		//acá escribo el script de actualización
+		DBQuery("CREATE TABLE registropreguntas (
+				id int(100) not null auto_increment primary key,
+				preguntaid int(100) NOT NULL,
+				respuestaid int(100) NOT NULL,
+				subformid int(100) NOT NULL,
+				formid int(100),
+				levantamientoid int(100) NOT NULL,
+				userid int(100) NOT NULL,
+				empresaid int(100) NOT NULL,
+				created timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP) 
+				ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+		");
+		
+		
+		//actualiazo la versión
+		DBQuery("UPDATE cloudinator_upgrades SET version = '2013093000' WHERE id = 1");
+		
+		//dejo mensaje
+		echo '<hr>';
+		echo 'Creada tabla registropreguntas';
+		echo '</hr>';
+		
+	}catch (Exception $e){
+		echo "<hr>Error en actualización<br>$e<br></hr>";
+	}
+}
+
 
 echo '<hr>';
 echo "Todos los cambios han sido realizados";

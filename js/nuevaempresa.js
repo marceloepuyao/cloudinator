@@ -28,7 +28,7 @@ function crearEmpresa(name,industry,textarea){
 				$.session.set('empresa', resp.id);
 				 
 				alert("empresa creada con éxito");
-				window.location.href = "levantamiento.php";
+				window.location.href = "levantamiento.php?emp="+resp.id;
 			}else{
 				alert("no se ha podido crear la empresa");
 			}
