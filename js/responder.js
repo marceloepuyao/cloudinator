@@ -32,8 +32,6 @@ function setEmpresaInfo(id){
 			console.log(emp);
 			//console.log("hola", empresas);
 			$("#empresanombre").text(emp.nombre);
-			$("#empresanombre2").text(emp.nombre);
-			$("#empresanombre3").text(emp.nombre);
 			$("#infoempresa").text(emp.infolevantamiento);
 		});
 }
@@ -47,20 +45,16 @@ $(document).ready(function(){
 	checkSessionorDie();
 	
 	$("#backbutton").on('click', function(){
-		window.location.href = "levantamiento.php#recorrer?id=";
+		var emp = $(this).data('emp');
+		var idlev = $(this).data('idlev');
+		window.location.href = "recorrer.php?emp="+emp+"&idlev="+idlev;
 	});
-	console.log("hago click");
 	
 	$(".answer").on('click', function(){
-		
-		
-		var id = $(this).data('id');
-		
+	
+		var id = $(this).data('id');	
 		var nuevapregunta = responderpregunta(id);
 		window.location.href = "responder.php?id=" + nuevapregunta;
 		
 	});
-
-	
-	
 });
