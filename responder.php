@@ -21,11 +21,9 @@ if(!$subform = getSubForm($idsubform)){
 //veo cual fue la última pregunta respondida (según levantamiento y subform). si no hay, tomo la primera.
 $questionandanswers = getQuestionAnswers($idsubform, $idlevantamiento);
 
-extract($questionandanswers); //devuelve $pregunta, $respuestas
-
+extract($questionandanswers); //devuelve $pregunta, $respuestas, $ultimavisita, $completitud
 
 $titulopregunta = $pregunta['name'];
-
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -65,12 +63,8 @@ $titulopregunta = $pregunta['name'];
 		                    <div class="ui-block-b"><button data-theme="d">Saltar</button></div>
 		 </fieldset>
 		</div>
-		
-	
-	
-	
+
 	</div>
-	
 	
 </div>
 <script src="js/responder.js" type="text/javascript"></script>

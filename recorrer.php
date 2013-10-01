@@ -1,5 +1,6 @@
 <?php
 require_once('db/db.php');
+require_once('lib.php');
 
 //si no existen error
 if(isset($_GET['emp']) || isset($_GET['idlev'])){
@@ -79,11 +80,22 @@ $formularios = DBQueryReturnArray($queryformularios);
 				<ul data-role="listview" data-theme="d" data-divider-theme="d">
 					<li data-role="list-divider">Subformularios <span class="ui-li-count"><?php echo $total?></span></li>
 					<? foreach($subformularios as $key2 => $subformulario) : ?>
+						<?php 
+							if(getSubForm($subformulario['id'])){
+								$questionandanswers = getQuestionAnswers($subformulario['id'], $idlevantamiento);
+								extract($questionandanswers); //devuelve $pregunta, $respuestas $ultimavisita, $completitud
+							}else{
+								$pregunta['name'] = "Formulario incompleto, comuniquese con el administrador ";
+								$ultimavisita = "nunca";
+								$completitud = "nunca";
+							}
+							
+						?>
 						<li class="goto" data-subform="<?php echo $subformulario['id']?>" data-empresa="<?php echo $idempresa?>" data-levantamiento="<?php echo $idlevantamiento?>"><a href="#">
 				    		<h3><?php echo $subformulario['name']?></h3>
-			                <p><strong>última visita el 19/09/2013</strong></p>
-			                <p>Siguiente pregunta: ¿Están los servidores distribuidos en distintos segmentos de redes?</p>
-			                <p class="ui-li-aside"><strong>Completitud: 20%</strong></p>
+			                <p><strong>última visita: <?php echo $ultimavisita?></strong></p>
+			                <p>Siguiente pregunta: <?php echo $pregunta['name']?></p>
+			                <p class="ui-li-aside"><strong>Completitud: <?php echo $completitud?>%</strong></p>
 		            	</a></li>
 					<? endforeach ?>
 		        </ul>

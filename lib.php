@@ -8,7 +8,7 @@ require_once('db/db.php');
  */
 function getSubForm($idsubform){
 	
-	//TODO: check if the subform is OK
+	//check if the subform is OK
 	$primerapregunta = DBQueryReturnArray("SELECT k.* from nodos k
 											WHERE k.tree = $idsubform AND  k.id NOT IN(
 											SELECT n.id
@@ -42,9 +42,10 @@ function getQuestionAnswers($idsubform, $idlevantamiento){
 	//se obtienen la última pregunta hecha.
 	$querypreguntas = "SELECT * FROM registropreguntas WHERE levantamientoid = $idlevantamiento AND subformid = $idsubform order by created DESC limit 1";
 	$preguntas = DBQueryReturnArray($querypreguntas);
-	//se obtiene la pregunta que viene, si no la primera.
+	//se obtiene la pregunta que viene... si no hay datos: la primera.
 	if($preguntas != null){
 		
+		return array("pregunta" =>"¿Están los servidores distribuidos en distintos segmentos de redes?", "respuestas" => "", "ultimavisita"=>"nunca", "completitud"=>0);
 	}else{
 		$pregunta = DBQueryReturnArray("SELECT k.* from nodos k
 										WHERE k.tree = $idsubform AND k.type = 'condition' AND  k.id NOT IN(
@@ -60,6 +61,6 @@ function getQuestionAnswers($idsubform, $idlevantamiento){
 										WHERE l.source = ".$pregunta[0]['id'].")");
 	}
 		
-	return array("pregunta" =>$pregunta[0], "respuestas" => $respuestas);
+	return array("pregunta" =>$pregunta[0], "respuestas" => $respuestas, "ultimavisita"=>"nunca", "completitud"=>0);
 	
 }

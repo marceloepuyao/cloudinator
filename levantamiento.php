@@ -24,7 +24,6 @@ $levantamientos = DBQueryReturnArray($querylevantamientos);
 $queryformularios = "SELECT * FROM megatrees";
 $formularios = DBQueryReturnArray($queryformularios);
 
-
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -42,7 +41,6 @@ $formularios = DBQueryReturnArray($queryformularios);
 <title>Nuevo Levantamiento</title>
 </head>
 <body>
-
 
 <div data-role="page" id="levantamiento">
 	<div data-role="header" data-theme="b">

@@ -47,20 +47,14 @@ $(document).ready(function(){
 	$("#backbutton").on('click', function(){
 		var emp = $(this).data('emp');
 		var idlev = $(this).data('idlev');
-		window.location.href = "levantamiento.php?emp="+emp+"&idlev="+idlev;
+		window.location.href = "recorrer.php?emp="+emp+"&idlev="+idlev;
 	});
-	console.log("hago click");
 	
 	$(".answer").on('click', function(){
-		
-		
-		var id = $(this).data('id');
-		
+	
+		var id = $(this).data('id');	
 		var nuevapregunta = responderpregunta(id);
 		window.location.href = "responder.php?id=" + nuevapregunta;
 		
 	});
-
-	
-	
 });

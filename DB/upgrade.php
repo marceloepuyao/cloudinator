@@ -113,8 +113,6 @@ if($version <  2013093000){
 				created timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP) 
 				ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 		");
-		
-		
 		//actualiazo la versión
 		DBQuery("UPDATE cloudinator_upgrades SET version = '2013093000' WHERE id = 1");
 		
