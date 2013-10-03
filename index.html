@@ -217,7 +217,7 @@
 	<div id="tabla" class="col_6">
 		<table cellspacing="0" cellpadding="0" class="striped sortable">
 			<thead><tr>
-				<th>Formulario</th>
+				<th id="formsubform">Formulario</th>
 				<th>Creado</th>
 				<th>Acciones</th>
 			</tr></thead>
@@ -559,10 +559,12 @@
 		if(getQueryStringByName('id')){
 			setNameToForm();
 			cargarGrafos(); //Carga la lista de Subformularios
+			$('#formsubform').text("Subformularios");
 			$('#menu_subformularios').show();
 			$('#menu_formularios').remove();
 		}else{
 			loadMegaTrees(); //Carga la lista de Formularios
+			$('#formsubform').text("Formularios");
 			$('#menu_subformularios').remove();
 			$('#menu_formularios').show();
 		}
