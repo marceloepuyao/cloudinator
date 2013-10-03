@@ -7,6 +7,11 @@
 			display: block;
 			margin: 0px;
 		}
+		#tabla{
+			left: 20px;
+			right: 20px;
+			top: 10px;
+		}
 		#newTreeName{
 			display: none;
 			position: absolute;
@@ -208,6 +213,20 @@
 	</div>
 	<!-- MENU SUBFORMS (fin) -->
 
+	<!-- TABLA (inicio) -->
+	<div id="tabla" class="col_6">
+		<table cellspacing="0" cellpadding="0" class="striped sortable">
+			<thead><tr>
+				<th>Formulario</th>
+				<th>Modificado</th>
+				<th>Acciones</th>
+			</tr></thead>
+			<tbody id="asdf">
+			</tbody>
+		</table>
+	</div>
+	<!-- TABLA (fin) -->
+
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> <!-- JQUERY (librerias javascript)-->
 	<script src="kickstart/js/kickstart.js"></script> <!-- KICKSTART (js del css) -->
 	<script type="text/javascript" src="http://webcursos.uai.cl/jira/s/es_ES-jovvqt-418945332/850/3/1.2.9/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?collectorId=2ab5c7d9"></script> <!-- JIRA (para reportar errores)-->
@@ -228,6 +247,7 @@
 						//$('#allsubforms').append('<li data-id="'+item.id+'"><a href="#">'+item.name+'</a></li>');
 						$('#allsubforms').append('<li><a href="cloudinator.html?id='+item.id+'">'+item.name+'</a></li>');
 						$('#clone').append('<li data-id="'+item.id+'"><a href="#">'+item.name+'</a></li>');
+
 					}
 				});
 			}
@@ -245,7 +265,11 @@
 					if(item.deleted == 0){
 						$('#allforms').append('<li data-id="'+item.id+'"><a href="index.html?id='+item.id+'">'+item.name+'</a>  </li>');
 						$('#formlist').append('<option value="'+item.id+'">'+item.name+'</option>');
+						$('#asdf').append('<tr><td value="'+item.name+'"><a href="#">'+item.name+'</a></td><td value="'+item.modified+'">'+item.modified+'</td><td><abbr title="Clonar"><a href="#clonar"><i class="icon-copy icon-2x"></i></a></abbr> <abbr title="Borrar"><a href="#borrar"><i class="icon-trash icon-2x"></i></a></abbr></td></tr>');
 					}
+					$('table').find('tr:first').addClass('first');
+					$('table').find('tr:last').addClass('last');
+					$('table').find('tr:even').addClass('alt');
 				});
 			}
 		}).fail(function(data) {
