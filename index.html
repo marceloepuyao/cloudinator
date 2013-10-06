@@ -7,6 +7,11 @@
 			display: block;
 			margin: 0px;
 		}
+		#tabla{
+			left: 20px;
+			right: 20px;
+			top: 10px;
+		}
 		#newTreeName{
 			display: none;
 			position: absolute;
@@ -171,9 +176,9 @@
 	<!-- MENU FORMULARIOS (inicio) -->
 	<div id="menu_formularios" class="col_4 column forms">
 		<ul class="menu vertical forms">
-			<li id="forms"><a href="#"><i class="icon-share"></i> Formularios</a>
+			<li style="display: none" id="forms"><a href="#"><i class="icon-share"></i> Formularios</a>
 				<ul id="allforms">
-					</ul>
+				</ul>
 			</li>
 			<li id="newform"><a href="#"><i class="icon-file"></i> Nuevo Formulario</a>
 			<li><a href="#"><i class="icon-wrench"></i> Administracion</a>
@@ -192,13 +197,13 @@
 	<div id="menu_subformularios" class="col_4 column subforms">
 		<ul class="menu vertical">
 			<li id="formname"><a href="#"> Nombre </a></li>
-			<li><a href="#"><i class="icon-share"></i>Subformularios</a>
+			<li style="display: none"><a href="#"><i class="icon-share"></i>Subformularios</a>
 				<ul id="allsubforms">
 				</ul>
 			</li>
 			<li id="new"><a href="#"><i class="icon-file"></i> Nuevo Subformulario</a></li>
 			<li id="deleteform"><a href="#" onclick='confirmdelete();'><i class="icon-remove-sign"></i> Eliminar Formulario</a></li>
-			<li id="cloneForm"><a href="#"><i class="icon-copy"></i> Clonar Subformulario</a>
+			<li style="display: none" id="cloneForm"><a href="#"><i class="icon-copy"></i> Clonar Subformulario</a>
 				<ul id="clone">
       			</ul>
       		</li> 
@@ -207,6 +212,20 @@
 		</ul>
 	</div>
 	<!-- MENU SUBFORMS (fin) -->
+
+	<!-- TABLA (inicio) -->
+	<div id="tabla" class="col_6">
+		<table cellspacing="0" cellpadding="0" class="striped sortable">
+			<thead><tr>
+				<th id="formsubform">Formulario</th>
+				<th>Creado</th>
+				<th>Acciones</th>
+			</tr></thead>
+			<tbody id="tablabody">
+			</tbody>
+		</table>
+	</div>
+	<!-- TABLA (fin) -->
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> <!-- JQUERY (librerias javascript)-->
 	<script src="kickstart/js/kickstart.js"></script> <!-- KICKSTART (js del css) -->
@@ -223,13 +242,18 @@
 			success: function(data){
 				$('#allsubforms').empty();
 				$('#clone').empty();
+				$('#tablabody').empty();
 				$.each( data, function( i, item ) {
 					if(item.deleted == 0 && item.megatree == getQueryStringByName('id')){
 						//$('#allsubforms').append('<li data-id="'+item.id+'"><a href="#">'+item.name+'</a></li>');
 						$('#allsubforms').append('<li><a href="cloudinator.html?id='+item.id+'">'+item.name+'</a></li>');
 						$('#clone').append('<li data-id="'+item.id+'"><a href="#">'+item.name+'</a></li>');
+						$('#tablabody').append('<tr><td value="'+item.name+'"><a href="cloudinator.html?id='+item.id+'">'+item.name+'</a></td><td value="'+item.created+'">'+item.created+'</td><td><abbr title="Clonar"><a href="#" onclick="preclonar('+item.id+');"><i class="icon-copy icon-2x"></i></a></abbr> <abbr title="Borrar"><a href="#" onclick="borrarsubformulario('+item.id+');"><i class="icon-trash icon-2x"></i></a></abbr></td></tr>');
 					}
 				});
+				$('table').find('tr:first').addClass('first');
+				$('table').find('tr:last').addClass('last');
+				$('table').find('tr:even').addClass('alt');
 			}
 		}).fail(function(data) {addNotice("error", "Error al acceder a la lista de Grafos");}).always(function(){$('.loading').fadeOut();});
 	}
@@ -241,16 +265,46 @@
 			beforeSend: function(){$('.loading').fadeIn();},
 			success: function(data){
 				$('#allforms').empty();
+				$('#tablabody').empty();
 				$.each( data, function( i, item ) {
 					if(item.deleted == 0){
 						$('#allforms').append('<li data-id="'+item.id+'"><a href="index.html?id='+item.id+'">'+item.name+'</a>  </li>');
+						$('#formlist').append('<option value="'+item.id+'">'+item.name+'</option>');
+						$('#tablabody').append('<tr><td value="'+item.name+'"><a href="index.html?id='+item.id+'">'+item.name+'</a></td><td value="'+item.created+'">'+item.created+'</td><td><abbr title="Borrar"><a href="#" onclick="borrarformulario('+item.id+');"><i class="icon-trash icon-2x"></i></a></abbr></td></tr>');
+					}
+				});
+				$('table').find('tr:first').addClass('first');
+				$('table').find('tr:last').addClass('last');
+				$('table').find('tr:even').addClass('alt');
+			}
+		}).fail(function(data) {
+			addNotice("error", "Error al acceder a la lista de Grafos");
+		}).always(function(){$('.loading').fadeOut();});
+	}
+	function loadFormList(){
+		$.ajax({
+			url: 'ajax/ajaxMegaTrees.php',
+			dataType: 'json',
+			timeout: 2500,
+			success: function(data){
+				$('#formlist').empty();
+				$.each( data, function( i, item ) {
+					if(item.deleted == 0){
 						$('#formlist').append('<option value="'+item.id+'">'+item.name+'</option>');
 					}
 				});
 			}
 		}).fail(function(data) {
 			addNotice("error", "Error al acceder a la lista de Grafos");
-		}).always(function(){$('.loading').fadeOut();});
+		});
+	}
+	function preclonar(id){
+		loadFormList();
+		$('.blackout').fadeIn();
+		$('#cloneFormName').data("copyid", id);
+		$('#cloneFormName').slideDown();
+		$('#textNameCloneForm').focus();
+		console.log("#clone on click", id, $('#cloneFormName').data("copyid"));
 	}
 	function clonar(){ //Llama a un form para clonar un Subformulario (y lo clona) [AJAX].
 		console.log("listo para clonar", 
@@ -266,7 +320,7 @@
 				clonename : $('#cloneFormName').data("copyid"),
 				to:  $('#formlist').val()
 					},
-			timeout: 2500,
+			timeout: 15000,
 			beforeSend: function(){$('.loading').fadeIn();},
 			success: function(data){
 				if(data.result){
@@ -280,11 +334,17 @@
 					$('#cloneFormName').slideDown();
 				}
 			}
-		}).fail(function(data) {
-			addNotice("error", "Error al clonar el Subformulario");
-			$('.loading').fadeOut();
-			$('#cloneFormName').slideUp();
-			console.log("fail on clonar()", data);
+		}).fail(function(jqXHR, textStatus, errorThrown) {
+			if(textStatus==="timeout") {
+				addNotice("warning", "Timeout, refresque la página por favor.");
+				alert("Timeout, Es posible que la clonacion se realizara exitosamente.");
+				window.location.reload();
+			}else{
+				addNotice("error", "Error al clonar el Subformulario");
+				$('.loading').fadeOut();
+				$('#cloneFormName').slideUp();
+				console.log("fail on clonar()", data);
+			}
 		});
 	}
 	function enviarForm(){ //Llama a un form para crear un Subformulario [AJAX].
@@ -367,12 +427,60 @@
 				window.location = "index.html";
 				//TODO: En caso que se ocupe otro metodo que no sea "window.location" es probable que se usen las sig lineas:
 				//loadMegaTrees(); //actualizar la lista de Formularios
-				//addNotice("success", "Se ha borrado correctamente el Formulario"); //no tiene sentido porque con el window.location se elimina automaticamente
+				//addNotice("success", "Se ha borrado correctamente el Formulario"); //no tiene sentido porque con el window.location lo elimina automaticamente
 			}
 		}).fail(function(data) {
 			addNotice("error", "Error al intentar borrar el Formulario");
 			console.log("Error en deleteform", data);
 		}).always(function(){$('.loading').fadeOut();});
+	}
+	function borrarformulario(id){
+		if(confirm("¿Está Seguro?")){
+			$.ajax({
+				url: 'ajax/ajaxMegaTrees.php',
+				dataType: 'json',
+				type: 'POST',
+				data: {
+					action: "delete",
+					id: id
+						},
+				timeout: 2500,
+				beforeSend: function(){$('.loading').fadeIn();},
+				success: function(data){
+					loadMegaTrees(); //actualizar la lista de Formularios
+					addNotice("success", "Se ha borrado correctamente el Formulario");
+				}
+			}).fail(function(data) {
+				addNotice("error", "Error al intentar borrar el Formulario");
+				console.log("Error en deleteform", data);
+			}).always(function(){$('.loading').fadeOut();});
+		}else{
+			return false;
+		}
+	}
+	function borrarsubformulario(id){
+		if(confirm("¿Está Seguro?")){
+			$.ajax({
+				url: 'ajax/ajaxTrees.php',
+				dataType: 'json',
+				type: 'POST',
+				data: {
+					action: "deleteTree",
+					tree: id
+						},
+				timeout: 2500,
+				beforeSend: function(){$('.loading').fadeIn();},
+				success: function(data){
+					cargarGrafos(); //actualizar la lista de Subormularios
+					addNotice("success", "Se ha borrado correctamente el Subformulario");
+				}
+			}).fail(function(data) {
+				addNotice("error", "Error al intentar borrar el Subformulario");
+				console.log("Error en deletesubform", data);
+			}).always(function(){$('.loading').fadeOut();});
+		}else{
+			return false;
+		}
 	}
 	function setNameToForm(){ //Pone el nombre del formulario que se ha selecionado en el inicio del menu [AJAX].
 		$.ajax({
@@ -446,16 +554,17 @@
 	}
 
 	$(document).ready(function() {
-		
-		loadMegaTrees(); //Carga la lista de Formularios
-		
+
 		//decide si muestra el menu de Formularios o el de Subformularios
 		if(getQueryStringByName('id')){
 			setNameToForm();
-			cargarGrafos();
+			cargarGrafos(); //Carga la lista de Subformularios
+			$('#formsubform').text("Subformularios");
 			$('#menu_subformularios').show();
 			$('#menu_formularios').remove();
 		}else{
+			loadMegaTrees(); //Carga la lista de Formularios
+			$('#formsubform').text("Formularios");
 			$('#menu_subformularios').remove();
 			$('#menu_formularios').show();
 		}
@@ -513,6 +622,7 @@
 			$('#newTreeName').slideUp();
 			enviarForm();
 		});
+
 		
 		//WTF IS THIS?
 		$('li').on('click', function(event){

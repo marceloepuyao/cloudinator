@@ -9,20 +9,31 @@
 	<link rel='stylesheet' href='alloy-1.7.0//build/aui-skin-classic/css/aui-skin-classic-all-min.css' type='text/css' media='screen' />
 
 	<style type="text/css" media="screen">
+		.aui-diagram-builder-tabs{
+			top: 120px;
+			background-color: inherit;
+			border-color: #CCCCCC;
+			border-width: 1px;
+			border-style: solid;
+			z-index: 101;
+		}
+		.aui-diagram-builder-content-container{
+			overflow: scroll;
+			height: 600px;
+		}
 		.aui-diagram-node, .aui-basecelleditor {
 			z-index: 1000 !important;
 		}
-
 		.aui-diagram-builder-connector-wrapper {
 			z-index: 1;
 		}
-
 		.log {
 			white-space: nowrap;
 			font-size: 10px;
 		}
 		.aui-diagram-builder-canvas{
 			width: 3000px;
+			height: 2000px;
 			background:white;
 
 		}
