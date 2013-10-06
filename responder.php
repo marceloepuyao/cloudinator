@@ -2,7 +2,7 @@
 require_once('lib.php');
 
 //comprobar que las variables estén bien
-if(isset($_GET['emp']) && isset($_GET['idlev']) && isset($_GET['idsubform'])){
+if(isset($_GET['idlev']) && isset($_GET['idsubform'])){
 	//Obtengo el id del subform que estoy completanto
 	$idsubform = (int)$_GET['idsubform'];
 	//Obtengo el id del levantamiento.
@@ -17,6 +17,7 @@ if(isset($_GET['emp']) && isset($_GET['idlev']) && isset($_GET['idsubform'])){
 if(!$subform = getSubForm($idsubform)){
 	die("El subformulario está incompleto, por favor avisar a administrador del sistema");
 }
+//TODO: get empresa
 
 //veo cual fue la última pregunta respondida (según levantamiento y subform). si no hay, tomo la primera.
 $questionandanswers = getQuestionAnswers($idsubform, $idlevantamiento);
@@ -54,7 +55,7 @@ $titulopregunta = $pregunta['name'];
 		<h1><?php echo $titulopregunta?></h1>
 		<div data-role="collapsible-set" data-theme="c" data-content-theme="d" data-iconpos="right">
 		    <? foreach($respuestas as $key => $respuesta) : ?>
-		    	<div data-id=<?php echo $key?> class="answer" data-role="button" data-iconpos="top">
+		    	<div data-idsubform="<?php echo $idsubform?>" data-idlev="<?php echo $idlevantamiento?>" data-idnode=<?php echo $key?> class="answer" data-role="button" data-iconpos="top">
 					<h3><?php echo $respuesta['name']?></h3>
 				</div>
 			<? endforeach ?>

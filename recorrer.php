@@ -87,7 +87,7 @@ $formularios = DBQueryReturnArray($queryformularios);
 							}else{
 								$pregunta['name'] = "Formulario incompleto, comuniquese con el administrador ";
 								$ultimavisita = "nunca";
-								$completitud = "nunca";
+								$completitud = 0;
 							}
 							
 						?>
