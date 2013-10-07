@@ -2,13 +2,12 @@
 require_once('lib.php');
 
 //comprobar que las variables estén bien
-if(isset($_GET['emp']) && isset($_GET['idlev']) && isset($_GET['idsubform'])){
+if(isset($_GET['idlev']) && isset($_GET['idsubform'])){
 	//Obtengo el id del subform que estoy completanto
 	$idsubform = (int)$_GET['idsubform'];
 	//Obtengo el id del levantamiento.
 	$idlevantamiento = (int)$_GET['idlev'];
-	//id de la empresa
-	$idempresa = (int)$_GET['emp'];
+
 }else{
 	header( 'Location: notfound.html' ) ;
 }
@@ -17,13 +16,21 @@ if(isset($_GET['emp']) && isset($_GET['idlev']) && isset($_GET['idsubform'])){
 if(!$subform = getSubForm($idsubform)){
 	die("El subformulario está incompleto, por favor avisar a administrador del sistema");
 }
+//get empresa
+$empresa = getEmpresaByLevantamientoId($idlevantamiento);
 
 //veo cual fue la última pregunta respondida (según levantamiento y subform). si no hay, tomo la primera.
 $questionandanswers = getQuestionAnswers($idsubform, $idlevantamiento);
 
 extract($questionandanswers); //devuelve $pregunta, $respuestas, $ultimavisita, $completitud
 
-$titulopregunta = $pregunta['name'];
+//si no hay pregunta es por que se ha llegado a final, se muestra resumen de respuestas.
+if($pregunta == null){
+	
+	//TODO:get resumen respuestas
+	
+}
+
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -45,16 +52,18 @@ $titulopregunta = $pregunta['name'];
 
 <div data-role="page" id="pregunta">
 	<div data-role="header" data-theme="b">
-	    <a href="#" id="backbutton" data-emp="<?php echo $idempresa?>" data-idlev="<?php echo $idlevantamiento?>" data-icon="arrow-l">atrás</a>
+	    <a href="#" id="backbutton" data-emp="<?php echo $empresa['id']?>" data-idlev="<?php echo $idlevantamiento?>" data-icon="arrow-l">atrás</a>
 	    <h1 id ="empresanombre"> </h1>
 	    <a href="#" id="usernamebutton" data-icon="check" class="ui-btn-right"></a>
 	</div>
 	
 	<div data-role="content">
-		<h1><?php echo $titulopregunta?></h1>
+		<?php if ($pregunta != null): ?>
+		
+		<h1><?php echo $pregunta['name']?></h1>
 		<div data-role="collapsible-set" data-theme="c" data-content-theme="d" data-iconpos="right">
 		    <? foreach($respuestas as $key => $respuesta) : ?>
-		    	<div data-id=<?php echo $key?> class="answer" data-role="button" data-iconpos="top">
+		    	<div data-idsubform="<?php echo $idsubform?>" data-idlev="<?php echo $idlevantamiento?>" data-idnode="<?php echo $respuesta['id']?>" data-idpregunta="<?php echo $pregunta['id']?>" class="answer" data-role="button" data-iconpos="top">
 					<h3><?php echo $respuesta['name']?></h3>
 				</div>
 			<? endforeach ?>
@@ -63,6 +72,11 @@ $titulopregunta = $pregunta['name'];
 		                    <div class="ui-block-b"><button data-theme="d">Saltar</button></div>
 		 </fieldset>
 		</div>
+		<?php endif; ?>
+		
+		<?php if ($pregunta == null): ?>
+			<h2>Se ha llegado al fin</h2>
+		<?php endif; ?>
 
 	</div>
 	

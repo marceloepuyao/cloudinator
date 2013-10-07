@@ -45,7 +45,31 @@ function getQuestionAnswers($idsubform, $idlevantamiento){
 	//se obtiene la pregunta que viene... si no hay datos: la primera.
 	if($preguntas != null){
 		
-		return array("pregunta" =>"¿Están los servidores distribuidos en distintos segmentos de redes?", "respuestas" => "", "ultimavisita"=>"nunca", "completitud"=>0);
+		//ver en el registro la ultima pregunta respondida, ver su respuesta y sacar la pregunta que viene:
+		$idrespuesta = $preguntas[0]["respuestaid"];
+		
+		$pregunta = DBQueryReturnArray("SELECT k.* 
+										FROM nodos k
+										WHERE k.tree = $idsubform AND k.type = 'condition' AND  k.id IN(
+											SELECT l.target
+											FROM links l
+											WHERE l.source = $idrespuesta
+										)");
+		if($pregunta != null){
+		
+			$respuestas = DBQueryReturnArray("SELECT n.*
+											FROM nodos n
+											WHERE n.id IN(
+											SELECT l.target
+											FROM  links l
+											WHERE l.source = ".$pregunta[0]['id'].")");
+		}else{
+			
+			return array("pregunta" =>null, "respuestas" => null, "ultimavisita"=>$preguntas[0]["created"], "completitud"=>100);
+			
+		}
+		
+		return array("pregunta" =>$pregunta[0], "respuestas" => $respuestas, "ultimavisita"=>$preguntas["created"], "completitud"=>0);
 	}else{
 		$pregunta = DBQueryReturnArray("SELECT k.* from nodos k
 										WHERE k.tree = $idsubform AND k.type = 'condition' AND  k.id NOT IN(
@@ -60,7 +84,19 @@ function getQuestionAnswers($idsubform, $idlevantamiento){
 										FROM  links l
 										WHERE l.source = ".$pregunta[0]['id'].")");
 	}
+	
+	//TODO: calcular completitud
+	$completitud = 0;
 		
-	return array("pregunta" =>$pregunta[0], "respuestas" => $respuestas, "ultimavisita"=>"nunca", "completitud"=>0);
+	return array("pregunta" =>$pregunta[0], "respuestas" => $respuestas, "ultimavisita"=>"nunca", "completitud"=>$completitud);
+	
+}
+function getEmpresaByLevantamientoId($idlevantamiento){
+	$queryempresa = "select *
+					from empresas
+					where id IN( select empresaid from levantamientos where id = $idlevantamiento)";
+	$empresa = DBQueryReturnArray($queryempresa);
+	
+	return $empresa[0];
 	
 }

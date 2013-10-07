@@ -75,8 +75,7 @@ $(document).ready(function(){
 	$(".goto").on('click', function(){
 		var subform = $(this).data('subform');
 		var lev = $(this).data('levantamiento');
-		var emp = $(this).data('empresa');
-		window.location.href = "responder.php?idsubform="+subform+"&idlev="+lev+"&emp="+emp;
+		window.location.href = "responder.php?idsubform="+subform+"&idlev="+lev;
 
 
 	});
