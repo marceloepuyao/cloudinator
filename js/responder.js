@@ -35,11 +35,14 @@ function setEmpresaInfo(id){
 			$("#infoempresa").text(emp.infolevantamiento);
 		});
 }
-function responderpregunta(idnode, idlev, idsubform){
+function responderpregunta(idnode, idlev, idsubform, idpregunta){
 	$.post("ajax/ajaxresponder.php",{ 
 		idnode: idnode,
 		idlev: idlev,
-		idsubform: idsubform
+		idsubform: idsubform,
+		idpregunta: idpregunta,
+		iduser: $.session.get('usu'),
+		idempresa: $.session.get('empresa')
 		},function(respuesta){
 			window.location.href = "responder.php?idlev=" + idlev+"&idsubform="+idsubform;
 		});
@@ -61,8 +64,11 @@ $(document).ready(function(){
 		var idnode = $(this).data('idnode');	
 		var idlev = $(this).data('idlev');	
 		var idsubform = $(this).data('idsubform');	
-
-		responderpregunta(idnode, idlev, idsubform);
+		var idpregunta = $(this).data('idpregunta');
+		
+		console.log("pregunta id", idpregunta);
+		console.log("respuesta id", idnode);
+		responderpregunta(idnode, idlev, idsubform, idpregunta);
 		//window.location.href = "responder.php?idlev=" + idlev+"&idsubform="+idsubform;
 		
 	});

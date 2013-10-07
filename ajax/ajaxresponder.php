@@ -10,8 +10,13 @@ try {
 	$idlev = (int)$_POST['idlev'];
 	$idsubform = (int)$_POST['idsubform'];
 	$idnode = (int)$_POST['idnode'];
+	$idpregunta = (int)$_POST['idpregunta'];
+	$userid = (int)$_POST['iduser'];
+	$idempresa= (int)$_POST['idempresa'];
 
-	$query = "";
+	DBQuery("INSERT INTO `registropreguntas` (`id`, `preguntaid`, `respuestaid`, `subformid`,`formid`, `levantamientoid`, `userid`, `empresaid`, `created`) VALUES 
+			(NULL, $idpregunta , $idnode, $idsubform ,'',$idlev, $userid,$idempresa,'".date("Y-m-d H:i:s")."' );
+			");
 	
 	$data = array(
 			'result' => 'true',

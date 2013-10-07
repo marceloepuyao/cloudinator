@@ -84,14 +84,19 @@ $formularios = DBQueryReturnArray($queryformularios);
 							if(getSubForm($subformulario['id'])){
 								$questionandanswers = getQuestionAnswers($subformulario['id'], $idlevantamiento);
 								extract($questionandanswers); //devuelve $pregunta, $respuestas $ultimavisita, $completitud
+								if($pregunta == null){
+									$pregunta = array("name"=>"se ha llegado al fin");
+								}
+								$class = "goto";
 							}else{
 								$pregunta['name'] = "Formulario incompleto, comuniquese con el administrador ";
 								$ultimavisita = "nunca";
 								$completitud = 0;
+								$class = "dontgoto";
 							}
 							
 						?>
-						<li class="goto" data-subform="<?php echo $subformulario['id']?>" data-empresa="<?php echo $idempresa?>" data-levantamiento="<?php echo $idlevantamiento?>"><a href="#">
+						<li class="<?php echo $class?>" data-subform="<?php echo $subformulario['id']?>" data-levantamiento="<?php echo $idlevantamiento?>"><a href="#">
 				    		<h3><?php echo $subformulario['name']?></h3>
 			                <p><strong>última visita: <?php echo $ultimavisita?></strong></p>
 			                <p>Siguiente pregunta: <?php echo $pregunta['name']?></p>
