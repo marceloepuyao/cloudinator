@@ -37,10 +37,15 @@ $formularios = DBQueryReturnArray($queryformularios);
 			padding-right: 25%;
 			padding-left: 25%;
 		}
+		.container {
+			border-top: 1px solid #7ACEF4;
+			margin: 0 auto;
+			padding: 0 50px;
+		}
 </style>
 <title>Nuevo Levantamiento</title>
 </head>
-<body>
+<body class="api jquery-mobile home blog single-autho">
 
 <div data-role="page" id="levantamiento">
 	<div data-role="header" data-theme="b">
@@ -48,39 +53,41 @@ $formularios = DBQueryReturnArray($queryformularios);
 	    <h1 id ="empresanombre"><?php echo $nombre?>	</h1>
 	    <a href="#" id="usernamebutton" data-icon="check" class="ui-btn-right"></a>
 	</div>
-	<h4>información de la empresa</h4>
-	<p id="infoempresa" > <?php echo $info?></p>
-	<br>
-	<h4>Historial de levantamientos</h4>
-	
-	<table data-role="table" id="table-column-toggle" data-mode="columntoggle" class="ui-responsive table-stroke">
-	     <thead>
-	       <tr>
-	       	<th>Título Visita</th>
-	         <th data-priority="2">Fecha</th>
-	         <th data-priority="3"><abbr title="Rotten Tomato Rating">Completitud</abbr></th>
-	         <th>Recorrer</th>
-	          <th data-priority="5">Borrar</th>
-	          <th data-priority="6">Editar</th>
-	       </tr>
-	     </thead>
-	     <tbody>
-	      	<? foreach($levantamientos as $key => $levantamiento) : ?>
-		    	<tr>
-		    	<td><?php echo $levantamiento['titulo']?></td>
-		         <td><?php echo $levantamiento['created']?></td>
-		         <td><?php echo $levantamiento['completitud']?>%</td>
-		         <td><a class="ira" data-empresa="<?php echo $idempresa?>" data-levantamiento="<?php echo $levantamiento['id']?>" href="#">ir</a></td>
-		         <td><a class="delete" data-id="1" href="#">X</a></td>
-		         <td><a class="delete" data-id="1" href="#">editar</a></td>
+	<div class="container">
+		<h4 align="center">información de la empresa</h4>
+		<p id="infoempresa" > <?php echo $info?></p>
+		<br>
+		<h4 align="center" >Historial de levantamientos</h4>
+		
+		<table data-role="table" id="table-column-toggle" data-mode="columntoggle" class="ui-responsive table-stroke">
+		     <thead>
+		       <tr>
+		       	<th>Título Visita</th>
+		         <th data-priority="2">Fecha</th>
+		         <th data-priority="3"><abbr title="Rotten Tomato Rating">Completitud</abbr></th>
+		         <th>Recorrer</th>
+		          <th data-priority="5">Borrar</th>
+		          <th data-priority="6">Editar</th>
 		       </tr>
-			<? endforeach ?>
-	       
-	     </tbody>
-	   </table>
-	<br><br>
-	<div data-role="controlgroup">
-	    <a id="tonew" href="#new" data-role="button">Empezar Nuevo Levantamiento</a>
+		     </thead>
+		     <tbody>
+		      	<? foreach($levantamientos as $key => $levantamiento) : ?>
+			    	<tr>
+			    	<td><?php echo $levantamiento['titulo']?></td>
+			         <td><?php echo $levantamiento['created']?></td>
+			         <td><?php echo $levantamiento['completitud']?>%</td>
+			         <td><a class="ira" data-empresa="<?php echo $idempresa?>" data-levantamiento="<?php echo $levantamiento['id']?>" href="#">ir</a></td>
+			         <td><a class="delete" data-id="1" href="#">X</a></td>
+			         <td><a class="delete" data-id="1" href="#">editar</a></td>
+			       </tr>
+				<? endforeach ?>
+		       
+		     </tbody>
+		   </table>
+		<br><br>
+		<div data-role="controlgroup">
+		    <a id="tonew" href="#new" data-role="button">Empezar Nuevo Levantamiento</a>
+		</div>
 	</div>
 
 </div>
@@ -91,7 +98,7 @@ $formularios = DBQueryReturnArray($queryformularios);
 	    <a href="#" id="usernamebutton" data-icon="check" class="ui-btn-right"></a>
 	</div><!-- /header -->
 	
-	<div data-role="content">
+	<div data-role="content" class="container"> 
 		<h2>Nuevo Levantamiento</h2>
 		    <ul data-role="listview" data-inset="true">
 		        <li data-role="fieldcontain">
