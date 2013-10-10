@@ -7,6 +7,24 @@ function getQueryStringByName(name) {
         results = regex.exec(location.search);
     return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
+function noticeSaving(state){
+	if(state == "success"){
+		$('#notice-savechanges-success').css('display', '');
+		$('#notice-savechanges-inprogress').css('display', 'none');
+		//$('#notice-savechanges-error').css('display', 'none');
+	}else if(state == "inprogress"){
+		$('#notice-savechanges-success').css('display', 'none');
+		$('#notice-savechanges-inprogress').css('display', '');
+		//$('#notice-savechanges-error').css('display', 'none');
+	}else if(state == "error"){
+		//$('#notice-savechanges-success').css('display', 'none');
+		$('#notice-savechanges-inprogress').css('display', 'none');
+		$('#notice-savechanges-error').css('display', '');
+	}else if(state == "clear"){
+		$('#notice-savechanges-success').css('display', 'none');
+		$('#notice-savechanges-inprogress').css('display', 'none');
+	}
+}
 
 AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 	A.one('.aui-diagram-builder-canvas').setStyle('background', 'white');
@@ -36,9 +54,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 				on: {   
 					success: function(data) {
 						console.log(data);
-						
 						window.location = "cloudinator.html?id="+getQueryStringByName('id');
-						
 					}
 				}
 			});
@@ -88,7 +104,6 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 		   			nodos[i] = datos[i];
 	   			} 
 				cargaNodos();
-				
 			}
 		}
 	});
@@ -113,6 +128,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 		A.io.request('ajax/ajaxpost.php', {
 			autoLoad: true,
 			method: 'POST',
+			dataType: 'json',
 			data: {
 				nodo: action,
 				name: name,
@@ -123,8 +139,19 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 			},
 			on: {
 				success: function(data){
-					console.log('AJAXresponseData',this.get('responseData'));
-					//console.log('AJAX',data);
+					console.log('ajaxPostNodo', this.get('responseData'));
+					if(this.get('responseData').result){
+						noticeSaving('success');
+					}else{
+						noticeSaving('error');
+					}
+				},
+				failure: function(data){
+					noticeSaving('error');
+				},
+				start: function(){
+					noticeSaving('inprogress');
+					console.log('borrar', action);
 				}
 			}
 		});
@@ -133,6 +160,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 		A.io.request('ajax/ajaxpost.php', {
 			autoLoad: true,
 			method: 'POST',
+			dataType: 'json',
 			data: {
 				nodo: 'updateMeta',
 				newname: newname,
@@ -142,7 +170,13 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 			on: {
 				success: function(data){
 					console.log('AJAXresponseData',this.get('responseData'));
-					//console.log('AJAX',data);
+					noticeSaving('success');
+				},
+				failure: function(data){
+					noticeSaving('error');
+				},
+				start: function(){
+					noticeSaving('inprogress');
 				}
 			}
 		});
@@ -151,6 +185,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 		A.io.request('ajax/ajaxpost.php', {
 			autoLoad: true,
 			method: 'POST',
+			dataType: 'json',
 			data: {
 				nodo: 'newnameTEST',
 				newname: newname,
@@ -159,8 +194,14 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 			},
 			on: {
 				success: function(data){
-					console.log('AJAXresponseData',this.get('responseData'));
-					//console.log('AJAX',data);
+					console.log('AJAXresponseData', responseResult);
+					noticeSaving('success');
+				},
+				failure: function(data){
+					noticeSaving('error');
+				},
+				start: function(){
+					noticeSaving('inprogress');
 				}
 			}
 		});
@@ -170,6 +211,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 		A.io.request('ajax/ajaxpost.php', {
 			autoLoad: true,
 			method: 'POST',
+			dataType: 'json',
 			data: {
 				nodo: 'newname',
 				name: newname,
@@ -179,9 +221,13 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 			on: {
 				success: function(data){
 					console.log('AJAXresponseData',this.get('responseData'));
-					
-					//A.one('#savechanges').show();
-					//console.log('AJAX',data);
+					noticeSaving('success');
+				},
+				failure: function(data){
+					noticeSaving('error');
+				},
+				start: function(){
+					noticeSaving('inprogress');
 				}
 			}
 		});
@@ -191,6 +237,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 		A.io.request('ajax/ajaxpost.php', {
 			autoLoad: true,
 			method: 'POST',
+			dataType: 'json',
 			data: {
 				getIdFromName: name,
 				tree: tree
@@ -208,12 +255,12 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 		A.io.request('ajax/ajaxpost.php', {
 			autoLoad: true,
 			method: 'POST',
+			dataType: 'json',
 			data: {
 				formId: idForm,
 			},
 			on: {
 				success: function(data){
-					//console.log('name form ', this.get('responseData'));
 					A.one('#SubFormName').text('Subformulario: ' + this.get('responseData'));
 					//return this.get('responseData');
 				}
@@ -225,6 +272,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 		A.io.request('ajax/ajaxpost.php', {
 			autoLoad: true,
 			method: 'POST',
+			dataType: 'json',
 			data: {
 				link: action,
 				name: name,
@@ -234,7 +282,13 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 			},
 			on: {
 				success: function(data){
-					
+					noticeSaving('success');
+				},
+				failure: function(data){
+					noticeSaving('error');
+				},
+				start: function(){
+					noticeSaving('inprogress');
 				}
 			}
 		});
@@ -242,7 +296,6 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 
 	//var typestart = 'start';
 	var typeend = 'end';
-	
 	var typepregunta = 'condition';
 	var typerespuesta = 'state';
 	var availableFields = [
@@ -305,7 +358,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 						}
 							
 						deleltelinesinfo();
-						A.one('#savechanges').setStyle('display', 'none');
+						//noticeSaving('inprogress');
 					},
 					'*:end': function(event){
 						
@@ -316,12 +369,13 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 						
 						if(posix < 0 || posiy < 0){
 							//error message or simply do nothing
-						}else if(movingnodename != ""){
+						}else if(movingnodename != undefined && movingnodename != "" && movingnodename != null){
+							console.log("BORRAR", movingnodename);
 							ajaxPostNodo('update', movingnodename, 'condition', posix, posiy, getQueryStringByName('id')); //event.pageX no es la posicion exacta, porque concidera todo
 						}
 						
 						deleltelinesinfo();
-						A.one('#savechanges').setStyle('display', '');
+						//A.one('#savechanges').setStyle('display', '');
 					},
 					'*:hit': function(event){
 						//console.log("nueva pregunta: ", event.drag.get('node')); 
@@ -331,7 +385,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 						var containerXY = this.dropContainer.getXY();
 						
 						var posix = lastXY[0] - containerXY[0];
-						var posiy = lastXY[1]- containerXY[1];
+						var posiy = lastXY[1] - containerXY[1];
 						
 						if(posix<0 || posiy< 0){
 							alert("No se puede crear nodos fuera del área de trabajo");
@@ -367,15 +421,14 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 							
 							
 						}
-						A.one('#savechanges').setStyle('display', '');
+						//A.one('#savechanges').setStyle('display', '');
 						deleltelinesinfo();
 					},
 					save: function(event) {
 						//aca se guardan los cambios
-						
-						
+						//noticeSaving('inprogress');
 						console.log('save', event.target.editingNode.get('name'));
-						A.one('#savechanges').setStyle('display', '');
+						//A.one('#savechanges').setStyle('display', '');
 					}
 				},
 
@@ -426,8 +479,6 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 		var a = A.all('.aui-diagram-builder-connector-name');
 		//db1.connector.hide();
 		a.remove();
-		
-		
 	}
 
 	

@@ -4,6 +4,7 @@ function ajaxPostLink(action, name, source, target, tree, typetarget, xtarget, y
 	A.io.request('ajax/ajaxpost.php', {
 		autoLoad: true,
 		method: 'POST',
+		dataType: 'json',
 		data: {
 			link: action,
 			name: name,
@@ -25,6 +26,7 @@ function ajaxPostNodo(action, name, type, posx, posy, tree){
 	A.io.request('ajax/ajaxpost.php', {
 		autoLoad: true,
 		method: 'POST',
+		dataType: 'json',
 		data: {
 			nodo: action,
 			name: name,
@@ -34,9 +36,17 @@ function ajaxPostNodo(action, name, type, posx, posy, tree){
 			posy: posy
 		},
 		on: {
+			start: function(){noticeSaving('inprogress');},
 			success: function(data){
-				console.log('AJAXresponseData',this.get('responseData'));
-				//console.log('AJAX',data);
+				console.log('AJAXresponseDataPostNodo',this.get('responseData'));
+				if(this.get('responseData').result){
+					noticeSaving('success');
+				}else{
+					noticeSaving('error');
+				}
+			},
+			failure: function(){
+				noticeSaving('error');
 			}
 		}
 	});
@@ -45,6 +55,7 @@ function ajaxChangeNodoName(id, newname, tree){
 	A.io.request('ajax/ajaxpost.php', {
 		autoLoad: true,
 		method: 'POST',
+		dataType: 'json',
 		data: {
 			nodo: 'newname',
 			name: newname,
@@ -52,9 +63,17 @@ function ajaxChangeNodoName(id, newname, tree){
 			tree: tree
 		},
 		on: {
+			start: function(){noticeSaving('inprogress');},
 			success: function(data){
 				console.log('AJAXresponseDataChangeName',this.get('responseData'));
-				//console.log('AJAX',data);
+				if(this.get('responseData').result){
+					noticeSaving('success');
+				}else{
+					noticeSaving('error');
+				}
+			},
+			failure: function(){
+				noticeSaving('error');
 			}
 		}
 	});
@@ -63,6 +82,7 @@ function ajaxNodoGetIdFromName(name, tree, newname){
 	A.io.request('ajax/ajaxpost.php', {
 		autoLoad: true,
 		method: 'POST',
+		dataType: 'json',
 		data: {
 			getIdFromName: name,
 			tree: tree
@@ -872,7 +892,6 @@ var DiagramBuilder = A.Component.create({
 			var editingConnector = instance.editingConnector;
 			var modelList = instance.propertyList.get(DATA);
 			var attributes = [];
-
 			if (editingNode) {
 				modelList.each(function(model) {
 					editingNode.set(model.get(ATTRIBUTE_NAME), model.get(VALUE));
@@ -883,6 +902,7 @@ var DiagramBuilder = A.Component.create({
 				A.io.request('ajax/ajaxpost.php', {
 					autoLoad: true,
 					method: 'POST',
+					dataType: 'json',
 					data: {
 						nodo: 'updateMeta',
 						name: attributes['name'],
@@ -893,19 +913,19 @@ var DiagramBuilder = A.Component.create({
 	
 					},
 					on: {
+						start: function(){noticeSaving('inprogress');},
 						success: function(data){
 							console.log('se ha guardado la metadata',this.get('responseData'));
-						
-						}
+							if(this.get('responseData').result){
+								noticeSaving('success');
+							}else{
+								noticeSaving('error');
+							}
+						},
+						failure: function(){noticeSaving('error');}
 					}
 				});
-				
-				
-				
-				
-				
-				
-				
+
 				console.log('editing node',attributes);
 			}
 			else if (editingConnector) {
@@ -1390,8 +1410,8 @@ var DiagramNode = A.Component.create({
 			nameend = A.one('#'+idend).get('children').slice(-2).get('text')[0];
 			
 			
-			console.log("nombrestartaaa",instance.boundaryDragDelegate); 
-			console.log("nombreend",diagramNode.get(BOUNDING_BOX).getXY()); 
+			console.log("nombre_start",instance.boundaryDragDelegate); 
+			console.log("nombre_end",diagramNode.get(BOUNDING_BOX).getXY()); 
 			
 			if(diagramNode.get(BOUNDING_BOX).getAttribute("class").lastIndexOf("state") != -1){
 				var typetarget = "state";
@@ -1403,18 +1423,20 @@ var DiagramNode = A.Component.create({
 			
 			
 			if(instance.get(BOUNDING_BOX).getAttribute("class").lastIndexOf("end") != -1){
+				console.log('diagramNode', diagramNode);
 				ajaxPostNodo('insert', nameend, typetarget, diagramNode.get(BOUNDING_BOX).getXY()[0] - 278, diagramNode.get(BOUNDING_BOX).getXY()[1] -59, getQueryStringByName('id'));
-				alert("no puedes conectar un nodo fin");
+				alert("No puedes conectar un nodo fin");
 			}			
 			else if(instance.get(BOUNDING_BOX).getAttribute("class") == diagramNode.get(BOUNDING_BOX).getAttribute("class"))	{
 				ajaxPostNodo('insert', nameend, typetarget, diagramNode.get(BOUNDING_BOX).getXY()[0] - 278, diagramNode.get(BOUNDING_BOX).getXY()[1] -59, getQueryStringByName('id'));
-				alert("no se puede conectar dos nodos del mismo tipo");
+				alert("No se puede conectar dos nodos del mismo tipo");
 				
 			}else{
 				//ajaxPostLink("insert", "", namestart, nameend, getQueryStringByName('id'), typetarget, diagramNode.get(BOUNDING_BOX).getXY()[0] - 278, diagramNode.get(BOUNDING_BOX).getXY()[1] -59);
 				A.io.request('ajax/ajaxpost.php', {
 					autoLoad: true,
 					method: 'POST',
+					dataType: 'json',
 					data: {
 						link: "insert",
 						name: "",
@@ -1423,14 +1445,17 @@ var DiagramNode = A.Component.create({
 						target: nameend,
 						typetarget: typetarget,
 						xtarget: diagramNode.get(BOUNDING_BOX).getXY()[0] - 278,
-						ytarget: diagramNode.get(BOUNDING_BOX).getXY()[1] -59
+						ytarget: diagramNode.get(BOUNDING_BOX).getXY()[1] - 59
 					},
 					on: {
+						start: function(){noticeSaving('inprogress');},
 						success: function(data){
-							console.log('el link ha sido generado',this.get('responseData'));
-							if(this.get('responseData') != '{"result":"true"}' ){
-								alert("you can't do that! ");
+							console.log('el link ha sido generado', this.get('responseData'));
+							if(!this.get('responseData').result){
+								noticeSaving('clear');
+								alert("you can't do that! - Invalid Conection");
 							}else{
+								noticeSaving('success');
 								instance.connect(
 									instance.prepareTransition({
 										sourceXY: getLeftTop(dd.startXY, instance.get(BOUNDING_BOX)),
@@ -1439,7 +1464,8 @@ var DiagramNode = A.Component.create({
 									})
 								);
 							}
-						}
+						},
+						failure: function(){noticeSaving('error');}
 					}
 				});
 				
@@ -1839,6 +1865,7 @@ var DiagramNode = A.Component.create({
 				A.io.request('ajax/ajaxpost.php', {
 					autoLoad: true,
 					method: 'POST',
+					dataType: 'json',
 					data: {
 						nodo: 'newname',
 						name: event.newVal,
@@ -1846,10 +1873,12 @@ var DiagramNode = A.Component.create({
 						tree: getQueryStringByName('id')
 					},
 					on: {
+						start: function(){noticeSaving('inprogress');},
 						success: function(data){
 							
-							if(this.get('responseData') =='{"result":"true"}'){
+							if(this.get('responseData').result){
 								console.log(event.prevVal, "cambio a",  event.newVal, this.get('responseData') );
+								noticeSaving('success');
 								/*
 								instance.eachConnector(function(connector, index, sourceNode) {
 									var transition = connector.get(TRANSITION);				
@@ -1859,10 +1888,12 @@ var DiagramNode = A.Component.create({
 								});
 								*/
 							}else{
+								noticeSaving('error');
 								alert("name already exist");
 								window.location.reload();
 							}						
-						}
+						},
+						failure: function(){noticeSaving('error');}
 					}
 				});
 			}else{
@@ -1872,7 +1903,7 @@ var DiagramNode = A.Component.create({
 			
 			instance.eachConnector(function(connector, index, sourceNode) {
 				var transition = connector.get(TRANSITION);	
-				console.log("newlog",event.newVal);
+				//console.log("newlog",event.newVal);
 				transition[(instance === sourceNode) ? SOURCE : TARGET] = event.newVal;
 				connector.set(TRANSITION, transition);
 			});

@@ -15,7 +15,7 @@ if( array_key_exists('getIdFromName', $_POST)){
 		
 		//throw $e;
 		$data = array(
-			'result' => 'false'
+			'result' => false
 		);
 		print($json->encode($data));
 		
@@ -32,7 +32,7 @@ if ( array_key_exists('nodo', $_POST) ) {
 			
 			if($nifexist > 0){
 				$data = array(
-					'result' => 'false'
+					'result' => false
 				);
 			}else{
 			
@@ -43,7 +43,7 @@ if ( array_key_exists('nodo', $_POST) ) {
 				DBQuery($query);
 	
 				$data = array(
-					'result' => 'true'
+					'result' => true
 				);
 			}
 			print($json->encode($data));
@@ -59,50 +59,52 @@ if ( array_key_exists('nodo', $_POST) ) {
 			$queryifexist = "SELECT id FROM nodos WHERE name = '$_POST[name]' AND tree = $_POST[tree]";
 			$ifexist = DBQuery($queryifexist);
 			$nifexist = $ifexist->num_rows;
-			if($nifexist>1){
+			if($nifexist != 1){
 				$data = array(
-					'result' => 'false'.$nifexist
+					'result' => false
 				);
 			}else{
 				$query = "UPDATE  `nodos` SET  `posx` =  $_POST[posx], `posy` =  $_POST[posy] WHERE  `nodos`.`name` ='$_POST[name]' AND `nodos`.`tree` = $_POST[tree];";
 				DBQuery($query);
 				$data = array(
-					'result' => 'true'.$nifexist
+					'result' => true
 				);
 			}
 			
 			print($json->encode($data));
 		} catch (Exception $e) {
 			$data = array(
-				'result' => 'false',
+				'result' => false,
 				'exception' => $e
 			);
 			print($json->encode($data));
 		}
 	}else if($nodo == 'updateMeta'){
 		try {
-			$queryifexist = "SELECT id FROM nodos WHERE name = '$_POST[name]' AND tree =$_POST[tree]";
+			$queryifexist = "SELECT * FROM nodos WHERE name = '$_POST[name]' AND tree = $_POST[tree]";
 			$ifexist = DBQuery($queryifexist);
-			$nifexist = $ifexist->num_rows;			
+			$nifexist = $ifexist->num_rows;
 			if($nifexist == 1){
 			
-				$query = "UPDATE `nodos` SET `metaname` =  '$_POST[metaname]', `metadata` =  '$_POST[metadata]', `metatype` = '$_POST[metatype]' WHERE  `nodos`.`name` ='$_POST[name]' AND `nodos`.`tree` =$_POST[tree];";
+				$query = "UPDATE `nodos` SET `metaname` =  '$_POST[metaname]', `metadata` =  '$_POST[metadata]', `metatype` = '$_POST[metatype]' WHERE `nodos`.`name` = '$_POST[name]' AND `nodos`.`tree` = $_POST[tree];";
 	
 				DBQuery($query);
 	
 				$data = array(
-					'result' => 'true'
+					'result' => true,
+					'nifexist' => $nifexist
 				);
 				
 			}else{
 				$data = array(
-					'result' => 'false'
+					'result' => false,
+					'nifexist' => $nifexist
 				);
 			}
 			print($json->encode($data));
 		} catch (Exception $e) {
 			$data = array(
-				'result' => 'false',
+				'result' => false,
 				'exception' => $e
 			);
 			print($json->encode($data));
@@ -124,12 +126,12 @@ if ( array_key_exists('nodo', $_POST) ) {
 			DBQuery($query);
 
 			$data = array(
-				'result' => 'true'
+				'result' => true
 			);
 			print($json->encode($data));
 		} catch (Exception $e) {
 			$data = array(
-				'result' => 'false',
+				'result' => false,
 				'exception' => $e
 			);
 			print($json->encode($data));
@@ -141,7 +143,7 @@ if ( array_key_exists('nodo', $_POST) ) {
 			$nifexist = $ifexist->num_rows;
 			if($nifexist>0){
 				$data = array(
-					'result' => 'false'
+					'result' => false
 				);
 			}else{
 				$queryid = "SELECT id FROM nodos 
@@ -155,13 +157,13 @@ if ( array_key_exists('nodo', $_POST) ) {
 				DBQuery($query);
 	
 				$data = array(
-					'result' => 'true'
+					'result' => true
 				);
 			}
 			print($json->encode($data));
 		} catch (Exception $e) {
 			$data = array(
-				'result' => 'false',
+				'result' => false,
 				'exception' => $e
 			);
 			print($json->encode($data));
@@ -173,12 +175,12 @@ if ( array_key_exists('nodo', $_POST) ) {
 			DBQuery($query);
 
 			$data = array(
-				'result' => 'true'
+				'result' => true
 			);
 			print($json->encode($data));
 		} catch (Exception $e) {
 			$data = array(
-				'result' => 'false',
+				'result' => false,
 				'exception' => $e
 			);
 			print($json->encode($data));
@@ -243,18 +245,18 @@ if ( array_key_exists('link', $_POST) ) {
 				DBQuery($query);
 				
 				$data = array(
-					'result' => 'true',
+					'result' => true,
 				);
 				print($json->encode($data));
 			}else{
 				$data = array(
-					'result' => 'false',
+					'result' => false,
 				);
 				print($json->encode($data));
 			}
 		} catch (Exception $e) {
 			$data = array(
-				'result' => 'false',
+				'result' => false,
 				'exception' => $e
 			);
 			print($json->encode($data));
@@ -266,12 +268,12 @@ if ( array_key_exists('link', $_POST) ) {
 			DBQuery($query);
 			
 			$data = array(
-				'result' => 'true',
+				'result' => true,
 			);
 			print($json->encode($data));
 		} catch (Exception $e) {
 			$data = array(
-				'result' => 'false',
+				'result' => false,
 				'exception' => $e
 			);
 			print($json->encode($data));
@@ -294,12 +296,12 @@ if ( array_key_exists('link', $_POST) ) {
 			DBQuery($query);
 
 			$data = array(
-				'result' => 'true'
+				'result' => true
 			);
 			print($json->encode($data));
 		} catch (Exception $e) {
 			$data = array(
-				'result' => 'false',
+				'result' => false,
 				'exception' => $e
 			);
 			print($json->encode($data));
@@ -319,7 +321,7 @@ if(isset($_POST['formId'])){
 		
 		//throw $e;
 		$data = array(
-			'result' => 'false'
+			'result' => false
 		);
 		print($json->encode($data));
 		
