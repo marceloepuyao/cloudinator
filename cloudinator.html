@@ -10,6 +10,8 @@
 
 	<style type="text/css" media="screen">
 		.aui-diagram-builder-tabs{
+			position: fixed;
+			left: 0px;
 			top: 120px;
 			background-color: inherit;
 			border-color: #CCCCCC;
@@ -18,8 +20,8 @@
 			z-index: 101;
 		}
 		.aui-diagram-builder-content-container{
-			overflow: scroll;
-			height: 600px;
+			height: 1000px;
+			padding-top: 90px;
 		}
 		.aui-diagram-node, .aui-basecelleditor {
 			z-index: 1000 !important;
@@ -48,11 +50,17 @@
 			background: url("http://www.sonda.com/media/media2011/img/fondo-header.jpg") repeat-x scroll 0;
 			width: 100%;
 			height: auto;
-			position: relative;
+			position: fixed;
 			right: 0;
 			top: 0;
+			z-index: 1001;
 			overflow: hidden;
 			min-width: 1024px;
+		}
+		#EditForm{
+			position: fixed;
+			left: 0px;
+			z-index: 1001;
 		}
 	</style>
 </head>
