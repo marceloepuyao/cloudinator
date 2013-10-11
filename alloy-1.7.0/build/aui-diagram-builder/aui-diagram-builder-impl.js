@@ -16,7 +16,17 @@ function ajaxPostLink(action, name, source, target, tree, typetarget, xtarget, y
 			ytarget: ytarget
 		},
 		on: {
+			start: function(){noticeSaving('inprogress');},
 			success: function(data){
+				console.log('ajaxPostLink',this.get('responseData'));
+				if(this.get('responseData').result){
+					noticeSaving('success');
+				}else{
+					noticeSaving('error');
+				}
+			},
+			failure: function(){
+				noticeSaving('error');
 			}
 		}
 	});
@@ -38,7 +48,7 @@ function ajaxPostNodo(action, name, type, posx, posy, tree){
 		on: {
 			start: function(){noticeSaving('inprogress');},
 			success: function(data){
-				console.log('AJAXresponseDataPostNodo',this.get('responseData'));
+				console.log('ajaxPostNodo',this.get('responseData'));
 				if(this.get('responseData').result){
 					noticeSaving('success');
 				}else{
@@ -65,7 +75,7 @@ function ajaxChangeNodoName(id, newname, tree){
 		on: {
 			start: function(){noticeSaving('inprogress');},
 			success: function(data){
-				console.log('AJAXresponseDataChangeName',this.get('responseData'));
+				console.log('ajaxChangeNodoName',this.get('responseData'));
 				if(this.get('responseData').result){
 					noticeSaving('success');
 				}else{
@@ -89,7 +99,7 @@ function ajaxNodoGetIdFromName(name, tree, newname){
 		},
 		on: {
 			success: function(data){
-				console.log('AJAXresponseDataGetIdFromName', name, this.get('responseData'));
+				console.log('ajaxNodoGetIdFromName', name, this.get('responseData'));
 				if(newname != null){
 					ajaxChangeNodoName(this.get('responseData'), newname, tree);
 				}else{
