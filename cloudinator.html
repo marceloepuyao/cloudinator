@@ -57,6 +57,10 @@
 			overflow: hidden;
 			min-width: 1024px;
 		}
+		.notification-icon{
+			top: 4px;
+			position: relative;
+		}
 		#EditForm{
 			position: fixed;
 			left: 0px;
@@ -112,9 +116,10 @@
 							<span style="cursor:pointer">
 								<a id="back"  class="aui-tab-label">Volver</a>
 							</span>
-							<span id="notice-savechanges-success" style ="display: none; font-weight: bold; background-color: green;">El último cambio ha sido guardado.</span>
-							<span id="notice-savechanges-inprogress" style ="display: none; font-style: italic; background-color: yellow;">Espere mientras se está guardando.</span>
-							<span id="notice-savechanges-error" style ="display: none; font-weight: bold; font-style: italic; background-color: red;">No se guardó la ultima acción.</span>
+							<span id="notice-savechanges-success" style = "display: none; font-weight: bold;"><img src="content/success.png" class = "notification-icon"> Guardado.</span>
+							<span id="notice-savechanges-inprogress" style ="display: none; font-style: italic;"><img src="content/wait.gif" class = "notification-icon"> Guardando.</span>
+							<span id="notice-savechanges-error" style ="display: none; font-weight: bold; font-style: italic;"><img src="content/error.png" class = "notification-icon"> No Guardado.</span>
+							<span id="notice-savechanges-warning" style ="display: none; font-weight: bold; font-style: italic;"><img src="content/warning.png" class = "notification-icon"> ¡Se perdió la conección con el servidor!</span>
 						</div>
 						<div class="aui-diagram-builder-drop-container" >
 						</div>

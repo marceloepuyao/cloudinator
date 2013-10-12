@@ -19,7 +19,7 @@ try {
 			");
 	
 	$data = array(
-			'result' => 'true',
+			'result' => true,
 			);
 	print($json->encode($data));
 

@@ -9,28 +9,41 @@ function getQueryStringByName(name) {
 }
 function noticeSaving(state){
 	if(state == "success"){
-		$('body').css('cursor', 'inherit');
+		$('body').css('cursor', 'auto');
 
 		$('#notice-savechanges-success').css('display', '');
 		$('#notice-savechanges-inprogress').css('display', 'none');
-		//$('#notice-savechanges-error').css('display', 'none');
+		$('#notice-savechanges-error').css('display', 'none');
+		//$('#notice-savechanges-warning').css('display','none');
 	}else if(state == "inprogress"){
 		$('body').css('cursor', 'wait');
 
 		$('#notice-savechanges-success').css('display', 'none');
 		$('#notice-savechanges-inprogress').css('display', '');
-		//$('#notice-savechanges-error').css('display', 'none');
+		$('#notice-savechanges-error').css('display', 'none');
+		//$('#notice-savechanges-warning').css('display','none');
 	}else if(state == "error"){
-		$('body').css('cursor', 'inherit');
-
-		//$('#notice-savechanges-success').css('display', 'none');
-		$('#notice-savechanges-inprogress').css('display', 'none');
-		$('#notice-savechanges-error').css('display', '');
-	}else if(state == "clear"){
-		$('body').css('cursor', 'inherit');
+		$('body').css('cursor', 'auto');
 
 		$('#notice-savechanges-success').css('display', 'none');
 		$('#notice-savechanges-inprogress').css('display', 'none');
+		$('#notice-savechanges-error').css('display', '');
+		//$('#notice-savechanges-warning').css('display','');
+	}else if(state == "warning"){
+		$('body').css('cursor', 'auto');
+
+		$('#notice-savechanges-success').css('display', 'none');
+		$('#notice-savechanges-inprogress').css('display', 'none');
+		$('#notice-savechanges-error').css('display', 'none');
+		$('#notice-savechanges-warning').css('display','');
+	}
+	else if(state == "clear"){
+		$('body').css('cursor', 'auto');
+
+		$('#notice-savechanges-success').css('display', 'none');
+		$('#notice-savechanges-inprogress').css('display', 'none');
+		$('#notice-savechanges-error').css('display', 'none');
+		//$('#notice-savechanges-warning').css('display','none');
 	}
 
 }
@@ -156,7 +169,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 					}
 				},
 				failure: function(data){
-					noticeSaving('error');
+					noticeSaving('warning');
 				},
 				start: function(){
 					noticeSaving('inprogress');
@@ -182,7 +195,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 					noticeSaving('success');
 				},
 				failure: function(data){
-					noticeSaving('error');
+					noticeSaving('warning');
 				},
 				start: function(){
 					noticeSaving('inprogress');
@@ -207,7 +220,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 					noticeSaving('success');
 				},
 				failure: function(data){
-					noticeSaving('error');
+					noticeSaving('warning');
 				},
 				start: function(){
 					noticeSaving('inprogress');
@@ -233,7 +246,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 					noticeSaving('success');
 				},
 				failure: function(data){
-					noticeSaving('error');
+					noticeSaving('warning');
 				},
 				start: function(){
 					noticeSaving('inprogress');
@@ -294,7 +307,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 					noticeSaving('success');
 				},
 				failure: function(data){
-					noticeSaving('error');
+					noticeSaving('warning');
 				},
 				start: function(){
 					noticeSaving('inprogress');

@@ -26,7 +26,7 @@ function ajaxPostLink(action, name, source, target, tree, typetarget, xtarget, y
 				}
 			},
 			failure: function(){
-				noticeSaving('error');
+				noticeSaving('warning');
 			}
 		}
 	});
@@ -56,7 +56,7 @@ function ajaxPostNodo(action, name, type, posx, posy, tree){
 				}
 			},
 			failure: function(){
-				noticeSaving('error');
+				noticeSaving('warning');
 			}
 		}
 	});
@@ -83,7 +83,7 @@ function ajaxChangeNodoName(id, newname, tree){
 				}
 			},
 			failure: function(){
-				noticeSaving('error');
+				noticeSaving('warning');
 			}
 		}
 	});
@@ -932,7 +932,7 @@ var DiagramBuilder = A.Component.create({
 								noticeSaving('error');
 							}
 						},
-						failure: function(){noticeSaving('error');}
+						failure: function(){noticeSaving('warning');}
 					}
 				});
 
@@ -1475,7 +1475,7 @@ var DiagramNode = A.Component.create({
 								);
 							}
 						},
-						failure: function(){noticeSaving('error');}
+						failure: function(){noticeSaving('warning');}
 					}
 				});
 				
@@ -1903,7 +1903,7 @@ var DiagramNode = A.Component.create({
 								window.location.reload();
 							}						
 						},
-						failure: function(){noticeSaving('error');}
+						failure: function(){noticeSaving('warning');}
 					}
 				});
 			}else{
