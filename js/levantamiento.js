@@ -31,10 +31,14 @@ function guardarlevantamiento(titulo, info, contactado, area, forms){
 		empresaid : $.session.get('empresa')
 		},function(respuesta){
 			
-			console.log("pee", respuesta);
+			console.log("guardarlevantamiento", respuesta);
 			var obj = jQuery.parseJSON(respuesta);
-	        console.log("la respuesta es", obj.id );
-			window.location.href = "recorrer.php?emp="+$.session.get('empresa')+'&idlev='+obj.id;
+			if(obj.result){
+	        	console.log("la respuesta es", obj.id );
+				window.location.href = "recorrer.php?emp="+$.session.get('empresa')+'&idlev='+obj.id;
+			}else{
+				console.log("error en guardarlevantamiento", obj.exception);
+			}
 			
 		}
 	);

@@ -15,7 +15,8 @@ if( array_key_exists('getIdFromName', $_POST)){
 		
 		//throw $e;
 		$data = array(
-			'result' => false
+			'result' => false,
+			'exception' => $e
 		);
 		print($json->encode($data));
 		
@@ -318,15 +319,13 @@ if(isset($_POST['formId'])){
 		$aux = $data->fetch_assoc();
 		print($json->encode($aux["name"]));
 	} catch (Exception $e) {
-		
 		//throw $e;
 		$data = array(
-			'result' => false
+			'result' => false,
+			'exception' => $e
 		);
 		print($json->encode($data));
-		
 	}
-	
 }
 
 ?>

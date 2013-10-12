@@ -45,11 +45,11 @@ $formularios = DBQueryReturnArray($queryformularios);
 <div data-role="page" id="levantamiento">
 	<div data-role="header" data-theme="b">
 	    <a href="#" id="backbutton" data-icon="arrow-l">atrás</a>
-	    <h1 id ="empresanombre"><?php echo $nombre?>	</h1>
+	    <h1 id ="empresanombre"><?php echo $nombre ?>	</h1>
 	    <a href="#" id="usernamebutton" data-icon="check" class="ui-btn-right"></a>
 	</div>
 	<h4>información de la empresa</h4>
-	<p id="infoempresa" > <?php echo $info?></p>
+	<p id="infoempresa" > <?php echo $info ?></p>
 	<br>
 	<h4>Historial de levantamientos</h4>
 	
@@ -65,7 +65,7 @@ $formularios = DBQueryReturnArray($queryformularios);
 	       </tr>
 	     </thead>
 	     <tbody>
-	      	<? foreach($levantamientos as $key => $levantamiento) : ?>
+	      	<?php foreach($levantamientos as $key => $levantamiento) : ?>
 		    	<tr>
 		    	<td><?php echo $levantamiento['titulo']?></td>
 		         <td><?php echo $levantamiento['created']?></td>
@@ -74,7 +74,7 @@ $formularios = DBQueryReturnArray($queryformularios);
 		         <td><a class="delete" data-id="1" href="#">X</a></td>
 		         <td><a class="delete" data-id="1" href="#">editar</a></td>
 		       </tr>
-			<? endforeach ?>
+			<?php endforeach ?>
 	       
 	     </tbody>
 	   </table>
@@ -113,10 +113,10 @@ $formularios = DBQueryReturnArray($queryformularios);
 		        <li data-role="fieldcontain">
 		            <label for="formularios">Formularios:</label>
 		            	<fieldset data-role="controlgroup" id="formularios">
-		            	<? foreach($formularios as $key => $formulario) : ?>
+		            	<?php foreach($formularios as $key => $formulario) : ?>
 					    	<input name="<?php echo $formulario['id']?>" id="<?php echo $formulario['id']?>" checked="" type="checkbox">
 					    	<label for="<?php echo $formulario['id']?>"><?php echo $formulario['name']?></label>
-						<? endforeach ?>
+						<?php endforeach ?>
 					</fieldset>  
 		            <input id="formularios" type="hidden" value="My data"/>
 		                      

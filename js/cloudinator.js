@@ -135,13 +135,21 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 			dataType: 'json',
 			method: 'POST',
 			data: {tree: treeID},
-			on: {   
+			on: {
 				success: function() {
-					var datos = this.get('responseData');
-					for (var i=0; i < datos.length; i++) {
-			   			links[i] = datos[i];
-		   			} 
-					cargaLinks();
+					var response = this.get('responseData');
+					if(response.result){
+						for (var i=0; i < response.datos.length; i++) {
+				   			links[i] = response.datos[i];
+			   			} 
+						cargaLinks();
+					}else{
+						console.log('andaABuscarLosLinks-exception',response.exception);
+						alert('Error al cargar los links, refresque la página.');
+					}					
+				},
+				failure: function(){
+					alert('Error al cargar los links, refresque la página.');
 				}
 			}
 		});

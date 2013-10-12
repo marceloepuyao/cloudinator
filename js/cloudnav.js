@@ -34,7 +34,7 @@ function login(){
      	
      	var obj = jQuery.parseJSON(respuesta);
      	console.log(obj);
-         if (obj.result) {
+         if (obj.result == true) {
          	
          	if(empresa == "new"){
          		setSession(usu, pass, null);
