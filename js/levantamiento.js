@@ -23,6 +23,7 @@ function checkSessionorDie(){
 function guardarlevantamiento(titulo, info, contactado, area, forms){
 	
 	$.post("ajax/ajaxlevantamientos.php",{ 
+		action: "insert",
 		titulo : titulo, 
 		info : info, 
 		contactado : contactado, 
@@ -40,6 +41,22 @@ function guardarlevantamiento(titulo, info, contactado, area, forms){
 				console.log("error en guardarlevantamiento", obj.exception);
 			}
 			
+		}
+	);
+}
+
+function deleteLevantamiento(idlev){
+	$.post("ajax/ajaxlevantamientos.php",{ 
+		idlev : idlev,
+		action: "delete"
+		},function(respuesta){
+			console.log("deletelevantamiento", respuesta);
+			var response = jQuery.parseJSON(respuesta);
+			if(response.result){
+				window.location.href = "";
+			}else{
+				console.log("error en eliminar levantamiento", response.exception);
+			}
 		}
 	);
 }
@@ -64,9 +81,10 @@ $(document).ready(function(){
 	
 	$(".delete").on('click', function(){
 		
-		if(confirm("Are you sure?")) { 
-			//delete
-			$.mobile.changePage("levantamiento.php"); 
+		if(confirm("¿Está seguro que desea eliminar el levantamiento?")) { 
+			var lev = $(this).data('levantamiento');
+			console.log("kakakakak",lev);
+			deleteLevantamiento(lev);
 		}
 
 	});
