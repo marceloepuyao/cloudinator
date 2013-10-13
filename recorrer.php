@@ -68,8 +68,8 @@ $formularios = DBQueryReturnArray($queryformularios);
 		<h1><?php echo $titulo?></h1>
 		<p><?php echo $info?></p>
 		<div data-role="collapsible-set" data-theme="b" data-content-theme="d">
-			<? foreach($formularios as $key => $formulario) : ?>
-			<?php 
+			<?php foreach($formularios as $key => $formulario) :
+			
 				//get all the subform
 				$querysubformularios = "SELECT * FROM trees WHERE megatree = ".$formulario['id'];
 				$subformularios = DBQueryReturnArray($querysubformularios);
@@ -79,8 +79,7 @@ $formularios = DBQueryReturnArray($queryformularios);
 				<h2><?php echo $formulario['name']?></h2>
 				<ul data-role="listview" data-theme="d" data-divider-theme="d">
 					<li data-role="list-divider">Subformularios <span class="ui-li-count"><?php echo $total?></span></li>
-					<? foreach($subformularios as $key2 => $subformulario) : ?>
-						<?php 
+					<?php foreach($subformularios as $key2 => $subformulario) :
 							if(getSubForm($subformulario['id'])){
 								$questionandanswers = getQuestionAnswers($subformulario['id'], $idlevantamiento);
 								extract($questionandanswers); //devuelve $pregunta, $respuestas $ultimavisita, $completitud
@@ -100,13 +99,13 @@ $formularios = DBQueryReturnArray($queryformularios);
 				    		<h3><?php echo $subformulario['name']?></h3>
 			                <p><strong>última visita: <?php echo $ultimavisita?></strong></p>
 			                <p>Siguiente pregunta: <?php echo $pregunta['name']?></p>
-			                <p class="ui-li-aside"><strong>Completitud: <?php echo $completitud?>%</strong></p>
+			                <p class="ui-li-aside"><strong>Completitud: <?php echo $completitud ?>%</strong></p>
 		            	</a></li>
-					<? endforeach ?>
+					<?php endforeach ?>
 		        </ul>
 	    	</div>
 		    	
-			<? endforeach ?>
+			<?php endforeach ?>
 	</div>
 	</div>
 	

@@ -37,11 +37,15 @@ if(isset($_POST['action'])) {
 			$db->close();
 			//$result->free();
 			$data = array(
-			'result' => 'true',
+				'result' => true
 			);
 			print($json->encode($data));
 		}catch (Exception $e) {
-			print($json->encode($e));
+			$data = array(
+				'result' => false,
+				'exception' => $e
+			);
+			print($json->encode($data));
 		}
 	}else if($_POST['action']== "setname"){
 		try{
@@ -49,10 +53,18 @@ if(isset($_POST['action'])) {
 			$query = "SELECT * FROM  megatrees WHERE id = $id";
 			$datos = DBQueryReturnArray($query);
 		
-			$salida = $json->encode($datos);
+			$data = array(
+				'result' => true,
+				'datos' => $datos
+			);
+			$salida = $json->encode($data);
 			
 		}catch (Exception $e){
-			print('ERROR! '.$e);
+			$data = array(
+				'result' => false,
+				'exception' => $e
+			);
+			print($json->encode($data));
 		}
 		print($salida);
 	}else if($_POST['action']=="add"){
@@ -61,7 +73,7 @@ if(isset($_POST['action'])) {
 			$check = DBQuery("SELECT * FROM megatrees WHERE name = '$_POST[name]' AND deleted = 0");
 			if($check->num_rows > 0){
 				$data = array(
-					'result' => false,
+					'result' => false
 				);
 				print($json->encode($data));
 			}else{
@@ -69,12 +81,16 @@ if(isset($_POST['action'])) {
 					(NULL, '$_POST[name]', NULL, 0, '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."' );
 					");
 				$data = array(
-					'result' => true,
+					'result' => true
 				);
 				print($json->encode($data));
 			}
 		} catch (Exception $e) {
-			print($e);
+			$data = array(
+				'result' => false,
+				'exception' => $e
+			);
+			print($json->encode($data));
 		}
 	}
 		
@@ -83,11 +99,18 @@ if(isset($_POST['action'])) {
 	try {	
 		$query = 'SELECT * FROM  megatrees WHERE deleted = 0';
 		$datos = DBQueryReturnArray($query);
-		
-		$salida = $json->encode($datos);
+		$data = array(
+			'result' => true,
+			'datos' => $datos
+		);
+		$salida = $json->encode($data);
 	
 	} catch (Exception $e) {
-		print('ERROR! '.$e);
+		$data = array(
+			'result' => false,
+			'exception' => $e
+		);
+		print($json->encode($data));
 	}
 	
 	print($salida);

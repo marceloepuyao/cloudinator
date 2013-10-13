@@ -61,7 +61,7 @@
 			border: 5px groove #9090dd;
 		}
 		#notices{
-			position: absolute;
+			position: fixed;
 			top: 0;
 			left: 40%;
 			width: 20%;
@@ -102,7 +102,7 @@
 			background-color: #FFFFFF;
 		}
 		.loading{
-			position: absolute;
+			position: fixed;
 			display: none;
 			top: 45%;
 		    left: 45%;
@@ -110,7 +110,7 @@
 		}
 		.blackout{
 			background-color: #DDDDDD;
-			position: absolute;
+			position: fixed;
 			top: 0;
 			left: 0;
 			height: 100%;
@@ -240,22 +240,27 @@
 			timeout: 2500,
 			beforeSend: function(){$('.loading').fadeIn();},
 			success: function(data){
-				$('#allsubforms').empty();
-				$('#clone').empty();
-				$('#tablabody').empty();
-				$.each( data, function( i, item ) {
-					if(item.deleted == 0 && item.megatree == getQueryStringByName('id')){
-						//$('#allsubforms').append('<li data-id="'+item.id+'"><a href="#">'+item.name+'</a></li>');
-						$('#allsubforms').append('<li><a href="cloudinator.html?id='+item.id+'">'+item.name+'</a></li>');
-						$('#clone').append('<li data-id="'+item.id+'"><a href="#">'+item.name+'</a></li>');
-						$('#tablabody').append('<tr><td value="'+item.name+'"><a href="cloudinator.html?id='+item.id+'">'+item.name+'</a></td><td value="'+item.created+'">'+item.created+'</td><td><abbr title="Clonar"><a href="#" onclick="preclonar('+item.id+');"><i class="icon-copy icon-2x"></i></a></abbr> <abbr title="Borrar"><a href="#" onclick="borrarsubformulario('+item.id+');"><i class="icon-trash icon-2x"></i></a></abbr></td></tr>');
-					}
-				});
-				$('table').find('tr:first').addClass('first');
-				$('table').find('tr:last').addClass('last');
-				$('table').find('tr:even').addClass('alt');
+				console.log("asd",data);
+				if(data.result){
+					$('#allsubforms').empty();
+					$('#clone').empty();
+					$('#tablabody').empty();
+					$.each(data.datos, function( i, item ) {
+						if(item.deleted == 0 && item.megatree == getQueryStringByName('id')){
+							//$('#allsubforms').append('<li data-id="'+item.id+'"><a href="#">'+item.name+'</a></li>');
+							$('#allsubforms').append('<li><a href="cloudinator.html?id='+item.id+'">'+item.name+'</a></li>');
+							$('#clone').append('<li data-id="'+item.id+'"><a href="#">'+item.name+'</a></li>');
+							$('#tablabody').append('<tr><td value="'+item.name+'"><a href="cloudinator.html?id='+item.id+'">'+item.name+'</a></td><td value="'+item.created+'">'+item.created+'</td><td><abbr title="Clonar"><a href="#" onclick="preclonar('+item.id+');"><i class="icon-copy icon-2x"></i></a></abbr> <abbr title="Borrar"><a href="#" onclick="borrarsubformulario('+item.id+');"><i class="icon-trash icon-2x"></i></a></abbr></td></tr>');
+						}
+					});
+					$('table').find('tr:first').addClass('first');
+					$('table').find('tr:last').addClass('last');
+					$('table').find('tr:even').addClass('alt');
+				}else{
+					addNotice("error", "Error al acceder a la lista de Grafos");
+				}
 			}
-		}).fail(function(data) {addNotice("error", "Error al acceder a la lista de Grafos");}).always(function(){$('.loading').fadeOut();});
+		}).fail(function(data) {addNotice("error", "Error al acceder a la lista de Grafos");console.log("asd2",data);}).always(function(){$('.loading').fadeOut();});
 	}
 	function loadMegaTrees(){ //Actualiza la lista de Formularios que se muestran [AJAX].
 		$.ajax({
@@ -264,18 +269,22 @@
 			timeout: 2500,
 			beforeSend: function(){$('.loading').fadeIn();},
 			success: function(data){
-				$('#allforms').empty();
-				$('#tablabody').empty();
-				$.each( data, function( i, item ) {
-					if(item.deleted == 0){
-						$('#allforms').append('<li data-id="'+item.id+'"><a href="index.html?id='+item.id+'">'+item.name+'</a>  </li>');
-						$('#formlist').append('<option value="'+item.id+'">'+item.name+'</option>');
-						$('#tablabody').append('<tr><td value="'+item.name+'"><a href="index.html?id='+item.id+'">'+item.name+'</a></td><td value="'+item.created+'">'+item.created+'</td><td><abbr title="Borrar"><a href="#" onclick="borrarformulario('+item.id+');"><i class="icon-trash icon-2x"></i></a></abbr></td></tr>');
-					}
-				});
-				$('table').find('tr:first').addClass('first');
-				$('table').find('tr:last').addClass('last');
-				$('table').find('tr:even').addClass('alt');
+				if(data.result){
+					$('#allforms').empty();
+					$('#tablabody').empty();
+					$.each( data.datos, function( i, item ) {
+						if(item.deleted == 0){
+							$('#allforms').append('<li data-id="'+item.id+'"><a href="index.html?id='+item.id+'">'+item.name+'</a>  </li>');
+							$('#formlist').append('<option value="'+item.id+'">'+item.name+'</option>');
+							$('#tablabody').append('<tr><td value="'+item.name+'"><a href="index.html?id='+item.id+'">'+item.name+'</a></td><td value="'+item.created+'">'+item.created+'</td><td><abbr title="Borrar"><a href="#" onclick="borrarformulario('+item.id+');"><i class="icon-trash icon-2x"></i></a></abbr></td></tr>');
+						}
+					});
+					$('table').find('tr:first').addClass('first');
+					$('table').find('tr:last').addClass('last');
+					$('table').find('tr:even').addClass('alt');
+				}else{
+					addNotice("error", "Error al acceder a la lista de Grafos");
+				}
 			}
 		}).fail(function(data) {
 			addNotice("error", "Error al acceder a la lista de Grafos");
@@ -287,12 +296,16 @@
 			dataType: 'json',
 			timeout: 2500,
 			success: function(data){
-				$('#formlist').empty();
-				$.each( data, function( i, item ) {
-					if(item.deleted == 0){
-						$('#formlist').append('<option value="'+item.id+'">'+item.name+'</option>');
-					}
-				});
+				if(data.result){
+					$('#formlist').empty();
+					$.each( data.datos, function( i, item ) {
+						if(item.deleted == 0){
+							$('#formlist').append('<option value="'+item.id+'">'+item.name+'</option>');
+						}
+					});
+				}else{
+					addNotice("error", "Error al acceder a la lista de Grafos");
+				}
 			}
 		}).fail(function(data) {
 			addNotice("error", "Error al acceder a la lista de Grafos");
@@ -320,7 +333,7 @@
 				clonename : $('#cloneFormName').data("copyid"),
 				to:  $('#formlist').val()
 					},
-			timeout: 15000,
+			timeout: 35000,
 			beforeSend: function(){$('.loading').fadeIn();},
 			success: function(data){
 				if(data.result){
@@ -340,10 +353,11 @@
 				alert("Timeout, Es posible que la clonacion se realizara exitosamente.");
 				window.location.reload();
 			}else{
-				addNotice("error", "Error al clonar el Subformulario");
+				addNotice("error", "No se pudo clonar completamente el subformulario, borrelo o complete lo que no pudo ser copiado");
 				$('.loading').fadeOut();
 				$('#cloneFormName').slideUp();
-				console.log("fail on clonar()", data);
+				console.log("fail on clonar()", errorThrown, textStatus);
+				console.log("fail on clonar exception", jqXHR);
 			}
 		});
 	}
@@ -424,14 +438,19 @@
 			timeout: 2500,
 			beforeSend: function(){$('.loading').fadeIn();},
 			success: function(data){
-				window.location = "index.html";
-				//TODO: En caso que se ocupe otro metodo que no sea "window.location" es probable que se usen las sig lineas:
-				//loadMegaTrees(); //actualizar la lista de Formularios
-				//addNotice("success", "Se ha borrado correctamente el Formulario"); //no tiene sentido porque con el window.location lo elimina automaticamente
+				if(data.result){
+					window.location = "index.html";
+					//TODO: En caso que se ocupe otro metodo que no sea "window.location" es probable que se usen las sig lineas:
+					//loadMegaTrees(); //actualizar la lista de Formularios
+					//addNotice("success", "Se ha borrado correctamente el Formulario"); //no tiene sentido porque con el window.location lo elimina automaticamente
+				}else{
+					addNotice("error", "Error al intentar borrar el Formulario");
+					console.log("Error en deleteform", data.exception);
+				}
 			}
 		}).fail(function(data) {
 			addNotice("error", "Error al intentar borrar el Formulario");
-			console.log("Error en deleteform", data);
+			console.log("Error en deleteform", data.exception);
 		}).always(function(){$('.loading').fadeOut();});
 	}
 	function borrarformulario(id){
@@ -447,12 +466,17 @@
 				timeout: 2500,
 				beforeSend: function(){$('.loading').fadeIn();},
 				success: function(data){
-					loadMegaTrees(); //actualizar la lista de Formularios
-					addNotice("success", "Se ha borrado correctamente el Formulario");
+					if(data.result)
+					{
+						loadMegaTrees(); //actualizar la lista de Formularios
+						addNotice("success", "Se ha borrado correctamente el Formulario");
+					}else{
+						addNotice("error", "Error al intentar borrar el Formulario");
+					}
 				}
 			}).fail(function(data) {
 				addNotice("error", "Error al intentar borrar el Formulario");
-				console.log("Error en deleteform", data);
+				console.log("Error en deleteform", data.exception);
 			}).always(function(){$('.loading').fadeOut();});
 		}else{
 			return false;
@@ -495,10 +519,15 @@
 			beforeSend: function(){$('.loading').fadeIn();},
 			success: function(data){
 				console.log("success en setNameToForm");
-				$.each( data, function( i, item ) {
-					$('#formname').empty();
-					$('#formname').append("<a href='#'>Formulario: "+item.name+"</a>");
-				});
+				if(data.result)
+				{
+					$.each( data.datos, function( i, item ) {
+									$('#formname').empty();
+									$('#formname').append("<a href='#'>Formulario: "+item.name+"</a>");
+								});
+				}else{
+					addNotice("error", "Se ha producido un error al rescatar el nombre del Formulario");
+				}
 			}
 		}).fail(function(data) {
 			console.log("error al setNameToForm", data);

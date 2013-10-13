@@ -14,11 +14,11 @@ try {
 	if ($resultado = DBQuery($sql)){
 	    if ($resultado->num_rows > 0){
 	        $data = array(
-				'result' => 'true'
+				'result' => true
 			);
 	    }else{
 	    	$data = array(
-				'result' => 'false'
+				'result' => false
 			);
 	    	
 	    }
@@ -26,14 +26,14 @@ try {
 	}
 	else{
 	    $data = array(
-				'result' => 'false'
+				'result' => false
 		);
 	}
 	print($json->encode($data));
 	
 }catch (Exception $e) {
 	$data = array(
-				'result' => 'false',
+				'result' => false,
 				'exception' => $e
 			);
 	print($json->encode($data));

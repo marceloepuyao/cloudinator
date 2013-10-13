@@ -25,7 +25,11 @@ try {
 	}
 	print($json->encode($data));
 } catch (Exception $e) {
-	print('ERROR! '.$e);
+	$data = array(
+		'result' => false,
+		'exception' => $e
+	);
+	print($json->encode($data));
 }
 
 

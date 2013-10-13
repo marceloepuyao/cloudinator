@@ -53,7 +53,7 @@
 }
 
 .aui-diagram-builder-tabs {
-	position: absolute;
+	position: fixed;
 	width: 260px;
 }
 

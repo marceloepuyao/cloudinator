@@ -19,12 +19,16 @@ try {
 			");
 	
 	$data = array(
-			'result' => 'true',
+			'result' => true
 			);
 	print($json->encode($data));
 
 } catch (Exception $e) {
 	$db->rollback();
 	$db->close();
-	throw new Exception("Error Processing Query", 1);
+	$data = array(
+		'result' => false,
+		'exception' => $e
+		);
+	print($json->encode($data));
 }

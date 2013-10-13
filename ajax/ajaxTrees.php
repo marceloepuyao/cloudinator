@@ -11,12 +11,16 @@ if(isset($_POST['type'])) { //DEPRICATED: por favor usar ajaxMegaTrees.php, acti
 			");
 
 		$data = array(
-		'result' => 'true',
+		'result' => true,
 		);
 		print($json->encode($data));
 	
 	} catch (Exception $e) {
-		print($json->encode($e));
+		$data = array(
+			'result' => false,
+			'exception' => $e
+		);
+		print($json->encode($data));
 	}
 }else if(isset($_POST['clonename'])) {
 	//primero comprobamos si existe un subform con el mismo nombre en el form
@@ -29,72 +33,73 @@ if(isset($_POST['type'])) { //DEPRICATED: por favor usar ajaxMegaTrees.php, acti
 		);
 		print($json->encode($data));
 	}else{
-		$sql2 = "SELECT name, type, posx, posy, metaname, metadata, metatype FROM nodos WHERE tree = $idclone";
-		$data2 = DBQuery($sql2);
-		
-		$sql3 = "SELECT id FROM nodos WHERE tree = $idclone";
-		$data3 = DBQuery($sql3);
-		$max = $data3->num_rows;
-		
-		DBQuery("INSERT INTO `trees` (`id`, `name`,`megatree`, `deleted`, `created`) VALUES 
-				(NULL, '$_POST[name]', $_POST[to] ,0,'".date("Y-m-d H:i:s")."');
-				");
-		
-		$sqlgettree = "SELECT id FROM trees WHERE name = '$_POST[name]'";
-		$data4 = DBQuery($sqlgettree);
-		$aux4 = $data4->fetch_assoc();
-		$idnew = $aux4['id'];
-		
-		while ($fetch = $data2->fetch_assoc()) {
-			$name = $fetch['name'];
-			$type = $fetch['type'];
-			$posx = $fetch['posx'];
-			$posy = $fetch['posy'];
-			$metaname = $fetch['metaname'];
-			$metadata = $fetch['metadata'];
-			$metatype = $fetch['metatype'];
-	
-			$query = "INSERT INTO `nodos` (`id`, `tree`, `name`, `type`, `posx`, `posy`, `metaname`, `metadata`, `metatype`) VALUES 
-					(NULL, $idnew, '$name', '$type', '$posx', '$posy', '$metaname', '$metadata', '$metatype');
-					";
-			DBQuery($query);
-		}
-	
-		$linksprevquery = "SELECT source, target FROM links WHERE tree = $idclone";
-		$linksprev= DBQuery($linksprevquery);
-		
-		$countprevquery = "SELECT id FROM links WHERE tree = $idclone";
-		$countprev = DBQuery($countprevquery);
-		$maxlinks = $countprev->num_rows;
-	
-		while ($fetch = $linksprev->fetch_assoc()) {
-			$targeta = $fetch['target'];
-			$querytarget = "SELECT id
-							FROM nodos
-							WHERE name = (SELECT name FROM nodos WHERE id = $targeta ) order by id desc";
-			$newtarget = DBQuery($querytarget);
-			$aux = $newtarget->fetch_assoc();
-			$idnewtarget = $aux['id'];
+		try{
+			$sql2 = "SELECT name, type, posx, posy, metaname, metadata, metatype FROM nodos WHERE tree = $idclone";
+			$data2 = DBQuery($sql2);
 			
-			$sourca = $fetch['source'];
-			$querysource = "SELECT id
-							FROM nodos
-							WHERE name = (SELECT name FROM nodos WHERE id = $sourca ) order by id desc";
-			$newsource = DBQuery($querysource);
-			$aux = $newsource->fetch_assoc();
-			$idnewsource = $aux['id'];
+			DBQuery("INSERT INTO `trees` (`id`, `name`,`megatree`, `deleted`, `created`) VALUES 
+					(NULL, '$_POST[name]', $_POST[to] ,0,'".date("Y-m-d H:i:s")."');
+					");
 			
+			$sqlgettree = "SELECT id FROM trees WHERE name = '$_POST[name]'";
+			$data4 = DBQuery($sqlgettree);
+			$aux4 = $data4->fetch_assoc();
+			$idnew = $aux4['id'];
 			
-			$query = "INSERT INTO `links` (`id`, `tree`, `name`, `source`, `target`) VALUES 
-					(NULL, $idnew, '', '$idnewsource', '$idnewtarget');";
-					
-			DBQuery($query);
+			while ($fetch = $data2->fetch_assoc()) {
+				$name = $fetch['name'];
+				$type = $fetch['type'];
+				$posx = $fetch['posx'];
+				$posy = $fetch['posy'];
+				$metaname = $fetch['metaname'];
+				$metadata = $fetch['metadata'];
+				$metatype = $fetch['metatype'];
+		
+				$query = "INSERT INTO `nodos` (`id`, `tree`, `name`, `type`, `posx`, `posy`, `metaname`, `metadata`, `metatype`) VALUES 
+						(NULL, $idnew, '$name', '$type', '$posx', '$posy', '$metaname', '$metadata', '$metatype');
+						";
+				DBQuery($query);
+			}
+		
+			$linksprevquery = "SELECT source, target FROM links WHERE tree = $idclone";
+			$linksprev= DBQuery($linksprevquery);
+		
+			while ($fetch = $linksprev->fetch_assoc()) {
+				$targeta = $fetch['target'];
+				$querytarget = "SELECT id
+								FROM nodos
+								WHERE name = (SELECT name FROM nodos WHERE id = $targeta ) order by id desc";
+				$newtarget = DBQuery($querytarget);
+				$aux = $newtarget->fetch_assoc();
+				$idnewtarget = $aux['id'];
+				
+				$sourca = $fetch['source'];
+				$querysource = "SELECT id
+								FROM nodos
+								WHERE name = (SELECT name FROM nodos WHERE id = $sourca ) order by id desc";
+				$newsource = DBQuery($querysource);
+				$aux = $newsource->fetch_assoc();
+				$idnewsource = $aux['id'];
+				
+				
+				$query = "INSERT INTO `links` (`id`, `tree`, `name`, `source`, `target`) VALUES 
+						(NULL, $idnew, '', '$idnewsource', '$idnewtarget');";
+						
+				DBQuery($query);
+			}
+
+			$data = array(
+				'result' => true
+			);
+			print($json->encode($data));
+		}catch(Exception $e){
+			$data = array(
+				'result' => false,
+				'exception' => $e
+			);
+			print($json->encode($data));
 		}
 
-		$data = array(
-			'result' => true,
-		);
-		print($json->encode($data));
 	}
 }else if(isset($_POST['name'])) {
 	try {
@@ -102,7 +107,7 @@ if(isset($_POST['type'])) { //DEPRICATED: por favor usar ajaxMegaTrees.php, acti
 		$check = DBQuery("SELECT * FROM trees WHERE name = '$_POST[name]' AND megatree = $_POST[megatree] AND deleted = 1");
 		if($check->num_rows > 0){
 			$data = array(
-				'result' => false,
+				'result' => false
 			);
 			print($json->encode($data));
 		}else{
@@ -110,44 +115,69 @@ if(isset($_POST['type'])) { //DEPRICATED: por favor usar ajaxMegaTrees.php, acti
 				(NULL, '$_POST[name]',$_POST[megatree] ,0, '".date("Y-m-d H:i:s")."');
 				");
 			$data = array(
-				'result' => true,
+				'result' => true
 			);
 			print($json->encode($data));
 		}
 	} catch (Exception $e) {
-		print($e);
+		$data = array(
+			'result' => false,
+			'exception' => $e
+		);
+		print($json->encode($data));
 	}
 }else if(isset($_POST['action']) && $_POST['action'] == "deleteTree") {
 	try {
 		DBQuery("UPDATE trees SET deleted = 1 WHERE id = $_POST[tree]");
 		$data = array(
-			'result' => 'true',
+			'result' => true
 		);
 		print($json->encode($data));
 	}catch (Exception $e){
-		print($e);
+		$data = array(
+			'result' => false,
+			'exception' => $e
+		);
+		print($json->encode($data));
 	}
 }else if(isset($_POST['nuevonombre'])) {
 	try {
 		DBQuery("UPDATE trees SET name = '$_POST[nuevonombre]' WHERE id = $_POST[tree]");
 		$data = array(
-			'result' => 'true',
+			'result' => true,
 		);
 		print($json->encode($data));
 	}catch (Exception $e){
-		print($e);
+		$data = array(
+			'result' => false,
+			'exception' => $e
+		);
+		print($json->encode($data));
 	}
 }else{
 	try {	
 		$query = 'SELECT * FROM trees WHERE deleted = 0';
 		$datos = DBQueryReturnArray($query);
 		try {
-			$salida = $json->encode($datos);
+			$data = array(
+				'result' => true,
+				'datos' => $datos
+			);
+			$salida = $json->encode($data);
 			print($salida);
 		} catch (Exception $e) {
+			$data = array(
+			'result' => false,
+			'exception' => $e
+		);
+		print($json->encode($data));
 		}
 	} catch (Exception $e) {
-		print('ERROR! '.$e);
+		$data = array(
+			'result' => false,
+			'exception' => $e
+		);
+		print($json->encode($data));
 	}
 }
 ?> 

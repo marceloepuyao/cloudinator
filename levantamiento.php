@@ -50,44 +50,42 @@ $formularios = DBQueryReturnArray($queryformularios);
 <div data-role="page" id="levantamiento">
 	<div data-role="header" data-theme="b">
 	    <a href="#" id="backbutton" data-icon="arrow-l">atrás</a>
-	    <h1 id ="empresanombre"><?php echo $nombre?>	</h1>
+	    <h1 id ="empresanombre"><?php echo $nombre ?>	</h1>
 	    <a href="#" id="usernamebutton" data-icon="check" class="ui-btn-right"></a>
 	</div>
-	<div class="container">
-		<h4 align="center">información de la empresa</h4>
-		<p id="infoempresa" > <?php echo $info?></p>
-		<br>
-		<h4 align="center" >Historial de levantamientos</h4>
-		
-		<table data-role="table" id="table-column-toggle" data-mode="columntoggle" class="ui-responsive table-stroke">
-		     <thead>
-		       <tr>
-		       	<th>Título Visita</th>
-		         <th data-priority="2">Fecha</th>
-		         <th data-priority="3"><abbr title="Rotten Tomato Rating">Completitud</abbr></th>
-		         <th>Recorrer</th>
-		          <th data-priority="5">Borrar</th>
-		          <th data-priority="6">Editar</th>
+	<h4>información de la empresa</h4>
+	<p id="infoempresa" > <?php echo $info ?></p>
+	<br>
+	<h4>Historial de levantamientos</h4>
+	
+	<table data-role="table" id="table-column-toggle" data-mode="columntoggle" class="ui-responsive table-stroke">
+	     <thead>
+	       <tr>
+	       	<th>Título Visita</th>
+	         <th data-priority="2">Fecha</th>
+	         <th data-priority="3"><abbr title="Rotten Tomato Rating">Completitud</abbr></th>
+	         <th>Recorrer</th>
+	          <th data-priority="5">Borrar</th>
+	          <th data-priority="6">Editar</th>
+	       </tr>
+	     </thead>
+	     <tbody>
+	      	<?php foreach($levantamientos as $key => $levantamiento) : ?>
+		    	<tr>
+		    	<td><?php echo $levantamiento['titulo']?></td>
+		         <td><?php echo $levantamiento['created']?></td>
+		         <td><?php echo $levantamiento['completitud']?>%</td>
+		         <td><a class="ira" data-empresa="<?php echo $idempresa?>" data-levantamiento="<?php echo $levantamiento['id']?>" href="#">ir</a></td>
+		         <td><a class="delete" data-id="1" href="#">X</a></td>
+		         <td><a class="delete" data-id="1" href="#">editar</a></td>
 		       </tr>
-		     </thead>
-		     <tbody>
-		      	<? foreach($levantamientos as $key => $levantamiento) : ?>
-			    	<tr>
-			    	<td><?php echo $levantamiento['titulo']?></td>
-			         <td><?php echo $levantamiento['created']?></td>
-			         <td><?php echo $levantamiento['completitud']?>%</td>
-			         <td><a class="ira" data-empresa="<?php echo $idempresa?>" data-levantamiento="<?php echo $levantamiento['id']?>" href="#">ir</a></td>
-			         <td><a class="delete" data-id="1" href="#">X</a></td>
-			         <td><a class="delete" data-id="1" href="#">editar</a></td>
-			       </tr>
-				<? endforeach ?>
-		       
-		     </tbody>
-		   </table>
-		<br><br>
-		<div data-role="controlgroup">
-		    <a id="tonew" href="#new" data-role="button">Empezar Nuevo Levantamiento</a>
-		</div>
+			<?php endforeach ?>
+	       
+	     </tbody>
+	   </table>
+	<br><br>
+	<div data-role="controlgroup">
+	    <a id="tonew" href="#new" data-role="button">Empezar Nuevo Levantamiento</a>
 	</div>
 
 </div>
@@ -120,10 +118,10 @@ $formularios = DBQueryReturnArray($queryformularios);
 		        <li data-role="fieldcontain">
 		            <label for="formularios">Formularios:</label>
 		            	<fieldset data-role="controlgroup" id="formularios">
-		            	<? foreach($formularios as $key => $formulario) : ?>
+		            	<?php foreach($formularios as $key => $formulario) : ?>
 					    	<input name="<?php echo $formulario['id']?>" id="<?php echo $formulario['id']?>" checked="" type="checkbox">
 					    	<label for="<?php echo $formulario['id']?>"><?php echo $formulario['name']?></label>
-						<? endforeach ?>
+						<?php endforeach ?>
 					</fieldset>  
 		            <input id="formularios" type="hidden" value="My data"/>
 		                      
