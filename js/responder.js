@@ -65,11 +65,28 @@ $(document).ready(function(){
 		var idlev = $(this).data('idlev');	
 		var idsubform = $(this).data('idsubform');	
 		var idpregunta = $(this).data('idpregunta');
+		var respsubpregunta = null;
 		
 		console.log("pregunta id", idpregunta);
 		console.log("respuesta id", idnode);
+		
+		//TODO: checkiar si tiene subpregunta
+		/*if(tieneSubPregunta()){
+			//TODO: checkiar que tipo de subpregunta es 
+			if(type = "array"){
+				respsubpregunta = 
+			}else if(type = "textarea"){
+				var response = prompt("Aquí va la subpregunta","escriba acá su respuesta");
+				if (response!=null && response!="")
+				{
+				  respsubpregunta = person;
+				}
+			}
+						
+		}
+		*/
 		responderpregunta(idnode, idlev, idsubform, idpregunta);
-		//window.location.href = "responder.php?idlev=" + idlev+"&idsubform="+idsubform;
+
 		
 	});
 });
