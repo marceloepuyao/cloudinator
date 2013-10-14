@@ -72,7 +72,7 @@ $formularios = DBQueryReturnArray($queryformularios);
 		       </tr>
 		     </thead>
 		     <tbody>
-		      	<? foreach($levantamientos as $key => $levantamiento) : ?>
+		      	<?php foreach($levantamientos as $key => $levantamiento) : ?>
 			    	<tr>
 			    	<td><?php echo $levantamiento['titulo']?></td>
 			         <td><?php echo $levantamiento['created']?></td>
@@ -81,7 +81,7 @@ $formularios = DBQueryReturnArray($queryformularios);
 			         <td><a class="delete" data-levantamiento="<?php echo $levantamiento['id']?>" href="#">X</a></td>
 			         <td><a class="edit" data-id="1" href="#">editar</a></td>
 			       </tr>
-				<? endforeach ?>
+				<?php endforeach ?>
 		       
 		     </tbody>
 		   </table>
