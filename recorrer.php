@@ -1,5 +1,5 @@
 <?php
-require_once('db/db.php');
+require_once('DB/db.php');
 require_once('lib.php');
 
 //si no existen error

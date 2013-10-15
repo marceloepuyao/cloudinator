@@ -1,5 +1,5 @@
 <?php
-require_once('db/db.php');
+require_once('DB/db.php');
 
 if(isset($_GET['emp'])){
 	$idempresa = (int)$_GET['emp'];
