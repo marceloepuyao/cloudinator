@@ -4,7 +4,7 @@ require_once('db/db.php');
 if(isset($_GET['emp'])){
 	$idempresa = (int)$_GET['emp'];
 }else{
-	header( 'Location: notfound.html' ) ;
+	header( 'Location: notfound.html' );
 }
 
 	
@@ -26,7 +26,7 @@ $formularios = DBQueryReturnArray($queryformularios);
 
 ?>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
 <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css" />
@@ -45,11 +45,11 @@ $formularios = DBQueryReturnArray($queryformularios);
 <div data-role="page" id="levantamiento">
 	<div data-role="header" data-theme="b">
 	    <a href="#" id="backbutton" data-icon="arrow-l">atrás</a>
-	    <h1 id ="empresanombre"><?php echo $nombre ?>	</h1>
+	    <h1 id ="empresanombre"><?php echo $nombre; ?>	</h1>
 	    <a href="#" id="usernamebutton" data-icon="check" class="ui-btn-right"></a>
 	</div>
 	<h4>información de la empresa</h4>
-	<p id="infoempresa" > <?php echo $info ?></p>
+	<p id="infoempresa" > <?php echo $info; ?></p>
 	<br>
 	<h4>Historial de levantamientos</h4>
 	
@@ -65,16 +65,16 @@ $formularios = DBQueryReturnArray($queryformularios);
 	       </tr>
 	     </thead>
 	     <tbody>
-	      	<?php foreach($levantamientos as $key => $levantamiento) : ?>
+	      	<?php foreach($levantamientos as $key => $levantamiento) { ?>
 		    	<tr>
-		    	<td><?php echo $levantamiento['titulo']?></td>
-		         <td><?php echo $levantamiento['created']?></td>
-		         <td><?php echo $levantamiento['completitud']?>%</td>
-		         <td><a class="ira" data-empresa="<?php echo $idempresa?>" data-levantamiento="<?php echo $levantamiento['id']?>" href="#">ir</a></td>
+		    	<td><?php echo $levantamiento['titulo']; ?></td>
+		         <td><?php echo $levantamiento['created']; ?></td>
+		         <td><?php echo $levantamiento['completitud']; ?>%</td>
+		         <td><a class="ira" data-empresa="<?php echo $idempresa; ?>" data-levantamiento="<?php echo $levantamiento['id']; ?>" href="#">ir</a></td>
 		         <td><a class="delete" data-id="1" href="#">X</a></td>
 		         <td><a class="delete" data-id="1" href="#">editar</a></td>
 		       </tr>
-			<?php endforeach ?>
+			<?php } ?>
 	       
 	     </tbody>
 	   </table>
@@ -87,7 +87,7 @@ $formularios = DBQueryReturnArray($queryformularios);
 <div id="new" data-role="page" >
 	<div data-role="header" data-theme="b">
 	    <a href="#levantamiento" id="back" data-icon="arrow-l">atrás</a>
-	    <h1 id ="empresanombre2"><?php echo $nombre?>	</h1>
+	    <h1 id ="empresanombre2"><?php echo $nombre; ?>	</h1>
 	    <a href="#" id="usernamebutton" data-icon="check" class="ui-btn-right"></a>
 	</div><!-- /header -->
 	
@@ -113,10 +113,10 @@ $formularios = DBQueryReturnArray($queryformularios);
 		        <li data-role="fieldcontain">
 		            <label for="formularios">Formularios:</label>
 		            	<fieldset data-role="controlgroup" id="formularios">
-		            	<?php foreach($formularios as $key => $formulario) : ?>
-					    	<input name="<?php echo $formulario['id']?>" id="<?php echo $formulario['id']?>" checked="" type="checkbox">
-					    	<label for="<?php echo $formulario['id']?>"><?php echo $formulario['name']?></label>
-						<?php endforeach ?>
+		            	<?php foreach($formularios as $key => $formulario) { ?>
+					    	<input name="<?php echo $formulario['id']; ?>" id="<?php echo $formulario['id']; ?>" checked="" type="checkbox">
+					    	<label for="<?php echo $formulario['id']; ?>"><?php echo $formulario['name']; ?></label>
+						<?php } ?>
 					</fieldset>  
 		            <input id="formularios" type="hidden" value="My data"/>
 		                      
