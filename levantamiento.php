@@ -44,7 +44,8 @@ $formularios = DBQueryReturnArray($queryformularios);
 <title>Nuevo Levantamiento</title>
 </head>
 <body class="api jquery-mobile home blog single-autho">
-
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
 <div data-role="page" id="levantamiento">
 	<div data-role="header" data-theme="b">
 	    <a href="#" id="backbutton" data-icon="arrow-l">atrás</a>
@@ -135,8 +136,6 @@ $formularios = DBQueryReturnArray($queryformularios);
 		
 	</div><!-- /content -->
 </div>
-<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-<script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
 <script src="js/levantamiento.js" type="text/javascript"></script>
 <script src="js/jquery.session.js" type="text/javascript"></script>
 </body>
