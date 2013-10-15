@@ -1,5 +1,5 @@
 <?php
-require_once('db/db.php');
+require_once('DB/db.php');
 
 /** obtenemos el formulario, pero primero revisamos si está SANO:
  *  1.- solo hay un nodo que no tiene padres (este nodo es pregunta)
