@@ -52,7 +52,7 @@ if($pregunta == null){
 
 <div data-role="page" id="pregunta">
 	<div data-role="header" data-theme="b">
-	    <a href="#" id="backbutton" data-emp="<?php echo $empresa['id']?>" data-idlev="<?php echo $idlevantamiento?>" data-icon="arrow-l">atrás</a>
+	    <a href="#" id="backbutton" data-emp="<?php echo $empresa['id']; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-icon="arrow-l">atrás</a>
 	    <h1 id ="empresanombre"> </h1>
 	    <a href="#" id="usernamebutton" data-icon="check" class="ui-btn-right"></a>
 	</div>
@@ -60,13 +60,13 @@ if($pregunta == null){
 	<div data-role="content">
 		<?php if ($pregunta != null): ?>
 		
-		<h1><?php echo $pregunta['name']?></h1>
+		<h1><?php echo $pregunta['name']; ?></h1>
 		<div data-role="collapsible-set" data-theme="c" data-content-theme="d" data-iconpos="right">
-		    <? foreach($respuestas as $key => $respuesta) : ?>
-		    	<div data-idsubform="<?php echo $idsubform?>" data-idlev="<?php echo $idlevantamiento?>" data-idnode="<?php echo $respuesta['id']?>" data-idpregunta="<?php echo $pregunta['id']?>" class="answer" data-role="button" data-iconpos="top">
-					<h3><?php echo $respuesta['name']?></h3>
+		    <?php foreach($respuestas as $key => $respuesta) : ?>
+		    	<div data-idsubform="<?php echo $idsubform; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-idnode="<?php echo $respuesta['id']; ?>" data-idpregunta="<?php echo $pregunta['id']; ?>" class="answer" data-role="button" data-iconpos="top">
+					<h3><?php echo $respuesta['name']; ?></h3>
 				</div>
-			<? endforeach ?>
+			<?php endforeach ?>
 		<fieldset class="ui-grid-a">
 		                    <div class="ui-block-a"><button data-theme="d">Pregunta anterior</button></div>
 		                    <div class="ui-block-b"><button data-theme="d">Saltar</button></div>

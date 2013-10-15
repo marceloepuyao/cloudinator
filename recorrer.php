@@ -1,5 +1,5 @@
 <?php
-require_once('db/db.php');
+require_once('DB/db.php');
 require_once('lib.php');
 
 //si no existen error
@@ -41,7 +41,7 @@ $formularios = DBQueryReturnArray($queryformularios);
 
 
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
 <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css" />
@@ -60,15 +60,15 @@ $formularios = DBQueryReturnArray($queryformularios);
 <div id="recorrer" data-role="page" >
 	<div data-role="header" data-theme="b">
 	    <a href="#" id="backbutton2" data-icon="arrow-l">atrás</a>
-	    <h1 id ="empresanombre"><?php echo $nombre?>	</h1>
+	    <h1 id ="empresanombre"><?php echo $nombre; ?>	</h1>
 	    <a href="#" id="usernamebutton" data-icon="check" class="ui-btn-right"></a>
 	</div>
 	
 	<div data-role="content">
-		<h1><?php echo $titulo?></h1>
-		<p><?php echo $info?></p>
+		<h1><?php echo $titulo; ?></h1>
+		<p><?php echo $info; ?></p>
 		<div data-role="collapsible-set" data-theme="b" data-content-theme="d">
-			<?php foreach($formularios as $key => $formulario) :
+			<?php foreach($formularios as $key => $formulario) {
 			
 				//get all the subform
 				$querysubformularios = "SELECT * FROM trees WHERE megatree = ".$formulario['id'];
@@ -76,10 +76,10 @@ $formularios = DBQueryReturnArray($queryformularios);
 				$total = count($subformularios);
 			?>
 			<div data-role="collapsible">
-				<h2><?php echo $formulario['name']?></h2>
+				<h2><?php echo $formulario['name']; ?></h2>
 				<ul data-role="listview" data-theme="d" data-divider-theme="d">
-					<li data-role="list-divider">Subformularios <span class="ui-li-count"><?php echo $total?></span></li>
-					<?php foreach($subformularios as $key2 => $subformulario) :
+					<li data-role="list-divider">Subformularios <span class="ui-li-count"><?php echo $total; ?></span></li>
+					<?php foreach($subformularios as $key2 => $subformulario) {
 							if(getSubForm($subformulario['id'])){
 								$questionandanswers = getQuestionAnswers($subformulario['id'], $idlevantamiento);
 								extract($questionandanswers); //devuelve $pregunta, $respuestas $ultimavisita, $completitud
@@ -95,17 +95,17 @@ $formularios = DBQueryReturnArray($queryformularios);
 							}
 							
 						?>
-						<li class="<?php echo $class?>" data-subform="<?php echo $subformulario['id']?>" data-levantamiento="<?php echo $idlevantamiento?>"><a href="#">
-				    		<h3><?php echo $subformulario['name']?></h3>
-			                <p><strong>última visita: <?php echo $ultimavisita?></strong></p>
-			                <p>Siguiente pregunta: <?php echo $pregunta['name']?></p>
-			                <p class="ui-li-aside"><strong>Completitud: <?php echo $completitud ?>%</strong></p>
+						<li class="<?php echo $class; ?>" data-subform="<?php echo $subformulario['id']; ?>" data-levantamiento="<?php echo $idlevantamiento; ?>"><a href="#">
+				    		<h3><?php echo $subformulario['name']; ?></h3>
+			                <p><strong>última visita: <?php echo $ultimavisita; ?></strong></p>
+			                <p>Siguiente pregunta: <?php echo $pregunta['name']; ?></p>
+			                <p class="ui-li-aside"><strong>Completitud: <?php echo $completitud; ?>%</strong></p>
 		            	</a></li>
-					<?php endforeach ?>
+					<?php } ?>
 		        </ul>
 	    	</div>
 		    	
-			<?php endforeach ?>
+			<?php } ?>
 	</div>
 	</div>
 	
