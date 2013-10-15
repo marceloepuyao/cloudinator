@@ -30,8 +30,6 @@ $formularios = DBQueryReturnArray($queryformularios);
 <html>
 <head>
 <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css" />
-<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-<script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
 <style type="text/css" media="screen">
 		.jqm-content {
 			padding-right: 25%;
@@ -137,7 +135,8 @@ $formularios = DBQueryReturnArray($queryformularios);
 		
 	</div><!-- /content -->
 </div>
-
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
 <script src="js/levantamiento.js" type="text/javascript"></script>
 <script src="js/jquery.session.js" type="text/javascript"></script>
 </body>
