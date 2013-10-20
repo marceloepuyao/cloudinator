@@ -4,7 +4,8 @@ require_once('db.php');
 echo '<a href="../index.html">Volver</a>';
 echo '<center><br><h2>Upgrade Base de datos</h2><br>';
 
-//si existe la tabla cloudinator saco la version de ahí si no la setteo 
+echo '<hr>';
+//si existe la tabla cloudinator saco la version de ahÃ­ si no la setteo 
 try{
 	try{
 		$query = 'SELECT * FROM cloudinator_upgrades';
@@ -23,56 +24,53 @@ try{
 		DBQuery("INSERT INTO `cloudinator_upgrades` (`id`, `name`, `version`, `modified`) VALUES 
 			(NULL, 'cloudinator', '2013082600', '".time()."');
 			");
-		
-		echo '<hr>';
+
 		echo 'Se ha creado la tabla cloudinator_upgrades';
-		echo '</hr>';
 		
 		$version = 2013082600;
 	}
 }catch (Exception $e){
-	echo "<hr>Error en actualización<br>$e<br></hr>";
+	echo "Error en actualizaciÃ³n<br>$e<br>";
 }
-
-
+echo '</hr>';
+echo '<hr>';
 if($version < 2013082700){
 	try{
-		//aqui se escribe el código
+		//aqui se escribe el cÃ³digo
 		DBQuery("INSERT INTO `users` (`id`, `email`, `name`, `lastname`, `password`, `firstaccess` , `lastaccess`, `lang`, `modified`) VALUES 
 			(NULL, 'admin', 'Sr', 'Admin', 'pepito.P0', '".time()."', '".time()."' , 'es', '".time()."'  );
 			");
-		//actualiazo la versión
+		//actualiazo la versiÃ³n
 		DBQuery("UPDATE cloudinator_upgrades SET version = '2013082700' WHERE id = 1");
 		
-		echo '<hr>';
+		//dejo mensaje
 		echo 'Se ha agregado un usuario para el navegador cloudinator';
-		echo '</hr>';
 		
 	}catch (Exception $e){
-		echo "<hr>Error en actualización<br>$e<br></hr>";
+		echo "Error en actualizaciÃ³n<br>$e<br>";
 	}
 }
-
-
-
+echo '</hr>';
+echo '<hr>';
 if($version <  2013092300){
 	try{
-		//acá escribo el script de actualización
-		//actualiazo la versión
+		//acÃ¡ escribo el script de actualizaciÃ³n
+
+		//actualiazo la versiÃ³n
 		DBQuery("UPDATE cloudinator_upgrades SET version = '2013092300' WHERE id = 1");
 		
 		//dejo mensaje
-		echo '<hr>';
-		echo 'Prueba de actualización';
-		echo '</hr>';
+		echo 'Prueba de actualizaciÃ³n';
 		
 	}catch (Exception $e){
-		echo "<hr>Error en actualización<br>$e<br></hr>";
+		echo "Error en actualizaciÃ³n<br>$e<br>";
 	}
 }
+echo '</hr>';
+echo '<hr>';
 if($version <  2013092401){
 	try{
-		//acá escribo el script de actualización
+		//acÃ¡ escribo el script de actualizaciÃ³n
 		DBQuery("CREATE TABLE levantamientos (
 				id int(100) not null auto_increment primary key,
 				titulo varchar(50) NOT NULL,
@@ -86,21 +84,21 @@ if($version <  2013092401){
 				modified timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP) 
 				ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 		");
-		//actualiazo la versión
+		//actualiazo la versiÃ³n
 		DBQuery("UPDATE cloudinator_upgrades SET version = '2013092401' WHERE id = 1");
 		
 		//dejo mensaje
-		echo '<hr>';
-		echo 'Tabla levantamientos creada exitósamente';
-		echo '</hr>';
+		echo 'Tabla levantamientos creada exitÃ³samente';
 		
 	}catch (Exception $e){
-		echo "<hr>Error en actualización<br>$e<br></hr>";
+		echo "Error en actualizaciÃ³n<br>$e<br>";
 	}
 }
+echo '</hr>';
+echo '<hr>';
 if($version <  2013093000){
 	try{
-		//acá escribo el script de actualización
+		//acÃ¡ escribo el script de actualizaciÃ³n
 		DBQuery("CREATE TABLE registropreguntas (
 				id int(100) not null auto_increment primary key,
 				preguntaid int(100) NOT NULL,
@@ -113,19 +111,53 @@ if($version <  2013093000){
 				created timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP) 
 				ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 		");
-		//actualiazo la versión
+		//actualiazo la versiÃ³n
 		DBQuery("UPDATE cloudinator_upgrades SET version = '2013093000' WHERE id = 1");
 		
 		//dejo mensaje
-		echo '<hr>';
 		echo 'Creada tabla registropreguntas';
-		echo '</hr>';
 		
 	}catch (Exception $e){
-		echo "<hr>Error en actualización<br>$e<br></hr>";
+		echo "Error en actualizaciÃ³n<br>$e<br>";
 	}
 }
+echo '</hr>';
+echo '<hr>';
+if ($version < 2013102000) {
+	try {
+		//acÃ¡ escribo el script de actualizaciÃ³n
+		DBQuery("ALTER TABLE  `nodos` CHANGE  `name`  `name` VARCHAR( 200 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL");
 
+		//actualiazo la versiÃ³n
+		DBQuery("UPDATE cloudinator_upgrades SET version = '2013102000' WHERE id = 1");
+
+		//dejo mensaje
+		echo 'ModificaciÃ³n a la cantidad de caracteres posibles en la tabla "nodos", columna "name", de 50 caracteres aumentÃ³ a 200';
+		
+	} catch (Exception $e) {
+		echo 'Error en actualizaciÃ³n<br>$e<br>';
+	}
+}
+echo '</hr>';
+/*
+//EJEMPLO: (RECUERDE CAMBIAR "AAAAMMDDNN" POR EL NUMERO DE ACTUALIZACION A = AÃ±o, M = Mes, D = Dia, N = Numero)
+echo '<hr>';
+if ($version < AAAAMMDDNN) {
+	try {
+		//acÃ¡ escribo el script de actualizaciÃ³n
+
+		//actualiazo la versiÃ³n
+		DBQuery("UPDATE cloudinator_upgrades SET version = 'AAAAMMDDNN' WHERE id = 1");
+
+		//dejo mensaje
+		echo 'RESUMEN DE LOS CAMBIOS REALIZADOS';
+		
+	} catch (Exception $e) {
+		echo 'Error en actualizaciÃ³n<br>$e<br>';
+	}
+}
+echo '</hr>';
+*/
 
 echo '<hr>';
 echo "Todos los cambios han sido realizados";
