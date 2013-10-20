@@ -28,7 +28,7 @@ $levantamientoarray = json_decode($levantamiento[0]['formsactivos']);
 $titulo = $levantamiento[0]['titulo'];
 $info = $levantamiento[0]['info'];
 
-//saco info de los formularios que están en el levantamiento
+//saco info de los formularios que estÃ¡n en el levantamiento
 $in = "(";
 foreach($levantamientoarray as $lev) {
 	$in = $in.$lev.",";
@@ -37,7 +37,7 @@ $in = $in."-1)";
 $queryformularios = "SELECT * FROM megatrees WHERE id IN $in";
 $formularios = DBQueryReturnArray($queryformularios);
 
-//saco info de los subformularios que están en los formularios que están en el levantamiento
+//saco info de los subformularios que estÃ¡n en los formularios que estÃ¡n en el levantamiento
 
 
 ?>
@@ -59,7 +59,7 @@ $formularios = DBQueryReturnArray($queryformularios);
 
 <div id="recorrer" data-role="page" >
 	<div data-role="header" data-theme="b">
-	    <a href="#" id="backbutton2" data-icon="arrow-l">atrás</a>
+	    <a href="#" id="backbutton2" data-icon="arrow-l">atrÃ¡s</a>
 	    <h1 id ="empresanombre"><?php echo $nombre; ?>	</h1>
 	    <a href="#" id="usernamebutton" data-icon="check" class="ui-btn-right"></a>
 	</div>
@@ -97,7 +97,7 @@ $formularios = DBQueryReturnArray($queryformularios);
 						?>
 						<li class="<?php echo $class; ?>" data-subform="<?php echo $subformulario['id']; ?>" data-levantamiento="<?php echo $idlevantamiento; ?>"><a href="#">
 				    		<h3><?php echo $subformulario['name']; ?></h3>
-			                <p><strong>última visita: <?php echo $ultimavisita; ?></strong></p>
+			                <p><strong>Ãºltima visita: <?php echo $ultimavisita; ?></strong></p>
 			                <p>Siguiente pregunta: <?php echo $pregunta['name']; ?></p>
 			                <p class="ui-li-aside"><strong>Completitud: <?php echo $completitud; ?>%</strong></p>
 		            	</a></li>

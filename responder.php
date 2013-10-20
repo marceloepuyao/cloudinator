@@ -1,7 +1,7 @@
 <?php
 require_once('lib.php');
 
-//comprobar que las variables estén bien
+//comprobar que las variables estÃ©n bien
 if(isset($_GET['idlev']) && isset($_GET['idsubform'])){
 	//Obtengo el id del subform que estoy completanto
 	$idsubform = (int)$_GET['idsubform'];
@@ -12,14 +12,14 @@ if(isset($_GET['idlev']) && isset($_GET['idsubform'])){
 	header( 'Location: notfound.html' ) ;
 }
 
-//obtenemos el subformulaio, si está incompleto devuelve false
+//obtenemos el subformulaio, si estÃ¡ incompleto devuelve false
 if(!$subform = getSubForm($idsubform)){
-	die("El subformulario está incompleto, por favor avisar a administrador del sistema");
+	die("El subformulario estÃ¡ incompleto, por favor avisar a administrador del sistema");
 }
 //get empresa
 $empresa = getEmpresaByLevantamientoId($idlevantamiento);
 
-//veo cual fue la última pregunta respondida (según levantamiento y subform). si no hay, tomo la primera.
+//veo cual fue la Ãºltima pregunta respondida (segÃºn levantamiento y subform). si no hay, tomo la primera.
 $questionandanswers = getQuestionAnswers($idsubform, $idlevantamiento);
 
 extract($questionandanswers); //devuelve $pregunta, $respuestas, $ultimavisita, $completitud
@@ -52,7 +52,7 @@ if($pregunta == null){
 
 <div data-role="page" id="pregunta">
 	<div data-role="header" data-theme="b">
-	    <a href="#" id="backbutton" data-emp="<?php echo $empresa['id']; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-icon="arrow-l">atrás</a>
+	    <a href="#" id="backbutton" data-emp="<?php echo $empresa['id']; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-icon="arrow-l">atrÃ¡s</a>
 	    <h1 id ="empresanombre"> </h1>
 	    <a href="#" id="usernamebutton" data-icon="check" class="ui-btn-right"></a>
 	</div>

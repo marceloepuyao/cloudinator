@@ -1,10 +1,10 @@
 <?php
 require_once('DB/db.php');
 
-/** obtenemos el formulario, pero primero revisamos si está SANO:
+/** obtenemos el formulario, pero primero revisamos si estÃ¡ SANO:
  *  1.- solo hay un nodo que no tiene padres (este nodo es pregunta)
  *  2.- solo hay un nodo que no tiene hijos  (es nodo fin)
- *  si no lo está esta función devuelve FALSE
+ *  si no lo estÃ¡ esta funciÃ³n devuelve FALSE
  */
 function getSubForm($idsubform){
 	
@@ -39,7 +39,7 @@ function getSubForm($idsubform){
 }
 
 function getQuestionAnswers($idsubform, $idlevantamiento){
-	//se obtienen la última pregunta hecha.
+	//se obtienen la Ãºltima pregunta hecha.
 	$querypreguntas = "SELECT * FROM registropreguntas WHERE levantamientoid = $idlevantamiento AND subformid = $idsubform order by created DESC limit 1";
 	$preguntas = DBQueryReturnArray($querypreguntas);
 	//se obtiene la pregunta que viene... si no hay datos: la primera.

@@ -48,12 +48,12 @@ $formularios = DBQueryReturnArray($queryformularios);
 <script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
 <div data-role="page" id="levantamiento">
 	<div data-role="header" data-theme="b">
-	    <a href="#" id="backbutton" data-icon="arrow-l">atrás</a>
+	    <a href="#" id="backbutton" data-icon="arrow-l">AtrÃ¡s</a>
 	    <h1 id ="empresanombre"><?php echo $nombre; ?>	</h1>
 	    <a href="#" id="usernamebutton" data-icon="check" class="ui-btn-right"></a>
 	</div>
 	<div class="container">
-		<h4 align="center">información de la empresa</h4>
+		<h4 align="center">informaciÃ³n de la empresa</h4>
 		<p id="infoempresa" > <?php echo $info; ?></p>
 		<br>
 		<h4 align="center" >Historial de levantamientos</h4>
@@ -61,7 +61,7 @@ $formularios = DBQueryReturnArray($queryformularios);
 		<table data-role="table" id="table-column-toggle" data-mode="columntoggle" class="ui-responsive table-stroke">
 		     <thead>
 		       <tr>
-		       	<th>Título Visita</th>
+		       	<th>TÃ­tulo Visita</th>
 		         <th data-priority="2">Fecha</th>
 		         <th data-priority="3"><abbr title="Rotten Tomato Rating">Completitud</abbr></th>
 		         <th>Recorrer</th>
@@ -90,7 +90,7 @@ $formularios = DBQueryReturnArray($queryformularios);
 </div>
 <div id="new" data-role="page" >
 	<div data-role="header" data-theme="b">
-	    <a href="#levantamiento" id="back" data-icon="arrow-l">atrás</a>
+	    <a href="#levantamiento" id="back" data-icon="arrow-l">AtrÃ¡s</a>
 	    <h1 id ="empresanombre2"><?php echo $nombre; ?>	</h1>
 	    <a href="#" id="usernamebutton" data-icon="check" class="ui-btn-right"></a>
 	</div><!-- /header -->
@@ -99,11 +99,11 @@ $formularios = DBQueryReturnArray($queryformularios);
 		<h2>Nuevo Levantamiento</h2>
 		    <ul data-role="listview" data-inset="true">
 		        <li data-role="fieldcontain">
-		            <label for="titulo-levantamiento">Título Levantamiento:</label>
+		            <label for="titulo-levantamiento">TÃ­tulo Levantamiento:</label>
 		            <input name="titulo-levantamiento" id="titulo-levantamiento" value="" data-clear-btn="true" type="text">
 		        </li>
 		        <li data-role="fieldcontain">
-		            <label for="info-levantamiento">Información de Levantamiento:</label>
+		            <label for="info-levantamiento">InformaciÃ³n de Levantamiento:</label>
  					<textarea cols="40" rows="8" name="info-levantamiento" id="info-levantamiento"></textarea>		        
  				</li>
  				<li data-role="fieldcontain">
@@ -111,7 +111,7 @@ $formularios = DBQueryReturnArray($queryformularios);
 		            <input name="contactado-por" id="contactado-por" value="" data-clear-btn="true" type="text">
 		        </li>
 		        <li data-role="fieldcontain">
-		            <label for="area-contacto">Área de Contacto:</label>
+		            <label for="area-contacto">Ãrea de Contacto:</label>
 		            <input name="area-contacto" id="area-contacto" value="" data-clear-btn="true" type="text">
 		        </li>
 		        <li data-role="fieldcontain">
