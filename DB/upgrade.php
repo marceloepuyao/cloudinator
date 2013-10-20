@@ -4,7 +4,6 @@ require_once('db.php');
 echo '<a href="../index.html">Volver</a>';
 echo '<center><br><h2>Upgrade Base de datos</h2><br>';
 
-echo '<hr>';
 //si existe la tabla cloudinator saco la version de ahí si no la setteo 
 try{
 	try{
@@ -25,16 +24,22 @@ try{
 			(NULL, 'cloudinator', '2013082600', '".time()."');
 			");
 
+		echo '<hr>';
 		echo 'Se ha creado la tabla cloudinator_upgrades';
-		
+		echo '</hr>';
+
 		$version = 2013082600;
 	}
 }catch (Exception $e){
+	echo '<hr>';
 	echo "Error en actualización<br>$e<br>";
+	echo '</hr>';
 }
-echo '</hr>';
-echo '<hr>';
+
+
 if($version < 2013082700){
+	echo '<hr>';
+	echo '<h4>Actualización N° 2013-08-27-00</h4>';
 	try{
 		//aqui se escribe el código
 		DBQuery("INSERT INTO `users` (`id`, `email`, `name`, `lastname`, `password`, `firstaccess` , `lastaccess`, `lang`, `modified`) VALUES 
@@ -49,10 +54,13 @@ if($version < 2013082700){
 	}catch (Exception $e){
 		echo "Error en actualización<br>$e<br>";
 	}
+	echo '</hr>';
 }
-echo '</hr>';
-echo '<hr>';
+
+
 if($version <  2013092300){
+	echo '<hr>';
+	echo '<h4>Actualización N° 2013-09-23-00</h4>';
 	try{
 		//acá escribo el script de actualización
 
@@ -65,10 +73,13 @@ if($version <  2013092300){
 	}catch (Exception $e){
 		echo "Error en actualización<br>$e<br>";
 	}
+	echo '</hr>';
 }
-echo '</hr>';
-echo '<hr>';
+
+
 if($version <  2013092401){
+	echo '<hr>';
+	echo '<h4>Actualización N° 2013-09-24-01</h4>';
 	try{
 		//acá escribo el script de actualización
 		DBQuery("CREATE TABLE levantamientos (
@@ -93,10 +104,13 @@ if($version <  2013092401){
 	}catch (Exception $e){
 		echo "Error en actualización<br>$e<br>";
 	}
+	echo '</hr>';
 }
-echo '</hr>';
-echo '<hr>';
+
+
 if($version <  2013093000){
+	echo '<hr>';
+	echo '<h4>Actualización N° 2013-09-30-00</h4>';
 	try{
 		//acá escribo el script de actualización
 		DBQuery("CREATE TABLE registropreguntas (
@@ -120,10 +134,13 @@ if($version <  2013093000){
 	}catch (Exception $e){
 		echo "Error en actualización<br>$e<br>";
 	}
+	echo '</hr>';
 }
-echo '</hr>';
-echo '<hr>';
+
+
 if ($version < 2013102000) {
+	echo '<hr>';
+	echo '<h4>Actualización N° 2013-10-20-00</h4>';
 	try {
 		//acá escribo el script de actualización
 		DBQuery("ALTER TABLE  `nodos` CHANGE  `name`  `name` VARCHAR( 200 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL");
@@ -137,12 +154,15 @@ if ($version < 2013102000) {
 	} catch (Exception $e) {
 		echo 'Error en actualización<br>$e<br>';
 	}
+	echo '</hr>';
 }
-echo '</hr>';
+
 /*
 //EJEMPLO: (RECUERDE CAMBIAR "AAAAMMDDNN" POR EL NUMERO DE ACTUALIZACION A = Año, M = Mes, D = Dia, N = Numero)
-echo '<hr>';
+
 if ($version < AAAAMMDDNN) {
+	echo '<hr>';
+	echo '<h4>Actualización N° AAAA-MM-DD-NN</h4>';
 	try {
 		//acá escribo el script de actualización
 
@@ -155,12 +175,13 @@ if ($version < AAAAMMDDNN) {
 	} catch (Exception $e) {
 		echo 'Error en actualización<br>$e<br>';
 	}
+	echo '</hr>';
 }
-echo '</hr>';
+
 */
 
 echo '<hr>';
-echo "Todos los cambios han sido realizados";
+echo "<h3>Todos los cambios han sido realizados</h3>";
 echo '</hr></center>';
 echo '<br><br><a href="../index.html">Volver</a>';
 ?>
