@@ -8,7 +8,7 @@
 require_once('db.php');
 
 echo '<a href="../index.html">Volver</a>';
-echo '<center><br><h2>Upgrade Base de datos</h2><br>';
+echo '<center><br><h2>Actualización de la Base de Datos</h2><br>';
 
 //si existe la tabla cloudinator saco la version de ahí si no la setteo 
 try{
@@ -54,7 +54,7 @@ if($version < 2013082700){
 		//actualiazo la versión
 		DBQuery("UPDATE cloudinator_upgrades SET version = '2013082700' WHERE id = 1");
 		
-		//dejo mensaje
+		//mensaje:
 		echo 'Se ha agregado un usuario para el navegador cloudinator';
 		
 	}catch (Exception $e){
@@ -73,7 +73,7 @@ if($version <  2013092300){
 		//actualiazo la versión
 		DBQuery("UPDATE cloudinator_upgrades SET version = '2013092300' WHERE id = 1");
 		
-		//dejo mensaje
+		//mensaje:
 		echo 'Prueba de actualización';
 		
 	}catch (Exception $e){
@@ -104,7 +104,7 @@ if($version <  2013092401){
 		//actualiazo la versión
 		DBQuery("UPDATE cloudinator_upgrades SET version = '2013092401' WHERE id = 1");
 		
-		//dejo mensaje
+		//mensaje:
 		echo 'Tabla levantamientos creada exitósamente';
 		
 	}catch (Exception $e){
@@ -134,7 +134,7 @@ if($version <  2013093000){
 		//actualiazo la versión
 		DBQuery("UPDATE cloudinator_upgrades SET version = '2013093000' WHERE id = 1");
 		
-		//dejo mensaje
+		//mensaje:
 		echo 'Creada tabla registropreguntas';
 		
 	}catch (Exception $e){
@@ -154,7 +154,7 @@ if ($version < 2013102000) {
 		//actualiazo la versión
 		DBQuery("UPDATE cloudinator_upgrades SET version = '2013102000' WHERE id = 1");
 
-		//dejo mensaje
+		//mensaje:
 		echo 'Modificación a la cantidad de caracteres posibles en la tabla "nodos", columna "name", de 50 caracteres aumentó a 200';
 		
 	} catch (Exception $e) {
@@ -162,6 +162,32 @@ if ($version < 2013102000) {
 	}
 	echo '</hr>';
 }
+
+
+if ($version < 2013102001) {
+	echo '<hr>';
+	echo '<h4>Actualización N° 2013-10-20-01</h4>';
+	try {
+		//acá escribo el script de actualización
+		DBQuery("ALTER TABLE  `levantamientos` CHANGE  `titulo`  `titulo` VARCHAR( 150 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+CHANGE  `info`  `info` VARCHAR( 500 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
+CHANGE  `formsactivos`  `formsactivos` VARCHAR( 150 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+CHANGE  `conctadopor`  `conctadopor` VARCHAR( 100 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
+CHANGE  `areacontacto`  `areacontacto` VARCHAR( 100 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
+CHANGE  `completitud`  `completitud` VARCHAR( 100 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL");
+
+		//actualiazo la versión
+		DBQuery("UPDATE cloudinator_upgrades SET version = '2013102000' WHERE id = 1");
+
+		//mensaje:
+		echo 'Modificación a la cantidad de caracteres posibles en la tabla "levantamientos", columnas: "titulo", "info", "formsactivos", "conctadopor", "areacontacto" y "completitud"';
+		
+	} catch (Exception $e) {
+		echo 'Error en actualización<br>$e<br>';
+	}
+	echo '</hr>';
+}
+
 
 /*
 //EJEMPLO: (RECUERDE CAMBIAR "AAAAMMDDNN" POR EL NUMERO DE ACTUALIZACION A = Año, M = Mes, D = Dia, N = Numero)
@@ -175,7 +201,7 @@ if ($version < AAAAMMDDNN) {
 		//actualiazo la versión
 		DBQuery("UPDATE cloudinator_upgrades SET version = 'AAAAMMDDNN' WHERE id = 1");
 
-		//dejo mensaje
+		//mensaje:
 		echo 'RESUMEN DE LOS CAMBIOS REALIZADOS';
 		
 	} catch (Exception $e) {
@@ -187,7 +213,7 @@ if ($version < AAAAMMDDNN) {
 */
 
 echo '<hr>';
-echo "<h3>Todos los cambios han sido realizados</h3>";
+echo "<h3>Fin de la actualización</h3>";
 echo '</hr></center>';
 echo '<br><br><a href="../index.html">Volver</a>';
 ?>
