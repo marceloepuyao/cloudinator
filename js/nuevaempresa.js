@@ -27,7 +27,7 @@ function crearEmpresa(name,industry,textarea){
 			if(resp.result){
 				$.session.set('empresa', resp.id);
 				 
-				alert("empresa creada con Èxito");
+				alert("empresa creada con √©xito");
 				window.location.href = "levantamiento.php?emp="+resp.id;
 			}else{
 				alert("no se ha podido crear la empresa");
@@ -56,7 +56,7 @@ $(document).ready(function(){
 	
 	});
 	$("#btnNew").on('click', function(){
-		//se checkea si est·n todos los cambios llenos
+		//se checkea si est√°n todos los cambios llenos
 		var name = $("#new-name-empresa").val();
         var industry = $("#industry").val();
         var textarea = $("#textarea").val();

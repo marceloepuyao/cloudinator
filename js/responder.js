@@ -76,7 +76,7 @@ $(document).ready(function(){
 			if(type = "array"){
 				respsubpregunta = 
 			}else if(type = "textarea"){
-				var response = prompt("Aquí va la subpregunta","escriba acá su respuesta");
+				var response = prompt("AquÃ­ va la subpregunta","escriba acÃ¡ su respuesta");
 				if (response!=null && response!="")
 				{
 				  respsubpregunta = person;

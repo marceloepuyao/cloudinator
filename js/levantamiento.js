@@ -81,7 +81,7 @@ $(document).ready(function(){
 	
 	$(".delete").on('click', function(){
 		
-		if(confirm("¿Está seguro que desea eliminar el levantamiento?")) { 
+		if(confirm("Â¿EstÃ¡ seguro que desea eliminar el levantamiento?")) { 
 			var lev = $(this).data('levantamiento');
 			console.log("kakakakak",lev);
 			deleteLevantamiento(lev);
