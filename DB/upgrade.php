@@ -1,3 +1,9 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Cloudinator - Actualización</title>
+</head>
+<body>
 <?php
 require_once('db.php');
 
@@ -185,3 +191,4 @@ echo "<h3>Todos los cambios han sido realizados</h3>";
 echo '</hr></center>';
 echo '<br><br><a href="../index.html">Volver</a>';
 ?>
+</body>

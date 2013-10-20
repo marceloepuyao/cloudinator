@@ -1,3 +1,9 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Cloudinator - Instalación</title>
+</head>
+<body>
 <?php
 require_once('db.php');
 echo '<a href="../index.html">Volver</a>';
@@ -142,7 +148,12 @@ try {
 	echo 'Error al crear tabla "empresas"<br>';
 	echo $e;
 }
-echo '<hr><br>';
-echo '<h2>La instalacion a finalizado</h2></center>';
+echo '<hr>';
+echo '<h3>La instalacion a finalizado</h3>';
+echo '<h2>Si la instalación fue exitosa, por favor instale las actualizaciones: <a href="upgrade.php">Instalar Actualizaciones</a></h2>';
+echo '</center>';
+
+
 echo '<a href="../index.html">Volver</a>';
 ?>
+</body>
