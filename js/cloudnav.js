@@ -62,7 +62,7 @@ $(document).ready(function(){
 	llamaempresas();
     $("#errorMsg").hide();
     $("#backbutton").on('click', function(){
-    	window.location.href = "inicio.html";
+    	window.location.href = "index.html";
 	});
     $(window).resize(function() {
 		  if($(window).width() < 800 ){

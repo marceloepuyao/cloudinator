@@ -6,7 +6,7 @@
 <body>
 <?php
 require_once('db.php');
-echo '<a href="../index.html">Volver</a>';
+echo '<a href="../editor.html">Volver</a>';
 echo '<center><br><h2>Instalacion de la base de datos</h2><br>';
 echo '<hr>';
 //borrar tablas si existen
@@ -154,6 +154,6 @@ echo '<h2>Si la instalación fue exitosa, por favor instale las actualizaciones:
 echo '</center>';
 
 
-echo '<a href="../index.html">Volver</a>';
+echo '<a href="../editor.html">Volver</a>';
 ?>
 </body>

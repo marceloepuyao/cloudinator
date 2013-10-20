@@ -60,7 +60,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 	});
 	
 	A.one('#back').on('click', function(){
-		window.location = "index.html";
+		window.location = "editor.html";
 	});
 	function cambianombre(){
 		var newname = prompt("Nuevo Nombre","");
@@ -97,7 +97,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 				on: {   
 					success: function(data) {
 						console.log(data);
-						window.location = "index.html";
+						window.location = "editor.html";
 					}
 				}
 			});

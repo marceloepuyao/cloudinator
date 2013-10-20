@@ -66,7 +66,7 @@ $(document).ready(function(){
 	checkSessionorDie();
 	
 	$("#backbutton").on('click', function(){
-		window.location.href = "inicio.html";
+		window.location.href = "index.html";
 	});
 
 	$("#backbutton2").on('click', function(){

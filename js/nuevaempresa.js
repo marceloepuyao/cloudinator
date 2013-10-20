@@ -41,7 +41,7 @@ $(document).ready(function(){
 	checkSessionorDie();
 	
 	$("#backbutton").on('click', function(){
-		window.location.href = "inicio.html";
+		window.location.href = "index.html";
 	});
 	//alert($(window).width() );
 	$(window).resize(function() {
@@ -72,7 +72,7 @@ $(document).ready(function(){
 	});
 	$("#cancel").on('click', function(){
 		
-		window.location.href = "inicio.html";
+		window.location.href = "index.html";
 	});
 	
 	
