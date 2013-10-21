@@ -170,11 +170,11 @@ if ($version < 2013102001) {
 	try {
 		//acá escribo el script de actualización
 		DBQuery("ALTER TABLE  `levantamientos` CHANGE  `titulo`  `titulo` VARCHAR( 150 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
-CHANGE  `info`  `info` VARCHAR( 500 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
-CHANGE  `formsactivos`  `formsactivos` VARCHAR( 150 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
-CHANGE  `conctadopor`  `conctadopor` VARCHAR( 100 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
-CHANGE  `areacontacto`  `areacontacto` VARCHAR( 100 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
-CHANGE  `completitud`  `completitud` VARCHAR( 100 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL");
+		CHANGE  `info`  `info` VARCHAR( 500 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
+		CHANGE  `formsactivos`  `formsactivos` VARCHAR( 150 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+		CHANGE  `conctadopor`  `conctadopor` VARCHAR( 100 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
+		CHANGE  `areacontacto`  `areacontacto` VARCHAR( 100 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
+		CHANGE  `completitud`  `completitud` VARCHAR( 100 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL");
 
 		//actualiazo la versión
 		DBQuery("UPDATE cloudinator_upgrades SET version = '2013102000' WHERE id = 1");

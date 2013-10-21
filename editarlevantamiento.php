@@ -18,6 +18,8 @@ $empresa = getEmpresaByLevantamientoId($idlevantamiento);
 
 $formularios = getAllFormularios();
 
+$queryusers = "SELECT * FROM users";
+$users = DBQueryReturnArray($queryusers);
 ?>
 
 <!DOCTYPE html>
@@ -60,9 +62,17 @@ $formularios = getAllFormularios();
  					<textarea cols="40" rows="8" name="info-levantamiento"  id="info-levantamiento"><?php echo $levantamiento['info']?></textarea>		        
  				</li>
  				<li data-role="fieldcontain">
-		            <label for="contactado-por">Contactado por:</label>
-		            <input name="contactado-por" id="contactado-por" value="<?php echo $levantamiento['conctadopor']?>" data-clear-btn="true" type="text">
-		        </li>
+		        	<label for="contactado-por" class="select">Contactado por:</label> 
+		        	<select name="contactado-por" id="contactado-por">
+		        	<option value=""><?php ?></option>
+		        	<?php foreach($users as $key => $user) { 
+		        		if($user['id'] == $levantamiento['conctadopor']){?>
+							<option value="<?php echo $user['id']?>" selected><?php echo $user['email']?></option>
+							<?php }else{?>
+							<option value="<?php echo $user['id']?>"><?php echo $user['email']?></option>
+					<?php }}?>
+				</select>
+				</li>
 		        <li data-role="fieldcontain">
 		            <label for="area-contacto">Área de Contacto:</label>
 		            <input name="area-contacto" id="area-contacto" value="<?php echo $levantamiento['areacontacto']?>" data-clear-btn="true" type="text">
@@ -94,5 +104,7 @@ $formularios = getAllFormularios();
 </div>
 <script src="js/levantamiento.js" type="text/javascript"></script>
 <script src="js/jquery.session.js" type="text/javascript"></script>
+<script type="text/javascript" src="http://webcursos.uai.cl/jira/s/es_ES-jovvqt-418945332/850/3/1.2.9/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?collectorId=2ab5c7d9"></script> <!-- JIRA (para reportar errores)-->
+	<style type="text/css">.atlwdg-trigger.atlwdg-RIGHT{background-color:red;top:70%;z-index:10001;}</style>
 </body>
 </html>

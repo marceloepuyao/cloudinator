@@ -63,13 +63,15 @@ function getQuestionAnswers($idsubform, $idlevantamiento){
 											SELECT l.target
 											FROM  links l
 											WHERE l.source = ".$pregunta[0]['id'].")");
+			
+			return array("pregunta" =>$pregunta[0], "respuestas" => $respuestas, "ultimavisita"=>$preguntas[0]['created'], "completitud"=>0);
 		}else{
 			
 			return array("pregunta" =>null, "respuestas" => null, "ultimavisita"=>$preguntas[0]["created"], "completitud"=>100);
 			
 		}
 		
-		return array("pregunta" =>$pregunta[0], "respuestas" => $respuestas, "ultimavisita"=>$preguntas["created"], "completitud"=>0);
+		
 	}else{
 		$pregunta = DBQueryReturnArray("SELECT k.* from nodos k
 										WHERE k.tree = $idsubform AND k.type = 'condition' AND  k.id NOT IN(

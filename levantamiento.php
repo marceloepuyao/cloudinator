@@ -21,6 +21,9 @@ $info = $empresa[0]['infolevantamiento'];
 $querylevantamientos = "SELECT * FROM levantamientos WHERE empresaid = $idempresa";
 $levantamientos = DBQueryReturnArray($querylevantamientos);
 
+$queryusers = "SELECT * FROM users";
+$users = DBQueryReturnArray($queryusers);
+
 $formularios = getAllFormularios();
 
 ?>
@@ -105,10 +108,18 @@ $formularios = getAllFormularios();
 		            <label for="info-levantamiento">Información de Levantamiento:</label>
  					<textarea cols="40" rows="8" name="info-levantamiento" id="info-levantamiento"></textarea>		        
  				</li>
- 				<li data-role="fieldcontain">
-		            <label for="contactado-por">Contactado por:</label>
-		            <input name="contactado-por" id="contactado-por" value="" data-clear-btn="true" type="text">
-		        </li>
+
+		        <li data-role="fieldcontain">
+		        	<label for="contactado-por" class="select">Contactado por:</label> 
+		        	<select name="contactado-por" id="contactado-por">
+		        	<option value=""><?php ?></option>
+		        	<?php foreach($users as $key => $user) { ?>
+						<option value="<?php echo $user['id']?>"><?php echo $user['email']?></option>
+					<?php }?>
+				</select>
+				</li>
+		        
+		        
 		        <li data-role="fieldcontain">
 		            <label for="area-contacto">Área de Contacto:</label>
 		            <input name="area-contacto" id="area-contacto" value="" data-clear-btn="true" type="text">
@@ -136,5 +147,7 @@ $formularios = getAllFormularios();
 </div>
 <script src="js/levantamiento.js" type="text/javascript"></script>
 <script src="js/jquery.session.js" type="text/javascript"></script>
+<script type="text/javascript" src="http://webcursos.uai.cl/jira/s/es_ES-jovvqt-418945332/850/3/1.2.9/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?collectorId=2ab5c7d9"></script> <!-- JIRA (para reportar errores)-->
+	<style type="text/css">.atlwdg-trigger.atlwdg-RIGHT{background-color:red;top:70%;z-index:10001;}</style>
 </body>
 </html>

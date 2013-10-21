@@ -68,8 +68,8 @@ if($pregunta == null){
 				</div>
 			<?php endforeach ?>
 		<fieldset class="ui-grid-a">
-		                    <div class="ui-block-a"><button data-theme="d">Pregunta anterior</button></div>
-		                    <div class="ui-block-b"><button data-theme="d">Saltar</button></div>
+		                    <div class="ui-block-a"><button id="responderback" data-theme="d">Pregunta anterior</button></div>
+		                    <div class="ui-block-b"><button id="responderquit" data-theme="d">Abandonar</button></div>
 		 </fieldset>
 		</div>
 		<?php endif; ?>
@@ -83,5 +83,7 @@ if($pregunta == null){
 </div>
 <script src="js/responder.js" type="text/javascript"></script>
 <script src="js/jquery.session.js" type="text/javascript"></script>
+<script type="text/javascript" src="http://webcursos.uai.cl/jira/s/es_ES-jovvqt-418945332/850/3/1.2.9/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?collectorId=2ab5c7d9"></script> <!-- JIRA (para reportar errores)-->
+	<style type="text/css">.atlwdg-trigger.atlwdg-RIGHT{background-color:red;top:70%;z-index:10001;}</style>
 </body>
 </html>
