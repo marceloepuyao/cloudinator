@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once('lib.php');
 
 //comprobar que las variables estén bien

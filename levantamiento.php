@@ -1,6 +1,6 @@
-<?php
+﻿<?php
 require_once('DB/db.php');
-
+require_once('lib.php');
 if(isset($_GET['emp'])){
 	$idempresa = (int)$_GET['emp'];
 }else{
@@ -21,8 +21,7 @@ $info = $empresa[0]['infolevantamiento'];
 $querylevantamientos = "SELECT * FROM levantamientos WHERE empresaid = $idempresa";
 $levantamientos = DBQueryReturnArray($querylevantamientos);
 
-$queryformularios = "SELECT * FROM megatrees";
-$formularios = DBQueryReturnArray($queryformularios);
+$formularios = getAllFormularios();
 
 ?>
 
@@ -53,17 +52,17 @@ $formularios = DBQueryReturnArray($queryformularios);
 	    <a href="#" id="usernamebutton" data-icon="check" class="ui-btn-right"></a>
 	</div>
 	<div class="container">
-		<h4 align="center">información de la empresa</h4>
+		<h4>Información de la empresa</h4>
 		<p id="infoempresa" > <?php echo $info; ?></p>
 		<br>
-		<h4 align="center" >Historial de levantamientos</h4>
+		<h4 >Historial de levantamientos</h4>
 		
 		<table data-role="table" id="table-column-toggle" data-mode="columntoggle" class="ui-responsive table-stroke">
 		     <thead>
 		       <tr>
 		       	<th>Título Visita</th>
-		         <th data-priority="2">Fecha</th>
-		         <th data-priority="3"><abbr title="Rotten Tomato Rating">Completitud</abbr></th>
+		         <th data-priority="2">Última Modificación</th>
+		         <th data-priority="3"><abbr title="Info">Información</abbr></th>
 		         <th>Recorrer</th>
 		          <th data-priority="5">Borrar</th>
 		          <th data-priority="6">Editar</th>
@@ -73,11 +72,11 @@ $formularios = DBQueryReturnArray($queryformularios);
 		      	<?php foreach($levantamientos as $key => $levantamiento) { ?>
 			    	<tr>
 			    	<td><?php echo $levantamiento['titulo']; ?></td>
-			         <td><?php echo $levantamiento['created']; ?></td>
-			         <td><?php echo $levantamiento['completitud']; ?>%</td>
+			         <td><?php echo $levantamiento['modified']; ?></td>
+			         <td><?php echo $levantamiento['info']; ?></td>
 			         <td><a class="ira" data-empresa="<?php echo $idempresa; ?>" data-levantamiento="<?php echo $levantamiento['id']; ?>" href="#">ir</a></td>
 			         <td><a class="delete" data-levantamiento="<?php echo $levantamiento['id']; ?>" href="#">X</a></td>
-			         <td><a class="edit" data-id="1" href="#">editar</a></td>
+			         <td><a class="edit" data-id="<?php echo $levantamiento['id']; ?>" href="#">editar</a></td>
 			       </tr>
 				<?php } ?>		       
 		     </tbody>
@@ -128,7 +127,7 @@ $formularios = DBQueryReturnArray($queryformularios);
 		        <li class="ui-body ui-body-b">
 		            <fieldset class="ui-grid-a">
 		                    <div class="ui-block-a"><button id="cancel" data-theme="d">Cancelar</button></div>
-		                    <div class="ui-block-b"><button id="addlevantamiento" data-theme="b">Continuar</button></div>
+		                    <div class="ui-block-b"><button id="addlevantamiento"  data-theme="b">Continuar</button></div>
 		            </fieldset>
 		        </li>
 		    </ul>

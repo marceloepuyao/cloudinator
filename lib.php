@@ -100,3 +100,23 @@ function getEmpresaByLevantamientoId($idlevantamiento){
 	return $empresa[0];
 	
 }
+function getLevantamientobyId($idlevantamiento){
+	$query = 	"select *
+				from levantamientos
+				where id = $idlevantamiento";
+	$levantamiento = DBQueryReturnArray($query);
+	
+	if($levantamiento[0]){
+		return $levantamiento[0];
+	}else{
+		return false;
+	}
+	
+}
+
+function getAllFormularios(){
+	
+	$queryformularios = "SELECT * FROM megatrees";
+	$formularios = DBQueryReturnArray($queryformularios);
+	return $formularios;
+}
