@@ -30,6 +30,7 @@ $formularios = getAllFormularios();
 
 <!DOCTYPE html>
 <html>
+
 <head>
 <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css" />
 <style type="text/css" media="screen">
@@ -48,12 +49,25 @@ $formularios = getAllFormularios();
 <body class="api jquery-mobile home blog single-autho">
 <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 <script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
+	
 <div data-role="page" id="levantamiento">
-	<div data-role="header" data-theme="b">
+
+	<div data-theme="b" data-display="overlay" data-position="right" data-role="panel" id="mypanel">
+		<h2 id="usernamebutton"></h2>
+		<a href="#" id="cerrarsesion">Cerrar Sesión</a> <br>
+		<a href="#header" data-rel="close">Cerrar</a>
+    <!-- panel content goes here -->
+	</div><!-- /panel -->
+
+	<div data-role="header" class="header" data-position="fixed" role="banner" data-theme="b">
 	    <a href="#" id="backbutton" data-icon="arrow-l">Atrás</a>
 	    <h1 id ="empresanombre"><?php echo $nombre; ?>	</h1>
-	    <a href="#" id="usernamebutton" data-icon="check" class="ui-btn-right"></a>
+	    <a href="#mypanel" data-icon="bars">config</a>
 	</div>
+	
+	
+	
+	
 	<div class="container">
 		<h4>Información de la empresa</h4>
 		<p id="infoempresa" > <?php echo $info; ?></p>

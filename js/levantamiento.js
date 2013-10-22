@@ -155,6 +155,18 @@ $(document).ready(function(){
 		window.location.href = "levantamiento.php?emp="+$.session.get('empresa');
 	});
 	
+	$("#usernamebutton").on('click', function(){
+		//$("#mypanel").trigger( "updatelayout" );
+		console.log("trigger");
+	});
+	
+	$("#cerrarsesion").on('click', function(){
+		$.session.set('usu', "");
+		$.session.set('pass',"");
+		$.session.set('empresa',"");
+		window.location.href = "index.html";
+		console.log("cierra sesion");
+	});
 	
 	
 

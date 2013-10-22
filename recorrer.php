@@ -58,10 +58,19 @@ $formularios = DBQueryReturnArray($queryformularios);
 <body>
 
 <div id="recorrer" data-role="page" >
+
+
+	<div data-theme="b" data-display="overlay" data-position="right" data-role="panel" id="mypanel">
+		<h2 id="usernamebutton"></h2>
+		<a href="#" id="cerrarsesion">Cerrar Sesión</a> <br>
+		<a href="#header" data-rel="close">Cerrar</a>
+    <!-- panel content goes here -->
+	</div><!-- /panel -->
+
 	<div data-role="header" data-theme="b">
 	    <a href="#" id="backbutton2" data-icon="arrow-l">atrás</a>
 	    <h1 id ="empresanombre"><?php echo $nombre; ?>	</h1>
-	    <a href="#" id="usernamebutton" data-icon="check" class="ui-btn-right"></a>
+	    <a href="#mypanel" data-icon="bars">config</a>
 	</div>
 	
 	<div data-role="content">

@@ -89,4 +89,11 @@ $(document).ready(function(){
 
 		
 	});
+	$("#cerrarsesion").on('click', function(){
+		$.session.set('usu', "");
+		$.session.set('pass',"");
+		$.session.set('empresa',"");
+		window.location.href = "index.html";
+		console.log("cierra sesion");
+	});
 });
