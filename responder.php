@@ -76,8 +76,8 @@ if($pregunta == null){
 				</div>
 			<?php endforeach ?>
 		<fieldset class="ui-grid-a">
-		                    <div class="ui-block-a"><button id="responderback" data-theme="d">Pregunta anterior</button></div>
-		                    <div class="ui-block-b"><button id="responderquit" data-theme="d">Abandonar</button></div>
+		                    <div class="ui-block-a"><button id="responderback" data-idsubform="<?php echo $idsubform; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-theme="d">Pregunta anterior</button></div>
+		                    <div class="ui-block-b"><button id="responderquit" data-emp="<?php echo $empresa['id']; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-theme="d">Abandonar</button></div>
 		 </fieldset>
 		</div>
 		<?php endif; ?>

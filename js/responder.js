@@ -49,6 +49,12 @@ function responderpregunta(idnode, idlev, idsubform, idpregunta){
 	
 }
 
+function borrarUltimaPreguntaRespondida(idsubform, idlev){
+	
+	
+}
+
+
 $(document).ready(function(){
 	
 	checkSessionorDie();
@@ -95,5 +101,21 @@ $(document).ready(function(){
 		$.session.set('empresa',"");
 		window.location.href = "index.html";
 		console.log("cierra sesion");
+	});
+	
+	$("#responderquit").on('click', function(){
+		var emp = $(this).data('emp');
+		var idlev = $(this).data('idlev');
+		window.location.href = "recorrer.php?emp="+emp+"&idlev="+idlev;
+	});
+	
+	$("#responderback").on('click', function(){
+		var idsubform = $(this).data('idsubform');
+		var idlev = $(this).data('idlev');
+		
+		//delete ultima pregunta respondida
+		borrarUltimaPreguntaRespondida(idsubform, idlev);
+		
+		window.location.href = "responder.php?idsubform="+idsubform+"&idlev="+idlev;
 	});
 });
