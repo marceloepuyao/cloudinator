@@ -158,7 +158,7 @@ if ($version < 2013102000) {
 		echo 'Modificación a la cantidad de caracteres posibles en la tabla "nodos", columna "name", de 50 caracteres aumentó a 200';
 		
 	} catch (Exception $e) {
-		echo 'Error en actualización<br>$e<br>';
+		echo "Error en actualización<br>$e<br>";
 	}
 	echo '</hr>';
 }
@@ -183,7 +183,7 @@ if ($version < 2013102001) {
 		echo 'Modificación a la cantidad de caracteres posibles en la tabla "levantamientos", columnas: "titulo", "info", "formsactivos", "conctadopor", "areacontacto" y "completitud"';
 		
 	} catch (Exception $e) {
-		echo 'Error en actualización<br>$e<br>';
+		echo "Error en actualización<br>$e<br>";
 	}
 	echo '</hr>';
 }
@@ -205,7 +205,7 @@ if ($version < AAAAMMDDNN) {
 		echo 'RESUMEN DE LOS CAMBIOS REALIZADOS';
 		
 	} catch (Exception $e) {
-		echo 'Error en actualización<br>$e<br>';
+		echo "Error en actualización<br>$e<br>";
 	}
 	echo '</hr>';
 }
