@@ -84,8 +84,12 @@ if($pregunta == null){
 		
 		<?php if ($pregunta == null): ?>
 			<h2>Se ha llegado al fin</h2>
+			<fieldset class="ui-grid-a">
+                    <div class="ui-block-a"><button id="responderback" data-idsubform="<?php echo $idsubform; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-theme="d">Pregunta anterior</button></div>
+                    <div class="ui-block-b"><button id="responderquit" data-emp="<?php echo $empresa['id']; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-theme="d">Continuar</button></div>
+		 	</fieldset>
 		<?php endif; ?>
-
+		
 	</div>
 	
 </div>

@@ -164,7 +164,7 @@ if ($version < 2013102000) {
 }
 
 
-if ($version < 2013102001) {
+if ($version < 2013102000) {
 	echo '<hr>';
 	echo '<h4>Actualización N° 2013-10-20-01</h4>';
 	try {
@@ -181,6 +181,29 @@ if ($version < 2013102001) {
 
 		//mensaje:
 		echo 'Modificación a la cantidad de caracteres posibles en la tabla "levantamientos", columnas: "titulo", "info", "formsactivos", "conctadopor", "areacontacto" y "completitud"';
+		
+	} catch (Exception $e) {
+		echo "Error en actualización<br>$e<br>";
+	}
+	echo '</hr>';
+}
+
+if ($version < 2013102900) {
+	echo '<hr>';
+	echo '<h4>Actualización N° 2013102900</h4>';
+	try {
+		//acá escribo el script de actualización
+		DBQuery("ALTER TABLE levantamientos
+		ADD deleted tinyint(1) NOT NULL");
+		
+		DBQuery("ALTER TABLE registropreguntas
+		ADD respsubpregunta VARCHAR( 500 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL");
+				
+		//actualiazo la versión
+		DBQuery("UPDATE cloudinator_upgrades SET version = '2013102900' WHERE id = 1");
+
+		//mensaje:
+		echo 'Agregado campo para guardar respuesta de subpregunta en los registros y campo para saber si está eliminado en levantamientos';
 		
 	} catch (Exception $e) {
 		echo "Error en actualización<br>$e<br>";
