@@ -12,6 +12,7 @@ if(isset($_GET['idlev']) && isset($_GET['idsubform'])){
 	header( 'Location: notfound.html' ) ;
 }
 
+
 //obtenemos el subformulaio, si está incompleto devuelve false
 if(!$subform = getSubForm($idsubform)){
 	die("El subformulario está incompleto, por favor avisar a administrador del sistema");
@@ -89,7 +90,29 @@ if($pregunta == null){
                     <div class="ui-block-b"><button id="responderquit" data-emp="<?php echo $empresa['id']; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-theme="d">Continuar</button></div>
 		 	</fieldset>
 		<?php endif; ?>
-		
+		<div data-role="popup" id="popupSubpregunta" data-theme="a" class="ui-corner-all">
+		    
+		        <div id="formsubpregunta" style="padding:10px 20px;">
+		            <h3 id="textopregunta"></h3>
+		           <label id="textarea-label" for='textarea'>ingrese su respuesta</label>
+					<textarea cols='40' rows='8' name='textarea' id='textarea'></textarea>
+					
+					<label id="select-choice-label" for="select-choice" class="select">Seleccione la respuesta</label>
+					<select name="select-choice" id="select-choice">
+					    <option value="">-</option>
+					</select>
+					
+								
+					<input type="hidden" name="idlev"  id="idlev"  value="<?php echo $idlevantamiento; ?>" >
+					<input type="hidden" name="idsubform"  id="idsubform"  value="<?php echo $idsubform; ?>" >
+					<input type="hidden" name="idpregunta" id="idpregunta"  value="<?php echo $pregunta['id']; ?>" >
+					
+					
+					<button id="respondersubpregunta" type='submit' data-theme='b' data-icon='check'>Continuar</button>
+		           
+		        </div>
+		   
+		</div>
 	</div>
 	
 </div>

@@ -83,13 +83,33 @@ function SubPregunta(idpregunta, idnode, idlev, idsubform){
 				//si tiene subpregunta, se hace, si no se responde pregunta
 				if(resp.subpregunta){
 					if(resp.node.metatype == "textarea"){
+						
+						$("#textopregunta").text(resp.node.metaname);
+						$("#select-choice").remove();
+						$("#select-choice-label").remove();
+						$('#popupSubpregunta').popup("open");
+						$("#formsubpregunta").append("<input type='hidden' id='idnode' name='idnode' value='"+idnode+"' >");
+						/*
 						var response = prompt(resp.node.metaname,"escriba acá su respuesta");
 						if (response!=null && response!="")
 						{
 							responderpregunta(idnode, idlev, idsubform, idpregunta, response);
-						}
+						}  <input type="hidden" name="idlev" value="<?php echo $idlevantamiento; ?>" >
+						*/
 					}else if(resp.node.metatype == "array"){
+						$("#textopregunta").text(resp.node.metaname);
+						$("#textarea").remove();
+						$("#textarea-label").remove();
 						
+						var array = resp.node.metadata.split(',');
+						$("#select-choice").empty();
+						$.each( array, function( key, value ) {
+							$("#select-choice").append("<option value="+value+">"+value+"</option>");
+							});
+						
+						$("#formsubpregunta").append("<input type='hidden' name='idnode' id='idnode' value='"+idnode+"' >");
+						console.log("metadata",array);
+						$('#popupSubpregunta').popup("open");
 					}
 				}else{
 					responderpregunta(idnode, idlev, idsubform, idpregunta, null);
@@ -149,5 +169,24 @@ $(document).ready(function(){
 		borrarUltimaPreguntaRespondida(idsubform, idlev);
 		
 		window.location.href = "responder.php?idsubform="+idsubform+"&idlev="+idlev;
+	});
+	
+	$("#respondersubpregunta").on('click', function(){
+		var idsubform = $("#idsubform").val();
+		var idlev = $("#idlev").val();
+		var idpregunta = $("#idpregunta").val();
+		var select = $("#select-choice").val();
+		var textarea =$("#textarea").val(); 
+		var idnode =$("#idnode").val(); 
+		
+		console.log(idsubform,idlev, idpregunta, select , textarea, idnode);
+		
+		if(typeof(select) != "undefined" && select !== null) {
+			var response = select;
+		}else{
+			var response =textarea;
+		}
+		
+		responderpregunta(idnode, idlev, idsubform, idpregunta, response);
 	});
 });
