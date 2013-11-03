@@ -190,7 +190,7 @@ if ($version < 2013102000) {
 
 if ($version < 2013102900) {
 	echo '<hr>';
-	echo '<h4>Actualización N° 2013102900</h4>';
+	echo '<h4>Actualización N° 2013-10-29-00</h4>';
 	try {
 		//acá escribo el script de actualización
 		DBQuery("ALTER TABLE levantamientos
@@ -211,6 +211,24 @@ if ($version < 2013102900) {
 	echo '</hr>';
 }
 
+if ($version < 2013110300) {
+	echo '<hr>';
+	echo '<h4>Actualización N° 2013-11-03-00</h4>';
+	try {
+		//acá escribo el script de actualización
+		DBQuery("ALTER TABLE megatrees ADD released tinyint(1) NOT NULL DEFAULT 0");
+
+		//actualiazo la versión
+		DBQuery("UPDATE cloudinator_upgrades SET version = '2013110300' WHERE id = 1");
+
+		//mensaje:
+		echo 'Se agregó el campo "released" para la implementación de la caracteristica de los Formularios "publicados"';
+		
+	} catch (Exception $e) {
+		echo "Error en actualización<br>$e<br>";
+	}
+	echo '</hr>';
+}
 
 /*
 //EJEMPLO: (RECUERDE CAMBIAR "AAAAMMDDNN" POR EL NUMERO DE ACTUALIZACION A = Año, M = Mes, D = Dia, N = Numero)
