@@ -110,6 +110,30 @@ if(isset($_POST['action'])) {
 		}
 		
 		print($json->encode($data));
+	}else if($_POST['action']=="show"){
+		try{
+			$id = $_POST['id'];
+			DBQuery("UPDATE megatrees SET visible = 1 WHERE id=$id;");
+			$data = array('result'=>true);
+		}catch(Exception $e){
+			$data = array(
+				'result' => false,
+				'exception' => $e
+			);
+		}
+		print($json->encode($data));
+	}else if($_POST['action']=="hide"){
+		try{
+			$id = $_POST['id'];
+			DBQuery("UPDATE megatrees SET visible = 0 WHERE id=$id;");
+			$data = array('result'=>true);
+		}catch(Exception $e){
+			$data = array(
+				'result' => false,
+				'exception' => $e
+			);
+		}
+		print($json->encode($data));
 	}
 		
 }else{

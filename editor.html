@@ -7,11 +7,6 @@
 			display: block;
 			margin: 0px;
 		}
-		#tabla{
-			left: 20px;
-			right: 20px;
-			top: 10px;
-		}
 		#newTreeName{
 			display: none;
 			position: absolute;
@@ -69,11 +64,16 @@
 			z-index: 90007;
 			cursor: pointer;
 		}
-		#menu_subformularios{
+		.menu_subformularios{
 			display: none;
 		}
-		#menu_formularios{
+		.menu_formularios{
 			display: none;
+		}
+		.tabla{
+			left: 20px;
+			right: 20px;
+			top: 10px;
 		}
 		.formElement{
 			margin: 5px;
@@ -169,17 +169,11 @@
 			<a href="editor.html"><img src="content/logo-sonda-white.png" height=60px border=0px></a>
 		</div>
 	</div>
-	
-	<br>
 	<!-- HEADER (fin)-->
 	
 	<!-- MENU FORMULARIOS (inicio) -->
-	<div id="menu_formularios" class="col_4 column forms">
-		<ul class="menu vertical forms">
-			<li style="display: none" id="forms"><a href="#"><i class="icon-share"></i> Formularios</a>
-				<ul id="allforms">
-				</ul>
-			</li>
+	<div class="menu_formularios forms">
+		<ul class="menu forms">
 			<li id="newform"><a href="#"><i class="icon-file"></i> Nuevo Formulario</a>
 			<li><a href="#"><i class="icon-wrench"></i> Administración</a>
 				<ul>
@@ -194,13 +188,9 @@
 	
 
 	<!-- MENU SUBFORMS (inicio) -->
-	<div id="menu_subformularios" class="col_4 column subforms">
-		<ul class="menu vertical">
+	<div class="menu_subformularios subforms">
+		<ul class="menu">
 			<li id="formname"><a href="#"> Nombre </a></li>
-			<li style="display: none"><a href="#"><i class="icon-share"></i>Subformularios</a>
-				<ul id="allsubforms">
-				</ul>
-			</li>
 			<li id="new"><a href="#"><i class="icon-file"></i> Nuevo Subformulario</a></li>
 			<li id="deleteform"><a href="#" onclick='confirmdelete();'><i class="icon-remove-sign"></i> Eliminar Formulario</a></li>
 			<li style="display: none" id="cloneForm"><a href="#"><i class="icon-copy"></i> Clonar Subformulario</a>
@@ -214,14 +204,32 @@
 	<!-- MENU SUBFORMS (fin) -->
 
 	<!-- TABLA (inicio) -->
-	<div id="tabla" class="col_6">
-		<table cellspacing="0" cellpadding="0" class="striped sortable">
+	<div class="tabla col_6">
+		<h6 class="menu_formularios">Formularios Ocultos</h6>
+		<h6 class="menu_subformularios">Subformularios no Publicados</h6>
+		<table id="table1" cellspacing="0" cellpadding="0" class="striped sortable">
 			<thead><tr>
 				<th id="formsubform">Formulario</th>
 				<th>Creado</th>
 				<th>Acciones</th>
 			</tr></thead>
 			<tbody id="tablabody">
+			</tbody>
+		</table>
+	</div>
+	<!-- TABLA (fin) -->
+
+	<!-- TABLA (inicio) -->
+	<div class="tabla col_6">
+		<h6 class="menu_formularios">Formularios Visibles</h6>
+		<h6 class="menu_subformularios">Subformularios Publicados</h6>
+		<table id="table2" cellspacing="0" cellpadding="0" class="striped sortable">
+			<thead><tr>
+				<th id="formsubform">Formulario</th>
+				<th>Creado</th>
+				<th>Acciones</th>
+			</tr></thead>
+			<tbody id="tabla2body">
 			</tbody>
 		</table>
 	</div>
@@ -242,20 +250,23 @@
 			success: function(data){
 				console.log("asd",data);
 				if(data.result){
-					$('#allsubforms').empty();
-					$('#clone').empty();
 					$('#tablabody').empty();
+					$('#tabla2body').empty();
 					$.each(data.datos, function( i, item ) {
 						if(item.deleted == 0 && item.megatree == getQueryStringByName('id')){
-							//$('#allsubforms').append('<li data-id="'+item.id+'"><a href="#">'+item.name+'</a></li>');
-							$('#allsubforms').append('<li><a href="cloudinator.html?id='+item.id+'">'+item.name+'</a></li>');
-							$('#clone').append('<li data-id="'+item.id+'"><a href="#">'+item.name+'</a></li>');
-							$('#tablabody').append('<tr><td value="'+item.name+'"><a href="cloudinator.html?id='+item.id+'">'+item.name+'</a></td><td value="'+item.created+'">'+item.created+'</td><td><abbr title="Clonar"><a href="#" onclick="preclonar('+item.id+');"><i class="icon-copy icon-2x"></i></a></abbr> <abbr title="Borrar"><a href="#" onclick="borrarsubformulario('+item.id+');"><i class="icon-trash icon-2x"></i></a></abbr></td></tr>');
+							if(item.released == 0){
+								$('#tablabody').append('<tr><td value="'+item.name+'"><a href="cloudinator.html?id='+item.id+'">'+item.name+'</a></td><td value="'+item.created+'">'+item.created+'</td><td><abbr title="Publicar"><a href="#" onclick="publicarSubformulario('+item.id+');"><i class="icon-share icon-2x"></i></a></abbr> <abbr title="Clonar"><a href="#" onclick="preclonar('+item.id+');"><i class="icon-copy icon-2x"></i></a></abbr> <abbr title="Borrar"><a href="#" onclick="borrarsubformulario('+item.id+');"><i class="icon-trash icon-2x"></i></a></abbr></td></tr>');
+							}else{
+								$('#tabla2body').append('<tr><td value="'+item.name+'"><a href="cloudinator.html?id='+item.id+'">'+item.name+'</a></td><td value="'+item.created+'">'+item.created+'</td><td><abbr title="Clonar"><a href="#" onclick="preclonar('+item.id+');"><i class="icon-copy icon-2x"></i></a></abbr> <abbr title="Borrar"><a href="#" onclick="borrarsubformulario('+item.id+');"><i class="icon-trash icon-2x"></i></a></abbr></td></tr>');
+							}
 						}
 					});
-					$('table').find('tr:first').addClass('first');
-					$('table').find('tr:last').addClass('last');
-					$('table').find('tr:even').addClass('alt');
+					$('#table1').find('tr:first').addClass('first');
+					$('#table1').find('tr:last').addClass('last');
+					$('#table1').find('tr:even').addClass('alt');
+					$('#table2').find('tr:first').addClass('first');
+					$('#table2').find('tr:last').addClass('last');
+					$('#table2').find('tr:even').addClass('alt');
 				}else{
 					addNotice("error", "Error al acceder a la lista de Grafos");
 				}
@@ -270,18 +281,24 @@
 			beforeSend: function(){$('.loading').fadeIn();},
 			success: function(data){
 				if(data.result){
-					$('#allforms').empty();
 					$('#tablabody').empty();
+					$('#tabla2body').empty();
 					$.each( data.datos, function( i, item ) {
 						if(item.deleted == 0){
-							$('#allforms').append('<li data-id="'+item.id+'"><a href="editor.html?id='+item.id+'">'+item.name+'</a>  </li>');
-							$('#formlist').append('<option value="'+item.id+'">'+item.name+'</option>');
-							$('#tablabody').append('<tr><td value="'+item.name+'"><a href="editor.html?id='+item.id+'">'+item.name+'</a></td><td value="'+item.created+'">'+item.created+'</td><td><abbr title="Borrar"><a href="#" onclick="borrarformulario('+item.id+');"><i class="icon-trash icon-2x"></i></a></abbr></td></tr>');
+							if(item.visible == 0){
+								//$('#formlist').append('<option value="'+item.id+'">'+item.name+'</option>');
+								$('#tablabody').append('<tr><td value="'+item.name+'"><a href="editor.html?id='+item.id+'">'+item.name+'</a></td><td value="'+item.created+'">'+item.created+'</td><td><abbr title="Cambiar Nombre"><a href="#" onclick="cambiarNombreForm('+item.id+');"><i class="icon-edit icon-2x"></i></a></abbr> <abbr title="Mostrar"><a href="#" onclick="mostrarFormulario('+item.id+');"><i class="icon-eye-open icon-2x"></i></a></abbr> <abbr title="Borrar"><a href="#" onclick="borrarformulario('+item.id+');"><i class="icon-trash icon-2x"></i></a></abbr></td></tr>');
+							}else{
+								$('#tabla2body').append('<tr><td value="'+item.name+'"><a href="editor.html?id='+item.id+'">'+item.name+'</a></td><td value="'+item.created+'">'+item.created+'</td><td><abbr title="Cambiar Nombre"><a href="#" onclick="cambiarNombreForm('+item.id+');"><i class="icon-edit icon-2x"></i></a></abbr> <abbr title="Ocultar"><a href="#" onclick="ocultarFormulario('+item.id+');"><i class="icon-eye-close icon-2x"></i></a></abbr> <abbr title="Borrar"><a href="#" onclick="borrarformulario('+item.id+');"><i class="icon-trash icon-2x"></i></a></abbr></td></tr>');
+							}
 						}
 					});
-					$('table').find('tr:first').addClass('first');
-					$('table').find('tr:last').addClass('last');
-					$('table').find('tr:even').addClass('alt');
+					$('#table1').find('tr:first').addClass('first');
+					$('#table1').find('tr:last').addClass('last');
+					$('#table1').find('tr:even').addClass('alt');
+					$('#table2').find('tr:first').addClass('first');
+					$('#table2').find('tr:last').addClass('last');
+					$('#table2').find('tr:even').addClass('alt');
 				}else{
 					addNotice("error", "Error al acceder a la lista de Grafos");
 				}
@@ -506,6 +523,65 @@
 			return false;
 		}
 	}
+	function ocultarFormulario(id){
+		$.ajax({
+			url: 'ajax/ajaxMegaTrees.php',
+			dataType: 'json',
+			type: 'POST',
+			data: {
+				action: "hide",
+				id: id
+					},
+			timeout: 2500,
+			beforeSend: function(){$('.loading').fadeIn();},
+			success: function(data){
+				if(data.result){
+					loadMegaTrees(); //actualizar la lista de Formularios
+					addNotice("success", "Ahora el Formulario no está Visible");
+				}else{
+					addNotice("error", "Error al ocultar el Formulario");
+					console.log("Error en ocultarFormulario", data.exception);
+				}
+			}
+		}).fail(function(data) {
+			addNotice("error", "Error al ocultar el Formulario");
+			console.log("Error en ocultarFormulario", data.exception);
+		}).always(function(){$('.loading').fadeOut();});
+	}
+	function mostrarFormulario(id){
+		$.ajax({
+			url: 'ajax/ajaxMegaTrees.php',
+			dataType: 'json',
+			type: 'POST',
+			data: {
+				action: "show",
+				id: id
+					},
+			timeout: 2500,
+			beforeSend: function(){$('.loading').fadeIn();},
+			success: function(data){
+				if(data.result){
+					loadMegaTrees(); //actualizar la lista de Formularios
+					addNotice("success", "Ahora el Formulario es Visible");
+				}else{
+					addNotice("error", "Error al desocultar el Formulario");
+					console.log("Error en mostrarFormulario", data.exception);
+				}
+			}
+		}).fail(function(data) {
+			addNotice("error", "Error al desocultar el Formulario");
+			console.log("Error en mostrarFormulario", data.exception);
+		}).always(function(){$('.loading').fadeOut();});
+	}
+	function publicarSubformulario(id){
+		alert("Funcionalidad aún no implementada.");
+	}
+	function cambiarNombreForm(id){
+		alert("Funcionalidad aún no implementada.");
+	}
+	function cambiarNombreSubform(id){
+		alert("Funcionalidad aún no implementada.");
+	}
 	function setNameToForm(){ //Pone el nombre del formulario que se ha selecionado en el inicio del menu [AJAX].
 		$.ajax({
 			url: 'ajax/ajaxMegaTrees.php',
@@ -589,13 +665,13 @@
 			setNameToForm();
 			cargarGrafos(); //Carga la lista de Subformularios
 			$('#formsubform').text("Subformularios");
-			$('#menu_subformularios').show();
-			$('#menu_formularios').remove();
+			$('.menu_subformularios').show();
+			$('.menu_formularios').remove();
 		}else{
 			loadMegaTrees(); //Carga la lista de Formularios
 			$('#formsubform').text("Formularios");
-			$('#menu_subformularios').remove();
-			$('#menu_formularios').show();
+			$('.menu_subformularios').remove();
+			$('.menu_formularios').show();
 		}
 
 		//Comportamiento del form de creacion de Formularios
