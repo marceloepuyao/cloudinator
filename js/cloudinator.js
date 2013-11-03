@@ -80,8 +80,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 	});
 	function cambianombre(){
 		var newname = prompt("Nuevo Nombre","");
-		if (newname!=null && newname!=""){
-			
+		if (newname!=null && newname!="" && newname.length>0){
 			A.io.request('ajax/ajaxTrees.php', {
 				dataType: 'json',
 				method: 'POST',
@@ -90,16 +89,20 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 					nuevonombre: newname
 						},
 				on: {   
-					success: function(data) {
-						console.log(data);
-						window.location = "cloudinator.html?id="+getQueryStringByName('id');
+					success: function() {
+						var response = this.get('responseData');
+						if(response.result){
+							window.location = "cloudinator.html?id="+getQueryStringByName('id');
+						}else if(response.exception == "NombreOcupado"){
+							alert("Nombre Ocupado");
+						}else{
+							alert("No se pudo cambiar el nombre");
+							console.log("error al cambiar el nombre", response.exception);
+						}
 					}
 				}
 			});
-
-			
 		}
-		
 	}
 	function estaseguro(){
 		if(confirm("¿Esta Seguro que deseas eliminar el subformulario?")){

@@ -255,7 +255,7 @@
 					$.each(data.datos, function( i, item ) {
 						if(item.deleted == 0 && item.megatree == getQueryStringByName('id')){
 							if(item.released == 0){
-								$('#tablabody').append('<tr><td value="'+item.name+'"><a href="cloudinator.html?id='+item.id+'">'+item.name+'</a></td><td value="'+item.created+'">'+item.created+'</td><td><abbr title="Publicar"><a href="#" onclick="publicarSubformulario('+item.id+');"><i class="icon-share icon-2x"></i></a></abbr> <abbr title="Clonar"><a href="#" onclick="preclonar('+item.id+');"><i class="icon-copy icon-2x"></i></a></abbr> <abbr title="Borrar"><a href="#" onclick="borrarsubformulario('+item.id+');"><i class="icon-trash icon-2x"></i></a></abbr></td></tr>');
+								$('#tablabody').append('<tr><td value="'+item.name+'"><a href="cloudinator.html?id='+item.id+'">'+item.name+'</a></td><td value="'+item.created+'">'+item.created+'</td><td><abbr title="Publicar"><a href="#" onclick="publicarSubformulario('+item.id+');"><i class="icon-share icon-2x"></i></a></abbr> <abbr title="Cambiar Nombre"><a href="#" onclick="cambiarNombreSubform('+item.id+');"><i class="icon-edit icon-2x"></i></a></abbr> <abbr title="Clonar"><a href="#" onclick="preclonar('+item.id+');"><i class="icon-copy icon-2x"></i></a></abbr> <abbr title="Borrar"><a href="#" onclick="borrarsubformulario('+item.id+');"><i class="icon-trash icon-2x"></i></a></abbr></td></tr>');
 							}else{
 								$('#tabla2body').append('<tr><td value="'+item.name+'"><a href="cloudinator.html?id='+item.id+'">'+item.name+'</a></td><td value="'+item.created+'">'+item.created+'</td><td><abbr title="Clonar"><a href="#" onclick="preclonar('+item.id+');"><i class="icon-copy icon-2x"></i></a></abbr> <abbr title="Borrar"><a href="#" onclick="borrarsubformulario('+item.id+');"><i class="icon-trash icon-2x"></i></a></abbr></td></tr>');
 							}
@@ -599,12 +599,12 @@
 				beforeSend: function(){$('.loading').fadeIn();},
 				success: function(data){
 					if(data.result){
-						cargarGrafos(); //actualizar la lista de Formularios
+						cargarGrafos(); //actualizar la lista de Subformularios
 						addNotice("success", "El Subformulario ha sido publicado");
 					}else{
 						addNotice("error", "Error al publicar el Subformulario");
 						$('.loading').fadeOut();
-						console.log("Error en publicar Formulario", data.exception);
+						console.log("Error en publicar Subformulario", data.exception);
 					}
 				}
 			}).fail(function(data) {
@@ -618,10 +618,79 @@
 		}
 	}
 	function cambiarNombreForm(id){
-		alert("Funcionalidad aún no implementada.");
+		var newNameForm = prompt("Ingrese el nuevo nombre para el Formulario","");
+		if (newNameForm!=null && newNameForm!="" && newNameForm.length>0){
+			$.ajax({
+				url: 'ajax/ajaxMegaTrees.php',
+				dataType: 'json',
+				type: 'POST',
+				data: {
+					action: "newName",
+					id: id,
+					nuevonombre: newNameForm
+						},
+				timeout: 2500,
+				beforeSend: function(){$('.loading').fadeIn();},
+				success: function(data){
+					if(data.result){
+						loadMegaTrees(); //actualizar la lista de Subformularios
+						addNotice("success", "El Subformulario ha cambiado de nombre");
+					}else{
+						if(data.exception == "NombreOcupado"){
+							addNotice("warning", "Nombre Ocupado");
+							$('.loading').fadeOut();
+						}else{
+							addNotice("error", "Error al cambiar el nombre del Subformulario");
+							$('.loading').fadeOut();
+							console.log("Error en cambiar el nombre del Subformulario", data.exception);
+						}
+					}
+				}
+			}).fail(function(data) {
+				addNotice("error", "Error al cambiar el nombre del Subformulario");
+				$('.loading').fadeOut();
+				console.log("Error en cambiarNombreSubform", data.exception);
+			}).always(function(){
+				//$('.loading').fadeOut(); //loadMegaTrees() se encarga.
+			});
+		}
 	}
 	function cambiarNombreSubform(id){
-		alert("Funcionalidad aún no implementada.");
+		var newNameSubform = prompt("Ingrese el nuevo nombre para el Subformulario","");
+		if (newNameSubform!=null && newNameSubform!="" && newNameSubform.length>0){
+			$.ajax({
+				url: 'ajax/ajaxTrees.php',
+				dataType: 'json',
+				type: 'POST',
+				data: {
+					tree: id,
+					nuevonombre: newNameSubform
+						},
+				timeout: 2500,
+				beforeSend: function(){$('.loading').fadeIn();},
+				success: function(data){
+					if(data.result){
+						cargarGrafos(); //actualizar la lista de Subformularios
+						addNotice("success", "El Subformulario ha cambiado de nombre");
+					}else{
+						if(data.exception == "NombreOcupado"){
+							addNotice("warning", "Nombre Ocupado");
+							$('.loading').fadeOut();
+						}else{
+							addNotice("error", "Error al cambiar el nombre del Subformulario");
+							$('.loading').fadeOut();
+							console.log("Error en cambiar el nombre del Subformulario", data.exception);
+						}
+					}
+				}
+			}).fail(function(data) {
+				addNotice("error", "Error al cambiar el nombre del Subformulario");
+				$('.loading').fadeOut();
+				console.log("Error en cambiarNombreSubform", data.exception);
+			}).always(function(){
+				//$('.loading').fadeOut(); //cargarGrafos() se encarga.
+			});
+		}
 	}
 	function setNameToForm(){ //Pone el nombre del formulario que se ha selecionado en el inicio del menu [AJAX].
 		$.ajax({

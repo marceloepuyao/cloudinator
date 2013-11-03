@@ -134,6 +134,27 @@ if(isset($_POST['action'])) {
 			);
 		}
 		print($json->encode($data));
+	}else if($_POST['action']=="newName"){
+		try {
+			$response = DBQuery("SELECT * FROM megatrees WHERE name = '$_POST[nuevonombre]'");
+			if($response->num_rows > 0){
+				$data = array(
+					'result' => false,
+					'exception' => 'NombreOcupado'
+				);
+			}else{
+				DBQuery("UPDATE megatrees SET name = '$_POST[nuevonombre]' WHERE id = $_POST[id]");
+				$data = array(
+					'result' => true
+				);
+			}
+		}catch (Exception $e){
+			$data = array(
+				'result' => false,
+				'exception' => $e
+			);
+		}
+		print($json->encode($data));
 	}
 		
 }else{
