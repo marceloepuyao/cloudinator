@@ -541,12 +541,16 @@
 				}else{
 					addNotice("error", "Error al ocultar el Formulario");
 					console.log("Error en ocultarFormulario", data.exception);
+					$('.loading').fadeOut();
 				}
 			}
 		}).fail(function(data) {
 			addNotice("error", "Error al ocultar el Formulario");
 			console.log("Error en ocultarFormulario", data.exception);
-		}).always(function(){$('.loading').fadeOut();});
+			$('.loading').fadeOut();
+		}).always(function(){
+			//$('.loading').fadeOut(); //el loadMegaTrees() se encarga
+		});
 	}
 	function mostrarFormulario(id){
 		$.ajax({
@@ -566,15 +570,52 @@
 				}else{
 					addNotice("error", "Error al desocultar el Formulario");
 					console.log("Error en mostrarFormulario", data.exception);
+					$('.loading').fadeOut();
 				}
 			}
 		}).fail(function(data) {
 			addNotice("error", "Error al desocultar el Formulario");
 			console.log("Error en mostrarFormulario", data.exception);
-		}).always(function(){$('.loading').fadeOut();});
+			$('.loading').fadeOut();
+		}).always(function(){
+			//$('.loading').fadeOut(); //el loadMegaTrees() se encarga.
+		});
 	}
 	function publicarSubformulario(id){
-		alert("Funcionalidad aún no implementada.");
+		if(confirm("¿Está seguro de que desea publicar este Subformulario?")){
+			//llamada ajax para cambiar la DB
+			//notificacion
+			//actualizar los grafos
+			//notificacion de error	
+			$.ajax({
+				url: 'ajax/ajaxTrees.php',
+				dataType: 'json',
+				type: 'POST',
+				data: {
+					action: "release",
+					id: id
+						},
+				timeout: 2500,
+				beforeSend: function(){$('.loading').fadeIn();},
+				success: function(data){
+					if(data.result){
+						cargarGrafos(); //actualizar la lista de Formularios
+						addNotice("success", "El Subformulario ha sido publicado");
+					}else{
+						addNotice("error", "Error al publicar el Subformulario");
+						$('.loading').fadeOut();
+						console.log("Error en publicar Formulario", data.exception);
+					}
+				}
+			}).fail(function(data) {
+				addNotice("error", "Error al publicar el Subformulario");
+				$('.loading').fadeOut();
+				console.log("Error en publicarSubformulario", data.exception);
+			}).always(function(){
+				//$('.loading').fadeOut(); //cargarGrafos() se encarga.
+			});
+
+		}
 	}
 	function cambiarNombreForm(id){
 		alert("Funcionalidad aún no implementada.");

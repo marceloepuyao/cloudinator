@@ -140,6 +140,19 @@ if(isset($_POST['type'])) { //DEPRICATED: por favor usar ajaxMegaTrees.php, acti
 		);
 		print($json->encode($data));
 	}
+}else if(isset($_POST['action']) && $_POST['action'] == "release") {
+	try {
+		DBQuery("UPDATE trees SET released = 1 WHERE id = $_POST[id]");
+		$data = array(
+			'result' => true
+		);
+	}catch (Exception $e){
+		$data = array(
+			'result' => false,
+			'exception' => $e
+		);
+	}
+	print($json->encode($data));
 }else if(isset($_POST['nuevonombre'])) {
 	try {
 		DBQuery("UPDATE trees SET name = '$_POST[nuevonombre]' WHERE id = $_POST[tree]");
