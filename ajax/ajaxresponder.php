@@ -53,11 +53,19 @@ if($action == 'insert'){
 			DBQuery(" 	DELETE
 						FROm registropreguntas 
 						WHERE subformid = $idsubform AND levantamientoid = $idlev ORDER by id DESC limit 1 ");
+			
+			$data = array(
+				'result' => true,
+				);
+		}else{
+			
+			$data = array(
+				'result' => true,
+				'moreinfo' => "no hay respuestas anteriores"
+				);
 		}
 		
-		$data = array(
-				'result' => true
-				);
+		
 		print($json->encode($data));
 	
 	} catch (Exception $e) {
