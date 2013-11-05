@@ -141,10 +141,12 @@ $formularios = getAllFormularios();
 		        <li data-role="fieldcontain">
 		            <label for="formularios">Formularios:</label>
 		            	<fieldset data-role="controlgroup" id="formularios">
-		            	<?php foreach($formularios as $key => $formulario) { ?>
+		            	<?php foreach($formularios as $key => $formulario) { 
+		            			if($formulario['visible']== 1 ){?>
+		            		
 					    	<input name="<?php echo $formulario['id']; ?>" id="<?php echo $formulario['id']; ?>" checked="" type="checkbox">
 					    	<label for="<?php echo $formulario['id']; ?>"><?php echo $formulario['name']; ?></label>
-						<?php } ?>
+						<?php }} ?>
 					</fieldset>  
 		            <input id="formularios" type="hidden" value="My data"/>
 		                      

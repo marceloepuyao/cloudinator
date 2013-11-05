@@ -67,7 +67,17 @@ function borrarUltimaPreguntaRespondida(idsubform, idlev){
 		idlev: idlev,
 		idsubform: idsubform
 		},function(respuesta){
-			window.location.href = "responder.php?idlev=" + idlev+"&idsubform="+idsubform;
+			var resp = jQuery.parseJSON(respuesta);
+			console.log("resp", resp);
+			//si la respuesta es positiva se continua, si no mensaje de error
+			if(resp.result){
+				window.location.href = "responder.php?idlev=" + idlev+"&idsubform="+idsubform;
+			}else{
+				alert("problemas con escribir en la base de datos");
+			}
+			
+			
+			
 		});
 	}
 

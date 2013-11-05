@@ -80,7 +80,7 @@ $formularios = DBQueryReturnArray($queryformularios);
 			<?php foreach($formularios as $key => $formulario) {
 			
 				//get all the subform
-				$querysubformularios = "SELECT * FROM trees WHERE megatree = ".$formulario['id'];
+				$querysubformularios = "SELECT * FROM trees WHERE released = 1 AND megatree = ".$formulario['id'];
 				$subformularios = DBQueryReturnArray($querysubformularios);
 				$total = count($subformularios);
 			?>
