@@ -60,12 +60,27 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 	});
 	
 	A.one('#back').on('click', function(){
-		window.location = "editor.html";
+		A.io.request('ajax/ajaxMegaTrees.php', {
+			cache: false,
+			autoLoad: true,
+			dataType: 'json',
+			method: 'POST',
+			data: {action:'whoIsTheFather',id:getQueryStringByName('id')},
+			on: {
+				success: function() {
+					var response = this.get('responseData');
+					if(response.result){
+						window.location = "editor.html?id="+response.id;
+					}else{
+						console.log('exception',response.exception);
+					}
+				}
+			}
+		});
 	});
 	function cambianombre(){
 		var newname = prompt("Nuevo Nombre","");
-		if (newname!=null && newname!=""){
-			
+		if (newname!=null && newname!="" && newname.length>0){
 			A.io.request('ajax/ajaxTrees.php', {
 				dataType: 'json',
 				method: 'POST',
@@ -74,16 +89,20 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 					nuevonombre: newname
 						},
 				on: {   
-					success: function(data) {
-						console.log(data);
-						window.location = "cloudinator.html?id="+getQueryStringByName('id');
+					success: function() {
+						var response = this.get('responseData');
+						if(response.result){
+							window.location = "cloudinator.html?id="+getQueryStringByName('id');
+						}else if(response.exception == "NombreOcupado"){
+							alert("Nombre Ocupado");
+						}else{
+							alert("No se pudo cambiar el nombre");
+							console.log("error al cambiar el nombre", response.exception);
+						}
 					}
 				}
 			});
-
-			
 		}
-		
 	}
 	function estaseguro(){
 		if(confirm("¿Esta Seguro que deseas eliminar el subformulario?")){

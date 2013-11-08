@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once('lib.php');
 
 //comprobar que las variables estén bien
@@ -11,6 +11,7 @@ if(isset($_GET['idlev']) && isset($_GET['idsubform'])){
 }else{
 	header( 'Location: notfound.html' ) ;
 }
+
 
 //obtenemos el subformulaio, si está incompleto devuelve false
 if(!$subform = getSubForm($idsubform)){
@@ -51,10 +52,18 @@ if($pregunta == null){
 
 
 <div data-role="page" id="pregunta">
+
+	<div data-theme="b" data-display="overlay" data-position="right" data-role="panel" id="mypanel">
+		<h2 id="usernamebutton"></h2>
+		<a href="#" id="cerrarsesion">Cerrar Sesión</a> <br>
+		<a href="#header" data-rel="close">Cerrar</a>
+    <!-- panel content goes here -->
+	</div><!-- /panel -->
+
 	<div data-role="header" data-theme="b">
 	    <a href="#" id="backbutton" data-emp="<?php echo $empresa['id']; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-icon="arrow-l">atrás</a>
 	    <h1 id ="empresanombre"> </h1>
-	    <a href="#" id="usernamebutton" data-icon="check" class="ui-btn-right"></a>
+	    <a href="#mypanel" data-icon="bars">config</a>
 	</div>
 	
 	<div data-role="content">
@@ -68,20 +77,48 @@ if($pregunta == null){
 				</div>
 			<?php endforeach ?>
 		<fieldset class="ui-grid-a">
-		                    <div class="ui-block-a"><button data-theme="d">Pregunta anterior</button></div>
-		                    <div class="ui-block-b"><button data-theme="d">Saltar</button></div>
+		                    <div class="ui-block-a"><button id="responderback" data-idsubform="<?php echo $idsubform; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-theme="d">Pregunta anterior</button></div>
+		                    <div class="ui-block-b"><button id="responderquit" data-emp="<?php echo $empresa['id']; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-theme="d">Abandonar</button></div>
 		 </fieldset>
 		</div>
 		<?php endif; ?>
 		
 		<?php if ($pregunta == null): ?>
 			<h2>Se ha llegado al fin</h2>
+			<fieldset class="ui-grid-a">
+                    <div class="ui-block-a"><button id="responderback" data-idsubform="<?php echo $idsubform; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-theme="d">Pregunta anterior</button></div>
+                    <div class="ui-block-b"><button id="responderquit" data-emp="<?php echo $empresa['id']; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-theme="d">Continuar</button></div>
+		 	</fieldset>
 		<?php endif; ?>
-
+		<div data-role="popup" id="popupSubpregunta" data-theme="a" class="ui-corner-all">
+		    
+		        <div id="formsubpregunta" style="padding:10px 20px;">
+		            <h3 id="textopregunta"></h3>
+		           <label id="textarea-label" for='textarea'>ingrese su respuesta</label>
+					<textarea cols='40' rows='8' name='textarea' id='textarea'></textarea>
+					
+					<label id="select-choice-label" for="select-choice" class="select">Seleccione la respuesta</label>
+					<select name="select-choice" id="select-choice">
+					    <option value="">-</option>
+					</select>
+					
+								
+					<input type="hidden" name="idlev"  id="idlev"  value="<?php echo $idlevantamiento; ?>" >
+					<input type="hidden" name="idsubform"  id="idsubform"  value="<?php echo $idsubform; ?>" >
+					<input type="hidden" name="idpregunta" id="idpregunta"  value="<?php echo $pregunta['id']; ?>" >
+					
+					
+					<button id="respondersubpregunta" type='submit' data-theme='b' data-icon='check'>Continuar</button>
+		           
+		        </div>
+		   
+		</div>
 	</div>
 	
 </div>
 <script src="js/responder.js" type="text/javascript"></script>
 <script src="js/jquery.session.js" type="text/javascript"></script>
+<script type="text/javascript" src="http://webcursos.uai.cl/jira/s/es_ES-jovvqt-418945332/850/3/1.2.9/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?collectorId=2ab5c7d9"></script> <!-- JIRA (para reportar errores)-->
+	<style type="text/css">.atlwdg-trigger.atlwdg-RIGHT{background-color:red;top:70%;z-index:10001;}</style>
 </body>
 </html>

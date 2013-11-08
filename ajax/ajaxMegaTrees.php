@@ -92,6 +92,69 @@ if(isset($_POST['action'])) {
 			);
 			print($json->encode($data));
 		}
+	}else if($_POST['action']=="whoIsTheFather"){
+		$id = $_POST['id'];
+		$query = "SELECT megatree FROM trees WHERE id = $id AND deleted = 0";
+		$result = DBQuery($query);
+		if($result->num_rows > 0){
+			$response = $result->fetch_array(MYSQLI_ASSOC);
+			$data = array(
+					'result' => true,
+					'id' => $response['megatree']
+				);
+		}else{
+			$data = array(
+					'result' => false,
+					'exception' => 'notfound'
+				);
+		}
+		
+		print($json->encode($data));
+	}else if($_POST['action']=="show"){
+		try{
+			$id = $_POST['id'];
+			DBQuery("UPDATE megatrees SET visible = 1 WHERE id=$id;");
+			$data = array('result'=>true);
+		}catch(Exception $e){
+			$data = array(
+				'result' => false,
+				'exception' => $e
+			);
+		}
+		print($json->encode($data));
+	}else if($_POST['action']=="hide"){
+		try{
+			$id = $_POST['id'];
+			DBQuery("UPDATE megatrees SET visible = 0 WHERE id=$id;");
+			$data = array('result'=>true);
+		}catch(Exception $e){
+			$data = array(
+				'result' => false,
+				'exception' => $e
+			);
+		}
+		print($json->encode($data));
+	}else if($_POST['action']=="newName"){
+		try {
+			$response = DBQuery("SELECT * FROM megatrees WHERE name = '$_POST[nuevonombre]'");
+			if($response->num_rows > 0){
+				$data = array(
+					'result' => false,
+					'exception' => 'NombreOcupado'
+				);
+			}else{
+				DBQuery("UPDATE megatrees SET name = '$_POST[nuevonombre]' WHERE id = $_POST[id]");
+				$data = array(
+					'result' => true
+				);
+			}
+		}catch (Exception $e){
+			$data = array(
+				'result' => false,
+				'exception' => $e
+			);
+		}
+		print($json->encode($data));
 	}
 		
 }else{

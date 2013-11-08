@@ -20,10 +20,16 @@ function checkSessionorDie(){
 	$("#usernamebutton").text($.session.get('usu'));
 	console.log("asdasd");
 }
-function guardarlevantamiento(titulo, info, contactado, area, forms){
+function guardarlevantamiento(titulo, info, contactado, area, forms, idlev){
+	if(idlev){
+		action = "update";
+	}else{
+		action = "insert";
+	}
 	
 	$.post("ajax/ajaxlevantamientos.php",{ 
-		action: "insert",
+		action: action,
+		idlev : idlev,
 		titulo : titulo, 
 		info : info, 
 		contactado : contactado, 
@@ -36,7 +42,11 @@ function guardarlevantamiento(titulo, info, contactado, area, forms){
 			var obj = jQuery.parseJSON(respuesta);
 			if(obj.result){
 	        	console.log("la respuesta es", obj.id );
-				window.location.href = "recorrer.php?emp="+$.session.get('empresa')+'&idlev='+obj.id;
+	        	if(action == "insert"){
+	        		window.location.href = "recorrer.php?emp="+$.session.get('empresa')+'&idlev='+obj.id;
+	        	}else if(action == "update"){
+	        		window.location.href = "levantamiento.php?emp="+$.session.get('empresa');
+	        	}
 			}else{
 				console.log("error en guardarlevantamiento", obj.exception);
 			}
@@ -107,6 +117,8 @@ $(document).ready(function(){
 		var info =$("#info-levantamiento").val();
 		var contactado = $("#contactado-por").val();
 		var area = $("#area-contacto").val();
+		var idlev= $(this).data('idlev');
+		
 		//$("#formularios").val();
 		var forms = [];
 		
@@ -121,7 +133,7 @@ $(document).ready(function(){
 	    });
 		if(titulo && info && contactado && area && forms){
 			console.log("cambio", JSON.stringify(forms));
-			guardarlevantamiento(titulo, info, contactado, area, JSON.stringify(forms));
+			guardarlevantamiento(titulo, info, contactado, area, JSON.stringify(forms), idlev);
 
 		}else{
 			alert("faltan campos por llenar");
@@ -132,6 +144,31 @@ $(document).ready(function(){
 	$("#cancel").on('click', function(){
 		window.location.href = "levantamiento.php?emp="+$.session.get('empresa');
 	});
+	
+	$(".edit").on('click', function(){
+		var idlevantamiento = $(this).data('id');
+		window.location.href = "editarlevantamiento.php?id="+idlevantamiento;
+	});
+	
+	$("#mainback").on('click', function(){
+		var idlevantamiento = $(this).data('id');
+		window.location.href = "levantamiento.php?emp="+$.session.get('empresa');
+	});
+	
+	$("#usernamebutton").on('click', function(){
+		//$("#mypanel").trigger( "updatelayout" );
+		console.log("trigger");
+	});
+	
+	$("#cerrarsesion").on('click', function(){
+		$.session.set('usu', "");
+		$.session.set('pass',"");
+		$.session.set('empresa',"");
+		window.location.href = "index.html";
+		console.log("cierra sesion");
+	});
+	
+	
 
 	
 });

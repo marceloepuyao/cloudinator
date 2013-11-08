@@ -140,20 +140,40 @@ if(isset($_POST['type'])) { //DEPRICATED: por favor usar ajaxMegaTrees.php, acti
 		);
 		print($json->encode($data));
 	}
-}else if(isset($_POST['nuevonombre'])) {
+}else if(isset($_POST['action']) && $_POST['action'] == "release") {
 	try {
-		DBQuery("UPDATE trees SET name = '$_POST[nuevonombre]' WHERE id = $_POST[tree]");
+		DBQuery("UPDATE trees SET released = 1 WHERE id = $_POST[id]");
 		$data = array(
-			'result' => true,
+			'result' => true
 		);
-		print($json->encode($data));
 	}catch (Exception $e){
 		$data = array(
 			'result' => false,
 			'exception' => $e
 		);
-		print($json->encode($data));
 	}
+	print($json->encode($data));
+}else if(isset($_POST['nuevonombre'])) {
+	try {
+		$response = DBQuery("SELECT * FROM trees WHERE name = '$_POST[nuevonombre]' AND megatree = (SELECT megatree FROM trees WHERE id = $_POST[tree])");
+		if($response->num_rows > 0){
+			$data = array(
+				'result' => false,
+				'exception' => 'NombreOcupado'
+			);
+		}else{
+			DBQuery("UPDATE trees SET name = '$_POST[nuevonombre]' WHERE id = $_POST[tree]");
+			$data = array(
+				'result' => true
+			);
+		}
+	}catch (Exception $e){
+		$data = array(
+			'result' => false,
+			'exception' => $e
+		);
+	}
+	print($json->encode($data));
 }else{
 	try {	
 		$query = 'SELECT * FROM trees WHERE deleted = 0';

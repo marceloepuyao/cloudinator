@@ -39,7 +39,7 @@ if($action == 'insert'){
 	try {
 		$idlev = (int)$_POST['idlev'];
 		
-		//TODO:no se deberían borrar, se debería crear un campo delete = 1
+		//TODO:no se deberï¿½an borrar, se deberï¿½a crear un campo delete = 1
 		
 		//se borra el levantamiento
 		DBQuery("DELETE FROM `levantamientos` WHERE `levantamientos`.`id` = '$idlev'");
@@ -58,6 +58,28 @@ if($action == 'insert'){
 		print($json->encode($data));
 	}
 	
+}else if($action == "update"){
+	
+	try {
+		
+		$query = "UPDATE  `levantamientos` SET  `titulo` =  '$_POST[titulo]', `empresaid` =  $_POST[empresaid], `info` =  '$_POST[info]',`formsactivos` =  '$_POST[forms]', `conctadopor` =  '$_POST[contactado]',`areacontacto` =  '$_POST[area]',`modified` =  '".date("Y-m-d H:i:s")."'
+				WHERE  `levantamientos`.`id` =$_POST[idlev];";
+		DBQuery($query);
+	
+		
+		$data = array(
+			'result' => true,
+			'id'=>$_POST['idlev']
+		);
+		
+		print($json->encode($data));
+	} catch (Exception $e) {
+		$data = array(
+			'result' => false,
+			'exception' => $e
+		);
+		print($json->encode($data));
+	}
 }
 
 		

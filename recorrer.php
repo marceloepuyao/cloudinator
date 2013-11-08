@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once('DB/db.php');
 require_once('lib.php');
 
@@ -58,10 +58,19 @@ $formularios = DBQueryReturnArray($queryformularios);
 <body>
 
 <div id="recorrer" data-role="page" >
+
+
+	<div data-theme="b" data-display="overlay" data-position="right" data-role="panel" id="mypanel">
+		<h2 id="usernamebutton"></h2>
+		<a href="#" id="cerrarsesion">Cerrar Sesión</a> <br>
+		<a href="#header" data-rel="close">Cerrar</a>
+    <!-- panel content goes here -->
+	</div><!-- /panel -->
+
 	<div data-role="header" data-theme="b">
 	    <a href="#" id="backbutton2" data-icon="arrow-l">atrás</a>
 	    <h1 id ="empresanombre"><?php echo $nombre; ?>	</h1>
-	    <a href="#" id="usernamebutton" data-icon="check" class="ui-btn-right"></a>
+	    <a href="#mypanel" data-icon="bars">config</a>
 	</div>
 	
 	<div data-role="content">
@@ -71,7 +80,7 @@ $formularios = DBQueryReturnArray($queryformularios);
 			<?php foreach($formularios as $key => $formulario) {
 			
 				//get all the subform
-				$querysubformularios = "SELECT * FROM trees WHERE megatree = ".$formulario['id'];
+				$querysubformularios = "SELECT * FROM trees WHERE released = 1 AND megatree = ".$formulario['id'];
 				$subformularios = DBQueryReturnArray($querysubformularios);
 				$total = count($subformularios);
 			?>
@@ -114,5 +123,7 @@ $formularios = DBQueryReturnArray($queryformularios);
 </div>
 <script src="js/levantamiento.js" type="text/javascript"></script>
 <script src="js/jquery.session.js" type="text/javascript"></script>
+<script type="text/javascript" src="http://webcursos.uai.cl/jira/s/es_ES-jovvqt-418945332/850/3/1.2.9/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?collectorId=2ab5c7d9"></script> <!-- JIRA (para reportar errores)-->
+	<style type="text/css">.atlwdg-trigger.atlwdg-RIGHT{background-color:red;top:70%;z-index:10001;}</style>
 </body>
 </html>

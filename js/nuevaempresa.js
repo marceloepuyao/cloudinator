@@ -26,11 +26,15 @@ function crearEmpresa(name,industry,textarea){
 			
 			if(resp.result){
 				$.session.set('empresa', resp.id);
-				 
-				alert("empresa creada con éxito");
+				//alert("empresa creada con éxito");
 				window.location.href = "levantamiento.php?emp="+resp.id;
 			}else{
-				alert("no se ha podido crear la empresa");
+				if(resp.exception == "existing"){
+					alert("Nombre ocupado");
+				}else{
+					alert("No se ha podido crear la empresa");
+					console.log("exception", resp.exception);
+				}
 			}
 		}
 	);
