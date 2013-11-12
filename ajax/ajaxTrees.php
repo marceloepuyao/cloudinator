@@ -153,6 +153,24 @@ if(isset($_POST['type'])) { //DEPRICATED: por favor usar ajaxMegaTrees.php, acti
 		);
 	}
 	print($json->encode($data));
+}else if(isset($_POST['action']) && $_POST['action'] == "checkReleasedAndDeleted") {
+	try {
+		$response = DBQuery("SELECT * FROM trees WHERE id = $_POST[id]");
+		$aux = $response->fetch_assoc();
+		$deleted = $aux['deleted'];
+		$released = $aux['released'];
+		$data = array(
+			'result' => true,
+			'deleted' => $deleted,
+			'released' => $released
+		);
+	}catch (Exception $e){
+		$data = array(
+			'result' => false,
+			'exception' => $e
+		);
+	}
+	print($json->encode($data));
 }else if(isset($_POST['nuevonombre'])) {
 	try {
 		$response = DBQuery("SELECT * FROM trees WHERE name = '$_POST[nuevonombre]' AND megatree = (SELECT megatree FROM trees WHERE id = $_POST[tree])");

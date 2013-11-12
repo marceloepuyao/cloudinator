@@ -47,8 +47,40 @@ function noticeSaving(state){
 	}
 
 }
-
+function noticeDeletedAndReleased(){
+	$.ajax({
+		url: 'ajax/ajaxTrees.php',
+		dataType: 'json',
+		type: 'POST',
+		data: {
+			action: 'checkReleasedAndDeleted',
+			id: getQueryStringByName("id")
+				},
+		timeout: 2500,
+		success: function(data){
+			if(data.result){
+				if(data.released == "1" && data.deleted == "1"){
+					alert('Este Subformulario está "Publicado" y "Eliminado", por lo cual no se puede modificar.\n Cualquier cambio que haga no será guardado.');
+				}else if (data.released == "1") {
+					alert('Este Subformulario está "Publicado", por lo cual no se puede modificar.\n Cualquier cambio que haga no será guardado.');
+				}else if (data.deleted == "1") {
+					alert('Este Subformulario está "Eliminado", por lo cual no se puede modificar.\n Cualquier cambio que haga no será guardado.');
+				}
+			}else{
+				alert('Se produjo un error al comprobar el estado del formulario.\nIntente nuevamente.');
+			}
+		}
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		if(textStatus==="timeout") {
+			//window.location.reload();
+		}else{
+			console.log("fail", errorThrown, textStatus);
+			console.log("fail", jqXHR);
+		}
+	});
+}
 AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
+	noticeDeletedAndReleased();
 	A.one('.aui-diagram-builder-canvas').setStyle('background', 'white');
 	A.one('#EditName').on('click', function(){
 		
