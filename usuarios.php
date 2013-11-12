@@ -4,7 +4,6 @@ require_once('lib.php');
 
 //TODO: Comprobar si se es superusuario
 
-//TODO: obtener todos los usuarios
 $queryusuarios = "SELECT * FROM users";
 $usuarios = DBQueryReturnArray($queryusuarios);
 
@@ -34,7 +33,7 @@ $usuarios = DBQueryReturnArray($queryusuarios);
 <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 <script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
 	
-<div id="usuarios" data-role="page" >
+<div id="users" data-role="page" >
 	<div data-theme="b" data-display="overlay" data-position="right" data-role="panel" id="mypanel">
 		<h2 id="usernamebutton"></h2>
 		<a href="#" id="cerrarsesion">Cerrar Sesión</a> <br>
@@ -81,7 +80,7 @@ $usuarios = DBQueryReturnArray($queryusuarios);
 
 
 		<div data-role="controlgroup">
-		    <a id="newuser" href="#newuser" data-role="button">Agregar nuevo usuario</a>
+		    <a href="#newuser" data-role="button">Agregar nuevo usuario</a>
 		</div>
 	</div><!-- /content -->
 </div>
@@ -96,7 +95,7 @@ $usuarios = DBQueryReturnArray($queryusuarios);
 	</div><!-- /panel -->
 
 	<div data-role="header" class="header" data-position="fixed" role="banner" data-theme="b">
-	    <a href="#" id="backbutton" data-icon="arrow-l">Atrás</a>
+	    <a href="#users"  data-icon="arrow-l">Atrás</a>
 	    <h1>Usuarios</h1>
 	    <a href="#mypanel" data-icon="bars">config</a>
 	</div>
@@ -137,7 +136,7 @@ $usuarios = DBQueryReturnArray($queryusuarios);
 				
 				<li class="ui-body ui-body-b">
 		            <fieldset class="ui-grid-a">
-		                    <div class="ui-block-a"><a href="#usuarios"><button id="canceluser" data-theme="d">Cancelar</button></a></div>
+		                    <div class="ui-block-a"><a href="#users"><button id="canceluser" data-theme="d">Cancelar</button></a></div>
 		                    <div class="ui-block-b"><button data-theme="b">Continuar</button></div>
 		            </fieldset>
 		        </li>

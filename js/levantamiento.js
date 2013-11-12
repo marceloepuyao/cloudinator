@@ -96,6 +96,8 @@ $(document).ready(function(){
 	
 	checkSessionorDie();
 	
+	console.log("WTF");
+	
 	$("#backbutton").on('click', function(){
 		window.location.href = "index.html";
 	});
