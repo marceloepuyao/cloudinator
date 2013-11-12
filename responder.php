@@ -56,6 +56,7 @@ if($pregunta == null){
 	<div data-theme="b" data-display="overlay" data-position="right" data-role="panel" id="mypanel">
 		<h2 id="usernamebutton"></h2>
 		<a href="#" id="cerrarsesion">Cerrar Sesión</a> <br>
+		<a href="#" id="usuarios">Usuarios</a><br>
 		<a href="#header" data-rel="close">Cerrar</a>
     <!-- panel content goes here -->
 	</div><!-- /panel -->

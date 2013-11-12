@@ -17,6 +17,27 @@ function checkSessionorDie(){
 		window.location.href = "notfound.html";
 	}
 	
+	var d = new Date();
+	var time = d.getTime(); 
+	if($.session.get('lastaccess')!==undefined){
+		if((time - $.session.get('lastaccess'))  < 5*60*1000){
+			console.log("se renueva", time - $.session.get('lastaccess') );
+			$.session.set('lastaccess',time);
+		}else{
+			console.log("se cierra, han pasado ", time - $.session.get('lastaccess'), "milisegundos" );
+			$.session.set('usu', "");
+			$.session.set('pass',"");
+			$.session.set('empresa',"");
+			$.session.set('lastaccess',"");
+			window.location.href = "index.html";
+		}
+		
+	}else{
+		$.session.set('lastaccess',time);
+		console.log("first time lastaccess",$.session.get('lastaccess') );
+	}
+	
+	
 	$("#usernamebutton").text($.session.get('usu'));
 	setEmpresaInfo($.session.get('empresa'));
 	console.log("asdasd");
@@ -161,6 +182,7 @@ $(document).ready(function(){
 		$.session.set('usu', "");
 		$.session.set('pass',"");
 		$.session.set('empresa',"");
+		$.session.set('lastaccess',"");
 		window.location.href = "index.html";
 		console.log("cierra sesion");
 	});
@@ -178,7 +200,6 @@ $(document).ready(function(){
 		//delete ultima pregunta respondida
 		borrarUltimaPreguntaRespondida(idsubform, idlev);
 		
-		window.location.href = "responder.php?idsubform="+idsubform+"&idlev="+idlev;
 	});
 	
 	$("#respondersubpregunta").on('click', function(){
@@ -199,4 +220,9 @@ $(document).ready(function(){
 		
 		responderpregunta(idnode, idlev, idsubform, idpregunta, response);
 	});
+	$("#usuarios").on('click', function(){
+
+		window.location.href = "usuarios.php";
+	});
+	
 });

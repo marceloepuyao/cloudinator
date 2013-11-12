@@ -24,6 +24,25 @@ function checkSession(){
 		console.log("pass",$.session.get('pass') );
 		$("#passwordcloud").val($.session.get('pass'));
 	}
+	var d = new Date();
+	var time = d.getTime(); 
+	if($.session.get('lastaccess')!==undefined){
+		if((time - $.session.get('lastaccess'))  < 5*60*1000){
+			console.log("se renueva", time - $.session.get('lastaccess') );
+			$.session.set('lastaccess',time);
+		}else{
+			console.log("se cierra, han pasado ", time - $.session.get('lastaccess'), "milisegundos" );
+			$.session.set('usu', "");
+			$.session.set('pass',"");
+			$.session.set('empresa',"");
+			$.session.set('lastaccess',"");
+			window.location.href = "index.html";
+		}
+		
+	}else{
+		$.session.set('lastaccess',time);
+	}
+	
 	
 }
 function login(){
