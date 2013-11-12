@@ -93,7 +93,7 @@ $formularios = getAllFormularios();
 		      	<?php foreach($levantamientos as $key => $levantamiento) { ?>
 			    	<tr>
 			    	<td><?php echo $levantamiento['titulo']; ?></td>
-			         <td><?php echo $levantamiento['modified']; ?></td>
+			         <td><?php echo $levantamiento['modified'].' (Hace '.floor((time()-strtotime($levantamiento['modified']))/(60*60*24)).' Días.)';?></td>
 			         <td><?php echo $levantamiento['info']; ?></td>
 			         <td><a class="ira" data-empresa="<?php echo $idempresa; ?>" data-levantamiento="<?php echo $levantamiento['id']; ?>" href="#"><i class="fa fa-play"></i></a></td>
 			         <td><a class="delete" data-levantamiento="<?php echo $levantamiento['id']; ?>" href="#"><i class="fa fa-trash-o"></i></a></td>
