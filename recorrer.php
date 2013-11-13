@@ -63,6 +63,7 @@ $formularios = DBQueryReturnArray($queryformularios);
 	<div data-theme="b" data-display="overlay" data-position="right" data-role="panel" id="mypanel">
 		<h2 id="usernamebutton"></h2>
 		<a href="#" id="cerrarsesion">Cerrar Sesión</a> <br>
+		<a href="#" id="usuarios">Usuarios</a><br>
 		<a href="#header" data-rel="close">Cerrar</a>
     <!-- panel content goes here -->
 	</div><!-- /panel -->
@@ -80,7 +81,11 @@ $formularios = DBQueryReturnArray($queryformularios);
 			<?php foreach($formularios as $key => $formulario) {
 			
 				//get all the subform
-				$querysubformularios = "SELECT * FROM trees WHERE released = 1 AND megatree = ".$formulario['id'];
+				$querysubformularios = "SELECT * FROM trees 
+									WHERE released = 1 
+									AND megatree = ".$formulario['id']." 
+									AND (deleted = 0 OR 
+											(deleted = 1 AND modified > '".$levantamiento[0]['created']."')); ";
 				$subformularios = DBQueryReturnArray($querysubformularios);
 				$total = count($subformularios);
 			?>

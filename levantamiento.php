@@ -1,6 +1,6 @@
 ﻿<?php
-require_once('DB/db.php');
-require_once('lib.php');
+	require_once('DB/db.php');
+	require_once('lib.php');
 if(isset($_GET['emp'])){
 	$idempresa = (int)$_GET['emp'];
 }else{
@@ -33,6 +33,7 @@ $formularios = getAllFormularios();
 
 <head>
 <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css" />
+<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 <style type="text/css" media="screen">
 		.jqm-content {
 			padding-right: 25%;
@@ -55,6 +56,7 @@ $formularios = getAllFormularios();
 	<div data-theme="b" data-display="overlay" data-position="right" data-role="panel" id="mypanel">
 		<h2 id="usernamebutton"></h2>
 		<a href="#" id="cerrarsesion">Cerrar Sesión</a> <br>
+		<a href="#" id="usuarios">Usuarios</a><br>
 		<a href="#header" data-rel="close">Cerrar</a>
     <!-- panel content goes here -->
 	</div><!-- /panel -->
@@ -72,6 +74,8 @@ $formularios = getAllFormularios();
 		<h4>Información de la empresa</h4>
 		<p id="infoempresa" > <?php echo $info; ?></p>
 		<br>
+		<?php if($levantamientos){?>
+		
 		<h4 >Historial de levantamientos</h4>
 		
 		<table data-role="table" id="table-column-toggle" data-mode="columntoggle" class="ui-responsive table-stroke">
@@ -89,15 +93,17 @@ $formularios = getAllFormularios();
 		      	<?php foreach($levantamientos as $key => $levantamiento) { ?>
 			    	<tr>
 			    	<td><?php echo $levantamiento['titulo']; ?></td>
-			         <td><?php echo $levantamiento['modified']; ?></td>
+			         <td><?php echo $levantamiento['modified'].' (Hace '.floor((time()-strtotime($levantamiento['modified']))/(60*60*24)).' Días.)';?></td>
 			         <td><?php echo $levantamiento['info']; ?></td>
-			         <td><a class="ira" data-empresa="<?php echo $idempresa; ?>" data-levantamiento="<?php echo $levantamiento['id']; ?>" href="#">ir</a></td>
-			         <td><a class="delete" data-levantamiento="<?php echo $levantamiento['id']; ?>" href="#">X</a></td>
-			         <td><a class="edit" data-id="<?php echo $levantamiento['id']; ?>" href="#">editar</a></td>
+			         <td><a class="ira" data-empresa="<?php echo $idempresa; ?>" data-levantamiento="<?php echo $levantamiento['id']; ?>" href="#"><i class="fa fa-play"></i></a></td>
+			         <td><a class="delete" data-levantamiento="<?php echo $levantamiento['id']; ?>" href="#"><i class="fa fa-trash-o"></i></a></td>
+			         <td><a class="edit" data-id="<?php echo $levantamiento['id']; ?>" href="#"><i class="fa fa-pencil"></i></a></td>
 			       </tr>
 				<?php } ?>		       
 		     </tbody>
 		   </table>
+		   
+		   <?php }?>
 		<br><br>
 		<div data-role="controlgroup">
 		    <a id="tonew" href="#new" data-role="button">Empezar Nuevo Levantamiento</a>

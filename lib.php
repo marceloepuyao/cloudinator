@@ -64,10 +64,10 @@ function getQuestionAnswers($idsubform, $idlevantamiento){
 											FROM  links l
 											WHERE l.source = ".$pregunta[0]['id'].")");
 			
-			return array("pregunta" =>$pregunta[0], "respuestas" => $respuestas, "ultimavisita"=>$preguntas[0]['created'], "completitud"=>0);
+			return array("pregunta" =>$pregunta[0], "respuestas" => $respuestas, "ultimavisita"=>'Hace '.floor((time()-strtotime($preguntas[0]['created']))/(60*60*24)).' Días.', "completitud"=>0);
 		}else{
 			
-			return array("pregunta" =>null, "respuestas" => null, "ultimavisita"=>$preguntas[0]["created"], "completitud"=>100);
+			return array("pregunta" =>null, "respuestas" => null, "ultimavisita"=>'Hace '.floor((time()-strtotime($preguntas[0]["created"]))/(60*60*24)).' Días.', "completitud"=>100);
 			
 		}
 		
