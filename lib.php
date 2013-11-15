@@ -1,5 +1,17 @@
 <?php
+define('APPLICATION_PATH', realpath(dirname(__FILE__)));
 require_once('DB/db.php');
+
+/**
+ * Modo de uso:
+ * <?php echo get_string($key, $lang);?>
+ * siendo $key la palabra clave par el string que se busca y $lang el idioma que se requiere.
+ */
+function get_string($key, $lang) {
+	require(APPLICATION_PATH . '/lang/' . $lang . '.php');
+	$translation = $dicc[$key];
+	return $translation;
+}
 
 /** obtenemos el formulario, pero primero revisamos si está SANO:
  *  1.- solo hay un nodo que no tiene padres (este nodo es pregunta)

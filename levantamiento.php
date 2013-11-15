@@ -68,8 +68,6 @@ $formularios = getAllFormularios();
 	</div>
 	
 	
-	
-	
 	<div class="container">
 		<h4>Información de la empresa</h4>
 		<p id="infoempresa" > <?php echo $info; ?></p>
