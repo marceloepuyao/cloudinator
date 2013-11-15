@@ -1,20 +1,28 @@
+function getLang(){
+	var lang = $.session.get("lang");
+	if(lang == "" || lang == null){
+		lang = "es";
+	}
+	return lang;
+}
+
 function checkSessionorDie(){
 	
 	if($.session.get('usu')!==undefined){
 		console.log("usu",$.session.get('usu') );
 	}else{
-		window.location.href = "notfound.html";
+		window.location.href = "notfound.html" + "&lang=" + getLang();
 	}
 	if($.session.get('pass')!==undefined){
 		console.log("pass",$.session.get('pass') );
 	}else{
-		window.location.href = "notfound.html";
+		window.location.href = "notfound.html" + "&lang=" + getLang();
 	}
 	
 	if($.session.get('empresa')!==undefined){
 		console.log("empresa",$.session.get('empresa') );
 	}else{
-		window.location.href = "notfound.html";
+		window.location.href = "notfound.html" + "&lang=" + getLang();
 	}
 	
 	var d = new Date();
@@ -29,7 +37,7 @@ function checkSessionorDie(){
 			$.session.set('pass',"");
 			$.session.set('empresa',"");
 			$.session.set('lastaccess',"");
-			window.location.href = "index.html";
+			window.location.href = "index.html" + "&lang=" + getLang();
 		}
 		
 	}else{
@@ -73,7 +81,7 @@ function responderpregunta(idnode, idlev, idsubform, idpregunta, respsubpregunta
 			
 			//si la respuesta es positiva se continua, si no mensaje de error
 			if(resp.result){
-				window.location.href = "responder.php?idlev=" + idlev+"&idsubform="+idsubform;
+				window.location.href = "responder.php?idlev=" + idlev + "&idsubform=" + idsubform + "&lang=" + getLang();
 			}else{
 				alert("problemas con escribir en la base de datos");
 			}
@@ -92,7 +100,7 @@ function borrarUltimaPreguntaRespondida(idsubform, idlev){
 			console.log("resp", resp);
 			//si la respuesta es positiva se continua, si no mensaje de error
 			if(resp.result){
-				window.location.href = "responder.php?idlev=" + idlev+"&idsubform="+idsubform;
+				window.location.href = "responder.php?idlev=" + idlev+"&idsubform="+idsubform+ "&lang=" + getLang();
 			}else{
 				alert("problemas con escribir en la base de datos");
 			}
@@ -162,7 +170,7 @@ $(document).ready(function(){
 	$("#backbutton").on('click', function(){
 		var emp = $(this).data('emp');
 		var idlev = $(this).data('idlev');
-		window.location.href = "recorrer.php?emp="+emp+"&idlev="+idlev;
+		window.location.href = "recorrer.php?emp="+emp+"&idlev="+idlev+ "&lang=" + getLang();
 	});
 	
 	$(".answer").on('click', function(){
@@ -183,14 +191,14 @@ $(document).ready(function(){
 		$.session.set('pass',"");
 		$.session.set('empresa',"");
 		$.session.set('lastaccess',"");
-		window.location.href = "index.html";
+		window.location.href = "index.html" + "&lang=" + getLang();
 		console.log("cierra sesion");
 	});
 	
 	$("#responderquit").on('click', function(){
 		var emp = $(this).data('emp');
 		var idlev = $(this).data('idlev');
-		window.location.href = "recorrer.php?emp="+emp+"&idlev="+idlev;
+		window.location.href = "recorrer.php?emp="+emp+"&idlev="+idlev+ "&lang=" + getLang();
 	});
 	
 	$("#responderback").on('click', function(){
@@ -222,7 +230,7 @@ $(document).ready(function(){
 	});
 	$("#usuarios").on('click', function(){
 
-		window.location.href = "usuarios.php";
+		window.location.href = "usuarios.php&lang=" + getLang();
 	});
 	
 });

@@ -1,20 +1,27 @@
+function getLang(){
+	var lang = $.session.get("lang");
+	if(lang == "" || lang == null){
+		lang = "es";
+	}
+	return lang;
+}
 function checkSessionorDie(){
 	
 	if($.session.get('usu')!==undefined){
 		console.log("usu",$.session.get('usu') );
 	}else{
-		window.location.href = "index.html";
+		window.location.href = "index.html" + "&lang=" + getLang();
 	}
 	if($.session.get('pass')!==undefined){
 		console.log("pass",$.session.get('pass') );
 	}else{
-		window.location.href = "index.html";
+		window.location.href = "index.html" + "&lang=" + getLang();
 	}
 	
 	if($.session.get('empresa')!==undefined){
 		console.log("empresa",$.session.get('empresa') );
 	}else{
-		window.location.href = "index.html";
+		window.location.href = "index.html" + "&lang=" + getLang();
 	}
 	
 	var d = new Date();
@@ -29,7 +36,7 @@ function checkSessionorDie(){
 			$.session.set('pass',"");
 			$.session.set('empresa',"");
 			$.session.set('lastaccess',"");
-			window.location.href = "index.html";
+			window.location.href = "index.html" + "&lang=" + getLang();
 		}
 		
 	}else{
@@ -64,9 +71,9 @@ function guardarlevantamiento(titulo, info, contactado, area, forms, idlev){
 			if(obj.result){
 	        	console.log("la respuesta es", obj.id );
 	        	if(action == "insert"){
-	        		window.location.href = "recorrer.php?emp="+$.session.get('empresa')+'&idlev='+obj.id;
+	        		window.location.href = "recorrer.php?emp="+$.session.get('empresa')+'&idlev='+obj.id + "&lang=" + getLang();
 	        	}else if(action == "update"){
-	        		window.location.href = "levantamiento.php?emp="+$.session.get('empresa');
+	        		window.location.href = "levantamiento.php?emp="+$.session.get('empresa') + "&lang=" + getLang();
 	        	}
 			}else{
 				console.log("error en guardarlevantamiento", obj.exception);
@@ -99,16 +106,16 @@ $(document).ready(function(){
 	console.log("WTF");
 	
 	$("#backbutton").on('click', function(){
-		window.location.href = "index.html";
+		window.location.href = "index.html" + "&lang=" + getLang();
 	});
 
 	$("#backbutton2").on('click', function(){
-		window.location.href = "levantamiento.php?emp="+$.session.get('empresa');
+		window.location.href = "levantamiento.php?emp="+$.session.get('empresa') + "&lang=" + getLang();
 	});
 	$(".ira").on('click', function(){
 		var idempresa = $(this).data('empresa');
 		var idlevantamiento = $(this).data('levantamiento');
-		window.location.href = "recorrer.php?emp="+idempresa+"&idlev="+idlevantamiento;
+		window.location.href = "recorrer.php?emp="+idempresa+"&idlev="+idlevantamiento + "&lang=" + getLang();
 	});
 	
 	
@@ -130,7 +137,7 @@ $(document).ready(function(){
 	$(".goto").on('click', function(){
 		var subform = $(this).data('subform');
 		var lev = $(this).data('levantamiento');
-		window.location.href = "responder.php?idsubform="+subform+"&idlev="+lev;
+		window.location.href = "responder.php?idsubform="+subform+"&idlev="+lev + "&lang=" + getLang();
 
 
 	});
@@ -165,17 +172,17 @@ $(document).ready(function(){
 
 	});
 	$("#cancel").on('click', function(){
-		window.location.href = "levantamiento.php?emp="+$.session.get('empresa');
+		window.location.href = "levantamiento.php?emp="+$.session.get('empresa') + "&lang=" + getLang();
 	});
 	
 	$(".edit").on('click', function(){
 		var idlevantamiento = $(this).data('id');
-		window.location.href = "editarlevantamiento.php?id="+idlevantamiento;
+		window.location.href = "editarlevantamiento.php?id="+idlevantamiento + "&lang=" + getLang();
 	});
 	
 	$("#mainback").on('click', function(){
 		var idlevantamiento = $(this).data('id');
-		window.location.href = "levantamiento.php?emp="+$.session.get('empresa');
+		window.location.href = "levantamiento.php?emp="+$.session.get('empresa') + "&lang=" + getLang();
 	});
 	
 	$("#usernamebutton").on('click', function(){
@@ -188,13 +195,13 @@ $(document).ready(function(){
 		$.session.set('pass',"");
 		$.session.set('empresa',"");
 		$.session.set('lastaccess',"");
-		window.location.href = "index.html";
+		window.location.href = "index.html" + "&lang=" + getLang();
 		console.log("cierra sesion");
 	});
 	
 	$("#usuarios").on('click', function(){
 
-		window.location.href = "usuarios.php";
+		window.location.href = "usuarios.php&lang=" + getLang();
 	});
 
 	

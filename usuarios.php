@@ -128,9 +128,9 @@ $usuarios = DBQueryReturnArray($queryusuarios);
 		        <li data-role="fieldcontain">
 		        	<label for="idioma" class="select">Idioma</label> 
 		        	<select name="idioma" id="idioma">
-		        	<option value="es">es</option>
-		        	<option value="br">br</option>
-		        	<option value="en">en</option>
+		        	<option value="es">Español</option>
+		        	<option value="pt">Português</option>
+		        	<option value="en">English</option>
 				</select>
 				</li>
 				

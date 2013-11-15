@@ -1,14 +1,21 @@
+function getLang(){
+	var lang = $.session.get("lang");
+	if(lang == "" || lang == null){
+		lang = "es";
+	}
+	return lang;
+}
 function checkSessionorDie(){
 	
 	if($.session.get('usu')!==undefined){
 		console.log("usu",$.session.get('usu') );
 	}else{
-		window.location.href = "index.html";
+		window.location.href = "index.html" + "&lang=" + getLang();
 	}
 	if($.session.get('pass')!==undefined){
 		console.log("pass",$.session.get('pass') );
 	}else{
-		window.location.href = "index.html";
+		window.location.href = "index.html" + "&lang=" + getLang();
 	}
 	
 	var d = new Date();
@@ -23,7 +30,7 @@ function checkSessionorDie(){
 			$.session.set('pass',"");
 			$.session.set('empresa',"");
 			$.session.set('lastaccess',"");
-			window.location.href = "index.html";
+			window.location.href = "index.html" + "&lang=" + getLang();
 		}
 		
 	}else{
@@ -47,7 +54,7 @@ function crearEmpresa(name,industry,textarea){
 			if(resp.result){
 				$.session.set('empresa', resp.id);
 				//alert("empresa creada con éxito");
-				window.location.href = "levantamiento.php?emp="+resp.id;
+				window.location.href = "levantamiento.php?emp="+resp.id + "&lang=" + getLang();
 			}else{
 				if(resp.exception == "existing"){
 					alert("Nombre ocupado");
@@ -65,7 +72,7 @@ $(document).ready(function(){
 	checkSessionorDie();
 	
 	$("#backbutton").on('click', function(){
-		window.location.href = "index.html";
+		window.location.href = "index.html" + "&lang=" + getLang();
 	});
 	//alert($(window).width() );
 	$(window).resize(function() {
@@ -96,7 +103,7 @@ $(document).ready(function(){
 	});
 	$("#cancel").on('click', function(){
 		
-		window.location.href = "index.html";
+		window.location.href = "index.html" + "&lang=" + getLang();
 	});
 	
 	
