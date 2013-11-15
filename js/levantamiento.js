@@ -10,18 +10,18 @@ function checkSessionorDie(){
 	if($.session.get('usu')!==undefined){
 		console.log("usu",$.session.get('usu') );
 	}else{
-		window.location.href = "index.html" + "&lang=" + getLang();
+		window.location.href = "index.html?lang=" + getLang();
 	}
 	if($.session.get('pass')!==undefined){
 		console.log("pass",$.session.get('pass') );
 	}else{
-		window.location.href = "index.html" + "&lang=" + getLang();
+		window.location.href = "index.html?lang=" + getLang();
 	}
 	
 	if($.session.get('empresa')!==undefined){
 		console.log("empresa",$.session.get('empresa') );
 	}else{
-		window.location.href = "index.html" + "&lang=" + getLang();
+		window.location.href = "index.html?lang=" + getLang();
 	}
 	
 	var d = new Date();
@@ -36,7 +36,7 @@ function checkSessionorDie(){
 			$.session.set('pass',"");
 			$.session.set('empresa',"");
 			$.session.set('lastaccess',"");
-			window.location.href = "index.html" + "&lang=" + getLang();
+			window.location.href = "index.html?lang=" + getLang();
 		}
 		
 	}else{
@@ -106,7 +106,7 @@ $(document).ready(function(){
 	console.log("WTF");
 	
 	$("#backbutton").on('click', function(){
-		window.location.href = "index.html" + "&lang=" + getLang();
+		window.location.href = "index.html?lang=" + getLang();
 	});
 
 	$("#backbutton2").on('click', function(){
@@ -195,13 +195,13 @@ $(document).ready(function(){
 		$.session.set('pass',"");
 		$.session.set('empresa',"");
 		$.session.set('lastaccess',"");
-		window.location.href = "index.html" + "&lang=" + getLang();
+		window.location.href = "index.html?lang=" + getLang();
 		console.log("cierra sesion");
 	});
 	
 	$("#usuarios").on('click', function(){
 
-		window.location.href = "usuarios.php&lang=" + getLang();
+		window.location.href = "usuarios.php?lang=" + getLang();
 	});
 
 	

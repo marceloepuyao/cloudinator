@@ -43,7 +43,7 @@ function checkSession(){
 			$.session.set('pass',"");
 			$.session.set('empresa',"");
 			$.session.set('lastaccess',"");
-			window.location.href = "index.html" + "&lang=" + getLang();
+			window.location.href = "index.html?lang=" + getLang();
 		}
 		
 	}else{
@@ -88,7 +88,7 @@ $(document).ready(function(){
 	llamaempresas();
     $("#errorMsg").hide();
     $("#backbutton").on('click', function(){
-    	window.location.href = "index.html" + "&lang=" + getLang();
+    	window.location.href = "index.html?lang=" + getLang();
 	});
     $(window).resize(function() {
 		  if($(window).width() < 800 ){
