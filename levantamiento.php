@@ -7,6 +7,12 @@ if(isset($_GET['emp'])){
 	header( 'Location: notfound.html' );
 }
 
+if(isset($_GET['lang'])){
+	$lang = $_GET['lang'];
+}else{
+	$lang = "es";
+}
+
 	
 //sacar info de la empresa, si no existe se manda a not found
 $queryempresa="SELECT * FROM empresas WHERE id = $idempresa";
@@ -20,6 +26,7 @@ $info = $empresa[0]['infolevantamiento'];
 
 $querylevantamientos = "SELECT * FROM levantamientos WHERE empresaid = $idempresa";
 $levantamientos = DBQueryReturnArray($querylevantamientos);
+
 
 $queryusers = "SELECT * FROM users";
 $users = DBQueryReturnArray($queryusers);
@@ -55,36 +62,37 @@ $formularios = getAllFormularios();
 
 	<div data-theme="b" data-display="overlay" data-position="right" data-role="panel" id="mypanel">
 		<h2 id="usernamebutton"></h2>
-		<a href="#" id="cerrarsesion">Cerrar Sesión</a> <br>
-		<a href="#" id="usuarios">Usuarios</a><br>
-		<a href="#header" data-rel="close">Cerrar</a>
+		<a href="#" id="cerrarsesion"><?php echo get_string("logout", $lang)?></a> <br>
+		<a href="#" id="usuarios"><?php echo get_string("users", $lang)?></a><br>
+		<a href="#header" data-rel="close"><?php echo get_string("close", $lang)?></a>
     <!-- panel content goes here -->
 	</div><!-- /panel -->
 
 	<div data-role="header" class="header" data-position="fixed" role="banner" data-theme="b">
-	    <a href="#" id="backbutton" data-icon="arrow-l">Atrás</a>
+	    <a href="#" id="backbutton" data-icon="arrow-l"><?php echo get_string("back", $lang)?></a>
 	    <h1 id ="empresanombre"><?php echo $nombre; ?>	</h1>
-	    <a href="#mypanel" data-icon="bars">config</a>
+	    <a href="#mypanel" data-icon="bars"><?php echo get_string("config", $lang)?></a>
 	</div>
 	
 	
 	<div class="container">
-		<h4>Información de la empresa</h4>
+		<h4><?php echo get_string("infocompany", $lang)?></h4>
+
 		<p id="infoempresa" > <?php echo $info; ?></p>
 		<br>
 		<?php if($levantamientos){?>
 		
-		<h4 >Historial de levantamientos</h4>
+		<h4 ><?php echo get_string("recordlevantamientos", $lang)?></h4>
 		
 		<table data-role="table" id="table-column-toggle" data-mode="columntoggle" class="ui-responsive table-stroke">
 		     <thead>
-		       <tr>
-		       	<th>Título Visita</th>
-		         <th data-priority="2">Última Modificación</th>
-		         <th data-priority="3"><abbr title="Info">Información</abbr></th>
-		         <th>Recorrer</th>
-		          <th data-priority="5">Borrar</th>
-		          <th data-priority="6">Editar</th>
+		       <tr>	       
+		       	<th><?php echo get_string("titlevisit", $lang)?></th>
+		         <th data-priority="2"><?php echo get_string("lastmod", $lang)?></th>
+		         <th data-priority="3"><abbr title="Info"><?php echo get_string("info", $lang)?></abbr></th>
+		         <th><?php echo get_string("gothrough", $lang)?></th>
+		          <th data-priority="5"><?php echo get_string("delete", $lang)?></th>
+		          <th data-priority="6"><?php echo get_string("edit", $lang)?></th>
 		       </tr>
 		     </thead>
 		     <tbody>
@@ -104,7 +112,7 @@ $formularios = getAllFormularios();
 		   <?php }?>
 		<br><br>
 		<div data-role="controlgroup">
-		    <a id="tonew" href="#new" data-role="button">Empezar Nuevo Levantamiento</a>
+		    <a id="tonew" href="#new" data-role="button"><?php echo get_string("newlevantamiento", $lang)?></a>
 		</div>
 	</div>
 </div>
