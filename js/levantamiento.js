@@ -10,18 +10,18 @@ function checkSessionorDie(){
 	if($.session.get('usu')!==undefined){
 		console.log("usu",$.session.get('usu') );
 	}else{
-		window.location.href = "index.html?lang=" + getLang();
+		window.location.href = "index.php?lang=" + getLang();
 	}
 	if($.session.get('pass')!==undefined){
 		console.log("pass",$.session.get('pass') );
 	}else{
-		window.location.href = "index.html?lang=" + getLang();
+		window.location.href = "index.php?lang=" + getLang();
 	}
 	
 	if($.session.get('empresa')!==undefined){
 		console.log("empresa",$.session.get('empresa') );
 	}else{
-		window.location.href = "index.html?lang=" + getLang();
+		window.location.href = "index.php?lang=" + getLang();
 	}
 	
 	var d = new Date();
@@ -36,7 +36,7 @@ function checkSessionorDie(){
 			$.session.set('pass',"");
 			$.session.set('empresa',"");
 			$.session.set('lastaccess',"");
-			window.location.href = "index.html?lang=" + getLang();
+			window.location.href = "index.php?lang=" + getLang();
 		}
 		
 	}else{
@@ -99,6 +99,51 @@ function deleteLevantamiento(idlev){
 	);
 }
 
+function newuser(nombres,apellidos,email,password, idioma, superusuario){
+	
+	$.post("ajax/ajaxusers.php",{ 
+		action: "insert",
+		nombres : nombres,
+		apellidos : apellidos, 
+		email : email, 
+		password : password, 
+		idioma : idioma, 
+		superusuario : superusuario
+		},function(respuesta){
+			console.log("respuesta",respuesta);
+			
+			var response = jQuery.parseJSON(respuesta);
+			if(response.result){
+				window.location.href = "usuarios.php?lang="+getLang();
+			}else{
+				console.log("error en eliminar levantamiento", response.exception);
+			}
+			
+		});
+}
+
+function deleteuser(iduser){
+	$.post("ajax/ajaxusers.php",{ 
+		action: "delete",
+		iduser : iduser,
+		who : $.session.get('usu')
+		},function(respuesta){			
+			var response = jQuery.parseJSON(respuesta);
+			if(response.result){
+				window.location.href = "usuarios.php?lang="+getLang();
+			}else{
+				if(response.sameperson){
+					alert("No puedes borrarte a ti mismo");
+				}else{
+					console.log("error en eliminar levantamiento", response.exception);
+				}
+				
+				
+			}
+			
+		});
+}
+
 $(document).ready(function(){
 	
 	checkSessionorDie();
@@ -106,7 +151,7 @@ $(document).ready(function(){
 	console.log("WTF");
 	
 	$("#backbutton").on('click', function(){
-		window.location.href = "index.html?lang=" + getLang();
+		window.location.href = "index.php?lang=" + getLang();
 	});
 
 	$("#backbutton2").on('click', function(){
@@ -195,7 +240,7 @@ $(document).ready(function(){
 		$.session.set('pass',"");
 		$.session.set('empresa',"");
 		$.session.set('lastaccess',"");
-		window.location.href = "index.html?lang=" + getLang();
+		window.location.href = "index.php?lang=" + getLang();
 		console.log("cierra sesion");
 	});
 	
@@ -203,6 +248,36 @@ $(document).ready(function(){
 
 		window.location.href = "usuarios.php?lang=" + getLang();
 	});
+	
+	$("#acceptnewuser").on('click', function(){
+		var nombres = $("#nombres").val();
+		var apellidos =$("#apellidos").val();
+		var email = $("#email-empresarial").val();
+		var password = $("#password").val();
+		var repassword = $("#repassword").val();
+		var idioma = $("#idioma").val();
+		var superusuario = $("#superuser").val();
+		
+		if(nombres && apellidos && email && password && idioma && repassword){
+			if(password == repassword){
+				console.log("new user", nombres,apellidos,email,password, idioma, superusuario);
+				
+				newuser(nombres,apellidos,email,password, idioma, superusuario);
+			}else{
+				alert("Error en Contraseña");
+			}
+
+		}else{
+			alert("Faltan campos por llenar");
+		}
+	});
+	$(".deleteuser").on('click', function(){
+		alert("wena");
+		var iduser = $(this).data('iduser');
+		deleteuser(iduser);
+	});
+	
+	
 
 	
 });

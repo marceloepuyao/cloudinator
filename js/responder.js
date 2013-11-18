@@ -37,7 +37,7 @@ function checkSessionorDie(){
 			$.session.set('pass',"");
 			$.session.set('empresa',"");
 			$.session.set('lastaccess',"");
-			window.location.href = "index.html?lang=" + getLang();
+			window.location.href = "index.php?lang=" + getLang();
 		}
 		
 	}else{
@@ -191,7 +191,7 @@ $(document).ready(function(){
 		$.session.set('pass',"");
 		$.session.set('empresa',"");
 		$.session.set('lastaccess',"");
-		window.location.href = "index.html?lang=" + getLang();
+		window.location.href = "index.php?lang=" + getLang();
 		console.log("cierra sesion");
 	});
 	

@@ -14,6 +14,16 @@ $dicc = array(
 	'gothrough' => 'Percorrer',
 	'delete' => 'Excluir',
 	'edit' => 'Editar',
-	'newlevantamiento' => 'Novo Levantamento'
+	'newlevantamiento' => 'Novo Levantamento',
+
+	'language' => 'linguagem',
+	'loginbefore' => 'logon antes de continuar',
+	'email' => 'E-mail Comercial',
+	'password' => 'Senha',
+	'companytointerview' => 'Empresa para entrevista',
+	'login' => 'Login',
+	'newcompany' => 'Nova Empresa',
+	'namepassinvalid' => 'Nome de usuário ou senha incorreta',
+	'accept' => 'Aceitar'
 	);
 ?>

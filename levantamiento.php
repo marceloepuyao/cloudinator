@@ -7,11 +7,7 @@ if(isset($_GET['emp'])){
 	header( 'Location: notfound.html' );
 }
 
-if(isset($_GET['lang'])){
-	$lang = $_GET['lang'];
-}else{
-	$lang = "es";
-}
+$lang = getLang();
 
 	
 //sacar info de la empresa, si no existe se manda a not found
@@ -63,7 +59,7 @@ $formularios = getAllFormularios();
 	<div data-theme="b" data-display="overlay" data-position="right" data-role="panel" id="mypanel">
 		<h2 id="usernamebutton"></h2>
 		<a href="#" id="cerrarsesion"><?php echo get_string("logout", $lang)?></a> <br>
-		<a href="#" id="usuarios"><?php echo get_string("users", $lang)?></a><br>
+		<a href="#" id="usuarios"><?php echo get_string("config", $lang)?></a><br>
 		<a href="#header" data-rel="close"><?php echo get_string("close", $lang)?></a>
     <!-- panel content goes here -->
 	</div><!-- /panel -->
@@ -117,12 +113,16 @@ $formularios = getAllFormularios();
 	</div>
 </div>
 <div id="new" data-role="page" >
-	<div data-role="header" data-theme="b">
-	    <a href="#levantamiento" id="back" data-icon="arrow-l">Atrás</a>
+
+
+
+	<div data-role="header" class="header" data-position="fixed" role="banner" data-theme="b">
+	    <a href="#" id="backbutton" data-icon="arrow-l"><?php echo get_string("back", $lang)?></a>
 	    <h1 id ="empresanombre2"><?php echo $nombre; ?>	</h1>
-	    <a href="#" id="usernamebutton" data-icon="check" class="ui-btn-right"></a>
-	</div><!-- /header -->
-	
+	    
+	</div>
+
+
 	<div data-role="content" class="container"> 
 		<h2>Nuevo Levantamiento</h2>
 		    <ul data-role="listview" data-inset="true">

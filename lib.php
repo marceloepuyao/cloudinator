@@ -134,3 +134,33 @@ function getAllFormularios(){
 	$formularios = DBQueryReturnArray($queryformularios);
 	return $formularios;
 }
+
+/**
+ * 
+ * esta función revisa si está en las variables $_GET definido el lang, si no por defecto devuelve es
+ */
+function getLang(){
+	if(isset($_GET['lang'])){
+		if($_GET['lang'] == "es" ||  $_GET['lang'] == "en"  || $_GET['lang'] == "pt" ){
+			return $_GET['lang'];
+		}else{
+			return "es";
+		}
+	}else{
+		return "es";
+	}
+}
+
+function getSession($sessionname){
+	foreach ($_COOKIE as $keya=>$i){
+      	foreach(explode(":", $keya, 3) as $namecookie){
+      		if($namecookie == $sessionname){
+      			return $i;
+      			break;
+      		}
+      	} 
+    	break;
+	}
+	
+}
+

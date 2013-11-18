@@ -17,10 +17,11 @@ function llamaempresas(){
 	});
 	
 }
-function setSession(usu, pass, empresa){
+function setSession(usu, pass, empresa, lang){
 	$.session.set('usu', usu);
 	$.session.set('pass', pass);
 	$.session.set('empresa', empresa);
+	$.session.set('lang', lang);
 }
 function checkSession(){
 	if($.session.get('usu')!="undefined"){
@@ -43,7 +44,7 @@ function checkSession(){
 			$.session.set('pass',"");
 			$.session.set('empresa',"");
 			$.session.set('lastaccess',"");
-			window.location.href = "index.html?lang=" + getLang();
+			window.location.href = "index.php?lang=" + getLang();
 		}
 		
 	}else{
@@ -63,11 +64,11 @@ function login(){
          if (obj.result == true) {
          	
          	if(empresa == "new"){
-         		setSession(usu, pass, null);
-         		window.location.href = "nuevaempresa.html?lang="+obj.lang;
+         		setSession(usu, pass, null, obj.lang);
+         		window.location.href = "nuevaempresa.php?lang="+obj.lang;
          		
          	}else{
-         		setSession(usu, pass, empresa);
+         		setSession(usu, pass, empresa, obj.lang);
          		window.location.href = "levantamiento.php?emp="+empresa+"&lang="+obj.lang;
          	}
 
@@ -88,7 +89,7 @@ $(document).ready(function(){
 	llamaempresas();
     $("#errorMsg").hide();
     $("#backbutton").on('click', function(){
-    	window.location.href = "index.html?lang=" + getLang();
+    	window.location.href = "index.php?lang=" + getLang();
 	});
     $(window).resize(function() {
 		  if($(window).width() < 800 ){
@@ -117,6 +118,16 @@ $(document).ready(function(){
     		 login();
     	 }
     	
+    });
+    
+    $("#es").click(function(){
+    	window.location.href = "index.php?lang=es";
+    });
+    $("#en").click(function(){
+    	window.location.href = "index.php?lang=en";
+    });
+    $("#pt").click(function(){
+    	window.location.href = "index.php?lang=pt";
     });
     
 });

@@ -2,10 +2,22 @@
 require_once('DB/db.php');
 require_once('lib.php');
 
-//TODO: Comprobar si se es superusuario
+$lang = getLang();
 
-$queryusuarios = "SELECT * FROM users";
+//TODO: Comprobar si se es superusuario
+$useremail = getSession("usu");
+$USER = DBQueryReturnArray("SELECT * FROM users WHERE email = '$useremail'");
+
+
+if($USER[0]['superuser'] == 1){
+	$queryusuarios = "SELECT * FROM users";
+}else{
+	$queryusuarios = "SELECT * FROM users WHERE email = '$useremail'";
+}
+
 $usuarios = DBQueryReturnArray($queryusuarios);
+
+
 
 
 ?>
@@ -34,19 +46,22 @@ $usuarios = DBQueryReturnArray($queryusuarios);
 <script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
 	
 <div id="users" data-role="page" >
+	
+	
 	<div data-theme="b" data-display="overlay" data-position="right" data-role="panel" id="mypanel">
 		<h2 id="usernamebutton"></h2>
-		<a href="#" id="cerrarsesion">Cerrar Sesión</a> <br>
-		<a href="#" id="usuarios">Usuarios</a><br>
-		<a href="#header" data-rel="close">Cerrar</a>
+		<a href="#" id="cerrarsesion"><?php echo get_string("logout", $lang)?></a> <br>
+		<a href="#" id="usuarios"><?php echo get_string("config", $lang)?></a><br>
+		<a href="#header" data-rel="close"><?php echo get_string("close", $lang)?></a>
     <!-- panel content goes here -->
 	</div><!-- /panel -->
 
 	<div data-role="header" class="header" data-position="fixed" role="banner" data-theme="b">
-	    <a href="#" id="backbutton" data-icon="arrow-l">Atrás</a>
-	    <h1>Usuarios</h1>
-	    <a href="#mypanel" data-icon="bars">config</a>
+	    <a href="#" id="backbutton" data-icon="arrow-l"><?php echo get_string("back", $lang)?></a>
+	    <h1><?php get_string("users", $lang) ?>	</h1>
+	    <a href="#mypanel" data-icon="bars"><?php echo get_string("config", $lang)?></a>
 	</div>
+
 	
 	<div data-role="content" class="container"> 
 		<h2>Lista de Usuarios</h2>
@@ -59,29 +74,38 @@ $usuarios = DBQueryReturnArray($queryusuarios);
 		         <th >email</th>
 		         <th data-priority="4"><abbr title="Info">Último Acceso</abbr></th>
 		         <th data-priority="5"><abbr title="Info">Idioma</abbr></th>
-		          <th data-priority="6">Borrar</th>
-		          <th data-priority="7">Editar</th>
+		         <th data-priority="6">Superusuario</th>
+		         <?php if($USER[0]['superuser']){?>
+		          <th data-priority="7">Borrar</th>
+		          <th data-priority="8">Editar</th>
+		          <?php }?>
 		       </tr>
 		     </thead>
 		     <tbody>
-		      	<?php foreach($usuarios as $key => $usuario) { ?>
+		      	<?php 
+		      	
+		      	foreach($usuarios as $key => $usuario) { ?>
 			    	<tr>
 			    	<td><?php echo $usuario['name']; ?></td>
 			         <td><?php echo $usuario['lastname']; ?></td>
 			         <td><?php echo $usuario['email']; ?></td>
 			         <td><?php echo $usuario['lastaccess']; ?></td>
 			         <td><?php echo $usuario['lang']; ?></td>
-			         <td><a class="deletuser" data-iduser="<?php echo $usuario['id']; ?>" href="#"><i class="fa fa-trash-o"></i></a></td>
+			         <td><?php echo $usuario['superuser']==1?"SI":"NO"; ?></td>
+			         <?php if($USER[0]['superuser']){?>
+			         <td><a class="deleteuser" data-iduser="<?php echo $usuario['id']; ?>" href="#"><i class="fa fa-trash-o"></i></a></td>
 			         <td><a class="edituser" data-iduser="<?php echo $usuario['id']; ?>" href="#"><i class="fa fa-pencil"></i></a></td>
+			       	<?php }?>
 			       </tr>
 				<?php } ?>		       
 		     </tbody>
 		   </table>
 
-
+		<?php if($USER[0]['superuser']){?>
 		<div data-role="controlgroup">
 		    <a href="#newuser" data-role="button">Agregar nuevo usuario</a>
 		</div>
+		<?php } ?>
 	</div><!-- /content -->
 </div>
 <div id="newuser" data-role="page" >
@@ -124,20 +148,33 @@ $usuarios = DBQueryReturnArray($queryusuarios);
  					<input name="password" id="password" value="" data-clear-btn="true" type="password">		        
  				</li>
  				
+ 				<li data-role="fieldcontain">
+		            <label for="repassword">Repetir Contraseña</label>
+ 					<input name="repassword" id="repassword" value="" data-clear-btn="true" type="password">		        
+ 				</li>
+ 				
 
 		        <li data-role="fieldcontain">
 		        	<label for="idioma" class="select">Idioma</label> 
 		        	<select name="idioma" id="idioma">
-		        	<option value="es">Español</option>
-		        	<option value="pt">Português</option>
-		        	<option value="en">English</option>
-				</select>
+			        	<option value="es">Español</option>
+			        	<option value="pt">Português</option>
+			        	<option value="en">English</option>
+					</select>
+				</li>
+				
+				<li data-role="fieldcontain">
+				    <label for="superuser">Superusuario:</label>
+				    <select name="superuser" id="superuser">
+				        <option value=0>No</option>
+				        <option value=1>Si</option>
+				    </select>
 				</li>
 				
 				<li class="ui-body ui-body-b">
 		            <fieldset class="ui-grid-a">
 		                    <div class="ui-block-a"><a href="#users"><button id="canceluser" data-theme="d">Cancelar</button></a></div>
-		                    <div class="ui-block-b"><button data-theme="b">Continuar</button></div>
+		                    <div class="ui-block-b"><button id="acceptnewuser" data-theme="b">Continuar</button></div>
 		            </fieldset>
 		        </li>
 		    </ul>
