@@ -1,4 +1,12 @@
 ﻿<?php
+require_once('DB/db.php');
+require_once('lib.php');
+
+$lang = getLang();
+$config = parse_ini_file(dirname(__FILE__)."/config.ini", true);
+$categories = $config["categories"];
+
+$catarray = $categories['categories'];
 
 ?>
 
@@ -22,7 +30,7 @@
 
 	<section id="nuevaempresa" data-role="page">
 	<div data-role="header" data-theme="b">
-		<a href="#" id="backbutton" data-icon="arrow-l">Atrás</a>
+		<a href="#" id="backbutton" data-icon="arrow-l"><?php echo get_string("back", $lang);?></a>
 		<h1>Cloudinator</h1>
 		
 	</div>
@@ -31,54 +39,36 @@
 
 		<CENTER>
 			<p>
-				<strong>Ingrese una nueva empresa</strong>
+				<strong><?php echo get_string("addnewcompany", $lang);?></strong>
 			</p>
 		</CENTER>
 		<div style="width: 100%; margin: 0 auto;">
 
 
 			<ul data-role="listview" data-inset="true">
-				<li data-role="fieldcontain"><label for="new-name-empresa">Nombre
-						Empresa:</label> <input name="new-name-empresa" id="new-name-empresa"
+				<li data-role="fieldcontain"><label for="new-name-empresa"><?php echo get_string("namecompany", $lang);?>:</label> <input name="new-name-empresa" id="new-name-empresa"
 					value="" data-clear-btn="true" type="text">
 				</li>
 				<li data-role="fieldcontain"><label for="industry"
-					class="select">Industria:</label> <select name="industry"
+					class="select"><?php echo get_string("industry", $lang);?>:</label> <select name="industry"
 					id="industry">
-						<option value="pesada">Industria Pesada</option>
-						<option value="siderúrgicas">Siderúrgicas</option>
-						<option value="metalúrgicas">Metalúrgicas</option>
-						<option value="cementeras">Cementeras</option>
-						<option value="químicas">Químicas de base</option>
-						<option value="petroquímicas">Petroquímicas</option>
-						<option value="automovilística">Automovilística</option>
-						<option value="ligera">Industria ligera</option>
-						<option value="alimentación">Alimentación</option>
-						<option value="textil">Textil</option>
-						<option value="farmacéutica">Farmacéutica</option>
-						<option value="agroindustria">Agroindustria</option>
-						<option value="armamentística">Armamentística</option>
-						<option value="punta">Industria punta</option>
-						<option value="robótica">Robótica</option>
-						<option value="informática">Informática</option>
-						<option value="astronáutica">Astronáutica</option>
-						<option value="mecánica">Mecánica</option>
-						<option value="educacional">Educacionales y relacionaladas</option>
-						<option value="Gubernamentales">Gubernamentales</option>
-						<option value="Otras">Otras</option>
+						
+						<?php foreach ($catarray as $cat){;?>
+						<option value="<?php echo $cat?>"><?php echo get_string($cat, $lang);?></option>
+						<?php }?>
+						
 				</select>
 				</li>
-				<li data-role="fieldcontain"><label for="textarea">Información
-						de la Empresa:</label> <textarea cols="40" rows="8" name="textarea"
+				<li data-role="fieldcontain"><label for="textarea"><?php echo get_string("companyinformation", $lang);?>:</label> <textarea cols="40" rows="8" name="textarea"
 						id="textarea"></textarea>
 				</li>
 				<li class="ui-body ui-body-b">
 					<fieldset class="ui-grid-a">
 						<div class="ui-block-a">
-							<button id="cancel" data-theme="d">Cancel</button>
+							<button id="cancel" data-theme="d"><?php echo get_string("cancel", $lang);?></button>
 						</div>
 						<div class="ui-block-b">
-							<button id="btnNew" data-theme="b">Submit</button>
+							<button id="btnNew" data-theme="b"><?php echo get_string("accept", $lang);?></button>
 						</div>
 					</fieldset>
 				</li>

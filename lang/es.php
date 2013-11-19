@@ -24,6 +24,34 @@ $dicc = array(
 	'login' => 'Iniciar Sesión',
 	'newcompany' => 'Nueva Empresa',
 	'namepassinvalid' => 'Nombre de usuario o contraseña incorrecta',
-	'accept' => 'Aceptar'
+	'accept' => 'Aceptar',
+
+	'addnewcompany'=>'Agregue una nueva empresa',
+	'namecompany'=> "Nombre Empresa",
+	'industry'=> 'Industria',
+	'companyinformation' => 'Información de la Empresa',
+	'cancel' => 'Cancelar',
+
+	'industria_pesada' => 'Industria Pesada',
+	'siderúrgicas' => 'Siderúrgicas',
+	'metalúrgicas' => 'Metalúrgicas',
+	'cementeras' => 'Cementeras',
+	'químicas_de_base' =>'Químicas de Base',
+	'petroquímicas' => 'Petroquímicas',
+	'automovilística' => 'Automovilística',
+	'industria_ligera' => 'Industria Ligera',
+	'alimentación' => 'Alimentación',
+	'textil' => 'Textil',
+	'farmacéutica' => 'Farmacéutica',
+	'agroindustria' => 'Agroindustria',
+	'armamentística' => 'Armamentística',
+	'industria_punta' => 'Industria Punta',
+	'robótica' => 'Robótica',
+	'informática' => 'Informática',
+	'astronáutica' => 'Astronáutica',
+	'mecánica' => 'Mecánica',
+	'educacionales' => 'Educacionales',
+	'gubernamentales' => 'Gubernamentales',
+	'otras' => 'Otras'
 	);
 ?>
