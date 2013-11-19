@@ -117,7 +117,7 @@ $formularios = getAllFormularios();
 
 
 	<div data-role="header" class="header" data-position="fixed" role="banner" data-theme="b">
-	    <a href="#" id="backbutton" data-icon="arrow-l"><?php echo get_string("back", $lang)?></a>
+	    <a href="#" id="backbutton2" data-icon="arrow-l"><?php echo get_string("back", $lang)?></a>
 	    <h1 id ="empresanombre2"><?php echo $nombre; ?>	</h1>
 	    
 	</div>

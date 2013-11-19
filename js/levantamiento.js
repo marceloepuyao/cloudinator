@@ -99,10 +99,16 @@ function deleteLevantamiento(idlev){
 	);
 }
 
-function newuser(nombres,apellidos,email,password, idioma, superusuario){
+function newuser(nombres,apellidos,email,password, idioma, superusuario, editto){
+	
+	var action = "insert";
+	if(editto != 0){
+		action = "update";
+	}
 	
 	$.post("ajax/ajaxusers.php",{ 
-		action: "insert",
+		action: action,
+		editto : editto,
 		nombres : nombres,
 		apellidos : apellidos, 
 		email : email, 
@@ -116,7 +122,7 @@ function newuser(nombres,apellidos,email,password, idioma, superusuario){
 			if(response.result){
 				window.location.href = "usuarios.php?lang="+getLang();
 			}else{
-				console.log("error en eliminar levantamiento", response.exception);
+				console.log("error guardar información del usuario", response.exception);
 			}
 			
 		});
@@ -258,11 +264,13 @@ $(document).ready(function(){
 		var idioma = $("#idioma").val();
 		var superusuario = $("#superuser").val();
 		
+		var editto = $(this).data('editto');
+		
 		if(nombres && apellidos && email && password && idioma && repassword){
 			if(password == repassword){
 				console.log("new user", nombres,apellidos,email,password, idioma, superusuario);
 				
-				newuser(nombres,apellidos,email,password, idioma, superusuario);
+				newuser(nombres,apellidos,email,password, idioma, superusuario, editto);
 			}else{
 				alert("Error en Contraseña");
 			}
@@ -272,10 +280,18 @@ $(document).ready(function(){
 		}
 	});
 	$(".deleteuser").on('click', function(){
-		alert("wena");
 		var iduser = $(this).data('iduser');
-		deleteuser(iduser);
+		deleteuser(iduser, null);
 	});
+	$(".edituser").on('click', function(){
+		var iduser = $(this).data('iduser');
+		window.location.href = "usuarios.php?lang=" + getLang() + "&edit="+iduser+"#newuser";
+	});
+	
+	$("#tonewuser").on('click', function(){
+		window.location.href = "usuarios.php?lang=" + getLang() +"#newuser";
+	});
+	
 	
 	
 

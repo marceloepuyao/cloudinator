@@ -2,6 +2,14 @@
 require_once('DB/db.php');
 require_once('lib.php');
 
+if(isset($_GET['edit'])){
+	$iduseredit = (int)$_GET['edit'];
+	$usertoedit = DBQueryReturnArray("SELECT * FROM users WHERE id = $iduseredit");
+}else{
+	$iduseredit = 0;
+}
+
+
 $lang = getLang();
 
 //TODO: Comprobar si se es superusuario
@@ -103,7 +111,7 @@ $usuarios = DBQueryReturnArray($queryusuarios);
 
 		<?php if($USER[0]['superuser']){?>
 		<div data-role="controlgroup">
-		    <a href="#newuser" data-role="button">Agregar nuevo usuario</a>
+		    <a href="#" id="tonewuser" data-role="button">Agregar nuevo usuario</a>
 		</div>
 		<?php } ?>
 	</div><!-- /content -->
@@ -127,54 +135,54 @@ $usuarios = DBQueryReturnArray($queryusuarios);
 
 
 	<div data-role="content" class="container"> 
-		<h2>Nuevo Usuario</h2>
+		<h2><?php echo $iduseredit!=0?$usertoedit[0]["name"]." ".$usertoedit[0]["lastname"]:"Nuevo Usuario";?></h2>
 		    <ul data-role="listview" data-inset="true">
 		        <li data-role="fieldcontain">
 		            <label for="nombres">Nombres</label>
-		            <input name="nombres" id="nombres" value="" data-clear-btn="true" type="text">
+		            <input name="nombres" id="nombres" value="<?php echo $iduseredit!=0?$usertoedit[0]["name"]:"";?>" data-clear-btn="true" type="text">
 		        </li>
 		        <li data-role="fieldcontain">
 		            <label for="apellidos">Apellidos</label>
- 					<input name="apellidos" id="apellidos" value="" data-clear-btn="true" type="text">	        
+ 					<input name="apellidos" id="apellidos" value="<?php echo $iduseredit!=0?$usertoedit[0]["lastname"]:"";?>" data-clear-btn="true" type="text">	        
  				</li>
  				
  				<li data-role="fieldcontain">
 		            <label for="email-empresarial">Email Empresarial</label>
- 					<input name="email-empresarial" id="email-empresarial" value="" data-clear-btn="true" type="text">		        
+ 					<input name="email-empresarial" id="email-empresarial" value="<?php echo $iduseredit!=0?$usertoedit[0]["email"]:"";?>" data-clear-btn="true" type="text">		        
  				</li>
  				
  				<li data-role="fieldcontain">
 		            <label for="password">Contraseña</label>
- 					<input name="password" id="password" value="" data-clear-btn="true" type="password">		        
+ 					<input name="password" id="password" value="<?php echo $iduseredit!=0?$usertoedit[0]["password"]:"";?>" data-clear-btn="true" type="password">		        
  				</li>
  				
  				<li data-role="fieldcontain">
 		            <label for="repassword">Repetir Contraseña</label>
- 					<input name="repassword" id="repassword" value="" data-clear-btn="true" type="password">		        
+ 					<input name="repassword" id="repassword" value="<?php echo $iduseredit!=0?$usertoedit[0]["password"]:"";?>" data-clear-btn="true" type="password">		        
  				</li>
  				
 
 		        <li data-role="fieldcontain">
 		        	<label for="idioma" class="select">Idioma</label> 
 		        	<select name="idioma" id="idioma">
-			        	<option value="es">Español</option>
-			        	<option value="pt">Português</option>
-			        	<option value="en">English</option>
+			        	<option value="es"  <?php echo $iduseredit!=0?$usertoedit[0]["lang"]=="es"?"selected":"":"";?>>Español</option>
+			        	<option value="pt" <?php echo $iduseredit!=0?$usertoedit[0]["lang"]=="pt"?"selected":"":"";?>>Português</option>
+			        	<option value="en" <?php echo $iduseredit!=0?$usertoedit[0]["lang"]=="en"?"selected":"":"";?>>English</option>
 					</select>
 				</li>
 				
 				<li data-role="fieldcontain">
 				    <label for="superuser">Superusuario:</label>
 				    <select name="superuser" id="superuser">
-				        <option value=0>No</option>
-				        <option value=1>Si</option>
+				        <option value=0 <?php echo $iduseredit!=0?$usertoedit[0]["superuser"]==0?"selected":"":"";?>>No</option>
+				        <option value=1 <?php echo $iduseredit!=0?$usertoedit[0]["superuser"]==1?"selected":"":"";?>>Si</option>
 				    </select>
 				</li>
 				
 				<li class="ui-body ui-body-b">
 		            <fieldset class="ui-grid-a">
 		                    <div class="ui-block-a"><a href="#users"><button id="canceluser" data-theme="d">Cancelar</button></a></div>
-		                    <div class="ui-block-b"><button id="acceptnewuser" data-theme="b">Continuar</button></div>
+		                    <div class="ui-block-b"><button id="acceptnewuser"  data-editto="<?php echo $iduseredit!=0?$usertoedit[0]["id"]:0;?>" data-theme="b">Continuar</button></div>
 		            </fieldset>
 		        </li>
 		    </ul>

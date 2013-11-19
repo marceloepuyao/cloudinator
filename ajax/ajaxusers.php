@@ -75,6 +75,23 @@ if($action == 'insert'){
 }else if($action == "update"){
 	try {
 		
+		//TODO: evitar sql injection "escapando" los string
+		$editto = (int)$_POST["editto"];
+		$email = $_POST["email"];
+		$name = $_POST["nombres"];
+		$lastname = $_POST["apellidos"];
+		$password = $_POST["password"];
+		$lang = $_POST["idioma"];
+		$superuser = (int)$_POST["superusuario"];
+		
+		$query = "UPDATE  `users` SET  `email` =  '$email', `name` =  '$name', `lastname` =  '$lastname',`password` =  '$password', `superuser` =  '$superuser', `lang` =  '$lang',`modified` =  '".date("Y-m-d H:i:s")."'
+				WHERE  `users`.`id` =$editto;";
+		DBQuery($query);
+		
+		$data = array(
+						'result' => true	
+					);
+		
 		
 		print($json->encode($data));
 	} catch (Exception $e) {
