@@ -242,10 +242,18 @@ $(document).ready(function(){
 	});
 	
 	$("#cerrarsesion").on('click', function(){
-		$.session.set('usu', "");
-		$.session.set('pass',"");
-		$.session.set('empresa',"");
-		$.session.set('lastaccess',"");
+		$.session.remove('usu');
+		$.session.remove('pass');
+		$.session.remove('empresa');
+		$.session.remove('lastaccess');
+		$.session.remove('lang');
+		/*
+		$.session.remove('usu');
+		$.session.set('pass',"delete");
+		$.session.set('empresa',"delete");
+		$.session.set('lastaccess',"delete");
+		$.session.set('lang',"delete");
+		*/
 		window.location.href = "index.php?lang=" + getLang();
 		console.log("cierra sesion");
 	});

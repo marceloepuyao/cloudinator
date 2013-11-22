@@ -83,7 +83,7 @@ $usuarios = DBQueryReturnArray($queryusuarios);
 		         <th data-priority="4"><abbr title="Info">Último Acceso</abbr></th>
 		         <th data-priority="5"><abbr title="Info">Idioma</abbr></th>
 		         <th data-priority="6">Superusuario</th>
-		         <?php if($USER[0]['superuser']){?>
+		         <?php if($USER[0]['superuser']==1){?>
 		          <th data-priority="7">Borrar</th>
 		          <th data-priority="8">Editar</th>
 		          <?php }?>
