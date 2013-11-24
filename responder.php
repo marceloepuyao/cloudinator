@@ -29,6 +29,7 @@ extract($questionandanswers); //devuelve $pregunta, $respuestas, $ultimavisita, 
 if($pregunta == null){
 	
 	//TODO:get resumen respuestas
+	$tablaresumen = getResumenSubform($idsubform, $idlevantamiento);
 	
 }
 
@@ -85,7 +86,35 @@ if($pregunta == null){
 		<?php endif; ?>
 		
 		<?php if ($pregunta == null): ?>
-			<h2>Se ha llegado al fin</h2>
+		<h2>Se ha llegado al fin</h2>
+			
+			
+				
+				
+				
+				
+		<table data-role="table" id="table-custom-2" data-mode="columntoggle" class="ui-body-d ui-shadow table-stripe ui-responsive" data-column-btn-theme="b" data-column-btn-text="Columns to display..." data-column-popup-theme="a">
+	         <thead>
+	           <tr class="ui-bar-d">
+	             <th>Pregunta</th>
+	             <th>Respuesta</th>
+	             <th> Subrespuesta</th>
+	           </tr>
+	         </thead>
+	         <tbody>
+	         <?php foreach ($tablaresumen as $preguntas){?>
+	         
+	           <tr>
+	             <th><a href="#"><?php echo getContentByNodeId($preguntas['preguntaid']); ?></a></th>
+	             <td><?php echo getContentByNodeId($preguntas['respuestaid']); ?></td>
+	             <td><?php echo $preguntas['respsubpregunta']; ?></td>
+	           </tr>
+	        <?php }?>
+	           
+	         </tbody>
+       </table>
+				
+				
 			<fieldset class="ui-grid-a">
                     <div class="ui-block-a"><button id="responderback" data-idsubform="<?php echo $idsubform; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-theme="d">Pregunta anterior</button></div>
                     <div class="ui-block-b"><button id="responderquit" data-emp="<?php echo $empresa['id']; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-theme="d">Continuar</button></div>

@@ -163,4 +163,18 @@ function getSession($sessionname){
 	}
 	
 }
+function getResumenSubform($idsubform, $idlevantamiento){
+	
+	$queryresumen = "SELECT * FROM registropreguntas where subformid = $idsubform AND levantamientoid = $idlevantamiento ORDER BY created";
+	$resumen = DBQueryReturnArray($queryresumen);
+	return $resumen;
+	
+}
 
+function getContentByNodeId($nodeID){
+	
+	$querycontent = "SELECT * FROM nodos where id = $nodeID";
+	$content = DBQueryReturnArray($querycontent);
+	return $content[0]['name'];
+	
+}
