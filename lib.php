@@ -9,7 +9,12 @@ require_once('DB/db.php');
  */
 function get_string($key, $lang) {
 	require(APPLICATION_PATH . '/lang/' . $lang . '.php');
-	$translation = $dicc[$key];
+	if(isset($dicc[$key])){
+		$translation = $dicc[$key];
+	}else{
+		$translation = 'Warning - The key word "'.$key.'" was not found in "/lang/'.$lang.'.php"';
+	}
+	
 	return $translation;
 }
 
