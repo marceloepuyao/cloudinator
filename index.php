@@ -1,7 +1,7 @@
 <?php
 require_once('DB/db.php');
 	require_once('lib.php');
-
+session_start();
 
 //se saca el idioma
 $lang = getLang();
@@ -105,7 +105,6 @@ $lang = getLang();
     </section>
 
 <script src="js/cloudnav.js" type="text/javascript"></script>
-<script src="js/jquery.session.js" type="text/javascript"></script>
 <script type="text/javascript" src="http://webcursos.uai.cl/jira/s/es_ES-jovvqt-418945332/850/3/1.2.9/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?collectorId=2ab5c7d9"></script> <!-- JIRA (para reportar errores)-->
 <style type="text/css">.atlwdg-trigger.atlwdg-RIGHT{background-color:red;top:70%;z-index:10001;}</style>
 </body>

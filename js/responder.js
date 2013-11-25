@@ -1,54 +1,7 @@
-function getLang(){
-	var lang = $.session.get("lang");
-	if(lang == "" || lang == null){
-		lang = "es";
-	}
-	return lang;
-}
-
-function checkSessionorDie(){
-	
-	if($.session.get('usu')!==undefined){
-		console.log("usu",$.session.get('usu') );
-	}else{
-		window.location.href = "notfound.html?lang=" + getLang();
-	}
-	if($.session.get('pass')!==undefined){
-		console.log("pass",$.session.get('pass') );
-	}else{
-		window.location.href = "notfound.html?lang=" + getLang();
-	}
-	
-	if($.session.get('empresa')!==undefined){
-		console.log("empresa",$.session.get('empresa') );
-	}else{
-		window.location.href = "notfound.html?lang=" + getLang();
-	}
-	
-	var d = new Date();
-	var time = d.getTime(); 
-	if($.session.get('lastaccess')!==undefined){
-		if((time - $.session.get('lastaccess'))  < 5*60*1000){
-			console.log("se renueva", time - $.session.get('lastaccess') );
-			$.session.set('lastaccess',time);
-		}else{
-			console.log("se cierra, han pasado ", time - $.session.get('lastaccess'), "milisegundos" );
-			$.session.set('usu', "");
-			$.session.set('pass',"");
-			$.session.set('empresa',"");
-			$.session.set('lastaccess',"");
-			window.location.href = "index.php?lang=" + getLang();
-		}
-		
-	}else{
-		$.session.set('lastaccess',time);
-		console.log("first time lastaccess",$.session.get('lastaccess') );
-	}
-	
-	
-	$("#usernamebutton").text($.session.get('usu'));
-	setEmpresaInfo($.session.get('empresa'));
-	console.log("asdasd");
+function getUrlParameter(name) {
+    return decodeURI(
+        (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
+    );
 }
 
 function setEmpresaInfo(id){
@@ -72,8 +25,7 @@ function responderpregunta(idnode, idlev, idsubform, idpregunta, respsubpregunta
 		idsubform: idsubform,
 		action: 'insert',
 		idpregunta: idpregunta,
-		iduser: $.session.get('usu'),
-		idempresa: $.session.get('empresa'), 
+		idempresa: getUrlParameter('emp'), 
 		respsubpregunta: respsubpregunta
 		},function(respuesta){
 			console.log(respuesta);
@@ -81,7 +33,7 @@ function responderpregunta(idnode, idlev, idsubform, idpregunta, respsubpregunta
 			
 			//si la respuesta es positiva se continua, si no mensaje de error
 			if(resp.result){
-				window.location.href = "responder.php?idlev=" + idlev + "&idsubform=" + idsubform + "&lang=" + getLang();
+				window.location.href = "responder.php?idlev=" + idlev + "&idsubform=" + idsubform + "&lang=" + getUrlParameter('lang');
 			}else{
 				alert("problemas con escribir en la base de datos");
 			}
@@ -100,7 +52,7 @@ function borrarUltimaPreguntaRespondida(idsubform, idlev){
 			console.log("resp", resp);
 			//si la respuesta es positiva se continua, si no mensaje de error
 			if(resp.result){
-				window.location.href = "responder.php?idlev=" + idlev+"&idsubform="+idsubform+ "&lang=" + getLang();
+				window.location.href = "responder.php?idlev=" + idlev+"&idsubform="+idsubform+ "&lang=" + getUrlParameter('lang');
 			}else{
 				alert("problemas con escribir en la base de datos");
 			}
@@ -165,12 +117,10 @@ function SubPregunta(idpregunta, idnode, idlev, idsubform){
 
 $(document).ready(function(){
 	
-	checkSessionorDie();
-	
 	$("#backbutton").on('click', function(){
 		var emp = $(this).data('emp');
 		var idlev = $(this).data('idlev');
-		window.location.href = "recorrer.php?emp="+emp+"&idlev="+idlev+ "&lang=" + getLang();
+		window.location.href = "recorrer.php?emp="+emp+"&idlev="+idlev+ "&lang=" + getUrlParameter('lang');
 	});
 	
 	$(".answer").on('click', function(){
@@ -187,18 +137,19 @@ $(document).ready(function(){
 		
 	});
 	$("#cerrarsesion").on('click', function(){
-		$.session.set('usu', "");
-		$.session.set('pass',"");
-		$.session.set('empresa',"");
-		$.session.set('lastaccess',"");
-		window.location.href = "index.php?lang=" + getLang();
-		console.log("cierra sesion");
+		$.post("server/session.php",{ 
+			action: "deleteall"
+			},function(respuesta){
+				window.location.href = "index.php?lang=" + getUrlParameter("lang");
+				console.log("cierra sesion");
+				
+			});
 	});
 	
 	$("#responderquit").on('click', function(){
 		var emp = $(this).data('emp');
 		var idlev = $(this).data('idlev');
-		window.location.href = "recorrer.php?emp="+emp+"&idlev="+idlev+ "&lang=" + getLang();
+		window.location.href = "recorrer.php?emp="+emp+"&idlev="+idlev+ "&lang=" + getUrlParameter('lang');
 	});
 	
 	$("#responderback").on('click', function(){
@@ -230,7 +181,7 @@ $(document).ready(function(){
 	});
 	$("#usuarios").on('click', function(){
 
-		window.location.href = "usuarios.php?lang=" + getLang();
+		window.location.href = "usuarios.php?lang=" + getUrlParameter('lang');
 	});
 	
 });

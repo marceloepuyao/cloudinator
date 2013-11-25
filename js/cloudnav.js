@@ -1,9 +1,7 @@
-function getLang(){
-	var lang = $.session.get("lang");
-	if(lang == "" || lang == null){
-		lang = "es";
-	}
-	return lang;
+function getUrlParameter(name) {
+    return decodeURI(
+        (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
+    );
 }
 function llamaempresas(){
 	
@@ -17,67 +15,23 @@ function llamaempresas(){
 	});
 	
 }
-function setSession(usu, pass, empresa, lang){
-	$.session.set('usu', usu);
-	$.session.set('pass', pass);
-	$.session.set('empresa', empresa);
-	$.session.set('lang', lang);
-}
-function checkSession(){
-	if($.session.get('usu')!="undefined"){
-		console.log("usu",$.session.get('usu') );
-		$("#text-username").val($.session.get('usu'));
-	}
-	if($.session.get('pass')!="undefined"){
-		console.log("pass",$.session.get('pass') );
-		$("#passwordcloud").val($.session.get('pass'));
-	}
-	var d = new Date();
-	var time = d.getTime(); 
-	if($.session.get('lastaccess')!==undefined){
-		if((time - $.session.get('lastaccess'))  < 5*60*1000){
-			console.log("se renueva", time - $.session.get('lastaccess') );
-			$.session.set('lastaccess',time);
-		}else{
-			console.log("se cierra, han pasado ", time - $.session.get('lastaccess'), "milisegundos" );
-			$.session.set('usu', "");
-			$.session.set('pass',"");
-			$.session.set('empresa',"");
-			$.session.set('lastaccess',"");
-			window.location.href = "index.php?lang=" + getLang();
-		}
-		
-	}else{
-		$.session.set('lastaccess',time);
-	}
-	
-	
-}
 function login(){
 	 var usu = $("#text-username").val();
      var pass = $("#passwordcloud").val();
      var empresa = $("#select-choice-1").val();
-     $.post("server/login.php",{ usu : usu, pass : pass},function(respuesta){
+     $.post("server/login.php",{ usu : usu, pass : pass, empresa : empresa},function(respuesta){
      	
      	var obj = jQuery.parseJSON(respuesta);
-     	console.log(obj);
          if (obj.result == true) {
-         	
          	if(empresa == "new"){
-         		setSession(usu, pass, null, obj.lang);
          		window.location.href = "nuevaempresa.php?lang="+obj.lang;
          		
          	}else{
-         		setSession(usu, pass, empresa, obj.lang);
          		window.location.href = "levantamiento.php?emp="+empresa+"&lang="+obj.lang;
          	}
-
          }
          else{
-         	//$("#pageError").show();
              $.mobile.changePage('#pageError', 'pop', true, true);
-             //$("#errorMsg").fadeIn(300);
-             //$("#errorMsg").css("display", "block");
          }
      
      });
@@ -85,11 +39,11 @@ function login(){
 	
 }
 $(document).ready(function(){
-	checkSession();
+	
 	llamaempresas();
     $("#errorMsg").hide();
     $("#backbutton").on('click', function(){
-    	window.location.href = "index.php?lang=" + getLang();
+    	window.location.href = "index.php?lang=" + getUrlParameter('lang');
 	});
     $(window).resize(function() {
 		  if($(window).width() < 800 ){

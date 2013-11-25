@@ -1,32 +1,45 @@
 ﻿<?php
-	require_once('DB/db.php');
-	require_once('lib.php');
+require_once('DB/db.php');
+require_once('lib.php');
+session_start();
+
+//checkiamos si las sessions están settiadas
+if(checkSession($_SESSION['ultimoacceso'], $_SESSION['usuario'], $_SESSION['empresa'], $_SESSION['idioma'])){
+	$_SESSION['ultimoacceso'] = time();
+}
+
+//obetenemos el lenguaje de la página.
+$lang = getLang();
+
+//obtenemos el usuario
+$USER = DBQueryReturnArray("SELECT * FROM users WHERE email = '$_SESSION[usuario]'");
+
+//vemos que la URL este la variable emp
 if(isset($_GET['emp'])){
 	$idempresa = (int)$_GET['emp'];
 }else{
 	header( 'Location: notfound.html' );
 }
 
-$lang = getLang();
-
-	
-//sacar info de la empresa, si no existe se manda a not found
+//sacamos la info de la empresa, si no existe se manda a not found
 $queryempresa="SELECT * FROM empresas WHERE id = $idempresa";
-
 $empresa = DBQueryReturnArray($queryempresa);	
-
-
+if(count($empresa) == 0){
+	header( 'Location: notfound.html' );
+}
 $nombre = $empresa[0]['nombre'];
 $info = $empresa[0]['infolevantamiento'];
 
 
+//obtenemos los levantamientos de la empresa
 $querylevantamientos = "SELECT * FROM levantamientos WHERE empresaid = $idempresa";
 $levantamientos = DBQueryReturnArray($querylevantamientos);
 
-
+//obtenemos la lista de todos los usuarios.
 $queryusers = "SELECT * FROM users";
 $users = DBQueryReturnArray($queryusers);
 
+//obtenemos todos los formularios
 $formularios = getAllFormularios();
 
 ?>
@@ -57,7 +70,7 @@ $formularios = getAllFormularios();
 <div data-role="page" id="levantamiento">
 
 	<div data-theme="b" data-display="overlay" data-position="right" data-role="panel" id="mypanel">
-		<h2 id="usernamebutton"></h2>
+		<h2><?php echo $USER[0]['name']." ".$USER[0]['lastname'];?></h2>
 		<a href="#" id="cerrarsesion"><?php echo get_string("logout", $lang)?></a> <br>
 		<a href="#" id="usuarios"><?php echo get_string("config", $lang)?></a><br>
 		<a href="#header" data-rel="close"><?php echo get_string("close", $lang)?></a>
@@ -72,7 +85,7 @@ $formularios = getAllFormularios();
 	
 	
 	<div class="container">
-		<h4><?php echo get_string("infocompany", $lang)?></h4>
+		<h4><?php echo get_string("infocompany", $lang); echo $_SESSION['ultimoacceso'] ;?></h4>
 
 		<p id="infoempresa" > <?php echo $info; ?></p>
 		<br>
@@ -174,7 +187,6 @@ $formularios = getAllFormularios();
 	</div><!-- /content -->
 </div>
 <script src="js/levantamiento.js" type="text/javascript"></script>
-<script src="js/jquery.session.js" type="text/javascript"></script>
 <script type="text/javascript" src="http://webcursos.uai.cl/jira/s/es_ES-jovvqt-418945332/850/3/1.2.9/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?collectorId=2ab5c7d9"></script> <!-- JIRA (para reportar errores)-->
 	<style type="text/css">.atlwdg-trigger.atlwdg-RIGHT{background-color:red;top:70%;z-index:10001;}</style>
 </body>

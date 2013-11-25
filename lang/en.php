@@ -56,9 +56,26 @@ $dicc = array(
 	'mecánica' => 'Mechanical',
 	'educacionales' => 'Educational',
 	'gubernamentales' => 'Governmental',
-	'otras' => 'Other'
+	'otras' => 'Other',
 
-	
+	'lastvisit' => 'Last Visit',
+	'nextquestion' => 'Next Question',
+	'completeness' => 'Completeness',
+	'subforms' => 'Subforms',
+
+	'userslist' => 'Users List',
+
+	'firstname' => 'Firstname',
+	'lastname' => 'Lastname',
+	'email' => 'Email',
+	'lastaccess' => 'Last access',
+	'superuser' => 'Superuser',
+
+	'addnewuser' => 'Add new user',
+	'repeatpassword' => 'Repeat Password'
+
+
+
 	
 	
 	);

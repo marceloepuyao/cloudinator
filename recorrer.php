@@ -1,6 +1,18 @@
 ﻿<?php
 require_once('DB/db.php');
 require_once('lib.php');
+session_start();
+//checkiamos si las sessions están settiadas
+if(checkSession($_SESSION['ultimoacceso'], $_SESSION['usuario'], $_SESSION['empresa'], $_SESSION['idioma'])){
+	$_SESSION['ultimoacceso'] = time();
+}
+
+//obetenemos el lenguaje de la página.
+$lang = getLang();
+
+//obtenemos el usuario
+$USER = DBQueryReturnArray("SELECT * FROM users WHERE email = '$_SESSION[usuario]'");
+
 
 //si no existen error
 if(isset($_GET['emp']) || isset($_GET['idlev'])){
@@ -9,12 +21,15 @@ if(isset($_GET['emp']) || isset($_GET['idlev'])){
 	//id del levantamiento
 	$idlevantamiento = (int)$_GET['idlev'];
 }else{
-	header( 'Location: notfound.html' ) ;
+	//header( 'Location: notfound.html' ) ;
 }
 
 //saco info de la empresa
 $queryempresa="SELECT * FROM empresas WHERE id = $idempresa";
 $empresa = DBQueryReturnArray($queryempresa);	
+if(count($empresa) == 0){
+	//header( 'Location: notfound.html' );
+}
 $nombre = $empresa[0]['nombre'];
 //saco info del levantamiento
 
@@ -61,17 +76,17 @@ $formularios = DBQueryReturnArray($queryformularios);
 
 
 	<div data-theme="b" data-display="overlay" data-position="right" data-role="panel" id="mypanel">
-		<h2 id="usernamebutton"></h2>
-		<a href="#" id="cerrarsesion">Cerrar Sesión</a> <br>
-		<a href="#" id="usuarios">Usuarios</a><br>
-		<a href="#header" data-rel="close">Cerrar</a>
+		<h2 id="usernamebutton"><?php echo $USER[0]['name']." ".$USER[0]['lastname'];?></h2>
+		<a href="#" id="cerrarsesion"><?php echo get_string("logout", $lang)?></a> <br>
+		<a href="#" id="usuarios"><?php echo get_string("config", $lang)?></a><br>
+		<a href="#header" data-rel="close"><?php echo get_string("close", $lang)?></a>
     <!-- panel content goes here -->
 	</div><!-- /panel -->
 
 	<div data-role="header" data-theme="b">
-	    <a href="#" id="backbutton2" data-icon="arrow-l">atrás</a>
+	    <a href="#" id="backbutton2" data-icon="arrow-l"><?php echo get_string("back", $lang)?></a>
 	    <h1 id ="empresanombre"><?php echo $nombre; ?>	</h1>
-	    <a href="#mypanel" data-icon="bars">config</a>
+	    <a href="#mypanel" data-icon="bars"><?php echo get_string("config", $lang)?></a>
 	</div>
 	
 	<div data-role="content">
@@ -92,7 +107,7 @@ $formularios = DBQueryReturnArray($queryformularios);
 			<div data-role="collapsible">
 				<h2><?php echo $formulario['name']; ?></h2>
 				<ul data-role="listview" data-theme="d" data-divider-theme="d">
-					<li data-role="list-divider">Subformularios <span class="ui-li-count"><?php echo $total; ?></span></li>
+					<li data-role="list-divider"><?php echo get_string("subforms", $lang)?><span class="ui-li-count"><?php echo $total; ?></span></li>
 					<?php foreach($subformularios as $key2 => $subformulario) {
 							if(getSubForm($subformulario['id'])){
 								$questionandanswers = getQuestionAnswers($subformulario['id'], $idlevantamiento);
@@ -106,14 +121,13 @@ $formularios = DBQueryReturnArray($queryformularios);
 								$ultimavisita = "nunca";
 								$completitud = 0;
 								$class = "dontgoto";
-							}
-							
+							}							
 						?>
 						<li class="<?php echo $class; ?>" data-subform="<?php echo $subformulario['id']; ?>" data-levantamiento="<?php echo $idlevantamiento; ?>"><a href="#">
 				    		<h3><?php echo $subformulario['name']; ?></h3>
-			                <p><strong>última visita: <?php echo $ultimavisita; ?></strong></p>
-			                <p>Siguiente pregunta: <?php echo $pregunta['name']; ?></p>
-			                <p class="ui-li-aside"><strong>Completitud: <?php echo $completitud; ?>%</strong></p>
+			                <p><strong><?php echo get_string("lastvisit", $lang)?>: <?php echo $ultimavisita; ?></strong></p>
+			                <p><?php echo get_string("nextquestion", $lang)?>: <?php echo $pregunta['name']; ?></p>
+			                <p class="ui-li-aside"><strong><?php echo get_string("completeness", $lang)?>: <?php echo $completitud; ?>%</strong></p>
 		            	</a></li>
 					<?php } ?>
 		        </ul>
@@ -127,7 +141,6 @@ $formularios = DBQueryReturnArray($queryformularios);
 	
 </div>
 <script src="js/levantamiento.js" type="text/javascript"></script>
-<script src="js/jquery.session.js" type="text/javascript"></script>
 <script type="text/javascript" src="http://webcursos.uai.cl/jira/s/es_ES-jovvqt-418945332/850/3/1.2.9/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?collectorId=2ab5c7d9"></script> <!-- JIRA (para reportar errores)-->
 	<style type="text/css">.atlwdg-trigger.atlwdg-RIGHT{background-color:red;top:70%;z-index:10001;}</style>
 </body>

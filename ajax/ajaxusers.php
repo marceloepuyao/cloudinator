@@ -1,6 +1,7 @@
 <?php
 require_once('../JSON.php');
 require_once('../DB/db.php');
+session_start();
 
 $json = new Services_JSON();
 
@@ -44,7 +45,7 @@ if($action == 'insert'){
 }else if($action == "delete"){
 	try {
 		$iduser = (int)$_POST['iduser'];
-		$who = (int)$_POST['who'];
+		$who = $_SESSION["usuario"];
 		
 		//ckeckear que no se borre a si mismo
 		$check = DBQuery("SELECT * FROM users WHERE id = '$iduser' AND email= '$who'");
