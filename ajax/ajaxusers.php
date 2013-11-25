@@ -12,7 +12,7 @@ if($action == 'insert'){
 		$email = $_POST["email"];
 		$name = $_POST["nombres"];
 		$lastname = $_POST["apellidos"];
-		$password = $_POST["password"];
+		$password = crypt($_POST["password"]);
 		$lang = $_POST["idioma"];
 		$superuser = (int)$_POST["superusuario"];
 		
@@ -81,7 +81,7 @@ if($action == 'insert'){
 		$email = $_POST["email"];
 		$name = $_POST["nombres"];
 		$lastname = $_POST["apellidos"];
-		$password = $_POST["password"];
+		$password = crypt($_POST["password"]);
 		$lang = $_POST["idioma"];
 		$superuser = (int)$_POST["superusuario"];
 		

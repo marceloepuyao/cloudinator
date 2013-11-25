@@ -68,7 +68,7 @@ function newuser(nombres,apellidos,email,password, idioma, superusuario, editto)
 		nombres : nombres,
 		apellidos : apellidos, 
 		email : email, 
-		password : password, 
+		password : password,
 		idioma : idioma, 
 		superusuario : superusuario
 		},function(respuesta){

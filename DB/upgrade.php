@@ -230,7 +230,6 @@ if ($version < 2013110300) {
 	echo '</hr>';
 }
 
-
 if ($version < 2013111700) {
 	echo '<hr>';
 	echo '<h4>Actualización N° 2013-11-17-00</h4>';
@@ -259,6 +258,23 @@ if ($version < 2013112200) {
 
 		//mensaje:
 		echo 'Admin con capacidad de superusuario';
+		
+	} catch (Exception $e) {
+		echo "Error en actualización<br>$e<br>";
+	}
+	echo '</hr>';
+}
+if ($version < 2013112500) {
+	echo '<hr>';
+	echo '<h4>Actualización N° 2013-11-25-00</h4>';
+	try {
+		DBquery("UPDATE users SET password = '".crypt("pepito.P0")."' WHERE email = 'admin'");
+
+		//actualiazo la versión
+		DBQuery("UPDATE cloudinator_upgrades SET version = '2013112500' WHERE id = 1");
+
+		//mensaje:
+		echo 'Encriptación de contraseñas';
 		
 	} catch (Exception $e) {
 		echo "Error en actualización<br>$e<br>";
