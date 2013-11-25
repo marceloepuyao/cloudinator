@@ -18,7 +18,7 @@ $USER = DBQueryReturnArray("SELECT * FROM users WHERE email = '$_SESSION[usuario
 if($USER[0]['superuser'] == 1){
 	$queryusuarios = "SELECT * FROM users";
 }else{
-	$queryusuarios = "SELECT * FROM users WHERE email = '$useremail'";
+	$queryusuarios = "SELECT * FROM users WHERE email = '".$USER[0]['email']."';";
 }
 $usuarios = DBQueryReturnArray($queryusuarios);
 

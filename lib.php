@@ -145,23 +145,23 @@ function getAllFormularios(){
  * esta función revisa si está en las variables $_GET definido el lang, si no por defecto devuelve es
  */
 function getLang(){
+
+	$lang = "es"; //predeterminado
+
+	if(isset($_SESSION['idioma'])){
+		$lang = $_SESSION['idioma'];
+		return $lang;
+	}
 	
-	$lang = $_SESSION['idioma'];
 	if($lang == "" || $lang == null){
 		if(isset($_GET['lang'])){
 			if($_GET['lang'] == "es" ||  $_GET['lang'] == "en"  || $_GET['lang'] == "pt" ){
 				$lang = $_GET['lang'];
-			}else{
-				$lang = "es";
 			}
-		}else{
-			$lang = "es";
 		}
 	}
-	return $lang;
-	
-	
 
+	return $lang;
 }
 
 function getSession($sessionname){
