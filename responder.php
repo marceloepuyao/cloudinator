@@ -65,19 +65,19 @@ if($pregunta == null){
 
 
 <div data-role="page" id="pregunta">
-
+	
 	<div data-theme="b" data-display="overlay" data-position="right" data-role="panel" id="mypanel">
-		<h2 id="usernamebutton"></h2>
-		<a href="#" id="cerrarsesion">Cerrar Sesión</a> <br>
-		<a href="#" id="usuarios">Usuarios</a><br>
-		<a href="#header" data-rel="close">Cerrar</a>
+		<h2 id="usernamebutton"><?php echo $USER[0]['name']." ".$USER[0]['lastname'];?></h2>
+		<a href="#" id="cerrarsesion"><?php echo get_string("logout", $lang)?></a> <br>
+		<a href="#" id="usuarios"><?php echo get_string("config", $lang)?></a><br>
+		<a href="#header" data-rel="close"><?php echo get_string("close", $lang)?></a>
     <!-- panel content goes here -->
 	</div><!-- /panel -->
 
 	<div data-role="header" data-theme="b">
-	    <a href="#" id="backbutton" data-emp="<?php echo $empresa['id']; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-icon="arrow-l">atrás</a>
-	    <h1 id ="empresanombre"> </h1>
-	    <a href="#mypanel" data-icon="bars">config</a>
+	    <a href="#" id="backbutton" data-emp="<?php echo $empresa['id']; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-icon="arrow-l"><?php echo get_string("back", $lang)?></a>
+	    <h1> <?php echo $empresa['nombre']?></h1>
+	    <a href="#mypanel" data-icon="bars"><?php echo get_string("config", $lang)?></a>
 	</div>
 	
 	<div data-role="content">
