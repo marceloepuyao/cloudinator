@@ -1,6 +1,7 @@
 <?php
 require_once('../DB/db.php');
  require_once('../JSON.php');
+ session_start();
 
 $json = new Services_JSON();
  
@@ -24,9 +25,10 @@ try {
 
 		$nueva = DBQuery("SELECT * FROM empresas WHERE nombre = '$name'");
 		$response = $nueva->fetch_array(MYSQLI_ASSOC);
+		$_SESSION['empresa'] = $response['id'];
+		
 		$data = array(
 					'result' => true,
-					'id' => $response['id']
 				);
 	}
 

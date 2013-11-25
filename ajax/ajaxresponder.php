@@ -1,6 +1,7 @@
 <?php
 require_once('../JSON.php');
 require_once('../DB/db.php');
+session_start();
 
 $json = new Services_JSON();
 
@@ -14,12 +15,12 @@ if($action == 'insert'){
 		$idsubform = (int)$_POST['idsubform'];
 		$idnode = (int)$_POST['idnode'];
 		$idpregunta = (int)$_POST['idpregunta'];
-		$userid = (int)$_POST['iduser'];
+		$userid = $_SESSION['usuario'];
 		$idempresa= (int)$_POST['idempresa'];
 		$respsubpregunta = $_POST['respsubpregunta'];
 	
 		DBQuery("INSERT INTO `registropreguntas` (`id`, `preguntaid`, `respuestaid`, `subformid`,`formid`, `levantamientoid`, `userid`, `empresaid`, `created`, `respsubpregunta`) VALUES 
-				(NULL, $idpregunta , $idnode, $idsubform ,'',$idlev, $userid,$idempresa,'".date("Y-m-d H:i:s")."', '$respsubpregunta' );
+				(NULL, $idpregunta , $idnode, $idsubform ,'',$idlev, '$userid',$idempresa,'".date("Y-m-d H:i:s")."', '$respsubpregunta' );
 				");
 		
 		$data = array(

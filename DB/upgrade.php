@@ -230,6 +230,41 @@ if ($version < 2013110300) {
 	echo '</hr>';
 }
 
+
+if ($version < 2013111700) {
+	echo '<hr>';
+	echo '<h4>Actualización N° 2013-11-17-00</h4>';
+	try {
+		//acá escribo el script de actualización
+		DBQuery("ALTER TABLE users ADD superuser tinyint(1) NOT NULL DEFAULT 0");
+		//actualiazo la versión
+		DBQuery("UPDATE cloudinator_upgrades SET version = '2013111700' WHERE id = 1");
+
+		//mensaje:
+		echo 'Se agrega columna superuser a tabla users ';
+		
+	} catch (Exception $e) {
+		echo "Error en actualización<br>$e<br>";
+	}
+	echo '</hr>';
+}
+if ($version < 2013112200) {
+	echo '<hr>';
+	echo '<h4>Actualización N° 2013-11-22-00</h4>';
+	try {
+		DBquery("UPDATE users SET superuser = 1");
+
+		//actualiazo la versión
+		DBQuery("UPDATE cloudinator_upgrades SET version = '2013112200' WHERE id = 1");
+
+		//mensaje:
+		echo 'Admin con capacidad de superusuario';
+		
+	} catch (Exception $e) {
+		echo "Error en actualización<br>$e<br>";
+	}
+	echo '</hr>';
+}
 /*
 //EJEMPLO: (RECUERDE CAMBIAR "AAAAMMDDNN" POR EL NUMERO DE ACTUALIZACION A = Año, M = Mes, D = Dia, N = Numero)
 

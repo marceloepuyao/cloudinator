@@ -1,37 +1,7 @@
-function checkSessionorDie(){
-	
-	if($.session.get('usu')!==undefined){
-		console.log("usu",$.session.get('usu') );
-	}else{
-		window.location.href = "index.html";
-	}
-	if($.session.get('pass')!==undefined){
-		console.log("pass",$.session.get('pass') );
-	}else{
-		window.location.href = "index.html";
-	}
-	
-	var d = new Date();
-	var time = d.getTime(); 
-	if($.session.get('lastaccess')!==undefined){
-		if((time - $.session.get('lastaccess'))  < 5*60*1000){
-			console.log("se renueva", time - $.session.get('lastaccess') );
-			$.session.set('lastaccess',time);
-		}else{
-			console.log("se cierra, han pasado ", time - $.session.get('lastaccess'), "milisegundos" );
-			$.session.set('usu', "");
-			$.session.set('pass',"");
-			$.session.set('empresa',"");
-			$.session.set('lastaccess',"");
-			window.location.href = "index.html";
-		}
-		
-	}else{
-		$.session.set('lastaccess',time);
-		console.log("first time lastaccess",$.session.get('lastaccess') );
-	}
-	
-	$("#usernamebutton").text($.session.get('usu'));
+function getUrlParameter(name) {
+    return decodeURI(
+        (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
+    );
 }
 function crearEmpresa(name,industry,textarea){
 	
@@ -45,15 +15,12 @@ function crearEmpresa(name,industry,textarea){
 			var resp = jQuery.parseJSON(respuesta);
 			
 			if(resp.result){
-				$.session.set('empresa', resp.id);
-				//alert("empresa creada con éxito");
-				window.location.href = "levantamiento.php?emp="+resp.id;
+				window.location.href = "levantamiento.php?emp="+resp.id + "&lang=" + getUrlParameter('lang');
 			}else{
 				if(resp.exception == "existing"){
 					alert("Nombre ocupado");
 				}else{
 					alert("No se ha podido crear la empresa");
-					console.log("exception", resp.exception);
 				}
 			}
 		}
@@ -62,10 +29,8 @@ function crearEmpresa(name,industry,textarea){
 
 $(document).ready(function(){
 	
-	checkSessionorDie();
-	
 	$("#backbutton").on('click', function(){
-		window.location.href = "index.html";
+		window.location.href = "index.php?lang=" + getUrlParameter('lang');
 	});
 	//alert($(window).width() );
 	$(window).resize(function() {
@@ -96,7 +61,7 @@ $(document).ready(function(){
 	});
 	$("#cancel").on('click', function(){
 		
-		window.location.href = "index.html";
+		window.location.href = "index.php?lang=" + getUrlParameter('lang');
 	});
 	
 	

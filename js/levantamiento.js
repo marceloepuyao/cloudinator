@@ -1,46 +1,9 @@
-function checkSessionorDie(){
-	
-	if($.session.get('usu')!==undefined){
-		console.log("usu",$.session.get('usu') );
-	}else{
-		window.location.href = "index.html";
-	}
-	if($.session.get('pass')!==undefined){
-		console.log("pass",$.session.get('pass') );
-	}else{
-		window.location.href = "index.html";
-	}
-	
-	if($.session.get('empresa')!==undefined){
-		console.log("empresa",$.session.get('empresa') );
-	}else{
-		window.location.href = "index.html";
-	}
-	
-	var d = new Date();
-	var time = d.getTime(); 
-	if($.session.get('lastaccess')!==undefined){
-		if((time - $.session.get('lastaccess'))  < 5*60*1000){
-			console.log("se renueva", time - $.session.get('lastaccess') );
-			$.session.set('lastaccess',time);
-		}else{
-			console.log("se cierra, han pasado ", time - $.session.get('lastaccess'), "milisegundos" );
-			$.session.set('usu', "");
-			$.session.set('pass',"");
-			$.session.set('empresa',"");
-			$.session.set('lastaccess',"");
-			window.location.href = "index.html";
-		}
-		
-	}else{
-		$.session.set('lastaccess',time);
-		console.log("first time lastaccess",$.session.get('lastaccess') );
-	}
-	
-	
-	$("#usernamebutton").text($.session.get('usu'));
-	console.log("asdasd");
+function getUrlParameter(name) {
+    return decodeURI(
+        (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
+    );
 }
+
 function guardarlevantamiento(titulo, info, contactado, area, forms, idlev){
 	if(idlev){
 		action = "update";
@@ -56,7 +19,7 @@ function guardarlevantamiento(titulo, info, contactado, area, forms, idlev){
 		contactado : contactado, 
 		area : area, 
 		forms : forms,
-		empresaid : $.session.get('empresa')
+		empresaid : getUrlParameter("emp")
 		},function(respuesta){
 			
 			console.log("guardarlevantamiento", respuesta);
@@ -64,9 +27,9 @@ function guardarlevantamiento(titulo, info, contactado, area, forms, idlev){
 			if(obj.result){
 	        	console.log("la respuesta es", obj.id );
 	        	if(action == "insert"){
-	        		window.location.href = "recorrer.php?emp="+$.session.get('empresa')+'&idlev='+obj.id;
+	        		window.location.href = "recorrer.php?emp="+getUrlParameter("emp")+'&idlev='+obj.id + "&lang=" + getUrlParameter("lang");
 	        	}else if(action == "update"){
-	        		window.location.href = "levantamiento.php?emp="+$.session.get('empresa');
+	        		window.location.href = "levantamiento.php?emp="+getUrlParameter("emp") + "&lang=" + getUrlParameter("lang");
 	        	}
 			}else{
 				console.log("error en guardarlevantamiento", obj.exception);
@@ -92,23 +55,66 @@ function deleteLevantamiento(idlev){
 	);
 }
 
+function newuser(nombres,apellidos,email,password, idioma, superusuario, editto){
+	
+	var action = "insert";
+	if(editto != 0){
+		action = "update";
+	}
+	
+	$.post("ajax/ajaxusers.php",{ 
+		action: action,
+		editto : editto,
+		nombres : nombres,
+		apellidos : apellidos, 
+		email : email, 
+		password : password, 
+		idioma : idioma, 
+		superusuario : superusuario
+		},function(respuesta){
+			console.log("respuesta",respuesta);
+			
+			var response = jQuery.parseJSON(respuesta);
+			if(response.result){
+				window.location.href = "usuarios.php?lang="+getUrlParameter("lang");
+			}else{
+				console.log("error guardar información del usuario", response.exception);
+			}
+			
+		});
+}
+
+function deleteuser(iduser){
+	$.post("ajax/ajaxusers.php",{ 
+		action: "delete",
+		iduser : iduser
+		},function(respuesta){			
+			var response = jQuery.parseJSON(respuesta);
+			if(response.result){
+				window.location.href = "usuarios.php?lang="+getUrlParameter("lang");
+			}else{
+				if(response.sameperson){
+					alert("No puedes borrarte a ti mismo");
+				}else{
+					console.log("error en eliminar levantamiento", response.exception);
+				}
+			}	
+		});
+}
+
 $(document).ready(function(){
 	
-	checkSessionorDie();
-	
-	console.log("WTF");
-	
 	$("#backbutton").on('click', function(){
-		window.location.href = "index.html";
+		window.location.href = "index.php?lang=" + getUrlParameter("lang");
 	});
 
 	$("#backbutton2").on('click', function(){
-		window.location.href = "levantamiento.php?emp="+$.session.get('empresa');
+		window.location.href = "levantamiento.php?emp="+getUrlParameter("emp") + "&lang=" + getUrlParameter("lang");
 	});
 	$(".ira").on('click', function(){
 		var idempresa = $(this).data('empresa');
 		var idlevantamiento = $(this).data('levantamiento');
-		window.location.href = "recorrer.php?emp="+idempresa+"&idlev="+idlevantamiento;
+		window.location.href = "recorrer.php?emp="+idempresa+"&idlev="+idlevantamiento + "&lang=" + getUrlParameter("lang");
 	});
 	
 	
@@ -130,7 +136,7 @@ $(document).ready(function(){
 	$(".goto").on('click', function(){
 		var subform = $(this).data('subform');
 		var lev = $(this).data('levantamiento');
-		window.location.href = "responder.php?idsubform="+subform+"&idlev="+lev;
+		window.location.href = "responder.php?idsubform="+subform+"&idlev="+lev + "&lang=" + getUrlParameter("lang");
 
 
 	});
@@ -165,17 +171,17 @@ $(document).ready(function(){
 
 	});
 	$("#cancel").on('click', function(){
-		window.location.href = "levantamiento.php?emp="+$.session.get('empresa');
+		window.location.href = "levantamiento.php?emp="+getUrlParameter('emp') + "&lang=" + getUrlParameter("lang");
 	});
 	
 	$(".edit").on('click', function(){
 		var idlevantamiento = $(this).data('id');
-		window.location.href = "editarlevantamiento.php?id="+idlevantamiento;
+		window.location.href = "editarlevantamiento.php?id="+idlevantamiento + "&emp=" + getUrlParameter("emp")+"&lang=" + getUrlParameter("lang");
 	});
 	
 	$("#mainback").on('click', function(){
 		var idlevantamiento = $(this).data('id');
-		window.location.href = "levantamiento.php?emp="+$.session.get('empresa');
+		window.location.href = "levantamiento.php?emp="+getUrlParameter('emp') + "&lang=" + getUrlParameter("lang");
 	});
 	
 	$("#usernamebutton").on('click', function(){
@@ -184,18 +190,59 @@ $(document).ready(function(){
 	});
 	
 	$("#cerrarsesion").on('click', function(){
-		$.session.set('usu', "");
-		$.session.set('pass',"");
-		$.session.set('empresa',"");
-		$.session.set('lastaccess',"");
-		window.location.href = "index.html";
-		console.log("cierra sesion");
+		$.post("server/session.php",{ 
+			action: "deleteall"
+			},function(respuesta){
+				window.location.href = "index.php?lang=" + getUrlParameter("lang");
+				console.log("cierra sesion");
+				
+			});
 	});
 	
 	$("#usuarios").on('click', function(){
 
-		window.location.href = "usuarios.php";
+		window.location.href = "usuarios.php?lang=" + getUrlParameter("lang");
 	});
+	
+	$("#acceptnewuser").on('click', function(){
+		var nombres = $("#nombres").val();
+		var apellidos =$("#apellidos").val();
+		var email = $("#email-empresarial").val();
+		var password = $("#password").val();
+		var repassword = $("#repassword").val();
+		var idioma = $("#idioma").val();
+		var superusuario = $("#superuser").val();
+		
+		var editto = $(this).data('editto');
+		
+		if(nombres && apellidos && email && password && idioma && repassword){
+			if(password == repassword){
+				console.log("new user", nombres,apellidos,email,password, idioma, superusuario);
+				
+				newuser(nombres,apellidos,email,password, idioma, superusuario, editto);
+			}else{
+				alert("Error en Contraseña");
+			}
+
+		}else{
+			alert("Faltan campos por llenar");
+		}
+	});
+	$(".deleteuser").on('click', function(){
+		var iduser = $(this).data('iduser');
+		deleteuser(iduser, null);
+	});
+	$(".edituser").on('click', function(){
+		var iduser = $(this).data('iduser');
+		window.location.href = "usuarios.php?lang=" + getUrlParameter("lang") + "&edit="+iduser+"#newuser";
+	});
+	
+	$("#tonewuser").on('click', function(){
+		window.location.href = "usuarios.php?lang=" + getUrlParameter("lang") +"#newuser";
+	});
+	
+	
+	
 
 	
 });

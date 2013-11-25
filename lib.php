@@ -1,5 +1,22 @@
 <?php
+define('APPLICATION_PATH', realpath(dirname(__FILE__)));
 require_once('DB/db.php');
+
+/**
+ * Modo de uso:
+ * <?php echo get_string($key, $lang);?>
+ * siendo $key la palabra clave par el string que se busca y $lang el idioma que se requiere.
+ */
+function get_string($key, $lang) {
+	require(APPLICATION_PATH . '/lang/' . $lang . '.php');
+	if(isset($dicc[$key])){
+		$translation = $dicc[$key];
+	}else{
+		$translation = 'Warning - The key word "'.$key.'" was not found in "/lang/'.$lang.'.php"';
+	}
+	
+	return $translation;
+}
 
 /** obtenemos el formulario, pero primero revisamos si está SANO:
  *  1.- solo hay un nodo que no tiene padres (este nodo es pregunta)
@@ -121,4 +138,86 @@ function getAllFormularios(){
 	$queryformularios = "SELECT * FROM megatrees";
 	$formularios = DBQueryReturnArray($queryformularios);
 	return $formularios;
+}
+
+/**
+ * 
+ * esta función revisa si está en las variables $_GET definido el lang, si no por defecto devuelve es
+ */
+function getLang(){
+	
+	$lang = $_SESSION['idioma'];
+	if($lang == "" || $lang == null){
+		if(isset($_GET['lang'])){
+			if($_GET['lang'] == "es" ||  $_GET['lang'] == "en"  || $_GET['lang'] == "pt" ){
+				$lang = $_GET['lang'];
+			}else{
+				$lang = "es";
+			}
+		}else{
+			$lang = "es";
+		}
+	}
+	return $lang;
+	
+	
+
+}
+
+function getSession($sessionname){
+	foreach ($_COOKIE as $keya=>$i){
+      	foreach(explode(":", $keya, 3) as $namecookie){
+      		if($namecookie == $sessionname){
+      			return $i;
+      		}
+      	} 
+	}
+	return false;
+	
+}
+function getResumenSubform($idsubform, $idlevantamiento){
+	
+	$queryresumen = "SELECT * FROM registropreguntas where subformid = $idsubform AND levantamientoid = $idlevantamiento ORDER BY created";
+	$resumen = DBQueryReturnArray($queryresumen);
+	return $resumen;
+	
+}
+
+function getContentByNodeId($nodeID){
+	
+	$querycontent = "SELECT * FROM nodos where id = $nodeID";
+	$content = DBQueryReturnArray($querycontent);
+	return $content[0]['name'];
+	
+}
+
+function checkSession($lastaccess, $usuario, $empresa,$idioma){
+	
+	$url = "index.php?lang=".getLang();
+	if($usuario == ""){
+		@header('Location: '.$url);
+		return false;
+	}
+	
+	if($empresa == ""){
+		@header('Location: '.$url);
+		return false;
+	}
+	
+	
+	$time = time(); 
+	if($lastaccess){
+		if(($time - $lastaccess)  < 5*60){
+			return true;
+		}else{
+			$_SESSION = array();
+			@header('Location: '.$url);
+			return false;
+		}
+		
+	}else{
+		return true;
+	}
+	
+	
 }

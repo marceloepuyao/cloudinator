@@ -1,5 +1,18 @@
 ﻿<?php
+require_once('DB/db.php');
 require_once('lib.php');
+session_start();
+
+//checkiamos si las sessions están settiadas
+if(checkSession($_SESSION['ultimoacceso'], $_SESSION['usuario'], $_SESSION['empresa'], $_SESSION['idioma'])){
+	$_SESSION['ultimoacceso'] = time();
+}
+
+//obetenemos el lenguaje de la página.
+$lang = getLang();
+
+//obtenemos el usuario
+$USER = DBQueryReturnArray("SELECT * FROM users WHERE email = '$_SESSION[usuario]'");
 
 //comprobar que las variables estén bien
 if(isset($_GET['idlev']) && isset($_GET['idsubform'])){
@@ -28,7 +41,7 @@ extract($questionandanswers); //devuelve $pregunta, $respuestas, $ultimavisita, 
 //si no hay pregunta es por que se ha llegado a final, se muestra resumen de respuestas.
 if($pregunta == null){
 	
-	//TODO:get resumen respuestas
+	$tablaresumen = getResumenSubform($idsubform, $idlevantamiento);
 	
 }
 
@@ -46,25 +59,25 @@ if($pregunta == null){
 			padding-left: 25%;
 		}
 </style>
-<title>Nuevo Levantamiento</title>
+<title>Responder Subformulario</title>
 </head>
 <body>
 
 
 <div data-role="page" id="pregunta">
-
+	
 	<div data-theme="b" data-display="overlay" data-position="right" data-role="panel" id="mypanel">
-		<h2 id="usernamebutton"></h2>
-		<a href="#" id="cerrarsesion">Cerrar Sesión</a> <br>
-		<a href="#" id="usuarios">Usuarios</a><br>
-		<a href="#header" data-rel="close">Cerrar</a>
+		<h2 id="usernamebutton"><?php echo $USER[0]['name']." ".$USER[0]['lastname'];?></h2>
+		<a href="#" id="cerrarsesion"><?php echo get_string("logout", $lang)?></a> <br>
+		<a href="#" id="usuarios"><?php echo get_string("config", $lang)?></a><br>
+		<a href="#header" data-rel="close"><?php echo get_string("close", $lang)?></a>
     <!-- panel content goes here -->
 	</div><!-- /panel -->
 
 	<div data-role="header" data-theme="b">
-	    <a href="#" id="backbutton" data-emp="<?php echo $empresa['id']; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-icon="arrow-l">atrás</a>
-	    <h1 id ="empresanombre"> </h1>
-	    <a href="#mypanel" data-icon="bars">config</a>
+	    <a href="#" id="backbutton" data-emp="<?php echo $empresa['id']; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-icon="arrow-l"><?php echo get_string("back", $lang)?></a>
+	    <h1> <?php echo $empresa['nombre']?></h1>
+	    <a href="#mypanel" data-icon="bars"><?php echo get_string("config", $lang)?></a>
 	</div>
 	
 	<div data-role="content">
@@ -85,7 +98,35 @@ if($pregunta == null){
 		<?php endif; ?>
 		
 		<?php if ($pregunta == null): ?>
-			<h2>Se ha llegado al fin</h2>
+		<h2>Se ha llegado al fin</h2>
+			
+			
+				
+				
+				
+				
+		<table data-role="table" id="table-custom-2" data-mode="columntoggle" class="ui-body-d ui-shadow table-stripe ui-responsive" data-column-btn-theme="b" data-column-btn-text="Columns to display..." data-column-popup-theme="a">
+	         <thead>
+	           <tr class="ui-bar-d">
+	             <th>Pregunta</th>
+	             <th>Respuesta</th>
+	             <th> Subrespuesta</th>
+	           </tr>
+	         </thead>
+	         <tbody>
+	         <?php foreach ($tablaresumen as $preguntas){?>
+	         
+	           <tr>
+	             <th><a href="#"><?php echo getContentByNodeId($preguntas['preguntaid']); ?></a></th>
+	             <td><?php echo getContentByNodeId($preguntas['respuestaid']); ?></td>
+	             <td><?php echo $preguntas['respsubpregunta']; ?></td>
+	           </tr>
+	        <?php }?>
+	           
+	         </tbody>
+       </table>
+				
+				
 			<fieldset class="ui-grid-a">
                     <div class="ui-block-a"><button id="responderback" data-idsubform="<?php echo $idsubform; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-theme="d">Pregunta anterior</button></div>
                     <div class="ui-block-b"><button id="responderquit" data-emp="<?php echo $empresa['id']; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-theme="d">Continuar</button></div>
@@ -118,7 +159,6 @@ if($pregunta == null){
 	
 </div>
 <script src="js/responder.js" type="text/javascript"></script>
-<script src="js/jquery.session.js" type="text/javascript"></script>
 <script type="text/javascript" src="http://webcursos.uai.cl/jira/s/es_ES-jovvqt-418945332/850/3/1.2.9/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?collectorId=2ab5c7d9"></script> <!-- JIRA (para reportar errores)-->
 	<style type="text/css">.atlwdg-trigger.atlwdg-RIGHT{background-color:red;top:70%;z-index:10001;}</style>
 </body>

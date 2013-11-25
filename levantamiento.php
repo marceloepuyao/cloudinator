@@ -1,29 +1,45 @@
 ﻿<?php
-	require_once('DB/db.php');
-	require_once('lib.php');
+require_once('DB/db.php');
+require_once('lib.php');
+session_start();
+
+//checkiamos si las sessions están settiadas
+if(checkSession($_SESSION['ultimoacceso'], $_SESSION['usuario'], $_SESSION['empresa'], $_SESSION['idioma'])){
+	$_SESSION['ultimoacceso'] = time();
+}
+
+//obetenemos el lenguaje de la página.
+$lang = getLang();
+
+//obtenemos el usuario
+$USER = DBQueryReturnArray("SELECT * FROM users WHERE email = '$_SESSION[usuario]'");
+
+//vemos que la URL este la variable emp
 if(isset($_GET['emp'])){
 	$idempresa = (int)$_GET['emp'];
 }else{
 	header( 'Location: notfound.html' );
 }
 
-	
-//sacar info de la empresa, si no existe se manda a not found
+//sacamos la info de la empresa, si no existe se manda a not found
 $queryempresa="SELECT * FROM empresas WHERE id = $idempresa";
-
 $empresa = DBQueryReturnArray($queryempresa);	
-
-
+if(count($empresa) == 0){
+	header( 'Location: notfound.html' );
+}
 $nombre = $empresa[0]['nombre'];
 $info = $empresa[0]['infolevantamiento'];
 
 
+//obtenemos los levantamientos de la empresa
 $querylevantamientos = "SELECT * FROM levantamientos WHERE empresaid = $idempresa";
 $levantamientos = DBQueryReturnArray($querylevantamientos);
 
+//obtenemos la lista de todos los usuarios.
 $queryusers = "SELECT * FROM users";
 $users = DBQueryReturnArray($queryusers);
 
+//obtenemos todos los formularios
 $formularios = getAllFormularios();
 
 ?>
@@ -54,39 +70,38 @@ $formularios = getAllFormularios();
 <div data-role="page" id="levantamiento">
 
 	<div data-theme="b" data-display="overlay" data-position="right" data-role="panel" id="mypanel">
-		<h2 id="usernamebutton"></h2>
-		<a href="#" id="cerrarsesion">Cerrar Sesión</a> <br>
-		<a href="#" id="usuarios">Usuarios</a><br>
-		<a href="#header" data-rel="close">Cerrar</a>
+		<h2><?php echo $USER[0]['name']." ".$USER[0]['lastname'];?></h2>
+		<a href="#" id="cerrarsesion"><?php echo get_string("logout", $lang)?></a> <br>
+		<a href="#" id="usuarios"><?php echo get_string("config", $lang)?></a><br>
+		<a href="#header" data-rel="close"><?php echo get_string("close", $lang)?></a>
     <!-- panel content goes here -->
 	</div><!-- /panel -->
 
 	<div data-role="header" class="header" data-position="fixed" role="banner" data-theme="b">
-	    <a href="#" id="backbutton" data-icon="arrow-l">Atrás</a>
+	    <a href="#" id="backbutton" data-icon="arrow-l"><?php echo get_string("back", $lang)?></a>
 	    <h1 id ="empresanombre"><?php echo $nombre; ?>	</h1>
-	    <a href="#mypanel" data-icon="bars">config</a>
+	    <a href="#mypanel" data-icon="bars"><?php echo get_string("config", $lang)?></a>
 	</div>
 	
 	
-	
-	
 	<div class="container">
-		<h4>Información de la empresa</h4>
+		<h4><?php echo get_string("infocompany", $lang); echo $_SESSION['ultimoacceso'] ;?></h4>
+
 		<p id="infoempresa" > <?php echo $info; ?></p>
 		<br>
 		<?php if($levantamientos){?>
 		
-		<h4 >Historial de levantamientos</h4>
+		<h4 ><?php echo get_string("recordlevantamientos", $lang)?></h4>
 		
 		<table data-role="table" id="table-column-toggle" data-mode="columntoggle" class="ui-responsive table-stroke">
 		     <thead>
-		       <tr>
-		       	<th>Título Visita</th>
-		         <th data-priority="2">Última Modificación</th>
-		         <th data-priority="3"><abbr title="Info">Información</abbr></th>
-		         <th>Recorrer</th>
-		          <th data-priority="5">Borrar</th>
-		          <th data-priority="6">Editar</th>
+		       <tr>	       
+		       	<th><?php echo get_string("titlevisit", $lang)?></th>
+		         <th data-priority="2"><?php echo get_string("lastmod", $lang)?></th>
+		         <th data-priority="3"><abbr title="Info"><?php echo get_string("info", $lang)?></abbr></th>
+		         <th><?php echo get_string("gothrough", $lang)?></th>
+		          <th data-priority="5"><?php echo get_string("delete", $lang)?></th>
+		          <th data-priority="6"><?php echo get_string("edit", $lang)?></th>
 		       </tr>
 		     </thead>
 		     <tbody>
@@ -106,17 +121,21 @@ $formularios = getAllFormularios();
 		   <?php }?>
 		<br><br>
 		<div data-role="controlgroup">
-		    <a id="tonew" href="#new" data-role="button">Empezar Nuevo Levantamiento</a>
+		    <a id="tonew" href="#new" data-role="button"><?php echo get_string("newlevantamiento", $lang)?></a>
 		</div>
 	</div>
 </div>
 <div id="new" data-role="page" >
-	<div data-role="header" data-theme="b">
-	    <a href="#levantamiento" id="back" data-icon="arrow-l">Atrás</a>
+
+
+
+	<div data-role="header" class="header" data-position="fixed" role="banner" data-theme="b">
+	    <a href="#" id="backbutton2" data-icon="arrow-l"><?php echo get_string("back", $lang)?></a>
 	    <h1 id ="empresanombre2"><?php echo $nombre; ?>	</h1>
-	    <a href="#" id="usernamebutton" data-icon="check" class="ui-btn-right"></a>
-	</div><!-- /header -->
-	
+	    
+	</div>
+
+
 	<div data-role="content" class="container"> 
 		<h2>Nuevo Levantamiento</h2>
 		    <ul data-role="listview" data-inset="true">
@@ -168,7 +187,6 @@ $formularios = getAllFormularios();
 	</div><!-- /content -->
 </div>
 <script src="js/levantamiento.js" type="text/javascript"></script>
-<script src="js/jquery.session.js" type="text/javascript"></script>
 <script type="text/javascript" src="http://webcursos.uai.cl/jira/s/es_ES-jovvqt-418945332/850/3/1.2.9/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?collectorId=2ab5c7d9"></script> <!-- JIRA (para reportar errores)-->
 	<style type="text/css">.atlwdg-trigger.atlwdg-RIGHT{background-color:red;top:70%;z-index:10001;}</style>
 </body>
