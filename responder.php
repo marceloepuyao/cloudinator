@@ -25,6 +25,12 @@ if(isset($_GET['idlev']) && isset($_GET['idsubform'])){
 	header( 'Location: notfound.html' ) ;
 }
 
+//si se quiere revisar una pregunta pasada se pasa por la URL
+if(isset($_GET['idpreg'])){
+	$idpregunta = (int)$_GET['idpreg'];
+}else{
+	$idpregunta = 0;
+}
 
 //obtenemos el subformulaio, si está incompleto devuelve false
 if(!$subform = getSubForm($idsubform)){
@@ -33,17 +39,31 @@ if(!$subform = getSubForm($idsubform)){
 //get empresa
 $empresa = getEmpresaByLevantamientoId($idlevantamiento);
 
-//veo cual fue la última pregunta respondida (según levantamiento y subform). si no hay, tomo la primera.
-$questionandanswers = getQuestionAnswers($idsubform, $idlevantamiento);
-
-extract($questionandanswers); //devuelve $pregunta, $respuestas, $ultimavisita, $completitud
+//si esta consultando por una pregunta ya respondida
+if($idpregunta){
+	
+	//obtengo la info de la pregunta por id
+	$questionandanswers = getQuestionById($idsubform, $idlevantamiento, $idpregunta);
+	
+	extract($questionandanswers); //devuelve $pregunta, $respuestas, $ultimavisita, $completitud
+	$registroanterior = getRegistroAteriorConRegistroID($idregistro, $idsubform, $idlevantamiento);
+	$registroanteriorid = $registroanterior['id'];
+	
+	
+}else{
+	//veo cual fue la última pregunta respondida (según levantamiento y subform). si no hay, tomo la primera.
+	$questionandanswers = getQuestionAnswers($idsubform, $idlevantamiento);
+	
+	extract($questionandanswers); //devuelve $pregunta, $respuestas, $ultimavisita, $completitud, $idregistro
+	$registroanteriorid = $idregistro;
+}
 
 //si no hay pregunta es por que se ha llegado a final, se muestra resumen de respuestas.
 if($pregunta == null){
-	
 	$tablaresumen = getResumenSubform($idsubform, $idlevantamiento);
-	
 }
+
+
 
 
 ?>
@@ -81,54 +101,58 @@ if($pregunta == null){
 	</div>
 	
 	<div data-role="content">
-		<?php if ($pregunta != null): ?>
+		<?php if ($pregunta != null){ ?>
 		
 		<h1><?php echo $pregunta['name']; ?></h1>
 		<div data-role="collapsible-set" data-theme="c" data-content-theme="d" data-iconpos="right">
-		    <?php foreach($respuestas as $key => $respuesta) : ?>
-		    	<div data-idsubform="<?php echo $idsubform; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-idnode="<?php echo $respuesta['id']; ?>" data-idpregunta="<?php echo $pregunta['id']; ?>" class="answer" data-role="button" data-iconpos="top">
-					<h3><?php echo $respuesta['name']; ?></h3>
-				</div>
-			<?php endforeach ?>
+		    <?php foreach($respuestas as $key => $respuesta){ 
+				$tipo = "c";	
+		    	if($idpregunta){
+						if($registro['respuestaid'] == $respuesta['id']){
+							$tipo = "b";
+						}
+					}?>
+				    	<div  data-userid="<?php echo $USER[0]['id'];?>" data-idsubform="<?php echo $idsubform; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-idnode="<?php echo $respuesta['id']; ?>" data-idpregunta="<?php echo $pregunta['id']; ?>" class="answer" data-theme="<?php echo $tipo;?>" data-role="button" data-iconpos="top">
+							<h3><?php echo $respuesta['name']; ?></h3>
+						</div>
+			<?php } ?>
 		<fieldset class="ui-grid-a">
-		                    <div class="ui-block-a"><button id="responderback" data-idsubform="<?php echo $idsubform; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-theme="d">Pregunta anterior</button></div>
+		                    <div class="ui-block-a"><button id="responderback" data-idreg ="<?php echo $registroanteriorid;?>"data-idsubform="<?php echo $idsubform; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-theme="d">Pregunta anterior</button></div>
 		                    <div class="ui-block-b"><button id="responderquit" data-emp="<?php echo $empresa['id']; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-theme="d">Abandonar</button></div>
 		 </fieldset>
 		</div>
-		<?php endif; ?>
+		<?php } ?>
 		
 		<?php if ($pregunta == null): ?>
 		<h2>Se ha llegado al fin</h2>
-			
-			
-				
-				
-				
-				
-		<table data-role="table" id="table-custom-2" data-mode="columntoggle" class="ui-body-d ui-shadow table-stripe ui-responsive" data-column-btn-theme="b" data-column-btn-text="Columns to display..." data-column-popup-theme="a">
+		
+		<table data-role="table" id="movie-table" data-mode="columntoggle" class="ui-body-d ui-shadow table-stripe ui-responsive">
 	         <thead>
 	           <tr class="ui-bar-d">
 	             <th>Pregunta</th>
 	             <th>Respuesta</th>
 	             <th> Subrespuesta</th>
+	             <th>Fecha</th>
 	           </tr>
 	         </thead>
 	         <tbody>
 	         <?php foreach ($tablaresumen as $preguntas){?>
 	         
 	           <tr>
-	             <th><a href="#"><?php echo getContentByNodeId($preguntas['preguntaid']); ?></a></th>
+	             <th><a class="gobacktoquestion" data-idlev="<?php echo $idlevantamiento;?>" data-idsubform="<?php echo $idsubform;?>" data-id="<?php echo $preguntas['id'];?>" href="#"><?php echo getContentByNodeId($preguntas['preguntaid']); ?></a></th>
 	             <td><?php echo getContentByNodeId($preguntas['respuestaid']); ?></td>
 	             <td><?php echo $preguntas['respsubpregunta']; ?></td>
+	             <td><?php echo $preguntas['created']; ?></td>
 	           </tr>
-	        <?php }?>
+	           
+	        <?php $lastregistro = $preguntas['id'];}?>
 	           
 	         </tbody>
        </table>
 				
 				
 			<fieldset class="ui-grid-a">
-                    <div class="ui-block-a"><button id="responderback" data-idsubform="<?php echo $idsubform; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-theme="d">Pregunta anterior</button></div>
+                    <div class="ui-block-a"><button id="responderback" data-idreg="<?php echo $lastregistro;?>" data-idsubform="<?php echo $idsubform; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-theme="d">Pregunta anterior</button></div>
                     <div class="ui-block-b"><button id="responderquit" data-emp="<?php echo $empresa['id']; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-theme="d">Continuar</button></div>
 		 	</fieldset>
 		<?php endif; ?>
@@ -151,7 +175,7 @@ if($pregunta == null){
 					
 					
 					<button id="respondersubpregunta" type='submit' data-theme='b' data-icon='check'>Continuar</button>
-		           
+		             <button id="omitirsubpregunta"  data-theme='c'  data-icon='delete'>Omitir</button>
 		        </div>
 		   
 		</div>

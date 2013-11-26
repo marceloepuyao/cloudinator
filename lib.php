@@ -57,13 +57,13 @@ function getSubForm($idsubform){
 
 function getQuestionAnswers($idsubform, $idlevantamiento){
 	//se obtienen la última pregunta hecha.
-	$querypreguntas = "SELECT * FROM registropreguntas WHERE levantamientoid = $idlevantamiento AND subformid = $idsubform order by created DESC limit 1";
-	$preguntas = DBQueryReturnArray($querypreguntas);
+	$queryregistro = "SELECT * FROM registropreguntas WHERE levantamientoid = $idlevantamiento AND subformid = $idsubform order by created DESC limit 1";
+	$registro = DBQueryReturnArray($queryregistro);
 	//se obtiene la pregunta que viene... si no hay datos: la primera.
-	if($preguntas != null){
+	if($registro != null){
 		
 		//ver en el registro la ultima pregunta respondida, ver su respuesta y sacar la pregunta que viene:
-		$idrespuesta = $preguntas[0]["respuestaid"];
+		$idrespuesta = $registro[0]["respuestaid"];
 		
 		$pregunta = DBQueryReturnArray("SELECT k.* 
 										FROM nodos k
@@ -81,10 +81,10 @@ function getQuestionAnswers($idsubform, $idlevantamiento){
 											FROM  links l
 											WHERE l.source = ".$pregunta[0]['id'].")");
 			
-			return array("pregunta" =>$pregunta[0], "respuestas" => $respuestas, "ultimavisita"=>'Hace '.floor((time()-strtotime($preguntas[0]['created']))/(60*60*24)).' Días.', "completitud"=>0);
+			return array("pregunta" =>$pregunta[0], "respuestas" => $respuestas, "ultimavisita"=>'Hace '.floor((time()-strtotime($registro[0]['created']))/(60*60*24)).' Días.', "completitud"=>0, "idregistro"=> $registro[0]['id']);
 		}else{
 			
-			return array("pregunta" =>null, "respuestas" => null, "ultimavisita"=>'Hace '.floor((time()-strtotime($preguntas[0]["created"]))/(60*60*24)).' Días.', "completitud"=>100);
+			return array("pregunta" =>null, "respuestas" => null, "ultimavisita"=>'Hace '.floor((time()-strtotime($registro[0]["created"]))/(60*60*24)).' Días.', "completitud"=>100, "idregistro"=> $registro[0]['id']);
 			
 		}
 		
@@ -107,9 +107,45 @@ function getQuestionAnswers($idsubform, $idlevantamiento){
 	//TODO: calcular completitud
 	$completitud = 0;
 		
-	return array("pregunta" =>$pregunta[0], "respuestas" => $respuestas, "ultimavisita"=>"nunca", "completitud"=>$completitud);
+	return array("pregunta" =>$pregunta[0], "respuestas" => $respuestas, "ultimavisita"=>"nunca", "completitud"=>$completitud, "idregistro"=> null);
 	
 }
+function getQuestionById($idsubform, $idlevantamiento, $registroid){
+	
+	$queryregistro = "SELECT * FROM registropreguntas WHERE levantamientoid = $idlevantamiento AND subformid = $idsubform AND id = $registroid";
+	$registro = DBQueryReturnArray($queryregistro);
+	
+	$idpregunta = $registro[0]["preguntaid"];
+		
+	$pregunta = DBQueryReturnArray("SELECT k.* 
+									FROM nodos k
+									WHERE k.tree = $idsubform AND k.type = 'condition' AND  k.id  = $idpregunta");
+	
+	$respuestas = DBQueryReturnArray("SELECT n.*
+											FROM nodos n
+											WHERE n.id IN(
+											SELECT l.target
+											FROM  links l
+											WHERE l.source = $idpregunta)");
+	return array("registro"=>$registro[0],"pregunta" =>$pregunta[0], "respuestas" => $respuestas, "ultimavisita"=>'Hace '.floor((time()-strtotime($registro[0]['created']))/(60*60*24)).' Días.', "completitud"=>0, "idregistro"=>$registro[0]['id']);
+	
+	
+	
+}
+
+function getRegistroAteriorConRegistroID($registroid, $idsubform, $idlev){
+	
+	$superquery = "	SELECT r.*
+					FROM registropreguntas r
+					WHERE r.subformid = $idsubform AND r.levantamientoid =$idlev  AND r.respuestaid IN (select l.source 
+										FROM links l
+										WHERE l.target = (SELECT rr.preguntaid FROM registropreguntas rr WHERE rr.id = $registroid))";
+	$registroanterior = DBQueryReturnArray($superquery);
+	
+	return $registroanterior[0];
+	
+}
+
 function getEmpresaByLevantamientoId($idlevantamiento){
 	$queryempresa = "select *
 					from empresas

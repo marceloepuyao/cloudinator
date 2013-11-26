@@ -80,13 +80,7 @@ function SubPregunta(idpregunta, idnode, idlev, idsubform){
 						$("#select-choice-label").remove();
 						$('#popupSubpregunta').popup("open");
 						$("#formsubpregunta").append("<input type='hidden' id='idnode' name='idnode' value='"+idnode+"' >");
-						/*
-						var response = prompt(resp.node.metaname,"escriba acá su respuesta");
-						if (response!=null && response!="")
-						{
-							responderpregunta(idnode, idlev, idsubform, idpregunta, response);
-						}  <input type="hidden" name="idlev" value="<?php echo $idlevantamiento; ?>" >
-						*/
+		
 					}else if(resp.node.metatype == "array"){
 						$("#textopregunta").text(resp.node.metaname);
 						$("#textarea").remove();
@@ -129,6 +123,7 @@ $(document).ready(function(){
 		var idlev = $(this).data('idlev');	
 		var idsubform = $(this).data('idsubform');	
 		var idpregunta = $(this).data('idpregunta');
+		//var userid =  $(this).data('idpregunta');
 		
 		SubPregunta(idpregunta, idnode, idlev, idsubform);
 		
@@ -155,9 +150,14 @@ $(document).ready(function(){
 	$("#responderback").on('click', function(){
 		var idsubform = $(this).data('idsubform');
 		var idlev = $(this).data('idlev');
-		
+		var idreg = $(this).data('idreg');
+		if(idreg == 0){
+			alert("No hay preguntas anteriores");
+		}else{
+			window.location.href = "responder.php?idlev=" + idlev + "&idsubform=" + idsubform + "&idpreg="+idreg+"&lang=" + getUrlParameter('lang');
+		}
 		//delete ultima pregunta respondida
-		borrarUltimaPreguntaRespondida(idsubform, idlev);
+		//borrarUltimaPreguntaRespondida(idsubform, idlev);
 		
 	});
 	
@@ -169,8 +169,6 @@ $(document).ready(function(){
 		var textarea =$("#textarea").val(); 
 		var idnode =$("#idnode").val(); 
 		
-		console.log(idsubform,idlev, idpregunta, select , textarea, idnode);
-		
 		if(typeof(select) != "undefined" && select !== null) {
 			var response = select;
 		}else{
@@ -179,9 +177,27 @@ $(document).ready(function(){
 		
 		responderpregunta(idnode, idlev, idsubform, idpregunta, response);
 	});
+	$("#omitirsubpregunta").on('click', function(){
+		var idsubform = $("#idsubform").val();
+		var idlev = $("#idlev").val();
+		var idpregunta = $("#idpregunta").val();
+		var idnode =$("#idnode").val(); 
+
+		responderpregunta(idnode, idlev, idsubform, idpregunta, "Omitida");
+	});
+	
+	
 	$("#usuarios").on('click', function(){
 
 		window.location.href = "usuarios.php?lang=" + getUrlParameter('lang');
+	});
+	
+	$(".gobacktoquestion").on('click', function(){
+		var idpregunta = $(this).data('id');
+		var idsubform = $("#idsubform").val();
+		var idlev = $("#idlev").val();
+		
+		window.location.href = "responder.php?idlev=" + idlev + "&idsubform=" + idsubform + "&idpreg="+idpregunta+"&lang=" + getUrlParameter('lang');
 	});
 	
 });

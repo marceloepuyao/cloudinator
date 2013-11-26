@@ -18,14 +18,40 @@ if($action == 'insert'){
 		$userid = $_SESSION['usuario'];
 		$idempresa= (int)$_POST['idempresa'];
 		$respsubpregunta = $_POST['respsubpregunta'];
-	
-		DBQuery("INSERT INTO `registropreguntas` (`id`, `preguntaid`, `respuestaid`, `subformid`,`formid`, `levantamientoid`, `userid`, `empresaid`, `created`, `respsubpregunta`) VALUES 
+		
+		$registro = DBQueryReturnArray("SELECT * 
+							FROM registropreguntas
+							WHERE preguntaid = $idpregunta AND
+								subformid= $idsubform AND
+								levantamientoid = $idlev
+								 ");
+
+		
+		if(count($registro) > 0){
+			if($registro[0]['respuestaid'] == $idnode && $registro[0]['respsubpregunta'] == $respsubpregunta){
+				
+			}else{
+				DBQuery(" DELETE
+						FROM registropreguntas 
+						WHERE subformid = $idsubform AND
+								levantamientoid = $idlev AND
+								created >= '".$registro[0]['created']."'");
+				DBQuery("INSERT INTO `registropreguntas` (`id`, `preguntaid`, `respuestaid`, `subformid`,`formid`, `levantamientoid`, `userid`, `empresaid`, `created`, `respsubpregunta`) VALUES 
 				(NULL, $idpregunta , $idnode, $idsubform ,'',$idlev, '$userid',$idempresa,'".date("Y-m-d H:i:s")."', '$respsubpregunta' );
 				");
+				
+			}
+		}else{
+			DBQuery("INSERT INTO `registropreguntas` (`id`, `preguntaid`, `respuestaid`, `subformid`,`formid`, `levantamientoid`, `userid`, `empresaid`, `created`, `respsubpregunta`) VALUES 
+				(NULL, $idpregunta , $idnode, $idsubform ,'',$idlev, '$userid',$idempresa,'".date("Y-m-d H:i:s")."', '$respsubpregunta' );
+				");
+		}
+	
 		
 		$data = array(
 				'result' => true
 				);
+		
 		print($json->encode($data));
 	
 	} catch (Exception $e) {

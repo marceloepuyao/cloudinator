@@ -85,7 +85,7 @@ $formularios = getAllFormularios();
 	
 	
 	<div class="container">
-		<h4><?php echo get_string("infocompany", $lang); echo $_SESSION['ultimoacceso'] ;?></h4>
+		<h4><?php echo get_string("infocompany", $lang); ?></h4>
 
 		<p id="infoempresa" > <?php echo $info; ?></p>
 		<br>
