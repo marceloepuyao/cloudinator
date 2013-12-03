@@ -136,7 +136,10 @@ $(document).ready(function(){
 	$(".goto").on('click', function(){
 		var subform = $(this).data('subform');
 		var lev = $(this).data('levantamiento');
+		
 		window.location.href = "responder.php?idsubform="+subform+"&idlev="+lev + "&lang=" + getUrlParameter("lang");
+		
+		
 
 
 	});
@@ -239,6 +242,35 @@ $(document).ready(function(){
 	
 	$("#tonewuser").on('click', function(){
 		window.location.href = "usuarios.php?lang=" + getUrlParameter("lang") +"#newuser";
+	});
+	
+	$("#edicion").on('click', function(){
+		
+		if(getUrlParameter("edit") == 1){
+			window.location.href = "recorrer.php?emp="+getUrlParameter("emp")+"&idlev="+getUrlParameter("idlev")+"&lang=" + getUrlParameter("lang");
+		}else{
+			window.location.href = "recorrer.php?emp="+getUrlParameter("emp")+"&idlev="+getUrlParameter("idlev")+"&lang=" + getUrlParameter("lang") +"&edit=1";
+		}
+	});
+	
+	$(".deleteanswers").on('click', function(){
+		var idsubform = $(this).data('subform');
+		var idlev = $(this).data('levantamiento');
+		
+		$.post("ajax/ajaxresponder.php",{ 
+			idlev: idlev,
+			idsubform: idsubform,
+			action: 'deleteall'
+			},function(respuesta){
+				var resp = jQuery.parseJSON(respuesta);
+				if(resp.result){
+					console.log(respuesta);
+				}else{
+					alert("problemas con escribir en la base de datos");
+				}
+			});
+	
+		
 	});
 	
 	

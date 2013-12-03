@@ -161,7 +161,7 @@ function getLevantamientobyId($idlevantamiento){
 				where id = $idlevantamiento";
 	$levantamiento = DBQueryReturnArray($query);
 	
-	if($levantamiento[0]){
+	if(count($levantamiento[0])>0){
 		return $levantamiento[0];
 	}else{
 		return false;
@@ -182,22 +182,26 @@ function getAllFormularios(){
  */
 function getLang(){
 
-	$lang = "es"; //predeterminado
+	$lang = ""; //predeterminado
 
+	//se revisa que hay en la sesion
 	if(isset($_SESSION['idioma'])){
 		$lang = $_SESSION['idioma'];
 		return $lang;
 	}
 	
+	//se revisa que hay en la URL
 	if($lang == "" || $lang == null){
 		if(isset($_GET['lang'])){
 			if($_GET['lang'] == "es" ||  $_GET['lang'] == "en"  || $_GET['lang'] == "pt" ){
 				$lang = $_GET['lang'];
+				return $lang;
 			}
 		}
 	}
-
+	$lang = "es"; //predeterminado
 	return $lang;
+	
 }
 
 function getSession($sessionname){
@@ -256,4 +260,24 @@ function checkSession($lastaccess, $usuario, $empresa,$idioma){
 	}
 	
 	
+}
+function getSubFormsbyFormId($formid, $levantamientocreated){
+	$querysubformularios = "SELECT * FROM trees 
+									WHERE released = 1 
+									AND megatree = $formid
+									AND (deleted = 0 OR 
+											(deleted = 1 AND modified > '$levantamientocreated')); ";
+	
+	$subformularios = DBQueryReturnArray($querysubformularios);
+	return $subformularios;
+}
+function getNameByUserId($userid){
+	
+	$query = "SELECT * FROM users WHERE id = $userid";
+	$user = DBQueryReturnArray($query);
+	if(count($user)<1){
+		return "-";
+	}else{
+		return $user[0]['name']." ".$user[0]['lastname'];
+	}
 }

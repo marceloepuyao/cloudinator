@@ -15,9 +15,12 @@ if($action == 'insert'){
 		$idsubform = (int)$_POST['idsubform'];
 		$idnode = (int)$_POST['idnode'];
 		$idpregunta = (int)$_POST['idpregunta'];
-		$userid = $_SESSION['usuario'];
 		$idempresa= (int)$_POST['idempresa'];
 		$respsubpregunta = $_POST['respsubpregunta'];
+		$emailuser = $_SESSION['usuario'];
+		
+		$user = DBQueryReturnArray("SELECT * FROM users WHERE email = '$emailuser'");
+		$userid = $user[0]['id'];
 		
 		$registro = DBQueryReturnArray("SELECT * 
 							FROM registropreguntas
@@ -37,13 +40,13 @@ if($action == 'insert'){
 								levantamientoid = $idlev AND
 								created >= '".$registro[0]['created']."'");
 				DBQuery("INSERT INTO `registropreguntas` (`id`, `preguntaid`, `respuestaid`, `subformid`,`formid`, `levantamientoid`, `userid`, `empresaid`, `created`, `respsubpregunta`) VALUES 
-				(NULL, $idpregunta , $idnode, $idsubform ,'',$idlev, '$userid',$idempresa,'".date("Y-m-d H:i:s")."', '$respsubpregunta' );
+				(NULL, $idpregunta , $idnode, $idsubform ,'',$idlev, $userid,$idempresa,'".date("Y-m-d H:i:s")."', '$respsubpregunta' );
 				");
 				
 			}
 		}else{
 			DBQuery("INSERT INTO `registropreguntas` (`id`, `preguntaid`, `respuestaid`, `subformid`,`formid`, `levantamientoid`, `userid`, `empresaid`, `created`, `respsubpregunta`) VALUES 
-				(NULL, $idpregunta , $idnode, $idsubform ,'',$idlev, '$userid',$idempresa,'".date("Y-m-d H:i:s")."', '$respsubpregunta' );
+				(NULL, $idpregunta , $idnode, $idsubform ,'',$idlev, $userid,$idempresa,'".date("Y-m-d H:i:s")."', '$respsubpregunta' );
 				");
 		}
 	
@@ -141,4 +144,46 @@ if($action == 'insert'){
 			);
 		print($json->encode($data));
 	}
+}else if($action == "deleteall"){
+	
+	try {
+		$db = DBConnect();
+		$db->autocommit(FALSE);
+		$idlev = (int)$_POST['idlev'];
+		$idsubform = (int)$_POST['idsubform'];
+
+	
+		$check = DBQuery("	SELECT * 
+							FROm registropreguntas 
+							WHERE subformid = $idsubform AND levantamientoid = $idlev ");
+		if($check->num_rows > 0){
+		
+			DBQuery(" 	DELETE
+						FROm registropreguntas 
+						WHERE subformid = $idsubform AND levantamientoid = $idlev ");
+			
+			$data = array(
+				'result' => true,
+				);
+		}else{
+			
+			$data = array(
+				'result' => true,
+				'moreinfo' => "no hay respuestas"
+				);
+		}
+		
+		
+		print($json->encode($data));
+	
+	} catch (Exception $e) {
+		$db->rollback();
+		$db->close();
+		$data = array(
+			'result' => false,
+			'exception' => $e
+			);
+		print($json->encode($data));
+	}
+	
 }
