@@ -81,6 +81,7 @@ $dicc = array(
 
 	'deleteanswers' => 'Excluir respostas',
 	'clonesubform' => 'Clone',
-	'never' => 'Nunca'
+	'never' => 'Nunca',
+	'reports' => 'Relatório'
 	);
 ?>

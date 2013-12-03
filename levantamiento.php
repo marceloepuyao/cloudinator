@@ -141,11 +141,11 @@ $formularios = getAllFormularios();
 		    <ul data-role="listview" data-inset="true">
 		        <li data-role="fieldcontain">
 		            <label for="titulo-levantamiento"><?php echo get_string("titlevisit", $lang)?>:</label>
-		            <input name="titulo-levantamiento" id="titulo-levantamiento" value="" data-clear-btn="true" type="text">
+		            <input name="titulo-levantamiento" maxlength="50" id="titulo-levantamiento" value="" data-clear-btn="true" type="text">
 		        </li>
 		        <li data-role="fieldcontain">
 		            <label for="info-levantamiento"><?php echo get_string("info", $lang)?>:</label>
- 					<textarea cols="40" rows="8" name="info-levantamiento" id="info-levantamiento"></textarea>		        
+ 					<textarea cols="40" rows="8" maxlength="25" name="info-levantamiento" id="info-levantamiento"></textarea>		        
  				</li>
 
 		        <li data-role="fieldcontain">
@@ -161,7 +161,7 @@ $formularios = getAllFormularios();
 		        
 		        <li data-role="fieldcontain">
 		            <label for="area-contacto"><?php echo get_string("contactedarea", $lang)?>:</label>
-		            <input name="area-contacto" id="area-contacto" value="" data-clear-btn="true" type="text">
+		            <input name="area-contacto" maxlength="25" id="area-contacto" value="" data-clear-btn="true" type="text">
 		        </li>
 		        <li data-role="fieldcontain">
 		            <label for="formularios"><?php echo get_string("forms", $lang)?>:</label>

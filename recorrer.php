@@ -166,7 +166,7 @@ $formularios = DBQueryReturnArray($queryformularios);
 			
 			
 			<div data-role="controlgroup">
-		    <a id="report" href="#report" data-role="button">Reporte</a>
+		    <a id="report" href="#report" data-role="button"><?php echo get_string('reports', $lang)?></a>
 			</div>
 			
 	</div>
