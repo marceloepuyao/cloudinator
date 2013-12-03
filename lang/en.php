@@ -89,7 +89,8 @@ $dicc = array(
 	'daysago' => 'Days ago',
 
 	'deleteanswers' => 'Delete Answers',
-	'clonesubform' => 'Clone'
+	'clonesubform' => 'Clone',
+	'never' => 'Never'
 	
 	
 	);

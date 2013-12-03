@@ -60,6 +60,18 @@ function getQuestionAnswers($idsubform, $idlevantamiento){
 	$queryregistro = "SELECT * FROM registropreguntas WHERE levantamientoid = $idlevantamiento AND subformid = $idsubform order by created DESC limit 1";
 	$registro = DBQueryReturnArray($queryregistro);
 	//se obtiene la pregunta que viene... si no hay datos: la primera.
+	
+	//calcular completitud
+	$registrototal = DBQueryReturnArray("SELECT * FROM registropreguntas WHERE levantamientoid = $idlevantamiento AND subformid = $idsubform");
+	$preguntascontestadas = count($registrototal);
+	$minimopreguntas = calcularMinimoPreguntas($idsubform);
+	$completitud = ($preguntascontestadas / $minimopreguntas )*100;
+	if($completitud > 100){
+		$completitud = 100;
+	}
+	
+	$lang = $_SESSION['idioma'];
+	
 	if($registro != null){
 		
 		//ver en el registro la ultima pregunta respondida, ver su respuesta y sacar la pregunta que viene:
@@ -81,10 +93,10 @@ function getQuestionAnswers($idsubform, $idlevantamiento){
 											FROM  links l
 											WHERE l.source = ".$pregunta[0]['id'].")");
 			
-			return array("pregunta" =>$pregunta[0], "respuestas" => $respuestas, "ultimavisita"=>'Hace '.floor((time()-strtotime($registro[0]['created']))/(60*60*24)).' Días.', "completitud"=>0, "idregistro"=> $registro[0]['id']);
+			return array("pregunta" =>$pregunta[0], "respuestas" => $respuestas, "ultimavisita"=>floor((time()-strtotime($registro[0]['created']))/(60*60*24)).' '.get_string('daysago', $lang), "completitud"=>$completitud, "idregistro"=> $registro[0]['id']);
 		}else{
 			
-			return array("pregunta" =>null, "respuestas" => null, "ultimavisita"=>'Hace '.floor((time()-strtotime($registro[0]["created"]))/(60*60*24)).' Días.', "completitud"=>100, "idregistro"=> $registro[0]['id']);
+			return array("pregunta" =>null, "respuestas" => null, "ultimavisita"=>floor((time()-strtotime($registro[0]["created"]))/(60*60*24)).' '.get_string('daysago', $lang), "completitud"=>$completitud, "idregistro"=> $registro[0]['id']);
 			
 		}
 		
@@ -103,13 +115,52 @@ function getQuestionAnswers($idsubform, $idlevantamiento){
 										FROM  links l
 										WHERE l.source = ".$pregunta[0]['id'].")");
 	}
-	
-	//TODO: calcular completitud
-	$completitud = 0;
 		
-	return array("pregunta" =>$pregunta[0], "respuestas" => $respuestas, "ultimavisita"=>"nunca", "completitud"=>$completitud, "idregistro"=> null);
+	return array("pregunta" =>$pregunta[0], "respuestas" => $respuestas, "ultimavisita"=>get_string('never', $lang), "completitud"=>$completitud, "idregistro"=> null);
 	
 }
+function calcularMinimoPreguntas($idsubform){
+	
+	
+	$preguntainicial = DBQueryReturnArray("SELECT k.* from nodos k
+										WHERE k.tree = $idsubform AND k.type = 'condition' AND  k.id NOT IN(
+										SELECT n.id
+										FROM nodos n, links l
+										WHERE n.tree = $idsubform AND n.type = 'condition' AND n.id =l.target)");
+	$nodofinal = DBQueryReturnArray("SELECT * FROM nodos WHERE tree = $idsubform AND type='end'");
+	$preguntas = DBQueryReturnArray("SELECT * FROM nodos WHERE tree = $idsubform AND type='condition'");
+	$maximoiteraciones = count($preguntas);
+	
+	$nodos_con = $nodofinal[0]['id'];
+	
+	for ($i = 0; $i < $maximoiteraciones; $i++) {
+		
+		$newcon = "0";
+		foreach ($preguntas as $pregunta){
+			
+			
+			$link= DBQueryReturnArray("	SELECT * FROM links 
+										WHERE target IN ($nodos_con) 
+										AND tree = '$idsubform' 
+										AND source IN (SELECT target FROM links WHERE tree = '$idsubform' AND source = '$pregunta[id]')");
+			if(count($link) > 0){
+				$newcon .= ",".$pregunta['id'];
+				if($pregunta['id'] == $preguntainicial[0]['id']){
+					return $i+1;
+				}
+				
+			}
+			
+		}
+		$nodos_con = $newcon;
+		$preguntas = DBQueryReturnArray("SELECT * FROM nodos WHERE tree = $idsubform AND type='condition' AND id NOT IN($nodos_con)");
+		
+		
+	}
+	
+	return "error";
+}
+
 function getQuestionById($idsubform, $idlevantamiento, $registroid){
 	
 	$queryregistro = "SELECT * FROM registropreguntas WHERE levantamientoid = $idlevantamiento AND subformid = $idsubform AND id = $registroid";
