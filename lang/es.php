@@ -25,6 +25,7 @@ $dicc = array(
 	'loginbefore' => 'Inicie sesión antes de continuar',
 	'email' => 'Email Empresarial',
 	'password' => 'Contraseña',
+	'newpass' => 'Nueva Contraseña',
 	'companytointerview' => 'Empresa a entrevistar',
 	'login' => 'Iniciar Sesión',
 	'newcompany' => 'Nueva Empresa',

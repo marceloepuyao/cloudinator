@@ -28,6 +28,7 @@ $dicc = array(
 	
 	'email' => 'Company email',
 	'password' => 'Password',
+	'newpass' => 'New Password',
 	'companytointerview' => 'Company to interview',
 
 	'login' => 'Log In',

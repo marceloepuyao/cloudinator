@@ -28,7 +28,8 @@ try {
 		$_SESSION['empresa'] = $response['id'];
 		
 		$data = array(
-					'result' => true,
+					'id' => $response['id'],
+					'result' => true
 				);
 	}
 
