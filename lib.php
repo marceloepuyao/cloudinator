@@ -332,3 +332,29 @@ function getNameByUserId($userid){
 		return $user[0]['name']." ".$user[0]['lastname'];
 	}
 }
+
+function getCategories(){
+
+	$categories = array('industria_pesada', 
+						'siderúrgicas',
+						'metalúrgicas',
+						'cementeras', 
+						'químicas_de_base',
+						'petroquímicas',
+						'automovilística',
+						'industria_ligera',
+						'alimentación',
+						'textil',
+						'farmacéutica',
+						'agroindustria',
+						'armamentística',
+						'industria_punta',
+						'robótica',
+						'informática',
+						'astronáutica',
+						'mecánica',
+						'educacionales',
+						'gubernamentales',
+						'otras');	
+	return $categories;
+}
