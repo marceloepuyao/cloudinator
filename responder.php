@@ -124,15 +124,16 @@ if($pregunta == null){
 		<?php } ?>
 		
 		<?php if ($pregunta == null): ?>
-		<h2>Se ha llegado al fin</h2>
+		<h2><?php echo get_string('endreached', $lang);?></h2>
 		
 		<table data-role="table" id="movie-table" data-mode="columntoggle" class="ui-body-d ui-shadow table-stripe ui-responsive">
 	         <thead>
 	           <tr class="ui-bar-d">
 	             <th>Pregunta</th>
 	             <th>Respuesta</th>
-	             <th> Subrespuesta</th>
+	             <th>Subrespuesta</th>
 	             <th>Fecha</th>
+	             <th>Entrevistador</th>
 	           </tr>
 	         </thead>
 	         <tbody>
@@ -143,6 +144,7 @@ if($pregunta == null){
 	             <td><?php echo getContentByNodeId($preguntas['respuestaid']); ?></td>
 	             <td><?php echo $preguntas['respsubpregunta']; ?></td>
 	             <td><?php echo $preguntas['created']; ?></td>
+	             <td><?php echo getNameByUserId($preguntas['userid']); ?></td>
 	           </tr>
 	           
 	        <?php $lastregistro = $preguntas['id'];}?>

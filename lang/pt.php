@@ -16,10 +16,16 @@ $dicc = array(
 	'edit' => 'Editar',
 	'newlevantamiento' => 'Novo Levantamento',
 
+	'contactedby' => 'Contactado Pela',
+	'contactedarea' => 'Área de Contato',
+	'forms' => 'Formas',
+	'continue' => 'Continuar',
+
 	'language' => 'linguagem',
 	'loginbefore' => 'logon antes de continuar',
 	'email' => 'E-mail Comercial',
 	'password' => 'Senha',
+	'newpass' => 'Nova Senha',
 	'companytointerview' => 'Empresa para entrevista',
 	'login' => 'Login',
 	'newcompany' => 'Nova Empresa',
@@ -66,6 +72,17 @@ $dicc = array(
 	'superuser' => 'Superusuário',
 	'addnewuser' => 'adicionar novo usuário',
 
-	'repeatpassword' => 'Repetir a Senha'
+	'repeatpassword' => 'Repetir a Senha',
+	'endreached' => 'chegou ao fim',
+	'incompleteform' => 'Forma incompleta, por favor entre em contato com o administrador',
+
+	'editmode'=>'Modo edição',
+	'exiteditmode'=>'Sair modo edição',
+	'daysago' => 'Dias atrás',
+
+	'deleteanswers' => 'Excluir respostas',
+	'clonesubform' => 'Clone',
+	'never' => 'Nunca',
+	'reports' => 'Relatório'
 	);
 ?>

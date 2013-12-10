@@ -12,7 +12,7 @@ if($action == 'insert'){
 		$email = $_POST["email"];
 		$name = $_POST["nombres"];
 		$lastname = $_POST["apellidos"];
-		$password = crypt($_POST["password"]);
+		$password = crypt($_POST["password"]);		
 		$lang = $_POST["idioma"];
 		$superuser = (int)$_POST["superusuario"];
 		
@@ -25,6 +25,7 @@ if($action == 'insert'){
 			);
 		}else{
 		
+			
 			DBQuery("INSERT INTO `users` (`id`, `email`, `name`, `lastname`,`password`, `firstaccess`, `lastaccess`, `lang`, `modified`, `superuser` ) VALUES 
 					(NULL, '$email', '$name', '$lastname','$password','' , '','$lang','".date("Y-m-d H:i:s")."', $superuser );
 					");
@@ -81,12 +82,23 @@ if($action == 'insert'){
 		$email = $_POST["email"];
 		$name = $_POST["nombres"];
 		$lastname = $_POST["apellidos"];
-		$password = crypt($_POST["password"]);
+		if($_POST["password"] == "nochange"){
+			$password = 0;
+		}else{
+		    $password = crypt($_POST["password"]);
+		}
+		
+		
 		$lang = $_POST["idioma"];
 		$superuser = (int)$_POST["superusuario"];
-		
-		$query = "UPDATE  `users` SET  `email` =  '$email', `name` =  '$name', `lastname` =  '$lastname',`password` =  '$password', `superuser` =  '$superuser', `lang` =  '$lang',`modified` =  '".date("Y-m-d H:i:s")."'
+		if($password){
+			$query = "UPDATE  `users` SET  `email` =  '$email', `name` =  '$name', `lastname` =  '$lastname',`password` =  '$password', `superuser` =  '$superuser', `lang` =  '$lang',`modified` =  '".date("Y-m-d H:i:s")."'
 				WHERE  `users`.`id` =$editto;";
+		}else{
+			$query = "UPDATE  `users` SET  `email` =  '$email', `name` =  '$name', `lastname` =  '$lastname', `superuser` =  '$superuser', `lang` =  '$lang',`modified` =  '".date("Y-m-d H:i:s")."'
+				WHERE  `users`.`id` =$editto;";
+		}
+		
 		DBQuery($query);
 		
 		$data = array(

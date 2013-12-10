@@ -16,12 +16,19 @@ $dicc = array(
 	'edit' => 'Edit',
 	'newlevantamiento' => 'New Gathering',
 
+	'contactedby' => 'Contacted By',
+	'contactedarea' => 'Contacted Area',
+	'forms' => 'Forms',
+	'continue' => 'Continue',
+	
+
 	
 	'language' => 'Language',
 	'loginbefore' => 'Log in before continuing',
 	
 	'email' => 'Company email',
 	'password' => 'Password',
+	'newpass' => 'New Password',
 	'companytointerview' => 'Company to interview',
 
 	'login' => 'Log In',
@@ -72,10 +79,20 @@ $dicc = array(
 	'superuser' => 'Superuser',
 
 	'addnewuser' => 'Add new user',
-	'repeatpassword' => 'Repeat Password'
+	'repeatpassword' => 'Repeat Password',
 
+	'endreached' => 'You have reached the end',
+	'incompleteform' => 'Incomplete form. Please contact the admin',
 
+	'editmode'=>'Edit mode',
+	'exiteditmode'=>'Exit edit mode',
 
+	'daysago' => 'Days ago',
+
+	'deleteanswers' => 'Delete Answers',
+	'clonesubform' => 'Clone',
+	'never' => 'Never',
+	'reports' => 'Reports'
 	
 	
 	);

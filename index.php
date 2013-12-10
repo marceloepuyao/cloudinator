@@ -6,6 +6,13 @@ session_start();
 //se saca el idioma
 $lang = getLang();
 
+if(isset($_SESSION['usuario'])){
+	$USER = DBQueryReturnArray("SELECT * FROM users WHERE email = '$_SESSION[usuario]'");
+	$registro = 1;
+}else{
+	$registro = 0;
+}
+
 ?>
 <html>
 <head>
@@ -49,13 +56,6 @@ $lang = getLang();
 
 </div><!-- /popup -->
 
-
-
-
-
-
-
-
 <div data-role="content" id="content" class="jqm-content ui-content" >
 
 <form action="">
@@ -65,7 +65,7 @@ $lang = getLang();
 	
 	<tr>
 		<td><label for="text-username"><?php echo get_string("email", $lang)?>:</label></td>	
-		<td><input type="text" name="text-username" id="text-username" value=""></td>
+		<td><input type="text" name="text-username" id="text-username" value="<?php echo $registro?$USER[0]['email']:'';?>"></td>
 	</tr>
 	<tr>
 		<td><label for="passwordcloud"><?php echo get_string("password", $lang)?>:</label></td>

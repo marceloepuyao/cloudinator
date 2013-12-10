@@ -108,7 +108,7 @@ $formularios = getAllFormularios();
 		      	<?php foreach($levantamientos as $key => $levantamiento) { ?>
 			    	<tr>
 			    	<td><?php echo $levantamiento['titulo']; ?></td>
-			         <td><?php echo $levantamiento['modified'].' (Hace '.floor((time()-strtotime($levantamiento['modified']))/(60*60*24)).' Días.)';?></td>
+			         <td><?php echo $levantamiento['modified'].' ('.floor((time()-strtotime($levantamiento['modified']))/(60*60*24)).' '.get_string('daysago', $lang).')';?></td>
 			         <td><?php echo $levantamiento['info']; ?></td>
 			         <td><a class="ira" data-empresa="<?php echo $idempresa; ?>" data-levantamiento="<?php echo $levantamiento['id']; ?>" href="#"><i class="fa fa-play"></i></a></td>
 			         <td><a class="delete" data-levantamiento="<?php echo $levantamiento['id']; ?>" href="#"><i class="fa fa-trash-o"></i></a></td>
@@ -137,19 +137,19 @@ $formularios = getAllFormularios();
 
 
 	<div data-role="content" class="container"> 
-		<h2>Nuevo Levantamiento</h2>
+		<h2><?php echo get_string("newlevantamiento", $lang)?></h2>
 		    <ul data-role="listview" data-inset="true">
 		        <li data-role="fieldcontain">
-		            <label for="titulo-levantamiento">Título Levantamiento:</label>
-		            <input name="titulo-levantamiento" id="titulo-levantamiento" value="" data-clear-btn="true" type="text">
+		            <label for="titulo-levantamiento"><?php echo get_string("titlevisit", $lang)?>:</label>
+		            <input name="titulo-levantamiento" maxlength="50" id="titulo-levantamiento" value="" data-clear-btn="true" type="text">
 		        </li>
 		        <li data-role="fieldcontain">
-		            <label for="info-levantamiento">Información de Levantamiento:</label>
- 					<textarea cols="40" rows="8" name="info-levantamiento" id="info-levantamiento"></textarea>		        
+		            <label for="info-levantamiento"><?php echo get_string("info", $lang)?>:</label>
+ 					<textarea cols="40" rows="8" maxlength="25" name="info-levantamiento" id="info-levantamiento"></textarea>		        
  				</li>
 
 		        <li data-role="fieldcontain">
-		        	<label for="contactado-por" class="select">Contactado por:</label> 
+		        	<label for="contactado-por" class="select"><?php echo get_string("contactedby", $lang)?>:</label> 
 		        	<select name="contactado-por" id="contactado-por">
 		        	<option value=""><?php ?></option>
 		        	<?php foreach($users as $key => $user) { ?>
@@ -160,11 +160,11 @@ $formularios = getAllFormularios();
 		        
 		        
 		        <li data-role="fieldcontain">
-		            <label for="area-contacto">Área de Contacto:</label>
-		            <input name="area-contacto" id="area-contacto" value="" data-clear-btn="true" type="text">
+		            <label for="area-contacto"><?php echo get_string("contactedarea", $lang)?>:</label>
+		            <input name="area-contacto" maxlength="25" id="area-contacto" value="" data-clear-btn="true" type="text">
 		        </li>
 		        <li data-role="fieldcontain">
-		            <label for="formularios">Formularios:</label>
+		            <label for="formularios"><?php echo get_string("forms", $lang)?>:</label>
 		            	<fieldset data-role="controlgroup" id="formularios">
 		            	<?php foreach($formularios as $key => $formulario) { 
 		            			if($formulario['visible']== 1 ){?>
@@ -178,8 +178,8 @@ $formularios = getAllFormularios();
 		        </li>
 		        <li class="ui-body ui-body-b">
 		            <fieldset class="ui-grid-a">
-		                    <div class="ui-block-a"><button id="cancel" data-theme="d">Cancelar</button></div>
-		                    <div class="ui-block-b"><button id="addlevantamiento"  data-theme="b">Continuar</button></div>
+		                    <div class="ui-block-a"><button id="cancel" data-theme="d"><?php echo get_string("cancel", $lang)?></button></div>
+		                    <div class="ui-block-b"><button id="addlevantamiento"  data-theme="b"><?php echo get_string("continue", $lang)?></button></div>
 		            </fieldset>
 		        </li>
 		    </ul>

@@ -2,6 +2,19 @@
 require_once('DB/db.php');
 require_once('lib.php');
 
+session_start();
+
+//checkiamos si las sessions están settiadas
+if(checkSession($_SESSION['ultimoacceso'], $_SESSION['usuario'], $_SESSION['empresa'], $_SESSION['idioma'])){
+	$_SESSION['ultimoacceso'] = time();
+}
+
+//obetenemos el lenguaje de la página.
+$lang = getLang();
+
+//obtenemos el usuario
+$USER = DBQueryReturnArray("SELECT * FROM users WHERE email = '$_SESSION[usuario]'");
+
 //obtener id de levantamiento
 if(isset($_GET['id'])){
 	$idlevantamiento = (int)$_GET['id'];
@@ -44,25 +57,25 @@ $users = DBQueryReturnArray($queryusers);
 <script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
 
 <div id="edit" data-role="page" >
-	<div data-role="header" data-theme="b">
-	    <a href="#" id="mainback" data-icon="arrow-l">Atrás</a>
+	<div data-role="header" class="header" data-position="fixed" role="banner" data-theme="b">
+	    <a href="#" id="backbutton2" data-icon="arrow-l"><?php echo get_string("back", $lang)?></a>
 	    <h1 id ="empresanombre2"><?php echo $empresa['nombre']; ?>	</h1>
-	    <a href="#" id="usernamebutton" data-icon="check" class="ui-btn-right"></a>
-	</div><!-- /header -->
+	    
+	</div>
 	
 	<div data-role="content" class="container"> 
 		<h2>Editar Levantamiento</h2>
 		    <ul data-role="listview" data-inset="true">
 		        <li data-role="fieldcontain">
-		            <label for="titulo-levantamiento">Título Levantamiento:</label>
-		            <input name="titulo-levantamiento" id="titulo-levantamiento" value="<?php echo $levantamiento['titulo']?>" data-clear-btn="true" type="text">
+		            <label for="titulo-levantamiento"><?php echo get_string("titlevisit", $lang)?>:</label>
+		            <input name="titulo-levantamiento" maxlength="50" id="titulo-levantamiento" value="<?php echo $levantamiento['titulo']?>" data-clear-btn="true" type="text">
 		        </li>
 		        <li data-role="fieldcontain">
-		            <label for="info-levantamiento">Información de Levantamiento:</label>
- 					<textarea cols="40" rows="8" name="info-levantamiento"  id="info-levantamiento"><?php echo $levantamiento['info']?></textarea>		        
+		            <label for="info-levantamiento"><?php echo get_string("info", $lang)?>:</label>
+ 					<textarea cols="40" rows="8" maxlength="25" name="info-levantamiento"  id="info-levantamiento"><?php echo $levantamiento['info']?></textarea>		        
  				</li>
  				<li data-role="fieldcontain">
-		        	<label for="contactado-por" class="select">Contactado por:</label> 
+		        	<label for="contactado-por" class="select"><?php echo get_string("contactedby", $lang)?>:</label> 
 		        	<select name="contactado-por" id="contactado-por">
 		        	<option value=""><?php ?></option>
 		        	<?php foreach($users as $key => $user) { 
@@ -74,11 +87,11 @@ $users = DBQueryReturnArray($queryusers);
 				</select>
 				</li>
 		        <li data-role="fieldcontain">
-		            <label for="area-contacto">Área de Contacto:</label>
-		            <input name="area-contacto" id="area-contacto" value="<?php echo $levantamiento['areacontacto']?>" data-clear-btn="true" type="text">
+		            <label for="area-contacto"><?php echo get_string("contactedarea", $lang)?>:</label>
+		            <input name="area-contacto" maxlength="25" id="area-contacto" value="<?php echo $levantamiento['areacontacto']?>" data-clear-btn="true" type="text">
 		        </li>
 		        <li data-role="fieldcontain">
-		            <label for="formularios">Formularios:</label>
+		            <label for="formularios"><?php echo get_string("forms", $lang)?>:</label>
 		            	<fieldset data-role="controlgroup" id="formularios">
 		            	<?php foreach($formularios as $key => $formulario) { 
 		            		if (in_array($formulario['id'], $formsactivos)){ ?>
@@ -94,8 +107,8 @@ $users = DBQueryReturnArray($queryusers);
 		        </li>
 		        <li class="ui-body ui-body-b">
 		            <fieldset class="ui-grid-a">
-		                    <div class="ui-block-a"><button id="cancel" data-theme="d">Cancelar</button></div>
-		                    <div class="ui-block-b"><button id="addlevantamiento" data-idlev="<?php echo $levantamiento['id']?>" data-theme="b">Guardar</button></div>
+		                    <div class="ui-block-a"><button id="cancel" data-theme="d"><?php echo get_string("cancel", $lang)?></button></div>
+		                    <div class="ui-block-b"><button id="addlevantamiento" data-idlev="<?php echo $levantamiento['id']?>" data-theme="b"><?php echo get_string("continue", $lang)?></button></div>
 		            </fieldset>
 		        </li>
 		    </ul>
