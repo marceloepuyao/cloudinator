@@ -81,17 +81,8 @@ $formularios = DBQueryReturnArray($queryformularios);
 
 <div id="recorrer" data-role="page" >
 
-
-	<div data-theme="b" data-display="overlay" data-position="right" data-role="panel" id="mypanel">
-		<h2 id="usernamebutton"><?php echo $USER[0]['name']." ".$USER[0]['lastname'];?></h2>
-		<a href="#" id="cerrarsesion"><?php echo get_string("logout", $lang)?></a> <br>
-		<a href="#" id="usuarios"><?php echo get_string("config", $lang)?></a><br>
-		
-		<a href="#" id="edicion"><?php echo $modeedittext;?></a><br>
-		
-		<a href="#header" data-rel="close"><?php echo get_string("close", $lang)?></a>
-	</div><!-- /panel -->
-
+	<?php echo print_panel($USER,$lang, 1, $modeedittext);?>
+	
 	<div data-role="header" data-theme="b">
 	    <a href="#" id="backbutton2" data-icon="arrow-l"><?php echo get_string("back", $lang)?></a>
 	    <h1 id ="empresanombre"><?php echo $nombre; ?>	</h1>

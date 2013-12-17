@@ -65,7 +65,7 @@ $dicc = array(
 	'completeness' => 'Completitud',
 	'subforms' => 'Subformularios',
 
-	'userslist' => 'Lista de Usuários',
+	'userslist' => 'Lista de Usuarios',
 
 	'firstname' => 'Nombres',
 	'lastname' => 'Apellidos',
@@ -88,6 +88,8 @@ $dicc = array(
 	'deleteanswers' => 'Borrar Respuestas',
 	'clonesubform' => 'Clonar',
 	'never' => 'Nunca',
-	'reports' => 'Reportes'
+	'reports' => 'Reportes',
+
+	'editor' => 'Editar Formularios'
 	);
 ?>

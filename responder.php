@@ -86,13 +86,7 @@ if($pregunta == null){
 
 <div data-role="page" id="pregunta">
 	
-	<div data-theme="b" data-display="overlay" data-position="right" data-role="panel" id="mypanel">
-		<h2 id="usernamebutton"><?php echo $USER[0]['name']." ".$USER[0]['lastname'];?></h2>
-		<a href="#" id="cerrarsesion"><?php echo get_string("logout", $lang)?></a> <br>
-		<a href="#" id="usuarios"><?php echo get_string("config", $lang)?></a><br>
-		<a href="#header" data-rel="close"><?php echo get_string("close", $lang)?></a>
-    <!-- panel content goes here -->
-	</div><!-- /panel -->
+	<?php echo print_panel($USER,$lang);?>
 
 	<div data-role="header" data-theme="b">
 	    <a href="#" id="backbutton" data-emp="<?php echo $empresa['id']; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-icon="arrow-l"><?php echo get_string("back", $lang)?></a>

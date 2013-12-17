@@ -131,16 +131,6 @@ $(document).ready(function(){
 
 		
 	});
-	$("#cerrarsesion").on('click', function(){
-		$.post("server/session.php",{ 
-			action: "deleteall"
-			},function(respuesta){
-				window.location.href = "index.php?lang=" + getUrlParameter("lang");
-				console.log("cierra sesion");
-				
-			});
-	});
-	
 	$("#responderquit").on('click', function(){
 		var emp = $(this).data('emp');
 		var idlev = $(this).data('idlev');
@@ -185,13 +175,6 @@ $(document).ready(function(){
 
 		responderpregunta(idnode, idlev, idsubform, idpregunta, "Omitida");
 	});
-	
-	
-	$("#usuarios").on('click', function(){
-
-		window.location.href = "usuarios.php?lang=" + getUrlParameter('lang');
-	});
-	
 	$(".gobacktoquestion").on('click', function(){
 		var idpregunta = $(this).data('id');
 		var idsubform = $("#idsubform").val();
@@ -199,5 +182,31 @@ $(document).ready(function(){
 		
 		window.location.href = "responder.php?idlev=" + idlev + "&idsubform=" + idsubform + "&idpreg="+idpregunta+"&lang=" + getUrlParameter('lang');
 	});
+	$(".cerrarsesion").on('click', function(){
+		$.post("server/session.php",{ 
+			action: "deleteall"
+			},function(respuesta){
+				window.location.href = "index.php?lang=" + getUrlParameter("lang");
+				console.log("cierra sesion");
+				
+			});
+	});
+	
+	$(".usuarios").on('click', function(){
+
+		window.location.href = "usuarios.php?lang=" + getUrlParameter("lang");
+	});
+	$(".edicion").on('click', function(){
+		
+		if(getUrlParameter("edit") == 1){
+			window.location.href = "recorrer.php?emp="+getUrlParameter("emp")+"&idlev="+getUrlParameter("idlev")+"&lang=" + getUrlParameter("lang");
+		}else{
+			window.location.href = "recorrer.php?emp="+getUrlParameter("emp")+"&idlev="+getUrlParameter("idlev")+"&lang=" + getUrlParameter("lang") +"&edit=1";
+		}
+	});
+	$(".editor").on('click', function(){
+		window.location.href = "editor.html";
+	});
+	
 	
 });

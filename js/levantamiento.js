@@ -177,6 +177,10 @@ $(document).ready(function(){
 		window.location.href = "levantamiento.php?emp="+getUrlParameter('emp') + "&lang=" + getUrlParameter("lang");
 	});
 	
+	$(".editor").on('click', function(){
+		window.location.href = "editor.html";
+	});
+	
 	$(".edit").on('click', function(){
 		var idlevantamiento = $(this).data('id');
 		window.location.href = "editarlevantamiento.php?id="+idlevantamiento + "&emp=" + getUrlParameter("emp")+"&lang=" + getUrlParameter("lang");
@@ -192,7 +196,7 @@ $(document).ready(function(){
 		console.log("trigger");
 	});
 	
-	$("#cerrarsesion").on('click', function(){
+	$(".cerrarsesion").on('click', function(){
 		$.post("server/session.php",{ 
 			action: "deleteall"
 			},function(respuesta){
@@ -202,7 +206,7 @@ $(document).ready(function(){
 			});
 	});
 	
-	$("#usuarios").on('click', function(){
+	$(".usuarios").on('click', function(){
 
 		window.location.href = "usuarios.php?lang=" + getUrlParameter("lang");
 	});
@@ -244,7 +248,7 @@ $(document).ready(function(){
 		window.location.href = "usuarios.php?lang=" + getUrlParameter("lang") +"#newuser";
 	});
 	
-	$("#edicion").on('click', function(){
+	$(".edicion").on('click', function(){
 		
 		if(getUrlParameter("edit") == 1){
 			window.location.href = "recorrer.php?emp="+getUrlParameter("emp")+"&idlev="+getUrlParameter("idlev")+"&lang=" + getUrlParameter("lang");
