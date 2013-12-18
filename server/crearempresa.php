@@ -12,7 +12,6 @@ if($action == 'insert'){
 		$name = mysql_real_escape_string($_POST["name"]);
 		$industry = mysql_real_escape_string($_POST["industry"]);
 		$textarea = mysql_real_escape_string($_POST["textarea"]);
-		$modified = time();
 		
 		$existing = DBQuery("SELECT * FROM empresas WHERE nombre = '$name'");
 		if($existing->num_rows > 0){
@@ -21,19 +20,27 @@ if($action == 'insert'){
 					'exception'=> 'existing'
 				);
 		}else{
-			$insertempresa = "INSERT INTO `empresas` (`id`, `nombre`, `industria`, `info`, `modified`) VALUES 
-					(NULL, '$name', '$industry', '$textarea', $modified );";
+			
+			$insertempresa = "INSERT INTO `empresas` (`id`, `nombre`, `industria`, `info`) VALUES 
+					(NULL, '$name', '$industry', '$textarea' );";
 			DBQuery($insertempresa);
 	
 			$nueva = DBQuery("SELECT * FROM empresas WHERE nombre = '$name'");
 			$response = $nueva->fetch_array(MYSQLI_ASSOC);
 			$_SESSION['empresa'] = $response['id'];
 			
+			
 			$data = array(
 						'id' => $response['id'],
 						'result' => true
 					);
 		}
+		
+		
+		$data = array(
+						'id' => $response['id'],
+						'result' => true
+					);
 	
 		print($json->encode($data));
 	

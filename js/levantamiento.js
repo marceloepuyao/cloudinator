@@ -79,6 +79,7 @@ function crearEmpresa(name,industry,textarea, empresaid){
 	if(empresaid==0){
 		action = "insert";
 	}
+	console.log("action ",action);
 	
 	$.post("server/crearempresa.php",{ 
 		action: action,

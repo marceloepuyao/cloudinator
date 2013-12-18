@@ -64,7 +64,7 @@ $catarray = getCategories();
 				<li class="ui-body ui-body-b">
 					<fieldset class="ui-grid-a">
 						<div class="ui-block-a">
-							<button id="cancel" data-theme="d"><?php echo get_string("cancel", $lang);?></button>
+							<a href="#" data-rel="back" ><button data-theme="d"><?php echo get_string("cancel", $lang);?></button></a>
 						</div>
 						<div class="ui-block-b">
 							<button id="btnNew" data-theme="b"><?php echo get_string("accept", $lang);?></button>
