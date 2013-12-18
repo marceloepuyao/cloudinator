@@ -282,19 +282,14 @@ function getContentByNodeId($nodeID){
 	
 }
 
-function checkSession($lastaccess, $usuario, $empresa,$idioma){
+function checkSession($lastaccess, $usuario,$idioma){
 	
+	//TODO: comprobar que los usuarios y contraseña corresponden a la base de datos
 	$url = "index.php?lang=".getLang();
 	if($usuario == ""){
 		@header('Location: '.$url);
 		return false;
 	}
-	
-	if($empresa == ""){
-		@header('Location: '.$url);
-		return false;
-	}
-	
 	
 	$time = time(); 
 	if($lastaccess){
@@ -368,7 +363,7 @@ function print_panel($USER, $lang, $edit= 0, $modeedittext = null){
 	}
 	if($USER[0]['superuser']){
 		$superuserhtml = "	<a href='#' class='editor'>".get_string('editor', $lang)."</a><br>
-							<a href='#' class='empresas'>Gestión Empresas</a><br>
+							<a href='#' class='gestionempresas'>Gestión Empresas</a><br>
 			";
 	}
 	

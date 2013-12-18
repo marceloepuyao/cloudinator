@@ -3,18 +3,6 @@ function getUrlParameter(name) {
         (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
     );
 }
-function llamaempresas(){
-	
-	$.post("server/empresas.php",function(empresas){
-		var emp = jQuery.parseJSON(empresas);
-		for (var i=0;i<emp.total;i++)
-		{
-			$("#select-choice-1").append("<option value='"+emp[i].id+"'>" +emp[i].nombre +"</option>");
-		}
-		
-	});
-	
-}
 function login(){
 	 var usu = $("#text-username").val();
      var pass = $("#passwordcloud").val();
@@ -128,8 +116,22 @@ function deleteuser(iduser){
 				if(response.sameperson){
 					alert("No puedes borrarte a ti mismo");
 				}else{
-					console.log("error en eliminar levantamiento", response.exception);
+					console.log("error en eliminar usuario", response.exception);
 				}
+			}	
+		});
+}
+
+function deletecompany(idcompany){
+	$.post("server/crearempresa.php",{ 
+		action: "delete",
+		idcompany : idcompany
+		},function(respuesta){			
+			var response = jQuery.parseJSON(respuesta);
+			if(response.result){
+				window.location.href = "empresas.php?lang="+getUrlParameter("lang");
+			}else{
+				console.log("error en eliminar empresa", response.exception);
 			}	
 		});
 }
@@ -341,6 +343,20 @@ $(document).ready(function(){
 		window.location.href = "usuarios.php?lang=" + getUrlParameter("lang") +"#newuser";
 	});
 	
+	$(".deletecompany").on('click', function(){
+		var idcompany = $(this).data('idcompany');
+		if(!confirm("¿Está seguro que desea eliminar la empresa y todos los levantamientos asocioados? ")){
+			return false;
+		}else {
+			deletecompany(idcompany);
+	     }  
+			
+	});
+	$(".editcompany").on('click', function(){
+		var idcompany = $(this).data('idcompany');
+		window.location.href = "empresas.php?lang=" + getUrlParameter("lang") + "&emp="+idcompany;
+	});
+	
 	$(".edicion").on('click', function(){
 		
 		if(getUrlParameter("edit") == 1){
@@ -348,6 +364,12 @@ $(document).ready(function(){
 		}else{
 			window.location.href = "recorrer.php?emp="+getUrlParameter("emp")+"&idlev="+getUrlParameter("idlev")+"&lang=" + getUrlParameter("lang") +"&edit=1";
 		}
+	});
+	$(".gestionempresas").on('click', function(){
+		
+		
+		window.location.href = "empresas.php?lang=" + getUrlParameter("lang");
+		
 	});
 	
 	$(".deleteanswers").on('click', function(){

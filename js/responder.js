@@ -3,20 +3,6 @@ function getUrlParameter(name) {
         (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
     );
 }
-
-function setEmpresaInfo(id){
-	
-	$.post("server/empresas.php",{ 
-		action : "getById", 
-		id: id
-		},function(empresas){
-			var emp = jQuery.parseJSON(empresas);
-			console.log(emp);
-			//console.log("hola", empresas);
-			$("#empresanombre").text(emp.nombre);
-			$("#infoempresa").text(emp.infolevantamiento);
-		});
-}
 function responderpregunta(idnode, idlev, idsubform, idpregunta, respsubpregunta){
 	console.log("respsubpregunta",respsubpregunta);
 	$.post("ajax/ajaxresponder.php",{ 
