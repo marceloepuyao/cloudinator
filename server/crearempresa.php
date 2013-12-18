@@ -35,12 +35,6 @@ if($action == 'insert'){
 						'result' => true
 					);
 		}
-		
-		
-		$data = array(
-						'id' => $response['id'],
-						'result' => true
-					);
 	
 		print($json->encode($data));
 	
