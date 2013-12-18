@@ -61,12 +61,11 @@ if(isset($_GET['edit'])){
 	<?php echo print_panel($USER,$lang);?>
 
 	<div data-role="header" class="header" data-position="fixed" role="banner" data-theme="b">
-	    <a href="#" id="backbutton" data-icon="arrow-l"><?php echo get_string("back", $lang);?></a>
+	    <a href="#" data-rel="back" data-icon="arrow-l"><?php echo get_string("back", $lang);?></a>
 	    <h1><?php echo get_string("users", $lang); ?>	</h1>
 	    <a href="#mypanel" data-icon="bars"><?php echo get_string("config", $lang);?></a>
 	</div>
 
-	
 	<div data-role="content" class="container"> 
 		<h2><?php echo get_string("userslist", $lang); ?>	</h2>
 

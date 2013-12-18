@@ -74,6 +74,40 @@ function deleteLevantamiento(idlev){
 		}
 	);
 }
+function crearEmpresa(name,industry,textarea, empresaid){
+	var action = "edit";
+	if(empresaid==0){
+		action = "insert";
+	}
+	
+	$.post("server/crearempresa.php",{ 
+		action: action,
+		empresaid : empresaid,
+		name : name, 
+		industry : industry,   
+		textarea: textarea
+		},
+		function(respuesta){
+			console.log(respuesta);
+			var resp = jQuery.parseJSON(respuesta);
+			
+			if(resp.result){
+				if(empresaid==0){
+					window.location.href = "levantamiento.php?emp="+resp.id + "&lang=" + getUrlParameter('lang');
+				}else{
+					window.location.href = "empresas.php?lang=" + getUrlParameter('lang');
+				}
+				
+			}else{
+				if(resp.exception == "existing"){
+					alert("Nombre ocupado");
+				}else{
+					alert("No se ha podido crear la empresa");
+				}
+			}
+		}
+	);
+}
 
 function newuser(nombres,apellidos,email,password, idioma, superusuario, editto){
 	
@@ -366,10 +400,7 @@ $(document).ready(function(){
 		}
 	});
 	$(".gestionempresas").on('click', function(){
-		
-		
 		window.location.href = "empresas.php?lang=" + getUrlParameter("lang");
-		
 	});
 	
 	$(".deleteanswers").on('click', function(){
@@ -388,6 +419,36 @@ $(document).ready(function(){
 					alert("problemas con escribir en la base de datos");
 				}
 			});
+	});
+	$("#btnNew").on('click', function(){
+		//se checkea si están todos los cambios llenos
+		var name = $("#new-name-empresa").val();
+        var industry = $("#industry").val();
+        var textarea = $("#textarea").val();
+		
+        if(name &&  industry && textarea){
+        	crearEmpresa(name,industry,textarea, 0);
+        }else{
+        	alert("Tienes que llenar todos los campos");
+        }
+		
+		
+	});
+	
+	$("#editCompany").on('click', function(){
+		//se checkea si están todos los cambios llenos
+		var idcompany = $(this).data('idcompany');
+		var name = $("#nombreempresa").val();
+        var industry = $("#industry").val();
+        var textarea = $("#textarea").val();
+		
+        if(name &&  industry && textarea){
+        	crearEmpresa(name,industry,textarea, idcompany);
+        }else{
+        	alert("Tienes que llenar todos los campos");
+        }
+		
+		
 	});
 	
 	

@@ -24,7 +24,6 @@ function responderpregunta(idnode, idlev, idsubform, idpregunta, respsubpregunta
 				alert("problemas con escribir en la base de datos");
 			}
 		});
-	
 }
 
 function borrarUltimaPreguntaRespondida(idsubform, idlev){
@@ -42,9 +41,6 @@ function borrarUltimaPreguntaRespondida(idsubform, idlev){
 			}else{
 				alert("problemas con escribir en la base de datos");
 			}
-			
-			
-			
 		});
 	}
 
@@ -89,11 +85,8 @@ function SubPregunta(idpregunta, idnode, idlev, idsubform){
 				alert("problemas con escribir en la base de datos");
 			}
 		
-		});	
-	
+		});		
 }
-
-
 
 $(document).ready(function(){
 	
@@ -112,10 +105,6 @@ $(document).ready(function(){
 		//var userid =  $(this).data('idpregunta');
 		
 		SubPregunta(idpregunta, idnode, idlev, idsubform);
-		
-		
-
-		
 	});
 	$("#responderquit").on('click', function(){
 		var emp = $(this).data('emp');
@@ -174,7 +163,6 @@ $(document).ready(function(){
 			},function(respuesta){
 				window.location.href = "index.php?lang=" + getUrlParameter("lang");
 				console.log("cierra sesion");
-				
 			});
 	});
 	
@@ -193,6 +181,7 @@ $(document).ready(function(){
 	$(".editor").on('click', function(){
 		window.location.href = "editor.html";
 	});
-	
-	
+	$(".gestionempresas").on('click', function(){
+		window.location.href = "empresas.php?lang=" + getUrlParameter("lang");
+	});
 });

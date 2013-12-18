@@ -281,6 +281,28 @@ if ($version < 2013112500) {
 	}
 	echo '</hr>';
 }
+if ($version < 2013121800) {
+	echo '<hr>';
+	echo '<h4>Actualización N° 2013-12-18-00</h4>';
+	try {
+		//cambio nombre columna
+		DBQuery("ALTER TABLE empresas CHANGE infolevantamiento info char(50);");
+		//borro columna contactado y areacontacto
+		DBQuery("ALTER TABLE empresas DROP COLUMN contactado");
+		DBQuery("ALTER TABLE empresas DROP COLUMN areacontacto");
+		
+		//actualiazo la versión
+		DBQuery("UPDATE cloudinator_upgrades SET version = '2013121800' WHERE id = 1");
+
+		//mensaje:
+		echo 'Actualización nombres de columnas tabla empresas';
+		
+	} catch (Exception $e) {
+		echo "Error en actualización<br>$e<br>";
+	}
+	echo '</hr>';
+}
+
 /*
 //EJEMPLO: (RECUERDE CAMBIAR "AAAAMMDDNN" POR EL NUMERO DE ACTUALIZACION A = Año, M = Mes, D = Dia, N = Numero)
 

@@ -21,8 +21,8 @@ if($action == 'insert'){
 					'exception'=> 'existing'
 				);
 		}else{
-			$insertempresa = "INSERT INTO `empresas` (`id`, `nombre`, `industria`, `contactado`, `areacontacto`, `infolevantamiento`, `modified`) VALUES 
-					(NULL, '$name', '$industry', '', '', '$textarea', $modified );";
+			$insertempresa = "INSERT INTO `empresas` (`id`, `nombre`, `industria`, `info`, `modified`) VALUES 
+					(NULL, '$name', '$industry', '$textarea', $modified );";
 			DBQuery($insertempresa);
 	
 			$nueva = DBQuery("SELECT * FROM empresas WHERE nombre = '$name'");
@@ -66,7 +66,6 @@ if($action == 'insert'){
 			$data = array(
 					'result' => false
 				);
-		
 		}
 	
 		print($json->encode($data));
@@ -79,5 +78,29 @@ if($action == 'insert'){
 		print($json->encode($data));
 	}
 	
+	
+}else if($action == "edit"){
+	try {
+		$name = mysql_real_escape_string($_POST["name"]);
+		$industry = mysql_real_escape_string($_POST["industry"]);
+		$textarea = mysql_real_escape_string($_POST["textarea"]);
+		$id = (int)$_POST["empresaid"];
+		
+		$query = "UPDATE  `empresas` SET  `nombre` =  '$name', `industria` =  '$industry', `info` =  '$textarea'
+				WHERE  `empresas`.`id` =$id;";
+		DBQuery($query);
+		$data = array(
+					'result' => true
+				);
+		print($json->encode($data));
+		
+		
+	}catch (Exception $e) {
+		$data = array(
+					'result' => false,
+					'exception' => $e
+				);
+		print($json->encode($data));
+	}
 	
 }

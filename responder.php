@@ -89,7 +89,7 @@ if($pregunta == null){
 	<?php echo print_panel($USER,$lang);?>
 
 	<div data-role="header" data-theme="b">
-	    <a href="#" id="backbutton" data-emp="<?php echo $empresa['id']; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-icon="arrow-l"><?php echo get_string("back", $lang)?></a>
+	    <a href="#" data-rel="back" data-emp="<?php echo $empresa['id']; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-icon="arrow-l"><?php echo get_string("back", $lang)?></a>
 	    <h1> <?php echo $empresa['nombre']?></h1>
 	    <a href="#mypanel" data-icon="bars"><?php echo get_string("config", $lang)?></a>
 	</div>

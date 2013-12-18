@@ -29,6 +29,8 @@ if(isset($_GET['emp'])){
 //si se da id específico de empresa se muestra tabla de edición, sino se obtienen todas las empresas.
 if($idempresa){
 	$empresaedit = DBQueryReturnArray("SELECT * FROM empresas WHERE id = $idempresa");
+	$empresaedit = $empresaedit[0];
+	$catarray = getCategories();
 	
 }else{
 	$empresas = DBQueryReturnArray("SELECT * FROM empresas");
@@ -68,13 +70,48 @@ if($idempresa){
 	<?php echo print_panel($USER,$lang);?>
 
 	<div data-role="header" class="header" data-position="fixed" role="banner" data-theme="b">
-	    <a href="#" id="backbutton" data-icon="arrow-l"><?php echo get_string("back", $lang)?></a>
+	    <a href="#"  data-rel="back" data-icon="arrow-l"><?php echo get_string("back", $lang)?></a>
 	    <h1><?php echo "Gestión de Empresas"; ?>	</h1>
 	    <a href="#mypanel" data-icon="bars"><?php echo get_string("config", $lang)?></a>
 	</div>
 	<div class="container">
 		<?php if($idempresa){?>
-			
+		
+		<h2><?php echo $empresaedit['nombre'];?></h2>
+		    <ul data-role="listview" data-inset="true">
+		        <li data-role="fieldcontain">
+		            <label for="nombreempresa"><?php echo get_string("namecompany", $lang); ?></label>
+		            <input name="nombreempresa" id="nombreempresa" value="<?php echo $empresaedit['nombre'];?>" data-clear-btn="true" type="text">
+		        </li>
+		        <li data-role="fieldcontain"><label for="industry"
+					class="select"><?php echo get_string("industry", $lang);?></label> <select name="industry"
+					id="industry">
+							
+						<?php foreach ($catarray as $cat){
+								if($cat == $empresaedit['industria'] ){
+									$selected = "selected";
+								}else{
+									$selected = "";
+								}
+							?>
+						<option value="<?php echo $cat?>" <?php echo $selected?> ><?php echo get_string($cat, $lang);?></option>
+						<?php }?>		
+				</select>
+				</li>
+				<li data-role="fieldcontain"><label for="textarea"><?php echo get_string("companyinformation", $lang);?></label> <textarea cols="40" rows="8" name="textarea"
+						id="textarea"><?php echo $empresaedit['info'];?></textarea>
+				</li>
+ 				<li class="ui-body ui-body-b">
+					<fieldset class="ui-grid-a">
+						<div class="ui-block-a">
+							<a href="#"  data-rel="back"><button  data-theme="d"><?php echo get_string("cancel", $lang);?></button></a>	
+						</div>
+						<div class="ui-block-b">
+							<button id="editCompany" data-idcompany="<?php echo $empresaedit['id']; ?>" data-theme="b"><?php echo "Guardar Cambios";?></button>
+						</div>
+					</fieldset>
+				</li>
+ 			</ul>	
 		<?php }else{?>
 			<h2><?php echo "Lista de Empresas" ?>	</h2>
 
@@ -83,9 +120,7 @@ if($idempresa){
 			       <tr>
 			       	<th><?php echo "Nombre"; ?></th>
 			       	<th><?php echo "Industria"; ?></th>
-			         <th ><?php echo "Contactado Por"?></th>
 			         <th data-priority="4"><abbr title="Info"><?php echo "Información Adicional"; ?></abbr></th>
-			         <th data-priority="5"><abbr title="Info"><?php echo "Área de Contacto";?></abbr></th>
 			          <th data-priority="7"><?php echo get_string("delete", $lang); ?></th>
 			          <th data-priority="8"><?php echo get_string("edit", $lang); ?></th>
 			       </tr>
@@ -97,9 +132,7 @@ if($idempresa){
 				    	<tr>
 				    	<td><?php echo $empresa['nombre']; ?></td>
 				         <td><?php echo $empresa['industria']; ?></td>
-				         <td><?php echo $empresa['contactado']; ?></td>
-				         <td><?php echo substr($empresa['infolevantamiento'],0,45)."..."; ?></td>
-				         <td><?php echo $empresa['areacontacto']; ?></td>
+				         <td><?php echo substr($empresa['info'],0,60)."..."; ?></td>
 				         <td><a class="deletecompany" data-idcompany="<?php echo $empresa['id']; ?>" href="#"><i class="fa fa-trash-o"></i></a></td>
 				         <td><a class="editcompany" data-idcompany="<?php echo $empresa['id']; ?>" href="#"><i class="fa fa-pencil"></i></a></td>
 				       </tr>

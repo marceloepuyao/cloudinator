@@ -84,7 +84,7 @@ $formularios = DBQueryReturnArray($queryformularios);
 	<?php echo print_panel($USER,$lang, 1, $modeedittext);?>
 	
 	<div data-role="header" data-theme="b">
-	    <a href="#" id="backbutton2" data-icon="arrow-l"><?php echo get_string("back", $lang)?></a>
+	    <a href="#" data-rel="back" data-icon="arrow-l"><?php echo get_string("back", $lang)?></a>
 	    <h1 id ="empresanombre"><?php echo $nombre; ?>	</h1>
 	    <a href="#mypanel" data-icon="bars"><?php echo get_string("config", $lang)?></a>
 	</div>
