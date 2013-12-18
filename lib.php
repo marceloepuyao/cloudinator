@@ -367,14 +367,18 @@ function print_panel($USER, $lang, $edit= 0, $modeedittext = null){
 		$edithtml  = "";
 	}
 	if($USER[0]['superuser']){
-		$superuserhtml = "<a href='#' class='editor'>".get_string('editor', $lang)."</a><br>";
+		$superuserhtml = "	<a href='#' class='editor'>".get_string('editor', $lang)."</a><br>
+							<a href='#' class='empresas'>Gestión Empresas</a><br>
+			";
 	}
 	
 	$panel=  "<div data-theme='b' data-display='overlay' data-position='right' data-role='panel' id='mypanel'>
 		<h2>".$USER[0]['name']." ".$USER[0]['lastname']."</h2>
-		<a href='#' class='cerrarsesion'> ".get_string('logout', $lang)."</a> <br>
-		<a href='#' class='usuarios'>".get_string("config", $lang)."</a><br>
+		
+		
 		".$edithtml.$superuserhtml."
+		<a href='#' class='usuarios'>Gestión Usuarios</a><br>
+		<a href='#' class='cerrarsesion'> ".get_string('logout', $lang)."</a> <br>
 		<a href='#header' data-rel='close'>".get_string("close", $lang)."</a>
 	     </div><!-- /panel -->";
 	

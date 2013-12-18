@@ -437,7 +437,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 						}else{
 							movingnodename = A.one('#'+idnode).get('children').slice(-2).get('text')[0];
 						}
-							
+						
 						deleltelinesinfo();
 						//noticeSaving('inprogress');
 					},

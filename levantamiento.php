@@ -79,10 +79,13 @@ $formularios = getAllFormularios();
 	
 	
 	<div class="container">
+	
+		<?php if($info != ""){?>
 		<h4><?php echo get_string("infocompany", $lang); ?></h4>
 
 		<p id="infoempresa" > <?php echo $info; ?></p>
 		<br>
+		<?php }?>
 		<?php if($levantamientos){?>
 		
 		<h4 ><?php echo get_string("recordlevantamientos", $lang)?></h4>
