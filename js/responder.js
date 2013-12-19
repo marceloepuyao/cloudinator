@@ -90,11 +90,18 @@ function SubPregunta(idpregunta, idnode, idlev, idsubform){
 
 $(document).ready(function(){
 	
-	$(".backtoLevantamiento").on('click', function(){
-		var emp = $(this).data('emp');
+	$(".backtoRecorrer").on('click', function(){
 		var idlev = $(this).data('idlev');
-		var idform = $(this).data('form');
-		window.location.href = "recorrer.php?emp="+emp+"&idlev="+idlev+ "&lang=" + getUrlParameter('lang')+"&idform="+idform;
+		var idform = $(this).data('idform');
+		window.location.href = "recorrer.php?idlev="+idlev+ "&lang=" + getUrlParameter('lang')+"&idform="+idform;
+
+	});
+	$(".backtoIndex").on('click', function(){
+		window.location.href = "index.php?lang=" + getUrlParameter("lang");
+	});
+	$(".backtoLevantamiento").on('click', function(){
+		var emp = $(this).data('idemp');
+		window.location.href = "levantamiento.php?emp="+emp+"&lang=" + getUrlParameter("lang");
 	});
 	
 	$(".answer").on('click', function(){

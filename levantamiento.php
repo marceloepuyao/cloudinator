@@ -77,9 +77,9 @@ $formularios = getAllFormularios();
 	    <a href="#mypanel" data-icon="bars"><?php echo get_string("options", $lang)?></a>
 	</div>
 	
+	<div data-role="content">
 	
-	<div class="container">
-	
+		<?php echo print_navbar(1, 0, 0, 0);?>
 		<?php if($info != ""){?>
 		<h4><?php echo get_string("infocompany", $lang); ?></h4>
 
@@ -123,16 +123,10 @@ $formularios = getAllFormularios();
 	</div>
 </div>
 <div id="new" data-role="page" >
-
-
-
 	<div data-role="header" class="header" data-position="fixed" role="banner" data-theme="b">
 	    <a href="#" data-rel="back" data-icon="arrow-l"><?php echo get_string("back", $lang)?></a>
 	    <h1 id ="empresanombre2"><?php echo $nombre; ?>	</h1>
-	    
 	</div>
-
-
 	<div data-role="content" class="container"> 
 		<h2><?php echo get_string("newlevantamiento", $lang)?></h2>
 		    <ul data-role="listview" data-inset="true">

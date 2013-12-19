@@ -499,7 +499,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 							});
 
 							//instance.select(newField);
-							
+							deleltelinesinfo();
 							
 						}
 						//A.one('#savechanges').setStyle('display', '');

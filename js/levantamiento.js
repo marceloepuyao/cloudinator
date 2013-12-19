@@ -231,13 +231,14 @@ $(document).ready(function(){
     });
 	
 
-	$("#backtoIndex").on('click', function(){
+	$(".backtoIndex").on('click', function(){
 		window.location.href = "index.php?lang=" + getUrlParameter("lang");
 	});
-	$(".backtoLevantamieto").on('click', function(){
+	$(".backtoLevantamiento").on('click', function(){
 		var emp = $(this).data('idemp');
 		window.location.href = "levantamiento.php?emp="+emp+"&lang=" + getUrlParameter("lang");
 	});
+
  
 	$(".ira").on('click', function(){
 		var idempresa = $(this).data('empresa');
@@ -400,6 +401,7 @@ $(document).ready(function(){
 	$(".deleteanswers").on('click', function(){
 		var idsubform = $(this).data('subform');
 		var idlev = $(this).data('levantamiento');
+		var idform = $(this).data('idform');
 		
 		$.post("ajax/ajaxresponder.php",{ 
 			idlev: idlev,
@@ -408,7 +410,7 @@ $(document).ready(function(){
 			},function(respuesta){
 				var resp = jQuery.parseJSON(respuesta);
 				if(resp.result){
-					console.log(respuesta);
+					window.location.href ="recorrer.php?idlev="+idlev+"&lang="+getUrlParameter("lang")+"&edit=1&idform="+idform;
 				}else{
 					alert("problemas con escribir en la base de datos");
 				}

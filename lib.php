@@ -379,6 +379,26 @@ function print_panel($USER, $lang, $edit= 0, $modeedittext = null){
 	     </div><!-- /panel -->";
 	
 	return $panel;
+}
+function print_navbar($toindex, $idemp, $idlevantamiento, $idform ){
+	$navbar = '<a href="#" class="backtoIndex" data-icon="arrow-l">Seleccionar Empresa</a>';
+	
+	if($toindex){
+		$navbar .= ' >Lista de Levantamientos';
+		return $navbar;
+	}
+	$navbar .= ' > <a href="#" class="backtoLevantamiento" data-idemp="'.$idemp.'" data-icon="arrow-l">Lista de Levantamientos</a>';
+	
+	if($idlevantamiento == 0){
+		$navbar .= ' > Levantamiento';
+		return $navbar;
+	}
+	$navbar .= ' > <a href="#" class="backtoRecorrer" data-idlev="'.$idlevantamiento.'" data-idform="'.$idform.'" data-icon="arrow-l">Levantamiento</a>';
+	
+	$navbar .= ' > Responder Subformulario';
+	return $navbar;
 	
 	
 }
+	
+	

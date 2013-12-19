@@ -15,9 +15,7 @@ $USER = DBQueryReturnArray("SELECT * FROM users WHERE email = '$_SESSION[usuario
 
 
 //si no existen error
-if(isset($_GET['emp']) || isset($_GET['idlev'])){
-	//id de la empresa
-	$idempresa = (int)$_GET['emp'];
+if(isset($_GET['idlev'])){
 	//id del levantamiento
 	$idlevantamiento = (int)$_GET['idlev'];
 }else{
@@ -33,18 +31,21 @@ if(isset($_GET['edit'])){
 	}
 }
 
-//saco info de la empresa
-$queryempresa="SELECT * FROM empresas WHERE id = $idempresa";
-$empresa = DBQueryReturnArray($queryempresa);	
-if(count($empresa) == 0){
-	//header( 'Location: notfound.html' );
-}
-$nombre = $empresa[0]['nombre'];
+
 //saco info del levantamiento
 $levantamiento = getLevantamientobyId($idlevantamiento);
 if($levantamiento ==null){
 	header( 'Location: notfound.html' ) ;
 }
+
+//saco info de la empresa
+$idempresa = $levantamiento['empresaid'];
+$queryempresa="SELECT * FROM empresas WHERE id = $idempresa";
+$empresa = DBQueryReturnArray($queryempresa);	
+if(count($empresa) == 0){
+	header( 'Location: notfound.html' );
+}
+$nombre = $empresa[0]['nombre'];
 
 $levantamientoarray = json_decode($levantamiento['formsactivos']);
 $titulo = $levantamiento['titulo'];
@@ -84,11 +85,13 @@ $formularios = DBQueryReturnArray($queryformularios);
 	<?php echo print_panel($USER,$lang, 1, $modeedittext);?>
 	
 	<div data-role="header" data-theme="b">
-	    <a href="#" class ="backtoLevantamieto" data-idemp="<?php echo $empresa[0]['id'];?>" data-icon="arrow-l"><?php echo get_string("back", $lang)?></a>
+	    <a href="#" class ="backtoLevantamiento" data-idemp="<?php echo $empresa[0]['id'];?>" data-icon="arrow-l"><?php echo get_string("back", $lang)?></a>
 	    <h1 id ="empresanombre"><?php echo $nombre; ?>	</h1>
 	    <a href="#mypanel" data-icon="bars"><?php echo get_string("options", $lang)?></a>
 	</div>
+	
 	<div data-role="content">
+	<?php echo print_navbar(0, $empresa[0]['id'], 0, 0);?>
 	<!-- pop up dialogo -->
 		<h1><?php echo $titulo; ?></h1>
 		<p><?php echo $info; ?></p>
@@ -132,7 +135,7 @@ $formularios = DBQueryReturnArray($queryformularios);
 							
 						?>
 						<li class="<?php echo $class; ?>" data-subform="<?php echo $subformulario['id']; ?>" data-levantamiento="<?php echo $idlevantamiento; ?>">
-							<a href="#popupMenu" data-rel="popup"  data-inline="true" data-transition="slideup" data-icon="gear" data-theme="e">
+							<a href="#popupMenu<?php echo $subformulario['id'];?>" data-rel="popup"  data-inline="true" data-transition="slideup" data-icon="gear" data-theme="e">
 					    		<h3><?php echo $subformulario['name']; ?> </h3>
 				                <p><strong><?php echo get_string("lastvisit", $lang)?>: <?php echo $ultimavisita; ?></strong></p>
 				                <p><?php echo get_string("nextquestion", $lang)?>: <?php echo $pregunta['name']; ?></p>
@@ -140,11 +143,11 @@ $formularios = DBQueryReturnArray($queryformularios);
 			            	</a>
 		            	</li>
 		            	<?php if($modeedit == 1){?>
-						    <div data-role="popup" id="popupMenu" data-theme="d">
+						    <div data-role="popup" id="popupMenu<?php echo $subformulario['id'];?>" data-theme="d">
 						        <ul data-role="listview" data-inset="true" style="min-width:210px;" data-theme="d">
 						            <li><a class="<?php echo $class2;?>" data-subform="<?php echo $subformulario['id']; ?>" data-levantamiento="<?php echo $idlevantamiento; ?>" href="#">Ir</a></li>
 						            <li><a href="#">Clonar</a></li>
-						            <li><a class="deleteanswers" data-subform="<?php echo $subformulario['id']; ?>" data-levantamiento="<?php echo $idlevantamiento; ?>" href="#">Borrar Respuestas</a></li>
+						            <li><a class="deleteanswers" data-idform="<?php echo $subformulario['megatree'];?>" data-subform="<?php echo $subformulario['id']; ?>" data-levantamiento="<?php echo $idlevantamiento; ?>" href="#">Borrar Respuestas</a></li>
 						            <li><a href="#"><?php echo get_string("delete", $lang)?></a></li>
 						        </ul>
 							</div>	

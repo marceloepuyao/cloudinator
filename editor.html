@@ -833,9 +833,14 @@
 				enviarForm();
 			}
 		});
-		$('#buttonName').on('click', function(event){
-			$('#newTreeName').slideUp();
-			enviarForm();
+		$('#buttonName').on('click', function(event){	
+			var name = $('#textName').val();
+			if(name == null || name == ""){
+				alert("Debes ingresar el Nombre");
+			}else{
+				$('#newTreeName').slideUp();
+				enviarForm();
+			}
 		});
 
 		

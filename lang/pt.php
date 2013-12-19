@@ -1,7 +1,7 @@
 <?php
 $dicc = array(
 	'test' => 'teste',
-	'logout' => 'Sair',
+	'logout' => 'Logout',
 	'users' => 'Usuários',
 	'close' => 'Fechar',
 	'back' => 'Atrás',
