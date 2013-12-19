@@ -45,7 +45,8 @@ $catarray = getCategories();
 
 
 			<ul data-role="listview" data-inset="true">
-				<li data-role="fieldcontain"><label for="new-name-empresa"><?php echo get_string("namecompany", $lang);?>:</label> <input name="new-name-empresa" id="new-name-empresa"
+				<li data-role="fieldcontain"><label for="new-name-empresa"><?php echo get_string("namecompany", $lang);?>:</label> 
+					<input name="new-name-empresa" maxlength="75" id="new-name-empresa"
 					value="" data-clear-btn="true" type="text">
 				</li>
 				<li data-role="fieldcontain"><label for="industry"
@@ -58,8 +59,8 @@ $catarray = getCategories();
 						
 				</select>
 				</li>
-				<li data-role="fieldcontain"><label for="textarea"><?php echo get_string("companyinformation", $lang);?>:</label> <textarea cols="40" rows="8" name="textarea"
-						id="textarea"></textarea>
+				<li data-role="fieldcontain"><label for="textarea"><?php echo get_string("companyinformation", $lang);?>:</label> 
+					<textarea cols="40" maxlength="500" rows="8" name="textarea" id="textarea"></textarea>
 				</li>
 				<li class="ui-body ui-body-b">
 					<fieldset class="ui-grid-a">

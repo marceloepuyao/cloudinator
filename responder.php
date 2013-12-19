@@ -89,9 +89,9 @@ if($pregunta == null){
 	<?php echo print_panel($USER,$lang);?>
 
 	<div data-role="header" data-theme="b">
-	    <a href="#" data-rel="back" data-emp="<?php echo $empresa['id']; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-icon="arrow-l"><?php echo get_string("back", $lang)?></a>
+	    <a href="#" class="backtoLevantamiento" data-form= "<?php echo $subform['megatree'];?>" data-emp="<?php echo $empresa['id']; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-icon="arrow-l"><?php echo get_string("back", $lang)?></a>
 	    <h1> <?php echo $empresa['nombre']?></h1>
-	    <a href="#mypanel" data-icon="bars"><?php echo get_string("config", $lang)?></a>
+	    <a href="#mypanel" data-icon="bars"><?php echo get_string("options", $lang)?></a>
 	</div>
 	
 	<div data-role="content">

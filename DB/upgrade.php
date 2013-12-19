@@ -303,6 +303,25 @@ if ($version < 2013121800) {
 	echo '</hr>';
 }
 
+if ($version < 2013121900) {
+	echo '<hr>';
+	echo '<h4>Actualización N° 2013-12-19-00</h4>';
+	try {
+		//acá escribo el script de actualización
+		DBQuery("ALTER TABLE empresas CHANGE info info VARCHAR(500);");
+		DBQuery("ALTER TABLE empresas CHANGE nombre nombre VARCHAR(500);");
+		//actualiazo la versión
+		DBQuery("UPDATE cloudinator_upgrades SET version = '2013121900' WHERE id = 1");
+
+		//mensaje:
+		echo 'Más capacidad de carácteres para columnas tabla empresas';
+		
+	} catch (Exception $e) {
+		echo "Error en actualización<br>$e<br>";
+	}
+	echo '</hr>';
+}
+
 /*
 //EJEMPLO: (RECUERDE CAMBIAR "AAAAMMDDNN" POR EL NUMERO DE ACTUALIZACION A = Año, M = Mes, D = Dia, N = Numero)
 

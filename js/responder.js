@@ -90,10 +90,11 @@ function SubPregunta(idpregunta, idnode, idlev, idsubform){
 
 $(document).ready(function(){
 	
-	$("#backbutton").on('click', function(){
+	$(".backtoLevantamiento").on('click', function(){
 		var emp = $(this).data('emp');
 		var idlev = $(this).data('idlev');
-		window.location.href = "recorrer.php?emp="+emp+"&idlev="+idlev+ "&lang=" + getUrlParameter('lang');
+		var idform = $(this).data('form');
+		window.location.href = "recorrer.php?emp="+emp+"&idlev="+idlev+ "&lang=" + getUrlParameter('lang')+"&idform="+idform;
 	});
 	
 	$(".answer").on('click', function(){
@@ -167,7 +168,6 @@ $(document).ready(function(){
 	});
 	
 	$(".usuarios").on('click', function(){
-
 		window.location.href = "usuarios.php?lang=" + getUrlParameter("lang");
 	});
 	$(".edicion").on('click', function(){

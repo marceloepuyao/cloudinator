@@ -60,7 +60,7 @@ if(isset($_SESSION['usuario'])){
 <table style="width: 100%; margin: 0 auto;">
 	<tr>
 		<td><label for="text-username"><?php echo get_string("email", $lang)?>:</label></td>	
-		<td><input type="text" name="text-username" id="text-username" value="<?php echo $registro?$USER[0]['email']:'';?>"></td>
+		<td><input type="text" name="text-username" id="text-username" value="<?php echo $registro?$USER[0]['email']:'';?>" autofocus></td>
 	</tr>
 	<tr>
 		<td><label for="passwordcloud"><?php echo get_string("password", $lang)?>:</label></td>
@@ -95,7 +95,7 @@ if(isset($_SESSION['usuario'])){
     <div data-role="header" data-theme="b">
      <a href="#" class="cerrarsesion" data-icon="arrow-l"><?php echo get_string("back", $lang)?></a>
     <h1>Cloudinator</h1>
-    <a href="#mypanel" data-icon="bars"><?php echo get_string("config", $lang)?></a>
+    <a href="#mypanel" data-icon="bars"><?php echo get_string("options", $lang)?></a>
 	</div>
 	<div data-role="content" id="content" class="jqm-content ui-content" >
 	<form action="">

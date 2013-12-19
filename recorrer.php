@@ -75,7 +75,7 @@ $formularios = DBQueryReturnArray($queryformularios);
 			padding-left: 25%;
 		}
 </style>
-<title>Nuevo Levantamiento</title>
+<title>Formularios</title>
 </head>
 <body>
 
@@ -84,30 +84,31 @@ $formularios = DBQueryReturnArray($queryformularios);
 	<?php echo print_panel($USER,$lang, 1, $modeedittext);?>
 	
 	<div data-role="header" data-theme="b">
-	    <a href="#" data-rel="back" data-icon="arrow-l"><?php echo get_string("back", $lang)?></a>
+	    <a href="#" class ="backtoLevantamieto" data-idemp="<?php echo $empresa[0]['id'];?>" data-icon="arrow-l"><?php echo get_string("back", $lang)?></a>
 	    <h1 id ="empresanombre"><?php echo $nombre; ?>	</h1>
-	    <a href="#mypanel" data-icon="bars"><?php echo get_string("config", $lang)?></a>
+	    <a href="#mypanel" data-icon="bars"><?php echo get_string("options", $lang)?></a>
 	</div>
-	
-	
-	
 	<div data-role="content">
-		
 	<!-- pop up dialogo -->
-	
-		
 		<h1><?php echo $titulo; ?></h1>
 		<p><?php echo $info; ?></p>
-		<div data-role="collapsible-set" data-theme="b" data-content-theme="d">
+		<div data-role="collapsible-set" data-theme="b" data-content-theme="d" >
 			<?php foreach($formularios as $key => $formulario) {
 
 				//get all the subform
 				$subformularios = getSubFormsbyFormId($formulario['id'], $levantamiento['created']);
 				$total = count($subformularios);
+				$datacollapsed = "";
+				if(isset($_GET['idform'])){
+					if($_GET['idform'] == $formulario['id']){
+						$datacollapsed = 'data-collapsed="false"';
+					}
+				}
+				
 			?>
-			<div data-role="collapsible">
+			<div data-role="collapsible" <?php echo $datacollapsed;?>>
 				<h2><?php echo $formulario['name'];?></h2> 
-				<ul data-role="listview" data-theme="d" data-divider-theme="d">
+				<ul data-role="listview" data-theme="d"  data-divider-theme="d">
 					<li data-role="list-divider"><?php echo get_string("subforms", $lang);?><span class="ui-li-count"><?php echo $total; ?></span></li>
 					<?php foreach($subformularios as $key2 => $subformulario) {
 							if(getSubForm($subformulario['id'])){
@@ -172,7 +173,7 @@ $formularios = DBQueryReturnArray($queryformularios);
 	<div data-theme="b" data-display="overlay" data-position="right" data-role="panel" id="mypanel">
 		<h2 id="usernamebutton"><?php echo $USER[0]['name']." ".$USER[0]['lastname'];?></h2>
 		<a href="#" id="cerrarsesion"><?php echo get_string("logout", $lang)?></a> <br>
-		<a href="#" id="usuarios"><?php echo get_string("config", $lang)?></a><br>
+		<a href="#" id="usuarios"><?php echo get_string("options", $lang)?></a><br>
 		<a href="#header" data-rel="close"><?php echo get_string("close", $lang)?></a>
     <!-- panel content goes here -->
 	</div><!-- /panel -->

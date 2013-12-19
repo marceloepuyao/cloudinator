@@ -365,11 +365,12 @@ function print_panel($USER, $lang, $edit= 0, $modeedittext = null){
 		$superuserhtml = "	<a href='#' class='editor'>".get_string('editor', $lang)."</a><br>
 							<a href='#' class='gestionempresas'>Gestión Empresas</a><br>
 			";
+	}else{
+		$superuserhtml = "";
 	}
 	
 	$panel=  "<div data-theme='b' data-display='overlay' data-position='right' data-role='panel' id='mypanel'>
 		<h2>".$USER[0]['name']." ".$USER[0]['lastname']."</h2>
-		
 		
 		".$edithtml.$superuserhtml."
 		<a href='#' class='usuarios'>Gestión Usuarios</a><br>

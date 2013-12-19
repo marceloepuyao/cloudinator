@@ -94,7 +94,9 @@ $dicc = array(
 	'never' => 'Never',
 	'reports' => 'Reports',
 
-	'editor' => 'Edit Forms'
+	'editor' => 'Edit Forms', 
+
+	'options' => 'Options'
 	
 	
 	);

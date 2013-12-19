@@ -172,9 +172,6 @@ function deletecompany(idcompany){
 }
 
 $(document).ready(function(){
-	$("#backbutton").on('click', function(){
-    	window.location.href = "index.php?lang=" + getUrlParameter('lang');
-	});
     $(window).resize(function() {
 		  if($(window).width() < 800 ){
 			  $("#content").css('padding-right', '5%');
@@ -234,19 +231,19 @@ $(document).ready(function(){
     });
 	
 
-	$("#backbutton").on('click', function(){
+	$("#backtoIndex").on('click', function(){
 		window.location.href = "index.php?lang=" + getUrlParameter("lang");
 	});
-
-	$("#backbutton2").on('click', function(){
-		window.location.href = "levantamiento.php?emp="+getUrlParameter("emp") + "&lang=" + getUrlParameter("lang");
+	$(".backtoLevantamieto").on('click', function(){
+		var emp = $(this).data('idemp');
+		window.location.href = "levantamiento.php?emp="+emp+"&lang=" + getUrlParameter("lang");
 	});
+ 
 	$(".ira").on('click', function(){
 		var idempresa = $(this).data('empresa');
 		var idlevantamiento = $(this).data('levantamiento');
 		window.location.href = "recorrer.php?emp="+idempresa+"&idlev="+idlevantamiento + "&lang=" + getUrlParameter("lang");
 	});
-	
 	
 	$(".delete").on('click', function(){
 		
@@ -268,10 +265,6 @@ $(document).ready(function(){
 		var lev = $(this).data('levantamiento');
 		
 		window.location.href = "responder.php?idsubform="+subform+"&idlev="+lev + "&lang=" + getUrlParameter("lang");
-		
-		
-
-
 	});
 	
 	$("#addlevantamiento").on('click', function(){
@@ -448,12 +441,5 @@ $(document).ready(function(){
         }else{
         	alert("Tienes que llenar todos los campos");
         }
-		
-		
 	});
-	
-	
-	
-
-	
 });
