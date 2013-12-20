@@ -268,6 +268,21 @@ if($USER[0]['superuser'] != 1){
 	<style type="text/css">.atlwdg-trigger.atlwdg-RIGHT{background-color:red;top:70%;z-index:10001;}</style>
 	
 	<script>
+	function validateText( str ) {
+		var  vsExprReg = /^([a-zA-ZáéíóúÁÉÍÓÚ_\sc]+)$/;
+		var test = str.replace(/ /g, "");
+		console.log("test",test);
+		if(test != "" && vsExprReg.test(str)){
+			return true;
+		}else{
+			return false;
+		}
+		
+	}
+	function validateLargeText( str ) {
+		var  vsExprReg = /^([a-zA-ZáéíóúÁÉÍÓÚ,.:;\sc]+)$/;
+		 return vsExprReg.test(str);
+	}
 	function cargarGrafos(){ //Actualiza la lista de Subformularios [AJAX].
 		$.ajax({
 			url: 'ajax/ajaxTrees.php',
@@ -436,32 +451,39 @@ if($USER[0]['superuser'] != 1){
 		});
 	}
 	function createNewForm(){ //Llama a un form para crear un Formulario [AJAX].
-		$.ajax({
-			url: 'ajax/ajaxMegaTrees.php',
-			dataType: 'json',
-			type: 'POST',
-			data: {
-				name: $('#textNameForm').val(),
-				action : "add"
-					},
-			timeout: 2500,
-			beforeSend: function(){$('.loading').fadeIn();},
-			success: function(data){
-				if(data.result){
-					addNotice("success", "Nuevo Formulario creado exitosamente");
-					loadMegaTrees();
-					$('.loading').fadeOut();
-				}else{
-					$('#loadingGif').fadeOut();
-					addNotice("warning", "Nombre ocupado");
-					$('#newFormName').slideDown();
+		var nameForm = $('#textNameForm').val();
+		if(validateText( nameForm )){
+			$.ajax({
+				url: 'ajax/ajaxMegaTrees.php',
+				dataType: 'json',
+				type: 'POST',
+				data: {
+					name: $('#textNameForm').val(),
+					action : "add"
+						},
+				timeout: 2500,
+				beforeSend: function(){$('.loading').fadeIn();},
+				success: function(data){
+					if(data.result){
+						addNotice("success", "Nuevo Formulario creado exitosamente");
+						loadMegaTrees();
+						$('.loading').fadeOut();
+					}else{
+						$('#loadingGif').fadeOut();
+						addNotice("warning", "Nombre ocupado");
+						$('#newFormName').slideDown();
+					}
 				}
-			}
-		}).fail(function(data) {
-			addNotice("error", "Error al crear el Formulario");
-			console.log("error en createNewForm", data);
-			$('.loading').fadeOut();
-		});
+			}).fail(function(data) {
+				addNotice("error", "Error al crear el Formulario");
+				console.log("error en createNewForm", data);
+				$('.loading').fadeOut();
+			});
+			$('#newFormName').slideUp();
+		}else{
+			alert("Carácteres Invalidos");
+			$('#textNameForm').focus();
+		}
 	}
 	function confirmdelete(){ //Llama a deleteform() en caso de que el usuario acepte, de lo contrario retorna false.
 		if(confirm("¿Está Seguro?")){
@@ -824,7 +846,7 @@ if($USER[0]['superuser'] != 1){
 		});
 		$("#textNameForm").keypress(function(event) {
 			if(event.which == 13){
-				$('#newFormName').slideUp();
+				
 				createNewForm();
 			}
 		});
