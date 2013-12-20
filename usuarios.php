@@ -1,12 +1,17 @@
 ﻿<?php
 require_once('DB/db.php');
 require_once('lib.php');
-
 session_start();
 
 //checkiamos si las sessions están settiadas
-if(checkSession($_SESSION['ultimoacceso'], $_SESSION['usuario'], $_SESSION['idioma'])){
-	$_SESSION['ultimoacceso'] = time();
+if(isset($_SESSION['ultimoacceso']) && isset($_SESSION['usuario']) && isset($_SESSION['idioma'])){
+	if(checkSession($_SESSION['ultimoacceso'], $_SESSION['usuario'], $_SESSION['idioma'])){
+		$_SESSION['ultimoacceso'] = time();
+	}else{
+		header( 'Location: index.php' );
+	}
+}else{
+	header( 'Location: index.php' );
 }
 
 //obetenemos el lenguaje de la página.
@@ -67,6 +72,8 @@ if(isset($_GET['edit'])){
 	</div>
 
 	<div data-role="content" class="container"> 
+		<?php echo print_navbar_config('Gestionar Usuarios');?>
+		
 		<h2><?php echo get_string("userslist", $lang); ?>	</h2>
 
 		<table data-role="table" id="table-column-toggle" data-mode="columntoggle" class="ui-responsive table-stroke">

@@ -4,13 +4,21 @@ require_once('DB/db.php');
 require_once('lib.php');
 session_start();
 
-//checkiamos si las sessions están settiadas
-if(checkSession($_SESSION['ultimoacceso'], $_SESSION['usuario'], $_SESSION['idioma'])){
-	$_SESSION['ultimoacceso'] = time();
-}
-
 //obetenemos el lenguaje de la página.
 $lang = getLang();
+
+//checkiamos si las sessions están settiadas
+if(isset($_SESSION['ultimoacceso']) && isset($_SESSION['usuario']) && isset($_SESSION['idioma'])){
+	if(checkSession($_SESSION['ultimoacceso'], $_SESSION['usuario'], $_SESSION['idioma'])){
+		$_SESSION['ultimoacceso'] = time();
+	}else{
+		header( 'Location: index.php' );
+	}
+}else{
+	header( 'Location: index.php' );
+}
+
+
 
 //obtenemos el usuario
 $USER = DBQueryReturnArray("SELECT * FROM users WHERE email = '$_SESSION[usuario]'");
@@ -131,7 +139,7 @@ if($idempresa){
 			      	foreach($empresas as $key => $empresa) { ?>
 				    	<tr>
 				    	<td><?php echo $empresa['nombre']; ?></td>
-				         <td><?php echo $empresa['industria']; ?></td>
+				         <td><?php echo get_string($empresa['industria'], $lang); ?></td>
 				         <td><?php echo substr($empresa['info'],0,60)."..."; ?></td>
 				         <td><a class="deletecompany" data-idcompany="<?php echo $empresa['id']; ?>" href="#"><i class="fa fa-trash-o"></i></a></td>
 				         <td><a class="editcompany" data-idcompany="<?php echo $empresa['id']; ?>" href="#"><i class="fa fa-pencil"></i></a></td>

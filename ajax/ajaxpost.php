@@ -20,7 +20,6 @@ if( array_key_exists('getIdFromName', $_POST)){
 			'exception' => $e
 		);
 		print($json->encode($data));
-		
 	}
 }
 

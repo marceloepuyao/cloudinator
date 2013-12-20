@@ -6,6 +6,7 @@ function getUrlParameter(name) {
 function login(){
 	 var usu = $("#text-username").val();
      var pass = $("#passwordcloud").val();
+   
      $.post("server/login.php",{
     	 action: "login",
     	 usu : usu, 
@@ -20,8 +21,6 @@ function login(){
              $.mobile.changePage('#pageError', 'pop', true, true);
          }
      });
-	
-	
 }
 
 function guardarlevantamiento(titulo, info, contactado, area, forms, idlev){
@@ -58,6 +57,45 @@ function guardarlevantamiento(titulo, info, contactado, area, forms, idlev){
 		}
 	);
 }
+function validateText( str ) {
+	var  vsExprReg = /^([a-zA-ZáéíóúÁÉÍÓÚ_\sc]+)$/;
+	var test = str.replace(/ /g, "");
+	console.log("test",test);
+	if(test != "" && vsExprReg.test(str)){
+		return true;
+	}else{
+		return false;
+	}
+	
+}
+function validateLargeText( str ) {
+	var  vsExprReg = /^([a-zA-ZáéíóúÁÉÍÓÚ,.:;\sc]+)$/;
+	 return vsExprReg.test(str);
+}
+
+function validateEmail(email){
+	
+	var  vsExprReg = /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/;
+	if(vsExprReg.test(email) || email == "admin"){
+		return true;
+	}else{
+		return false;
+	}
+	
+}
+
+//NO SE ESTÁ USANDO
+function validatePass(pass) {
+    var RegExPattern = /(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{8,10})$/;
+    var errorMessage = 'Password Incorrecta.';
+    if ((pass.match(RegExPattern)) && (pass!='')) {
+        return true;
+    } else {
+        alert(errorMessage);
+        return false;
+    } 
+}
+
 
 function deleteLevantamiento(idlev){
 	$.post("ajax/ajaxlevantamientos.php",{ 
@@ -302,7 +340,7 @@ $(document).ready(function(){
 	});
 	
 	$(".editor").on('click', function(){
-		window.location.href = "editor.html";
+		window.location.href = "editor.php";
 	});
 	
 	$(".edit").on('click', function(){
@@ -346,17 +384,15 @@ $(document).ready(function(){
 		
 		var editto = $(this).data('editto');
 		
-		if(nombres && apellidos && email && password && idioma && repassword){
+		if(validateText(nombres) && validateText(apellidos) && validateEmail(email) && password != "" && validateText(idioma) && repassword != ""){
 			if(password == repassword){
-				console.log("new user", nombres,apellidos,email,password, idioma, superusuario);
-				
 				newuser(nombres,apellidos,email,password, idioma, superusuario, editto);
 			}else{
 				alert("Error en Contraseña");
 			}
 
 		}else{
-			alert("Faltan campos por llenar");
+			alert("Hay Carácteres Inválidos");
 		}
 	});
 	$(".deleteuser").on('click', function(){
@@ -422,8 +458,13 @@ $(document).ready(function(){
         var industry = $("#industry").val();
         var textarea = $("#textarea").val();
 		
-        if(name &&  industry && textarea){
-        	crearEmpresa(name,industry,textarea, 0);
+        
+        if(name != null && name != "" &&  industry != null && name != "" && textarea != null && textarea != ""){
+        	if(validateText(name) && validateText(industry) && validateLargeText(textarea)){
+        		crearEmpresa(name,industry,textarea, 0);
+        	}else{
+        		alert("Hay carácteres inválidos");
+        	}
         }else{
         	alert("Tienes que llenar todos los campos");
         }
@@ -438,8 +479,13 @@ $(document).ready(function(){
         var industry = $("#industry").val();
         var textarea = $("#textarea").val();
 		
-        if(name &&  industry && textarea){
-        	crearEmpresa(name,industry,textarea, idcompany);
+        if(name != null && name != "" &&  industry != null && name != ""){
+        	if(validateText(name) &&  validateText(industry) &&  (validateLargeText(textarea) ||  textarea =="")){
+        		crearEmpresa(name,industry,textarea, idcompany);
+        	}else{
+        		alert("Hay carácteres inválidos");
+        	}
+        	
         }else{
         	alert("Tienes que llenar todos los campos");
         }

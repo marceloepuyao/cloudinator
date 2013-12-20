@@ -1,6 +1,18 @@
 ﻿<?php
 require_once('DB/db.php');
 require_once('lib.php');
+session_start();
+
+//checkiamos si las sessions están settiadas
+if(isset($_SESSION['ultimoacceso']) && isset($_SESSION['usuario']) && isset($_SESSION['idioma'])){
+	if(checkSession($_SESSION['ultimoacceso'], $_SESSION['usuario'], $_SESSION['idioma'])){
+		$_SESSION['ultimoacceso'] = time();
+	}else{
+		header( 'Location: indexe.php' );
+	}
+}else{
+	header( 'Location: indexa.php' );
+}
 
 $lang = getLang();
 $config = parse_ini_file(dirname(__FILE__)."/config.ini", true);

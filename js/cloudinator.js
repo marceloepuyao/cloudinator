@@ -102,7 +102,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 				success: function() {
 					var response = this.get('responseData');
 					if(response.result){
-						window.location = "editor.html?id="+response.id;
+						window.location = "editor.php?id="+response.id;
 					}else{
 						console.log('exception',response.exception);
 					}
@@ -124,7 +124,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 					success: function() {
 						var response = this.get('responseData');
 						if(response.result){
-							window.location = "cloudinator.html?id="+getQueryStringByName('id');
+							window.location = "cloudinator.php?id="+getQueryStringByName('id');
 						}else if(response.exception == "NombreOcupado"){
 							alert("Nombre Ocupado");
 						}else{
@@ -148,7 +148,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 				on: {   
 					success: function(data) {
 						console.log(data);
-						window.location = "editor.html";
+						window.location = "editor.php";
 					}
 				}
 			});

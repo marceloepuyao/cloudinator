@@ -1,7 +1,7 @@
 <?php
 define('APPLICATION_PATH', realpath(dirname(__FILE__)));
 require_once('DB/db.php');
-
+//TODO: INTERNAL OR DIE
 /**
  * Modo de uso:
  * <?php echo get_string($key, $lang);?>
@@ -284,20 +284,19 @@ function getContentByNodeId($nodeID){
 
 function checkSession($lastaccess, $usuario,$idioma){
 	
-	//TODO: comprobar que los usuarios y contraseña corresponden a la base de datos
-	$url = "index.php?lang=".getLang();
+	//si esta vacio el usario devolver false
 	if($usuario == ""){
-		@header('Location: '.$url);
 		return false;
 	}
-	
+	//si el tiempo del último acceso es mayor que el tiempo de ahora en 5 minunos devuelve false
 	$time = time(); 
 	if($lastaccess){
+		//Aquí es donde se settea el tiempo de las session, ahora está en 5 min
 		if(($time - $lastaccess)  < 5*60){
 			return true;
 		}else{
+			//se eliminan las cookies y se devuelve false
 			$_SESSION = array();
-			@header('Location: '.$url);
 			return false;
 		}
 		
@@ -381,7 +380,7 @@ function print_panel($USER, $lang, $edit= 0, $modeedittext = null){
 	return $panel;
 }
 function print_navbar($toindex, $idemp, $idlevantamiento, $idform ){
-	$navbar = '<a href="#" class="backtoIndex" data-icon="arrow-l">Seleccionar Empresa</a>';
+	$navbar = '<a href="#" class="backtoIndex" data-icon="arrow-l">Inicio</a>';
 	
 	if($toindex){
 		$navbar .= ' >Lista de Levantamientos';
@@ -399,6 +398,11 @@ function print_navbar($toindex, $idemp, $idlevantamiento, $idform ){
 	return $navbar;
 	
 	
+}
+
+function print_navbar_config($text){
+	$navbar = '<a href="#" class="backtoIndex" data-icon="arrow-l">Inicio</a> > '.$text;
+	return $navbar;
 }
 	
 	

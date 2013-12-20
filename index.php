@@ -6,10 +6,16 @@ session_start();
 //se saca el idioma
 $lang = getLang();
 
-if(isset($_SESSION['usuario'])){
-	$USER = DBQueryReturnArray("SELECT * FROM users WHERE email = '$_SESSION[usuario]'");
-	$empresas = DBQueryReturnArray("SELECT * FROM empresas");
-	$registro = 1;
+//checkiamos si las sessions están settiadas
+if(isset($_SESSION['ultimoacceso']) && isset($_SESSION['usuario']) && isset($_SESSION['idioma'])){
+	if(checkSession($_SESSION['ultimoacceso'], $_SESSION['usuario'], $_SESSION['idioma'])){
+		$_SESSION['ultimoacceso'] = time();
+		$USER = DBQueryReturnArray("SELECT * FROM users WHERE email = '$_SESSION[usuario]'");
+		$empresas = DBQueryReturnArray("SELECT * FROM empresas");
+		$registro = 1;
+	}else{
+		$registro = 0;
+	}
 }else{
 	$registro = 0;
 }

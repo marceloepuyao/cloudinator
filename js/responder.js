@@ -186,7 +186,7 @@ $(document).ready(function(){
 		}
 	});
 	$(".editor").on('click', function(){
-		window.location.href = "editor.html";
+		window.location.href = "editor.php";
 	});
 	$(".gestionempresas").on('click', function(){
 		window.location.href = "empresas.php?lang=" + getUrlParameter("lang");

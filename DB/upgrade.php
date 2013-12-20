@@ -7,7 +7,7 @@
 <?php
 require_once('db.php');
 
-echo '<a href="../editor.html">Volver</a>';
+echo '<a href="../editor.php">Volver</a>';
 echo '<center><br><h2>Actualización de la Base de Datos</h2><br>';
 
 //si existe la tabla cloudinator saco la version de ahí si no la setteo 
@@ -348,6 +348,6 @@ if ($version < AAAAMMDDNN) {
 echo '<hr>';
 echo "<h3>Fin de la actualización</h3>";
 echo '</hr></center>';
-echo '<br><br><a href="../editor.html">Volver</a>';
+echo '<br><br><a href="../editor.php">Volver</a>';
 ?>
 </body>
