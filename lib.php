@@ -404,5 +404,6 @@ function print_navbar_config($text){
 	$navbar = '<a href="#" class="backtoIndex" data-icon="arrow-l">Inicio</a> > '.$text;
 	return $navbar;
 }
+
 	
 	

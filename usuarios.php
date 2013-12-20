@@ -68,7 +68,7 @@ if(isset($_GET['edit'])){
 	<div data-role="header" class="header" data-position="fixed" role="banner" data-theme="b">
 	    <a href="#" data-rel="back" data-icon="arrow-l"><?php echo get_string("back", $lang);?></a>
 	    <h1><?php echo get_string("users", $lang); ?>	</h1>
-	    <a href="#mypanel" data-icon="bars"><?php echo get_string("config", $lang);?></a>
+	    <a href="#mypanel" data-icon="bars"><?php echo get_string("options", $lang);?></a>
 	</div>
 
 	<div data-role="content" class="container"> 
@@ -125,7 +125,7 @@ if(isset($_GET['edit'])){
 	<div data-role="header" class="header" data-position="fixed" role="banner" data-theme="b">
 	    <a href="#users"  data-icon="arrow-l"><?php echo get_string("back", $lang);?></a>
 	    <h1><?php echo get_string("users", $lang); ?></h1>
-	    <a href="#mypanel" data-icon="bars"><?php echo get_string("config", $lang);?></a>
+	    <a href="#mypanel" data-icon="bars"><?php echo get_string("options", $lang);?></a>
 	</div>
 
 	<div data-role="content" class="container"> 
