@@ -269,7 +269,7 @@ if($USER[0]['superuser'] != 1){
 	
 	<script>
 	function validateText( str ) {
-		var  vsExprReg = /^([a-zA-ZáéíóúÁÉÍÓÚ_\sc]+)$/;
+		var  vsExprReg = /^([a-zA-Z0-9áéíóúÁÉÍÓÚ_\sc]+)$/;
 		var test = str.replace(/ /g, "");
 		console.log("test",test);
 		if(test != "" && vsExprReg.test(str)){
@@ -280,7 +280,7 @@ if($USER[0]['superuser'] != 1){
 		
 	}
 	function validateLargeText( str ) {
-		var  vsExprReg = /^([a-zA-ZáéíóúÁÉÍÓÚ,.:;\sc]+)$/;
+		var  vsExprReg = /^([a-zA-Z0-9áéíóúÁÉÍÓÚ,.:;\sc]+)$/;
 		 return vsExprReg.test(str);
 	}
 	function cargarGrafos(){ //Actualiza la lista de Subformularios [AJAX].
@@ -482,6 +482,7 @@ if($USER[0]['superuser'] != 1){
 			$('#newFormName').slideUp();
 		}else{
 			alert("Carácteres Invalidos");
+			$('#newFormName').slideDown();
 			$('#textNameForm').focus();
 		}
 	}

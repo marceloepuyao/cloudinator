@@ -125,6 +125,7 @@ $formularios = DBQueryReturnArray($queryformularios);
 								extract($questionandanswers); //devuelve $pregunta, $respuestas $ultimavisita, $completitud
 								if($pregunta == null){
 									$pregunta = array("name"=>get_string('endreached', $lang));
+									$completitud = "100%";
 								}
 								$class = "goto";
 								$class2 = "goto";
@@ -145,7 +146,7 @@ $formularios = DBQueryReturnArray($queryformularios);
 					    		<h3><?php echo $subformulario['name']; ?> </h3>
 				                <p><strong><?php echo get_string("lastvisit", $lang)?>: <?php echo $ultimavisita; ?></strong></p>
 				                <p><?php echo get_string("nextquestion", $lang)?>: <?php echo $pregunta['name']; ?></p>
-				                <p class="ui-li-aside"><strong><?php echo get_string("completeness", $lang)?>: <?php echo $completitud; ?>%</strong></p>
+				                <p class="ui-li-aside"><strong><?php echo get_string("completeness", $lang)?>: <?php echo $completitud; ?></strong></p>
 			            	</a>
 		            	</li>
 		            	<?php if($modeedit == 1){?>
@@ -168,24 +169,13 @@ $formularios = DBQueryReturnArray($queryformularios);
 			
 			<div data-role="controlgroup">
 		    <a id="report" href="#report" data-role="button"><?php echo get_string('reports', $lang)?></a>
-			</div>
-			
+			</div>	
 	</div>
-	
-	</div>
-	
-	
-	
+	</div>	
 </div>
 
 <div id="report" data-role="page" >
-	<div data-theme="b" data-display="overlay" data-position="right" data-role="panel" id="mypanel">
-		<h2 id="usernamebutton"><?php echo $USER[0]['name']." ".$USER[0]['lastname'];?></h2>
-		<a href="#" id="cerrarsesion"><?php echo get_string("logout", $lang)?></a> <br>
-		<a href="#" id="usuarios"><?php echo get_string("options", $lang)?></a><br>
-		<a href="#header" data-rel="close"><?php echo get_string("close", $lang)?></a>
-    <!-- panel content goes here -->
-	</div><!-- /panel -->
+	<?php echo print_panel($USER,$lang, 1, $modeedittext);?>
 
 	<div data-role="header" data-theme="b">
 	    <a href="#recorrer" data-icon="arrow-l"><?php echo get_string("back", $lang)?></a>
@@ -197,8 +187,7 @@ $formularios = DBQueryReturnArray($queryformularios);
 		<h1>Reporte Levantamiento : <?php echo $levantamiento['titulo'];?></h1>
 		
 		<?php foreach ($formularios as $form){ 
-				
-			
+
 			$subformularios = getSubFormsbyFormId($form['id'], $levantamiento['created']);
 			?>
 			
@@ -207,32 +196,37 @@ $formularios = DBQueryReturnArray($queryformularios);
 				<?php 
 				
 				$tablaresumen = getResumenSubform($subformulario['id'], $idlevantamiento);
+				
+				if(count($tablaresumen)>0){
 
-				?> 
-				<table data-role="table" id="movie-table" data-mode="columntoggle" class="ui-body-d ui-shadow table-stripe ui-responsive">
-			         <thead>
-			           <tr class="ui-bar-d">
-			             <th>Pregunta</th>
-			             <th>Respuesta</th>
-			             <th> Subrespuesta</th>
-			             <th>Fecha</th>
-			           </tr>
-			         </thead>
-			         <tbody>
-			         <?php foreach ($tablaresumen as $preguntas){?>
-			         
-			           <tr>
-			             <th><?php echo getContentByNodeId($preguntas['preguntaid']); ?></th>
-			             <td><?php echo getContentByNodeId($preguntas['respuestaid']); ?></td>
-			             <td><?php echo $preguntas['respsubpregunta']; ?></td>
-			             <td><?php echo $preguntas['created']; ?></td>
-			           </tr>
-			           
-			        <?php $lastregistro = $preguntas['id'];}?>
-			           
-			         </tbody>
-		       </table>
-				<?php 	
+					?> 
+					<table data-role="table" id="movie-table" data-mode="columntoggle" class="ui-body-d ui-shadow table-stripe ui-responsive">
+				         <thead>
+				           <tr class="ui-bar-d">
+				             <th>Pregunta</th>
+				             <th>Respuesta</th>
+				             <th> Subrespuesta</th>
+				             <th>Fecha</th>
+				           </tr>
+				         </thead>
+				         <tbody>
+				         <?php foreach ($tablaresumen as $preguntas){?>
+				         
+				           <tr>
+				             <th><?php echo getContentByNodeId($preguntas['preguntaid']); ?></th>
+				             <td><?php echo getContentByNodeId($preguntas['respuestaid']); ?></td>
+				             <td><?php echo $preguntas['respsubpregunta']; ?></td>
+				             <td><?php echo $preguntas['created']; ?></td>
+				           </tr>
+				           
+				        <?php $lastregistro = $preguntas['id'];}?>
+				           
+				         </tbody>
+			       </table>
+					<?php 	
+				}else{
+					echo "Subformulario no respondido";	
+				}
 			}	
 		}?>
 	</div>

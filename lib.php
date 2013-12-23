@@ -65,15 +65,23 @@ function getQuestionAnswers($idsubform, $idlevantamiento){
 	$registrototal = DBQueryReturnArray("SELECT * FROM registropreguntas WHERE levantamientoid = $idlevantamiento AND subformid = $idsubform");
 	$preguntascontestadas = count($registrototal);
 	$minimopreguntas = calcularMinimoPreguntas($idsubform);
-	$completitud = ($preguntascontestadas / $minimopreguntas )*100;
-	if($completitud > 100){
-		$completitud = 100;
-	}
+	$maximopreguntas = calcularMaximoPreguntas($idsubform);
 	
+	//TODO: completitud máxima no se está ocupando y está mal calculada
+	$completitudminima = round(($preguntascontestadas / $minimopreguntas )*100, 1);
+	if($completitudminima > 100){
+		$completitudminima = 100;
+	}
+	$completitudmaxima = round(($preguntascontestadas/$maximopreguntas)*100, 1);
+	
+	if($completitudmaxima == $completitudminima ){
+		$completitud = $completitudminima."%";
+	}else{
+		$completitud = $completitudmaxima."% - ".$completitudminima."%";
+	}
 	$lang = $_SESSION['idioma'];
 	
 	if($registro != null){
-		
 		//ver en el registro la ultima pregunta respondida, ver su respuesta y sacar la pregunta que viene:
 		$idrespuesta = $registro[0]["respuestaid"];
 		
@@ -159,6 +167,13 @@ function calcularMinimoPreguntas($idsubform){
 	}
 	
 	return "error";
+}
+
+function calcularMaximoPreguntas($idsubform){
+	$preguntas = DBQueryReturnArray("SELECT * FROM nodos WHERE tree = $idsubform AND type='condition'");
+	
+	return count($preguntas);
+	
 }
 
 function getQuestionById($idsubform, $idlevantamiento, $registroid){

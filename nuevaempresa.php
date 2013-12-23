@@ -8,10 +8,10 @@ if(isset($_SESSION['ultimoacceso']) && isset($_SESSION['usuario']) && isset($_SE
 	if(checkSession($_SESSION['ultimoacceso'], $_SESSION['usuario'], $_SESSION['idioma'])){
 		$_SESSION['ultimoacceso'] = time();
 	}else{
-		header( 'Location: indexe.php' );
+		header( 'Location: index.php' );
 	}
 }else{
-	header( 'Location: indexa.php' );
+	header( 'Location: index.php' );
 }
 
 $lang = getLang();

@@ -58,7 +58,7 @@ function guardarlevantamiento(titulo, info, contactado, area, forms, idlev){
 	);
 }
 function validateText( str ) {
-	var  vsExprReg = /^([a-zA-ZáéíóúÁÉÍÓÚ_\sc]+)$/;
+	var  vsExprReg = /^([a-zA-Z0-9áéíóúÁÉÍÓÚ_\sc]+)$/;
 	var test = str.replace(/ /g, "");
 	console.log("test",test);
 	if(test != "" && vsExprReg.test(str)){
@@ -69,7 +69,7 @@ function validateText( str ) {
 	
 }
 function validateLargeText( str ) {
-	var  vsExprReg = /^([a-zA-ZáéíóúÁÉÍÓÚ,.:;\sc]+)$/;
+	var  vsExprReg = /^([a-zA-Z0-9áéíóúÁÉÍÓÚ,.:;\sc]+)$/;
 	 return vsExprReg.test(str);
 }
 
