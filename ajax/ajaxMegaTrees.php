@@ -11,13 +11,7 @@ if(isset($_POST['action'])) {
 			$db = DBConnect();
 			$db->autocommit(FALSE);
 			try {
-				$id = $_POST['id'];
-/* //Esto no hace nada, creo. (Klaus)
-				$sqltrees = "SELECT id FROM trees WHERE megatree=$id";
-				if(!$result = $db->query($sqltrees)){
-				    throw new Exception('There was an error running the query [' . $db->error . ']', 1);
-				}
-*/
+				$id = (int)$_POST['id'];
 				$querytree = "UPDATE trees SET deleted = 1 WHERE megatree=$id;";
 				if(!$result = $db->query($querytree)){
 				    throw new Exception('There was an error running the query [' . $db->error . ']', 1);
@@ -49,7 +43,7 @@ if(isset($_POST['action'])) {
 		}
 	}else if($_POST['action']== "setname"){
 		try{
-			$id = $_POST['id'];
+			$id = (int)$_POST['id'];
 			$query = "SELECT * FROM  megatrees WHERE id = $id";
 			$datos = DBQueryReturnArray($query);
 		
@@ -70,7 +64,8 @@ if(isset($_POST['action'])) {
 	}else if($_POST['action']=="add"){
 		try {
 			//primero comprobamos si existe un subform con el mismo nombre en el form
-			$check = DBQuery("SELECT * FROM megatrees WHERE name = '$_POST[name]' AND deleted = 0");
+			$name = mysql_real_escape_string($_POST['name']);
+			$check = DBQuery("SELECT * FROM megatrees WHERE name = '$name' AND deleted = 0");
 			if($check->num_rows > 0){
 				$data = array(
 					'result' => false
@@ -78,7 +73,7 @@ if(isset($_POST['action'])) {
 				print($json->encode($data));
 			}else{
 				DBQuery("INSERT INTO `megatrees` (`id`, `name`, `chain`, `deleted`, `created`, `modified` ) VALUES 
-					(NULL, '$_POST[name]', NULL, 0, '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."' );
+					(NULL, '$name', NULL, 0, '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."' );
 					");
 				$data = array(
 					'result' => true
@@ -136,14 +131,16 @@ if(isset($_POST['action'])) {
 		print($json->encode($data));
 	}else if($_POST['action']=="newName"){
 		try {
-			$response = DBQuery("SELECT * FROM megatrees WHERE name = '$_POST[nuevonombre]'");
+			$nuevonombre = mysql_real_escape_string($_POST['nuevonombre']);
+			$id = (int)$_POST['id'];
+			$response = DBQuery("SELECT * FROM megatrees WHERE name = '$nuevonombre'");
 			if($response->num_rows > 0){
 				$data = array(
 					'result' => false,
 					'exception' => 'NombreOcupado'
 				);
 			}else{
-				DBQuery("UPDATE megatrees SET name = '$_POST[nuevonombre]' WHERE id = $_POST[id]");
+				DBQuery("UPDATE megatrees SET name = '$nuevonombre' WHERE id = $id");
 				$data = array(
 					'result' => true
 				);

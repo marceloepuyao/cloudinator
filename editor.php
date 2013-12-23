@@ -1,4 +1,30 @@
-<html>
+<?php 
+require_once('DB/db.php');
+require_once('lib.php');
+
+session_start();
+
+//checkiamos si las sessions están settiadas
+if(isset($_SESSION['ultimoacceso']) && isset($_SESSION['usuario']) && isset($_SESSION['idioma'])){
+	if(checkSession($_SESSION['ultimoacceso'], $_SESSION['usuario'], $_SESSION['idioma'])){
+		$_SESSION['ultimoacceso'] = time();
+	}else{
+		header( 'Location: index.php' );
+	}
+}else{
+	header( 'Location: index.php' );
+}
+
+
+//obtenemos el usuario
+$USER = DBQueryReturnArray("SELECT * FROM users WHERE email = '$_SESSION[usuario]'");
+
+if($USER[0]['superuser'] != 1){
+	header( 'Location: index.php' );
+}
+
+
+?><html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<link rel="stylesheet" href="kickstart/css/kickstart.css" media="all" /> <!-- KICKSTART -->
@@ -166,7 +192,7 @@
 	<!-- HEADER (inicio)-->
 	<div class="bg_top">
 		<div class='header'>
-			<a href="editor.html"><img src="content/logo-sonda-white.png" height=60px border=0px></a>
+			<a href="editor.php"><img src="content/logo-sonda-white.png" height=60px border=0px></a>
 		</div>
 	</div>
 	<!-- HEADER (fin)-->
@@ -181,6 +207,7 @@
 					<li><a href="DB/upgrade.php">Upgrade</a></li>
 				</ul>
 			</li>
+			<li id="toIndex"><a href="index.php"><i class="icon-file"></i> Recorrer Formularios</a>
 		
 		</ul>
 	</div>
@@ -197,7 +224,7 @@
 				<ul id="clone">
       			</ul>
       		</li> 
-			<li><a href="editor.html"><i class="icon-arrow-left"></i> Volver</a></li> 
+			<li><a href="editor.php"><i class="icon-arrow-left"></i> Volver</a></li> 
 
 		</ul>
 	</div>
@@ -241,6 +268,21 @@
 	<style type="text/css">.atlwdg-trigger.atlwdg-RIGHT{background-color:red;top:70%;z-index:10001;}</style>
 	
 	<script>
+	function validateText( str ) {
+		var  vsExprReg = /^([a-zA-Z0-9áéíóúÁÉÍÓÚ_\sc]+)$/;
+		var test = str.replace(/ /g, "");
+		console.log("test",test);
+		if(test != "" && vsExprReg.test(str)){
+			return true;
+		}else{
+			return false;
+		}
+		
+	}
+	function validateLargeText( str ) {
+		var  vsExprReg = /^([a-zA-Z0-9áéíóúÁÉÍÓÚ,.:;\sc]+)$/;
+		 return vsExprReg.test(str);
+	}
 	function cargarGrafos(){ //Actualiza la lista de Subformularios [AJAX].
 		$.ajax({
 			url: 'ajax/ajaxTrees.php',
@@ -255,9 +297,9 @@
 					$.each(data.datos, function( i, item ) {
 						if(item.deleted == 0 && item.megatree == getQueryStringByName('id')){
 							if(item.released == 0){
-								$('#tablabody').append('<tr><td value="'+item.name+'"><a href="cloudinator.html?id='+item.id+'">'+item.name+'</a></td><td value="'+item.created+'">'+item.created+'</td><td><abbr title="Publicar"><a href="#" onclick="publicarSubformulario('+item.id+');"><i class="icon-share icon-2x"></i></a></abbr> <abbr title="Cambiar Nombre"><a href="#" onclick="cambiarNombreSubform('+item.id+');"><i class="icon-edit icon-2x"></i></a></abbr> <abbr title="Clonar"><a href="#" onclick="preclonar('+item.id+');"><i class="icon-copy icon-2x"></i></a></abbr> <abbr title="Borrar"><a href="#" onclick="borrarsubformulario('+item.id+');"><i class="icon-trash icon-2x"></i></a></abbr></td></tr>');
+								$('#tablabody').append('<tr><td value="'+item.name+'"><a href="cloudinator.php?id='+item.id+'">'+item.name+'</a></td><td value="'+item.created+'">'+item.created+'</td><td><abbr title="Publicar"><a href="#" onclick="publicarSubformulario('+item.id+');"><i class="icon-share icon-2x"></i></a></abbr> <abbr title="Cambiar Nombre"><a href="#" onclick="cambiarNombreSubform('+item.id+');"><i class="icon-edit icon-2x"></i></a></abbr> <abbr title="Clonar"><a href="#" onclick="preclonar('+item.id+');"><i class="icon-copy icon-2x"></i></a></abbr> <abbr title="Borrar"><a href="#" onclick="borrarsubformulario('+item.id+');"><i class="icon-trash icon-2x"></i></a></abbr></td></tr>');
 							}else{
-								$('#tabla2body').append('<tr><td value="'+item.name+'"><a href="cloudinator.html?id='+item.id+'">'+item.name+'</a></td><td value="'+item.created+'">'+item.created+'</td><td><abbr title="Clonar"><a href="#" onclick="preclonar('+item.id+');"><i class="icon-copy icon-2x"></i></a></abbr> <abbr title="Borrar"><a href="#" onclick="borrarsubformulario('+item.id+');"><i class="icon-trash icon-2x"></i></a></abbr></td></tr>');
+								$('#tabla2body').append('<tr><td value="'+item.name+'"><a href="cloudinator.php?id='+item.id+'">'+item.name+'</a></td><td value="'+item.created+'">'+item.created+'</td><td><abbr title="Clonar"><a href="#" onclick="preclonar('+item.id+');"><i class="icon-copy icon-2x"></i></a></abbr> <abbr title="Borrar"><a href="#" onclick="borrarsubformulario('+item.id+');"><i class="icon-trash icon-2x"></i></a></abbr></td></tr>');
 							}
 						}
 					});
@@ -287,9 +329,9 @@
 						if(item.deleted == 0){
 							if(item.visible == 0){
 								//$('#formlist').append('<option value="'+item.id+'">'+item.name+'</option>');
-								$('#tablabody').append('<tr><td value="'+item.name+'"><a href="editor.html?id='+item.id+'">'+item.name+'</a></td><td value="'+item.created+'">'+item.created+'</td><td><abbr title="Cambiar Nombre"><a href="#" onclick="cambiarNombreForm('+item.id+');"><i class="icon-edit icon-2x"></i></a></abbr> <abbr title="Mostrar"><a href="#" onclick="mostrarFormulario('+item.id+');"><i class="icon-eye-open icon-2x"></i></a></abbr> <abbr title="Borrar"><a href="#" onclick="borrarformulario('+item.id+');"><i class="icon-trash icon-2x"></i></a></abbr></td></tr>');
+								$('#tablabody').append('<tr><td value="'+item.name+'"><a href="editor.php?id='+item.id+'">'+item.name+'</a></td><td value="'+item.created+'">'+item.created+'</td><td><abbr title="Cambiar Nombre"><a href="#" onclick="cambiarNombreForm('+item.id+');"><i class="icon-edit icon-2x"></i></a></abbr> <abbr title="Mostrar"><a href="#" onclick="mostrarFormulario('+item.id+');"><i class="icon-eye-open icon-2x"></i></a></abbr> <abbr title="Borrar"><a href="#" onclick="borrarformulario('+item.id+');"><i class="icon-trash icon-2x"></i></a></abbr></td></tr>');
 							}else{
-								$('#tabla2body').append('<tr><td value="'+item.name+'"><a href="editor.html?id='+item.id+'">'+item.name+'</a></td><td value="'+item.created+'">'+item.created+'</td><td><abbr title="Cambiar Nombre"><a href="#" onclick="cambiarNombreForm('+item.id+');"><i class="icon-edit icon-2x"></i></a></abbr> <abbr title="Ocultar"><a href="#" onclick="ocultarFormulario('+item.id+');"><i class="icon-eye-close icon-2x"></i></a></abbr> <abbr title="Borrar"><a href="#" onclick="borrarformulario('+item.id+');"><i class="icon-trash icon-2x"></i></a></abbr></td></tr>');
+								$('#tabla2body').append('<tr><td value="'+item.name+'"><a href="editor.php?id='+item.id+'">'+item.name+'</a></td><td value="'+item.created+'">'+item.created+'</td><td><abbr title="Cambiar Nombre"><a href="#" onclick="cambiarNombreForm('+item.id+');"><i class="icon-edit icon-2x"></i></a></abbr> <abbr title="Ocultar"><a href="#" onclick="ocultarFormulario('+item.id+');"><i class="icon-eye-close icon-2x"></i></a></abbr> <abbr title="Borrar"><a href="#" onclick="borrarformulario('+item.id+');"><i class="icon-trash icon-2x"></i></a></abbr></td></tr>');
 							}
 						}
 					});
@@ -409,32 +451,40 @@
 		});
 	}
 	function createNewForm(){ //Llama a un form para crear un Formulario [AJAX].
-		$.ajax({
-			url: 'ajax/ajaxMegaTrees.php',
-			dataType: 'json',
-			type: 'POST',
-			data: {
-				name: $('#textNameForm').val(),
-				action : "add"
-					},
-			timeout: 2500,
-			beforeSend: function(){$('.loading').fadeIn();},
-			success: function(data){
-				if(data.result){
-					addNotice("success", "Nuevo Formulario creado exitosamente");
-					loadMegaTrees();
-					$('.loading').fadeOut();
-				}else{
-					$('#loadingGif').fadeOut();
-					addNotice("warning", "Nombre ocupado");
-					$('#newFormName').slideDown();
+		var nameForm = $('#textNameForm').val();
+		if(validateText( nameForm )){
+			$.ajax({
+				url: 'ajax/ajaxMegaTrees.php',
+				dataType: 'json',
+				type: 'POST',
+				data: {
+					name: $('#textNameForm').val(),
+					action : "add"
+						},
+				timeout: 2500,
+				beforeSend: function(){$('.loading').fadeIn();},
+				success: function(data){
+					if(data.result){
+						addNotice("success", "Nuevo Formulario creado exitosamente");
+						loadMegaTrees();
+						$('.loading').fadeOut();
+					}else{
+						$('#loadingGif').fadeOut();
+						addNotice("warning", "Nombre ocupado");
+						$('#newFormName').slideDown();
+					}
 				}
-			}
-		}).fail(function(data) {
-			addNotice("error", "Error al crear el Formulario");
-			console.log("error en createNewForm", data);
-			$('.loading').fadeOut();
-		});
+			}).fail(function(data) {
+				addNotice("error", "Error al crear el Formulario");
+				console.log("error en createNewForm", data);
+				$('.loading').fadeOut();
+			});
+			$('#newFormName').slideUp();
+		}else{
+			alert("Carácteres Invalidos");
+			$('#newFormName').slideDown();
+			$('#textNameForm').focus();
+		}
 	}
 	function confirmdelete(){ //Llama a deleteform() en caso de que el usuario acepte, de lo contrario retorna false.
 		if(confirm("¿Está Seguro?")){
@@ -456,7 +506,7 @@
 			beforeSend: function(){$('.loading').fadeIn();},
 			success: function(data){
 				if(data.result){
-					window.location = "editor.html";
+					window.location = "editor.php";
 					//TODO: En caso que se ocupe otro metodo que no sea "window.location" es probable que se usen las sig lineas:
 					//loadMegaTrees(); //actualizar la lista de Formularios
 					//addNotice("success", "Se ha borrado correctamente el Formulario"); //no tiene sentido porque con el window.location lo elimina automaticamente
@@ -797,7 +847,7 @@
 		});
 		$("#textNameForm").keypress(function(event) {
 			if(event.which == 13){
-				$('#newFormName').slideUp();
+				
 				createNewForm();
 			}
 		});
@@ -821,7 +871,7 @@
 			$('#newTreeName').slideDown();
 			$('#textName').focus();
 			//abrir cuadro de dialogo para elegir nombre
-			//hacer llamada por ajax para generar el nuevo arbol en la DB y rescatar la id, para despues ir a cloudinator.html
+			//hacer llamada por ajax para generar el nuevo arbol en la DB y rescatar la id, para despues ir a cloudinator.php
 		});
 		$('#buttonCancel').on('click', function(){
 			$('#newTreeName').slideUp();

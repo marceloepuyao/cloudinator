@@ -1,7 +1,7 @@
 <?php
 $dicc = array(
 	'test' => 'teste',
-	'logout' => 'Sair',
+	'logout' => 'Logout',
 	'users' => 'Usuários',
 	'close' => 'Fechar',
 	'back' => 'Atrás',
@@ -32,6 +32,7 @@ $dicc = array(
 	'namepassinvalid' => 'Nome de usuário ou senha incorreta',
 	'accept' => 'Aceitar',
 
+	'userslist' => 'Lista de Usuários',
 	'addnewcompany'=>'Adicionar uma nova empresa',
 	'namecompany'=> "Nome da Empresa",
 	'industry'=> 'Indústria',
@@ -83,6 +84,9 @@ $dicc = array(
 	'deleteanswers' => 'Excluir respostas',
 	'clonesubform' => 'Clone',
 	'never' => 'Nunca',
-	'reports' => 'Relatório'
+	'reports' => 'Relatório',
+
+	'editor' => 'Editar Formulários',
+	'options' => 'Opções'
 	);
 ?>

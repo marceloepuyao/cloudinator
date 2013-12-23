@@ -8,12 +8,11 @@ $json = new Services_JSON();
 $action = $_POST['action'];
 if($action == 'insert'){
 	try {
-		//TODO: evitar sql injection "escapando" los string
-		$email = $_POST["email"];
-		$name = $_POST["nombres"];
-		$lastname = $_POST["apellidos"];
+		$email = mysql_real_escape_string($_POST["email"]);
+		$name = mysql_real_escape_string($_POST["nombres"]);
+		$lastname = mysql_real_escape_string($_POST["apellidos"]);
 		$password = crypt($_POST["password"]);		
-		$lang = $_POST["idioma"];
+		$lang = mysql_real_escape_string($_POST["idioma"]);
 		$superuser = (int)$_POST["superusuario"];
 		
 		
@@ -79,9 +78,9 @@ if($action == 'insert'){
 		
 		//TODO: evitar sql injection "escapando" los string
 		$editto = (int)$_POST["editto"];
-		$email = $_POST["email"];
-		$name = $_POST["nombres"];
-		$lastname = $_POST["apellidos"];
+		$email = mysql_real_escape_string($_POST["email"]);
+		$name = mysql_real_escape_string($_POST["nombres"]);
+		$lastname = mysql_real_escape_string($_POST["apellidos"]);
 		if($_POST["password"] == "nochange"){
 			$password = 0;
 		}else{
@@ -89,7 +88,7 @@ if($action == 'insert'){
 		}
 		
 		
-		$lang = $_POST["idioma"];
+		$lang = mysql_real_escape_string($_POST["idioma"]);
 		$superuser = (int)$_POST["superusuario"];
 		if($password){
 			$query = "UPDATE  `users` SET  `email` =  '$email', `name` =  '$name', `lastname` =  '$lastname',`password` =  '$password', `superuser` =  '$superuser', `lang` =  '$lang',`modified` =  '".date("Y-m-d H:i:s")."'

@@ -6,8 +6,10 @@ $json = new Services_JSON();
 
 if(isset($_POST['type'])) { //DEPRICATED: por favor usar ajaxMegaTrees.php, action="add", name="<newname>"
 	try {
+		$name = mysql_real_escape_string($_POST['name']);
+		
 		DBQuery("INSERT INTO `megatrees` (`id`, `name`, `chain`, `deleted`, `created`, `modified` ) VALUES 
-			(NULL, '$_POST[name]', NULL, 0, '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."' );
+			(NULL, '$name', NULL, 0, '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."' );
 			");
 
 		$data = array(
@@ -23,10 +25,12 @@ if(isset($_POST['type'])) { //DEPRICATED: por favor usar ajaxMegaTrees.php, acti
 		print($json->encode($data));
 	}
 }else if(isset($_POST['clonename'])) {
+	$name = mysql_real_escape_string($_POST['name']);
+	$to = (int)$_POST['to'];
 	//primero comprobamos si existe un subform con el mismo nombre en el form
 	$idclone = $_POST['clonename'];
 	
-	$check = DBQuery("SELECT * FROM trees WHERE name = '$_POST[name]' AND megatree = $_POST[to] AND deleted = 0");
+	$check = DBQuery("SELECT * FROM trees WHERE name = '$name' AND megatree = $to AND deleted = 0");
 	if($check->num_rows > 0){
 		$data = array(
 			'result' => false
@@ -41,7 +45,7 @@ if(isset($_POST['type'])) { //DEPRICATED: por favor usar ajaxMegaTrees.php, acti
 					(NULL, '$_POST[name]', $_POST[to] ,0,'".date("Y-m-d H:i:s")."');
 					");
 			
-			$sqlgettree = "SELECT id FROM trees WHERE name = '$_POST[name]'";
+			$sqlgettree = "SELECT id FROM trees WHERE name = '$name'";
 			$data4 = DBQuery($sqlgettree);
 			$aux4 = $data4->fetch_assoc();
 			$idnew = $aux4['id'];
@@ -103,8 +107,10 @@ if(isset($_POST['type'])) { //DEPRICATED: por favor usar ajaxMegaTrees.php, acti
 	}
 }else if(isset($_POST['name'])) {
 	try {
+		$name = mysql_real_escape_string($_POST['name']);
+		$megatree = (int)$_POST['megatree'];
 		//primero comprobamos si existe un subform con el mismo nombre en el form
-		$check = DBQuery("SELECT * FROM trees WHERE name = '$_POST[name]' AND megatree = $_POST[megatree] AND deleted = 1");
+		$check = DBQuery("SELECT * FROM trees WHERE name = '$name' AND megatree = $megatree AND deleted = 1");
 		if($check->num_rows > 0){
 			$data = array(
 				'result' => false
@@ -112,7 +118,7 @@ if(isset($_POST['type'])) { //DEPRICATED: por favor usar ajaxMegaTrees.php, acti
 			print($json->encode($data));
 		}else{
 			DBQuery("INSERT INTO `trees` (`id`, `name`, `megatree`,`deleted`, `created`) VALUES 
-				(NULL, '$_POST[name]',$_POST[megatree] ,0, '".date("Y-m-d H:i:s")."');
+				(NULL, '$name',$megatree ,0, '".date("Y-m-d H:i:s")."');
 				");
 			$data = array(
 				'result' => true
@@ -127,8 +133,10 @@ if(isset($_POST['type'])) { //DEPRICATED: por favor usar ajaxMegaTrees.php, acti
 		print($json->encode($data));
 	}
 }else if(isset($_POST['action']) && $_POST['action'] == "deleteTree") {
+	
+	$tree = (int)$_POST['tree'];
 	try {
-		DBQuery("UPDATE trees SET deleted = 1 WHERE id = $_POST[tree]");
+		DBQuery("UPDATE trees SET deleted = 1 WHERE id = $tree");
 		$data = array(
 			'result' => true
 		);
@@ -142,7 +150,8 @@ if(isset($_POST['type'])) { //DEPRICATED: por favor usar ajaxMegaTrees.php, acti
 	}
 }else if(isset($_POST['action']) && $_POST['action'] == "release") {
 	try {
-		DBQuery("UPDATE trees SET released = 1 WHERE id = $_POST[id]");
+		$id = (int)$_POST['id'];
+		DBQuery("UPDATE trees SET released = 1 WHERE id = $id");
 		$data = array(
 			'result' => true
 		);
@@ -155,7 +164,8 @@ if(isset($_POST['type'])) { //DEPRICATED: por favor usar ajaxMegaTrees.php, acti
 	print($json->encode($data));
 }else if(isset($_POST['action']) && $_POST['action'] == "checkReleasedAndDeleted") {
 	try {
-		$response = DBQuery("SELECT * FROM trees WHERE id = $_POST[id]");
+		$id = (int)$_POST['id'];
+		$response = DBQuery("SELECT * FROM trees WHERE id = $id");
 		$aux = $response->fetch_assoc();
 		$deleted = $aux['deleted'];
 		$released = $aux['released'];
@@ -173,14 +183,17 @@ if(isset($_POST['type'])) { //DEPRICATED: por favor usar ajaxMegaTrees.php, acti
 	print($json->encode($data));
 }else if(isset($_POST['nuevonombre'])) {
 	try {
-		$response = DBQuery("SELECT * FROM trees WHERE name = '$_POST[nuevonombre]' AND megatree = (SELECT megatree FROM trees WHERE id = $_POST[tree])");
+		$nuevonombre = mysql_real_escape_string($_POST['nuevonombre']);
+		$tree = (int)$_POST['tree'];
+		
+		$response = DBQuery("SELECT * FROM trees WHERE name = '$nuevonombre' AND megatree = (SELECT megatree FROM trees WHERE id = $tree)");
 		if($response->num_rows > 0){
 			$data = array(
 				'result' => false,
 				'exception' => 'NombreOcupado'
 			);
 		}else{
-			DBQuery("UPDATE trees SET name = '$_POST[nuevonombre]' WHERE id = $_POST[tree]");
+			DBQuery("UPDATE trees SET name = '$nuevonombre' WHERE id = $tree");
 			$data = array(
 				'result' => true
 			);

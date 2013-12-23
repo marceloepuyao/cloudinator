@@ -7,7 +7,7 @@
 <?php
 require_once('db.php');
 
-echo '<a href="../editor.html">Volver</a>';
+echo '<a href="../editor.php">Volver</a>';
 echo '<center><br><h2>Actualización de la Base de Datos</h2><br>';
 
 //si existe la tabla cloudinator saco la version de ahí si no la setteo 
@@ -281,6 +281,47 @@ if ($version < 2013112500) {
 	}
 	echo '</hr>';
 }
+if ($version < 2013121800) {
+	echo '<hr>';
+	echo '<h4>Actualización N° 2013-12-18-00</h4>';
+	try {
+		//cambio nombre columna
+		DBQuery("ALTER TABLE empresas CHANGE infolevantamiento info char(50);");
+		//borro columna contactado y areacontacto
+		DBQuery("ALTER TABLE empresas DROP COLUMN contactado");
+		DBQuery("ALTER TABLE empresas DROP COLUMN areacontacto");
+		
+		//actualiazo la versión
+		DBQuery("UPDATE cloudinator_upgrades SET version = '2013121800' WHERE id = 1");
+
+		//mensaje:
+		echo 'Actualización nombres de columnas tabla empresas';
+		
+	} catch (Exception $e) {
+		echo "Error en actualización<br>$e<br>";
+	}
+	echo '</hr>';
+}
+
+if ($version < 2013121900) {
+	echo '<hr>';
+	echo '<h4>Actualización N° 2013-12-19-00</h4>';
+	try {
+		//acá escribo el script de actualización
+		DBQuery("ALTER TABLE empresas CHANGE info info VARCHAR(500);");
+		DBQuery("ALTER TABLE empresas CHANGE nombre nombre VARCHAR(500);");
+		//actualiazo la versión
+		DBQuery("UPDATE cloudinator_upgrades SET version = '2013121900' WHERE id = 1");
+
+		//mensaje:
+		echo 'Más capacidad de carácteres para columnas tabla empresas';
+		
+	} catch (Exception $e) {
+		echo "Error en actualización<br>$e<br>";
+	}
+	echo '</hr>';
+}
+
 /*
 //EJEMPLO: (RECUERDE CAMBIAR "AAAAMMDDNN" POR EL NUMERO DE ACTUALIZACION A = Año, M = Mes, D = Dia, N = Numero)
 
@@ -307,6 +348,6 @@ if ($version < AAAAMMDDNN) {
 echo '<hr>';
 echo "<h3>Fin de la actualización</h3>";
 echo '</hr></center>';
-echo '<br><br><a href="../editor.html">Volver</a>';
+echo '<br><br><a href="../editor.php">Volver</a>';
 ?>
 </body>

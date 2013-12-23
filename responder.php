@@ -4,8 +4,14 @@ require_once('lib.php');
 session_start();
 
 //checkiamos si las sessions están settiadas
-if(checkSession($_SESSION['ultimoacceso'], $_SESSION['usuario'], $_SESSION['empresa'], $_SESSION['idioma'])){
-	$_SESSION['ultimoacceso'] = time();
+if(isset($_SESSION['ultimoacceso']) && isset($_SESSION['usuario']) && isset($_SESSION['idioma'])){
+	if(checkSession($_SESSION['ultimoacceso'], $_SESSION['usuario'], $_SESSION['idioma'])){
+		$_SESSION['ultimoacceso'] = time();
+	}else{
+		header( 'Location: index.php' );
+	}
+}else{
+	header( 'Location: index.php' );
 }
 
 //obetenemos el lenguaje de la página.
@@ -86,21 +92,18 @@ if($pregunta == null){
 
 <div data-role="page" id="pregunta">
 	
-	<div data-theme="b" data-display="overlay" data-position="right" data-role="panel" id="mypanel">
-		<h2 id="usernamebutton"><?php echo $USER[0]['name']." ".$USER[0]['lastname'];?></h2>
-		<a href="#" id="cerrarsesion"><?php echo get_string("logout", $lang)?></a> <br>
-		<a href="#" id="usuarios"><?php echo get_string("config", $lang)?></a><br>
-		<a href="#header" data-rel="close"><?php echo get_string("close", $lang)?></a>
-    <!-- panel content goes here -->
-	</div><!-- /panel -->
+	<?php echo print_panel($USER,$lang);?>
 
 	<div data-role="header" data-theme="b">
-	    <a href="#" id="backbutton" data-emp="<?php echo $empresa['id']; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-icon="arrow-l"><?php echo get_string("back", $lang)?></a>
+	    <a href="#" class="backtoRecorrer" data-form= "<?php echo $subform['megatree'];?>" data-emp="<?php echo $empresa['id']; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-icon="arrow-l"><?php echo get_string("back", $lang)?></a>
 	    <h1> <?php echo $empresa['nombre']?></h1>
-	    <a href="#mypanel" data-icon="bars"><?php echo get_string("config", $lang)?></a>
+	    <a href="#mypanel" data-icon="bars"><?php echo get_string("options", $lang)?></a>
 	</div>
 	
 	<div data-role="content">
+	
+		<?php echo print_navbar(0, $empresa['id'], $idlevantamiento, $subform['megatree']);?>
+		
 		<?php if ($pregunta != null){ ?>
 		
 		<h1><?php echo $pregunta['name']; ?></h1>

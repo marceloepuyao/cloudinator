@@ -1,7 +1,7 @@
 <?php
 define('APPLICATION_PATH', realpath(dirname(__FILE__)));
 require_once('DB/db.php');
-
+//TODO: INTERNAL OR DIE
 /**
  * Modo de uso:
  * <?php echo get_string($key, $lang);?>
@@ -65,15 +65,23 @@ function getQuestionAnswers($idsubform, $idlevantamiento){
 	$registrototal = DBQueryReturnArray("SELECT * FROM registropreguntas WHERE levantamientoid = $idlevantamiento AND subformid = $idsubform");
 	$preguntascontestadas = count($registrototal);
 	$minimopreguntas = calcularMinimoPreguntas($idsubform);
-	$completitud = ($preguntascontestadas / $minimopreguntas )*100;
-	if($completitud > 100){
-		$completitud = 100;
-	}
+	$maximopreguntas = calcularMaximoPreguntas($idsubform);
 	
+	//TODO: completitud máxima no se está ocupando y está mal calculada
+	$completitudminima = round(($preguntascontestadas / $minimopreguntas )*100, 1);
+	if($completitudminima > 100){
+		$completitudminima = 100;
+	}
+	$completitudmaxima = round(($preguntascontestadas/$maximopreguntas)*100, 1);
+	
+	if($completitudmaxima == $completitudminima ){
+		$completitud = $completitudminima."%";
+	}else{
+		$completitud = $completitudmaxima."% - ".$completitudminima."%";
+	}
 	$lang = $_SESSION['idioma'];
 	
 	if($registro != null){
-		
 		//ver en el registro la ultima pregunta respondida, ver su respuesta y sacar la pregunta que viene:
 		$idrespuesta = $registro[0]["respuestaid"];
 		
@@ -159,6 +167,13 @@ function calcularMinimoPreguntas($idsubform){
 	}
 	
 	return "error";
+}
+
+function calcularMaximoPreguntas($idsubform){
+	$preguntas = DBQueryReturnArray("SELECT * FROM nodos WHERE tree = $idsubform AND type='condition'");
+	
+	return count($preguntas);
+	
 }
 
 function getQuestionById($idsubform, $idlevantamiento, $registroid){
@@ -282,27 +297,21 @@ function getContentByNodeId($nodeID){
 	
 }
 
-function checkSession($lastaccess, $usuario, $empresa,$idioma){
+function checkSession($lastaccess, $usuario,$idioma){
 	
-	$url = "index.php?lang=".getLang();
+	//si esta vacio el usario devolver false
 	if($usuario == ""){
-		@header('Location: '.$url);
 		return false;
 	}
-	
-	if($empresa == ""){
-		@header('Location: '.$url);
-		return false;
-	}
-	
-	
+	//si el tiempo del último acceso es mayor que el tiempo de ahora en 5 minunos devuelve false
 	$time = time(); 
 	if($lastaccess){
+		//Aquí es donde se settea el tiempo de las session, ahora está en 5 min
 		if(($time - $lastaccess)  < 5*60){
 			return true;
 		}else{
+			//se eliminan las cookies y se devuelve false
 			$_SESSION = array();
-			@header('Location: '.$url);
 			return false;
 		}
 		
@@ -358,3 +367,58 @@ function getCategories(){
 						'otras');	
 	return $categories;
 }
+
+function print_panel($USER, $lang, $edit= 0, $modeedittext = null){
+	
+	if($edit){
+		$edithtml = "<a href='#' class='edicion'>$modeedittext</a><br>";
+	}else{
+		$edithtml  = "";
+	}
+	if($USER[0]['superuser']){
+		$superuserhtml = "	<a href='#' class='editor'>".get_string('editor', $lang)."</a><br>
+							<a href='#' class='gestionempresas'>Gestión Empresas</a><br>
+			";
+	}else{
+		$superuserhtml = "";
+	}
+	
+	$panel=  "<div data-theme='b' data-display='overlay' data-position='right' data-role='panel' id='mypanel'>
+		<h2>".$USER[0]['name']." ".$USER[0]['lastname']."</h2>
+		
+		".$edithtml.$superuserhtml."
+		<a href='#' class='usuarios'>Gestión Usuarios</a><br>
+		<a href='#' class='cerrarsesion'> ".get_string('logout', $lang)."</a> <br>
+		<a href='#header' data-rel='close'>".get_string("close", $lang)."</a>
+	     </div><!-- /panel -->";
+	
+	return $panel;
+}
+function print_navbar($toindex, $idemp, $idlevantamiento, $idform ){
+	$navbar = '<a href="#" class="backtoIndex" data-icon="arrow-l">Inicio</a>';
+	
+	if($toindex){
+		$navbar .= ' >Lista de Levantamientos';
+		return $navbar;
+	}
+	$navbar .= ' > <a href="#" class="backtoLevantamiento" data-idemp="'.$idemp.'" data-icon="arrow-l">Lista de Levantamientos</a>';
+	
+	if($idlevantamiento == 0){
+		$navbar .= ' > Levantamiento';
+		return $navbar;
+	}
+	$navbar .= ' > <a href="#" class="backtoRecorrer" data-idlev="'.$idlevantamiento.'" data-idform="'.$idform.'" data-icon="arrow-l">Levantamiento</a>';
+	
+	$navbar .= ' > Responder Subformulario';
+	return $navbar;
+	
+	
+}
+
+function print_navbar_config($text){
+	$navbar = '<a href="#" class="backtoIndex" data-icon="arrow-l">Inicio</a> > '.$text;
+	return $navbar;
+}
+
+	
+	

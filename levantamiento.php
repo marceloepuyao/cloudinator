@@ -4,8 +4,14 @@ require_once('lib.php');
 session_start();
 
 //checkiamos si las sessions están settiadas
-if(checkSession($_SESSION['ultimoacceso'], $_SESSION['usuario'], $_SESSION['empresa'], $_SESSION['idioma'])){
-	$_SESSION['ultimoacceso'] = time();
+if(isset($_SESSION['ultimoacceso']) && isset($_SESSION['usuario']) && isset($_SESSION['idioma'])){
+	if(checkSession($_SESSION['ultimoacceso'], $_SESSION['usuario'], $_SESSION['idioma'])){
+		$_SESSION['ultimoacceso'] = time();
+	}else{
+		header( 'Location: index.php' );
+	}
+}else{
+	header( 'Location: index.php' );
 }
 
 //obetenemos el lenguaje de la página.
@@ -28,7 +34,7 @@ if(count($empresa) == 0){
 	header( 'Location: notfound.html' );
 }
 $nombre = $empresa[0]['nombre'];
-$info = $empresa[0]['infolevantamiento'];
+$info = $empresa[0]['info'];
 
 
 //obtenemos los levantamientos de la empresa
@@ -69,26 +75,23 @@ $formularios = getAllFormularios();
 	
 <div data-role="page" id="levantamiento">
 
-	<div data-theme="b" data-display="overlay" data-position="right" data-role="panel" id="mypanel">
-		<h2><?php echo $USER[0]['name']." ".$USER[0]['lastname'];?></h2>
-		<a href="#" id="cerrarsesion"><?php echo get_string("logout", $lang)?></a> <br>
-		<a href="#" id="usuarios"><?php echo get_string("config", $lang)?></a><br>
-		<a href="#header" data-rel="close"><?php echo get_string("close", $lang)?></a>
-    <!-- panel content goes here -->
-	</div><!-- /panel -->
+	<?php echo print_panel($USER,$lang);?>
 
 	<div data-role="header" class="header" data-position="fixed" role="banner" data-theme="b">
-	    <a href="#" id="backbutton" data-icon="arrow-l"><?php echo get_string("back", $lang)?></a>
-	    <h1 id ="empresanombre"><?php echo $nombre; ?>	</h1>
-	    <a href="#mypanel" data-icon="bars"><?php echo get_string("config", $lang)?></a>
+	    <a href="#" data-rel="back" data-icon="arrow-l"><?php echo get_string("back", $lang)?></a>
+	    <h1><?php echo $nombre; ?>	</h1>
+	    <a href="#mypanel" data-icon="bars"><?php echo get_string("options", $lang)?></a>
 	</div>
 	
+	<div data-role="content">
 	
-	<div class="container">
+		<?php echo print_navbar(1, 0, 0, 0);?>
+		<?php if($info != ""){?>
 		<h4><?php echo get_string("infocompany", $lang); ?></h4>
 
 		<p id="infoempresa" > <?php echo $info; ?></p>
 		<br>
+		<?php }?>
 		<?php if($levantamientos){?>
 		
 		<h4 ><?php echo get_string("recordlevantamientos", $lang)?></h4>
@@ -126,26 +129,20 @@ $formularios = getAllFormularios();
 	</div>
 </div>
 <div id="new" data-role="page" >
-
-
-
 	<div data-role="header" class="header" data-position="fixed" role="banner" data-theme="b">
-	    <a href="#" id="backbutton2" data-icon="arrow-l"><?php echo get_string("back", $lang)?></a>
+	    <a href="#" data-rel="back" data-icon="arrow-l"><?php echo get_string("back", $lang)?></a>
 	    <h1 id ="empresanombre2"><?php echo $nombre; ?>	</h1>
-	    
 	</div>
-
-
 	<div data-role="content" class="container"> 
 		<h2><?php echo get_string("newlevantamiento", $lang)?></h2>
 		    <ul data-role="listview" data-inset="true">
 		        <li data-role="fieldcontain">
 		            <label for="titulo-levantamiento"><?php echo get_string("titlevisit", $lang)?>:</label>
-		            <input name="titulo-levantamiento" maxlength="50" id="titulo-levantamiento" value="" data-clear-btn="true" type="text">
+		            <input name="titulo-levantamiento" maxlength="75" id="titulo-levantamiento" value="" data-clear-btn="true" type="text">
 		        </li>
 		        <li data-role="fieldcontain">
 		            <label for="info-levantamiento"><?php echo get_string("info", $lang)?>:</label>
- 					<textarea cols="40" rows="8" maxlength="25" name="info-levantamiento" id="info-levantamiento"></textarea>		        
+ 					<textarea cols="40" rows="8" maxlength="500" name="info-levantamiento" id="info-levantamiento"></textarea>		        
  				</li>
 
 		        <li data-role="fieldcontain">
@@ -161,7 +158,7 @@ $formularios = getAllFormularios();
 		        
 		        <li data-role="fieldcontain">
 		            <label for="area-contacto"><?php echo get_string("contactedarea", $lang)?>:</label>
-		            <input name="area-contacto" maxlength="25" id="area-contacto" value="" data-clear-btn="true" type="text">
+		            <input name="area-contacto" maxlength="75" id="area-contacto" value="" data-clear-btn="true" type="text">
 		        </li>
 		        <li data-role="fieldcontain">
 		            <label for="formularios"><?php echo get_string("forms", $lang)?>:</label>

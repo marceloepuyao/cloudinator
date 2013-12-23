@@ -3,6 +3,25 @@ function getUrlParameter(name) {
         (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
     );
 }
+function login(){
+	 var usu = $("#text-username").val();
+     var pass = $("#passwordcloud").val();
+   
+     $.post("server/login.php",{
+    	 action: "login",
+    	 usu : usu, 
+    	 pass : pass
+    	 },function(respuesta){
+     	
+     	var obj = jQuery.parseJSON(respuesta);
+         if (obj.result == true) {
+         		window.location.href = "index.php?lang="+obj.lang;
+         }
+         else{
+             $.mobile.changePage('#pageError', 'pop', true, true);
+         }
+     });
+}
 
 function guardarlevantamiento(titulo, info, contactado, area, forms, idlev){
 	if(idlev){
@@ -38,6 +57,45 @@ function guardarlevantamiento(titulo, info, contactado, area, forms, idlev){
 		}
 	);
 }
+function validateText( str ) {
+	var  vsExprReg = /^([a-zA-Z0-9áéíóúÁÉÍÓÚ_\sc]+)$/;
+	var test = str.replace(/ /g, "");
+	console.log("test",test);
+	if(test != "" && vsExprReg.test(str)){
+		return true;
+	}else{
+		return false;
+	}
+	
+}
+function validateLargeText( str ) {
+	var  vsExprReg = /^([a-zA-Z0-9áéíóúÁÉÍÓÚ,.:;\sc]+)$/;
+	 return vsExprReg.test(str);
+}
+
+function validateEmail(email){
+	
+	var  vsExprReg = /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/;
+	if(vsExprReg.test(email) || email == "admin"){
+		return true;
+	}else{
+		return false;
+	}
+	
+}
+
+//NO SE ESTÁ USANDO
+function validatePass(pass) {
+    var RegExPattern = /(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{8,10})$/;
+    var errorMessage = 'Password Incorrecta.';
+    if ((pass.match(RegExPattern)) && (pass!='')) {
+        return true;
+    } else {
+        alert(errorMessage);
+        return false;
+    } 
+}
+
 
 function deleteLevantamiento(idlev){
 	$.post("ajax/ajaxlevantamientos.php",{ 
@@ -50,6 +108,41 @@ function deleteLevantamiento(idlev){
 				window.location.href = "";
 			}else{
 				console.log("error en eliminar levantamiento", response.exception);
+			}
+		}
+	);
+}
+function crearEmpresa(name,industry,textarea, empresaid){
+	var action = "edit";
+	if(empresaid==0){
+		action = "insert";
+	}
+	console.log("action ",action);
+	
+	$.post("server/crearempresa.php",{ 
+		action: action,
+		empresaid : empresaid,
+		name : name, 
+		industry : industry,   
+		textarea: textarea
+		},
+		function(respuesta){
+			console.log(respuesta);
+			var resp = jQuery.parseJSON(respuesta);
+			
+			if(resp.result){
+				if(empresaid==0){
+					window.location.href = "levantamiento.php?emp="+resp.id + "&lang=" + getUrlParameter('lang');
+				}else{
+					window.location.href = "empresas.php?lang=" + getUrlParameter('lang');
+				}
+				
+			}else{
+				if(resp.exception == "existing"){
+					alert("Nombre ocupado");
+				}else{
+					alert("No se ha podido crear la empresa");
+				}
 			}
 		}
 	);
@@ -96,27 +189,100 @@ function deleteuser(iduser){
 				if(response.sameperson){
 					alert("No puedes borrarte a ti mismo");
 				}else{
-					console.log("error en eliminar levantamiento", response.exception);
+					console.log("error en eliminar usuario", response.exception);
 				}
 			}	
 		});
 }
 
+function deletecompany(idcompany){
+	$.post("server/crearempresa.php",{ 
+		action: "delete",
+		idcompany : idcompany
+		},function(respuesta){			
+			var response = jQuery.parseJSON(respuesta);
+			if(response.result){
+				window.location.href = "empresas.php?lang="+getUrlParameter("lang");
+			}else{
+				console.log("error en eliminar empresa", response.exception);
+			}	
+		});
+}
+
 $(document).ready(function(){
+    $(window).resize(function() {
+		  if($(window).width() < 800 ){
+			  $("#content").css('padding-right', '5%');
+			  $("#content").css('padding-left', '5%');
+			  //alert($(window).width());
+		  }else{
+			  $("#content").css('padding-right', '25%');
+			  $("#content").css('padding-left', '25%');
+		  }
 	
-	$("#backbutton").on('click', function(){
+	});
+    $("#btnLogin").click(function(){
+    	login();
+    });
+    $('#text-username').bind('keypress', function(e) {
+    	var code = (e.keyCode ? e.keyCode : e.which);
+    	 if(code == 13) { //Enter keycode
+    		 login();
+    	 }
+    	
+    });
+    $('#passwordcloud').bind('keypress', function(e) {
+    	var code = (e.keyCode ? e.keyCode : e.which);
+    	 if(code == 13) { //Enter keycode
+    		 login();
+    	 }
+    	
+    });
+    
+    $("#es").click(function(){
+    	window.location.href = "index.php?lang=es";
+    });
+    $("#en").click(function(){
+    	window.location.href = "index.php?lang=en";
+    });
+    $("#pt").click(function(){
+    	window.location.href = "index.php?lang=pt";
+    });
+    $("#btnEmpresa").click(function(){
+    	var empresa = $("#select-choice-1").val();
+    	
+    	if(empresa == "new"){
+    		window.location.href = "nuevaempresa.php?lang="+getUrlParameter('lang');
+    	}
+    	$.post("server/login.php",{
+       	 action: "empresa",
+       	 empresa : empresa
+       	 },function(respuesta){
+       		 var resp = jQuery.parseJSON(respuesta);
+			if(resp.result){
+				window.location.href = "levantamiento.php?emp="+empresa+ "&lang=" + getUrlParameter('lang');
+			}else{
+				alert("Error al seleccionar empresa");
+			}
+       	 });
+    	
+    });
+	
+
+	$(".backtoIndex").on('click', function(){
 		window.location.href = "index.php?lang=" + getUrlParameter("lang");
 	});
-
-	$("#backbutton2").on('click', function(){
-		window.location.href = "levantamiento.php?emp="+getUrlParameter("emp") + "&lang=" + getUrlParameter("lang");
+	$(".backtoLevantamiento").on('click', function(){
+		var emp = $(this).data('idemp');
+		window.location.href = "levantamiento.php?emp="+emp+"&lang=" + getUrlParameter("lang");
 	});
+
+ 
 	$(".ira").on('click', function(){
 		var idempresa = $(this).data('empresa');
 		var idlevantamiento = $(this).data('levantamiento');
 		window.location.href = "recorrer.php?emp="+idempresa+"&idlev="+idlevantamiento + "&lang=" + getUrlParameter("lang");
 	});
-	
 	
 	$(".delete").on('click', function(){
 		
@@ -138,10 +304,6 @@ $(document).ready(function(){
 		var lev = $(this).data('levantamiento');
 		
 		window.location.href = "responder.php?idsubform="+subform+"&idlev="+lev + "&lang=" + getUrlParameter("lang");
-		
-		
-
-
 	});
 	
 	$("#addlevantamiento").on('click', function(){
@@ -177,6 +339,10 @@ $(document).ready(function(){
 		window.location.href = "levantamiento.php?emp="+getUrlParameter('emp') + "&lang=" + getUrlParameter("lang");
 	});
 	
+	$(".editor").on('click', function(){
+		window.location.href = "editor.php";
+	});
+	
 	$(".edit").on('click', function(){
 		var idlevantamiento = $(this).data('id');
 		window.location.href = "editarlevantamiento.php?id="+idlevantamiento + "&emp=" + getUrlParameter("emp")+"&lang=" + getUrlParameter("lang");
@@ -192,7 +358,7 @@ $(document).ready(function(){
 		console.log("trigger");
 	});
 	
-	$("#cerrarsesion").on('click', function(){
+	$(".cerrarsesion").on('click', function(){
 		$.post("server/session.php",{ 
 			action: "deleteall"
 			},function(respuesta){
@@ -202,7 +368,7 @@ $(document).ready(function(){
 			});
 	});
 	
-	$("#usuarios").on('click', function(){
+	$(".usuarios").on('click', function(){
 
 		window.location.href = "usuarios.php?lang=" + getUrlParameter("lang");
 	});
@@ -218,17 +384,15 @@ $(document).ready(function(){
 		
 		var editto = $(this).data('editto');
 		
-		if(nombres && apellidos && email && password && idioma && repassword){
+		if(validateText(nombres) && validateText(apellidos) && validateEmail(email) && password != "" && validateText(idioma) && repassword != ""){
 			if(password == repassword){
-				console.log("new user", nombres,apellidos,email,password, idioma, superusuario);
-				
 				newuser(nombres,apellidos,email,password, idioma, superusuario, editto);
 			}else{
 				alert("Error en Contraseña");
 			}
 
 		}else{
-			alert("Faltan campos por llenar");
+			alert("Hay Carácteres Inválidos");
 		}
 	});
 	$(".deleteuser").on('click', function(){
@@ -244,7 +408,21 @@ $(document).ready(function(){
 		window.location.href = "usuarios.php?lang=" + getUrlParameter("lang") +"#newuser";
 	});
 	
-	$("#edicion").on('click', function(){
+	$(".deletecompany").on('click', function(){
+		var idcompany = $(this).data('idcompany');
+		if(!confirm("¿Está seguro que desea eliminar la empresa y todos los levantamientos asocioados? ")){
+			return false;
+		}else {
+			deletecompany(idcompany);
+	     }  
+			
+	});
+	$(".editcompany").on('click', function(){
+		var idcompany = $(this).data('idcompany');
+		window.location.href = "empresas.php?lang=" + getUrlParameter("lang") + "&emp="+idcompany;
+	});
+	
+	$(".edicion").on('click', function(){
 		
 		if(getUrlParameter("edit") == 1){
 			window.location.href = "recorrer.php?emp="+getUrlParameter("emp")+"&idlev="+getUrlParameter("idlev")+"&lang=" + getUrlParameter("lang");
@@ -252,10 +430,14 @@ $(document).ready(function(){
 			window.location.href = "recorrer.php?emp="+getUrlParameter("emp")+"&idlev="+getUrlParameter("idlev")+"&lang=" + getUrlParameter("lang") +"&edit=1";
 		}
 	});
+	$(".gestionempresas").on('click', function(){
+		window.location.href = "empresas.php?lang=" + getUrlParameter("lang");
+	});
 	
 	$(".deleteanswers").on('click', function(){
 		var idsubform = $(this).data('subform');
 		var idlev = $(this).data('levantamiento');
+		var idform = $(this).data('idform');
 		
 		$.post("ajax/ajaxresponder.php",{ 
 			idlev: idlev,
@@ -264,17 +446,48 @@ $(document).ready(function(){
 			},function(respuesta){
 				var resp = jQuery.parseJSON(respuesta);
 				if(resp.result){
-					console.log(respuesta);
+					window.location.href ="recorrer.php?idlev="+idlev+"&lang="+getUrlParameter("lang")+"&edit=1&idform="+idform;
 				}else{
 					alert("problemas con escribir en la base de datos");
 				}
 			});
-	
+	});
+	$("#btnNew").on('click', function(){
+		//se checkea si están todos los cambios llenos
+		var name = $("#new-name-empresa").val();
+        var industry = $("#industry").val();
+        var textarea = $("#textarea").val();
+		
+        
+        if(name != null && name != "" &&  industry != null && name != "" && textarea != null && textarea != ""){
+        	if(validateText(name) && validateText(industry) && validateLargeText(textarea)){
+        		crearEmpresa(name,industry,textarea, 0);
+        	}else{
+        		alert("Hay carácteres inválidos");
+        	}
+        }else{
+        	alert("Tienes que llenar todos los campos");
+        }
+		
 		
 	});
 	
-	
-	
-
-	
+	$("#editCompany").on('click', function(){
+		//se checkea si están todos los cambios llenos
+		var idcompany = $(this).data('idcompany');
+		var name = $("#nombreempresa").val();
+        var industry = $("#industry").val();
+        var textarea = $("#textarea").val();
+		
+        if(name != null && name != "" &&  industry != null && name != ""){
+        	if(validateText(name) &&  validateText(industry) &&  (validateLargeText(textarea) ||  textarea =="")){
+        		crearEmpresa(name,industry,textarea, idcompany);
+        	}else{
+        		alert("Hay carácteres inválidos");
+        	}
+        	
+        }else{
+        	alert("Tienes que llenar todos los campos");
+        }
+	});
 });

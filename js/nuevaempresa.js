@@ -6,6 +6,7 @@ function getUrlParameter(name) {
 function crearEmpresa(name,industry,textarea){
 	
 	$.post("server/crearempresa.php",{ 
+		action: 'insert',
 		name : name, 
 		industry : industry,   
 		textarea: textarea

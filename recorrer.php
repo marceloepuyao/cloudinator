@@ -3,8 +3,14 @@ require_once('DB/db.php');
 require_once('lib.php');
 session_start();
 //checkiamos si las sessions están settiadas
-if(checkSession($_SESSION['ultimoacceso'], $_SESSION['usuario'], $_SESSION['empresa'], $_SESSION['idioma'])){
-	$_SESSION['ultimoacceso'] = time();
+if(isset($_SESSION['ultimoacceso']) && isset($_SESSION['usuario']) && isset($_SESSION['idioma'])){
+	if(checkSession($_SESSION['ultimoacceso'], $_SESSION['usuario'], $_SESSION['idioma'])){
+		$_SESSION['ultimoacceso'] = time();
+	}else{
+		header( 'Location: index.php' );
+	}
+}else{
+	header( 'Location: index.php' );
 }
 
 //obetenemos el lenguaje de la página.
@@ -15,9 +21,7 @@ $USER = DBQueryReturnArray("SELECT * FROM users WHERE email = '$_SESSION[usuario
 
 
 //si no existen error
-if(isset($_GET['emp']) || isset($_GET['idlev'])){
-	//id de la empresa
-	$idempresa = (int)$_GET['emp'];
+if(isset($_GET['idlev'])){
 	//id del levantamiento
 	$idlevantamiento = (int)$_GET['idlev'];
 }else{
@@ -33,18 +37,21 @@ if(isset($_GET['edit'])){
 	}
 }
 
-//saco info de la empresa
-$queryempresa="SELECT * FROM empresas WHERE id = $idempresa";
-$empresa = DBQueryReturnArray($queryempresa);	
-if(count($empresa) == 0){
-	//header( 'Location: notfound.html' );
-}
-$nombre = $empresa[0]['nombre'];
+
 //saco info del levantamiento
 $levantamiento = getLevantamientobyId($idlevantamiento);
 if($levantamiento ==null){
 	header( 'Location: notfound.html' ) ;
 }
+
+//saco info de la empresa
+$idempresa = $levantamiento['empresaid'];
+$queryempresa="SELECT * FROM empresas WHERE id = $idempresa";
+$empresa = DBQueryReturnArray($queryempresa);	
+if(count($empresa) == 0){
+	header( 'Location: notfound.html' );
+}
+$nombre = $empresa[0]['nombre'];
 
 $levantamientoarray = json_decode($levantamiento['formsactivos']);
 $titulo = $levantamiento['titulo'];
@@ -75,48 +82,42 @@ $formularios = DBQueryReturnArray($queryformularios);
 			padding-left: 25%;
 		}
 </style>
-<title>Nuevo Levantamiento</title>
+<title>Formularios</title>
 </head>
 <body>
 
 <div id="recorrer" data-role="page" >
 
-
-	<div data-theme="b" data-display="overlay" data-position="right" data-role="panel" id="mypanel">
-		<h2 id="usernamebutton"><?php echo $USER[0]['name']." ".$USER[0]['lastname'];?></h2>
-		<a href="#" id="cerrarsesion"><?php echo get_string("logout", $lang)?></a> <br>
-		<a href="#" id="usuarios"><?php echo get_string("config", $lang)?></a><br>
-		
-		<a href="#" id="edicion"><?php echo $modeedittext;?></a><br>
-		
-		<a href="#header" data-rel="close"><?php echo get_string("close", $lang)?></a>
-	</div><!-- /panel -->
-
+	<?php echo print_panel($USER,$lang, 1, $modeedittext);?>
+	
 	<div data-role="header" data-theme="b">
-	    <a href="#" id="backbutton2" data-icon="arrow-l"><?php echo get_string("back", $lang)?></a>
+	    <a href="#" class ="backtoLevantamiento" data-idemp="<?php echo $empresa[0]['id'];?>" data-icon="arrow-l"><?php echo get_string("back", $lang)?></a>
 	    <h1 id ="empresanombre"><?php echo $nombre; ?>	</h1>
-	    <a href="#mypanel" data-icon="bars"><?php echo get_string("config", $lang)?></a>
+	    <a href="#mypanel" data-icon="bars"><?php echo get_string("options", $lang)?></a>
 	</div>
 	
-	
-	
 	<div data-role="content">
-		
+	<?php echo print_navbar(0, $empresa[0]['id'], 0, 0);?>
 	<!-- pop up dialogo -->
-	
-		
 		<h1><?php echo $titulo; ?></h1>
 		<p><?php echo $info; ?></p>
-		<div data-role="collapsible-set" data-theme="b" data-content-theme="d">
+		<div data-role="collapsible-set" data-theme="b" data-content-theme="d" >
 			<?php foreach($formularios as $key => $formulario) {
 
 				//get all the subform
 				$subformularios = getSubFormsbyFormId($formulario['id'], $levantamiento['created']);
 				$total = count($subformularios);
+				$datacollapsed = "";
+				if(isset($_GET['idform'])){
+					if($_GET['idform'] == $formulario['id']){
+						$datacollapsed = 'data-collapsed="false"';
+					}
+				}
+				
 			?>
-			<div data-role="collapsible">
+			<div data-role="collapsible" <?php echo $datacollapsed;?>>
 				<h2><?php echo $formulario['name'];?></h2> 
-				<ul data-role="listview" data-theme="d" data-divider-theme="d">
+				<ul data-role="listview" data-theme="d"  data-divider-theme="d">
 					<li data-role="list-divider"><?php echo get_string("subforms", $lang);?><span class="ui-li-count"><?php echo $total; ?></span></li>
 					<?php foreach($subformularios as $key2 => $subformulario) {
 							if(getSubForm($subformulario['id'])){
@@ -124,6 +125,7 @@ $formularios = DBQueryReturnArray($queryformularios);
 								extract($questionandanswers); //devuelve $pregunta, $respuestas $ultimavisita, $completitud
 								if($pregunta == null){
 									$pregunta = array("name"=>get_string('endreached', $lang));
+									$completitud = "100%";
 								}
 								$class = "goto";
 								$class2 = "goto";
@@ -140,19 +142,19 @@ $formularios = DBQueryReturnArray($queryformularios);
 							
 						?>
 						<li class="<?php echo $class; ?>" data-subform="<?php echo $subformulario['id']; ?>" data-levantamiento="<?php echo $idlevantamiento; ?>">
-							<a href="#popupMenu" data-rel="popup"  data-inline="true" data-transition="slideup" data-icon="gear" data-theme="e">
+							<a href="#popupMenu<?php echo $subformulario['id'];?>" data-rel="popup"  data-inline="true" data-transition="slideup" data-icon="gear" data-theme="e">
 					    		<h3><?php echo $subformulario['name']; ?> </h3>
 				                <p><strong><?php echo get_string("lastvisit", $lang)?>: <?php echo $ultimavisita; ?></strong></p>
 				                <p><?php echo get_string("nextquestion", $lang)?>: <?php echo $pregunta['name']; ?></p>
-				                <p class="ui-li-aside"><strong><?php echo get_string("completeness", $lang)?>: <?php echo $completitud; ?>%</strong></p>
+				                <p class="ui-li-aside"><strong><?php echo get_string("completeness", $lang)?>: <?php echo $completitud; ?></strong></p>
 			            	</a>
 		            	</li>
 		            	<?php if($modeedit == 1){?>
-						    <div data-role="popup" id="popupMenu" data-theme="d">
+						    <div data-role="popup" id="popupMenu<?php echo $subformulario['id'];?>" data-theme="d">
 						        <ul data-role="listview" data-inset="true" style="min-width:210px;" data-theme="d">
 						            <li><a class="<?php echo $class2;?>" data-subform="<?php echo $subformulario['id']; ?>" data-levantamiento="<?php echo $idlevantamiento; ?>" href="#">Ir</a></li>
 						            <li><a href="#">Clonar</a></li>
-						            <li><a class="deleteanswers" data-subform="<?php echo $subformulario['id']; ?>" data-levantamiento="<?php echo $idlevantamiento; ?>" href="#">Borrar Respuestas</a></li>
+						            <li><a class="deleteanswers" data-idform="<?php echo $subformulario['megatree'];?>" data-subform="<?php echo $subformulario['id']; ?>" data-levantamiento="<?php echo $idlevantamiento; ?>" href="#">Borrar Respuestas</a></li>
 						            <li><a href="#"><?php echo get_string("delete", $lang)?></a></li>
 						        </ul>
 							</div>	
@@ -167,24 +169,13 @@ $formularios = DBQueryReturnArray($queryformularios);
 			
 			<div data-role="controlgroup">
 		    <a id="report" href="#report" data-role="button"><?php echo get_string('reports', $lang)?></a>
-			</div>
-			
+			</div>	
 	</div>
-	
-	</div>
-	
-	
-	
+	</div>	
 </div>
 
 <div id="report" data-role="page" >
-	<div data-theme="b" data-display="overlay" data-position="right" data-role="panel" id="mypanel">
-		<h2 id="usernamebutton"><?php echo $USER[0]['name']." ".$USER[0]['lastname'];?></h2>
-		<a href="#" id="cerrarsesion"><?php echo get_string("logout", $lang)?></a> <br>
-		<a href="#" id="usuarios"><?php echo get_string("config", $lang)?></a><br>
-		<a href="#header" data-rel="close"><?php echo get_string("close", $lang)?></a>
-    <!-- panel content goes here -->
-	</div><!-- /panel -->
+	<?php echo print_panel($USER,$lang, 1, $modeedittext);?>
 
 	<div data-role="header" data-theme="b">
 	    <a href="#recorrer" data-icon="arrow-l"><?php echo get_string("back", $lang)?></a>
@@ -196,8 +187,7 @@ $formularios = DBQueryReturnArray($queryformularios);
 		<h1>Reporte Levantamiento : <?php echo $levantamiento['titulo'];?></h1>
 		
 		<?php foreach ($formularios as $form){ 
-				
-			
+
 			$subformularios = getSubFormsbyFormId($form['id'], $levantamiento['created']);
 			?>
 			
@@ -206,32 +196,37 @@ $formularios = DBQueryReturnArray($queryformularios);
 				<?php 
 				
 				$tablaresumen = getResumenSubform($subformulario['id'], $idlevantamiento);
+				
+				if(count($tablaresumen)>0){
 
-				?> 
-				<table data-role="table" id="movie-table" data-mode="columntoggle" class="ui-body-d ui-shadow table-stripe ui-responsive">
-			         <thead>
-			           <tr class="ui-bar-d">
-			             <th>Pregunta</th>
-			             <th>Respuesta</th>
-			             <th> Subrespuesta</th>
-			             <th>Fecha</th>
-			           </tr>
-			         </thead>
-			         <tbody>
-			         <?php foreach ($tablaresumen as $preguntas){?>
-			         
-			           <tr>
-			             <th><?php echo getContentByNodeId($preguntas['preguntaid']); ?></th>
-			             <td><?php echo getContentByNodeId($preguntas['respuestaid']); ?></td>
-			             <td><?php echo $preguntas['respsubpregunta']; ?></td>
-			             <td><?php echo $preguntas['created']; ?></td>
-			           </tr>
-			           
-			        <?php $lastregistro = $preguntas['id'];}?>
-			           
-			         </tbody>
-		       </table>
-				<?php 	
+					?> 
+					<table data-role="table" id="movie-table" data-mode="columntoggle" class="ui-body-d ui-shadow table-stripe ui-responsive">
+				         <thead>
+				           <tr class="ui-bar-d">
+				             <th>Pregunta</th>
+				             <th>Respuesta</th>
+				             <th> Subrespuesta</th>
+				             <th>Fecha</th>
+				           </tr>
+				         </thead>
+				         <tbody>
+				         <?php foreach ($tablaresumen as $preguntas){?>
+				         
+				           <tr>
+				             <th><?php echo getContentByNodeId($preguntas['preguntaid']); ?></th>
+				             <td><?php echo getContentByNodeId($preguntas['respuestaid']); ?></td>
+				             <td><?php echo $preguntas['respsubpregunta']; ?></td>
+				             <td><?php echo $preguntas['created']; ?></td>
+				           </tr>
+				           
+				        <?php $lastregistro = $preguntas['id'];}?>
+				           
+				         </tbody>
+			       </table>
+					<?php 	
+				}else{
+					echo "Subformulario no respondido";	
+				}
 			}	
 		}?>
 	</div>

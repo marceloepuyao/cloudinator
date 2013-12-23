@@ -3,20 +3,6 @@ function getUrlParameter(name) {
         (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
     );
 }
-
-function setEmpresaInfo(id){
-	
-	$.post("server/empresas.php",{ 
-		action : "getById", 
-		id: id
-		},function(empresas){
-			var emp = jQuery.parseJSON(empresas);
-			console.log(emp);
-			//console.log("hola", empresas);
-			$("#empresanombre").text(emp.nombre);
-			$("#infoempresa").text(emp.infolevantamiento);
-		});
-}
 function responderpregunta(idnode, idlev, idsubform, idpregunta, respsubpregunta){
 	console.log("respsubpregunta",respsubpregunta);
 	$.post("ajax/ajaxresponder.php",{ 
@@ -38,7 +24,6 @@ function responderpregunta(idnode, idlev, idsubform, idpregunta, respsubpregunta
 				alert("problemas con escribir en la base de datos");
 			}
 		});
-	
 }
 
 function borrarUltimaPreguntaRespondida(idsubform, idlev){
@@ -56,9 +41,6 @@ function borrarUltimaPreguntaRespondida(idsubform, idlev){
 			}else{
 				alert("problemas con escribir en la base de datos");
 			}
-			
-			
-			
 		});
 	}
 
@@ -103,18 +85,23 @@ function SubPregunta(idpregunta, idnode, idlev, idsubform){
 				alert("problemas con escribir en la base de datos");
 			}
 		
-		});	
-	
+		});		
 }
-
-
 
 $(document).ready(function(){
 	
-	$("#backbutton").on('click', function(){
-		var emp = $(this).data('emp');
+	$(".backtoRecorrer").on('click', function(){
 		var idlev = $(this).data('idlev');
-		window.location.href = "recorrer.php?emp="+emp+"&idlev="+idlev+ "&lang=" + getUrlParameter('lang');
+		var idform = $(this).data('idform');
+		window.location.href = "recorrer.php?idlev="+idlev+ "&lang=" + getUrlParameter('lang')+"&idform="+idform;
+
+	});
+	$(".backtoIndex").on('click', function(){
+		window.location.href = "index.php?lang=" + getUrlParameter("lang");
+	});
+	$(".backtoLevantamiento").on('click', function(){
+		var emp = $(this).data('idemp');
+		window.location.href = "levantamiento.php?emp="+emp+"&lang=" + getUrlParameter("lang");
 	});
 	
 	$(".answer").on('click', function(){
@@ -126,21 +113,7 @@ $(document).ready(function(){
 		//var userid =  $(this).data('idpregunta');
 		
 		SubPregunta(idpregunta, idnode, idlev, idsubform);
-		
-		
-
-		
 	});
-	$("#cerrarsesion").on('click', function(){
-		$.post("server/session.php",{ 
-			action: "deleteall"
-			},function(respuesta){
-				window.location.href = "index.php?lang=" + getUrlParameter("lang");
-				console.log("cierra sesion");
-				
-			});
-	});
-	
 	$("#responderquit").on('click', function(){
 		var emp = $(this).data('emp');
 		var idlev = $(this).data('idlev');
@@ -185,13 +158,6 @@ $(document).ready(function(){
 
 		responderpregunta(idnode, idlev, idsubform, idpregunta, "Omitida");
 	});
-	
-	
-	$("#usuarios").on('click', function(){
-
-		window.location.href = "usuarios.php?lang=" + getUrlParameter('lang');
-	});
-	
 	$(".gobacktoquestion").on('click', function(){
 		var idpregunta = $(this).data('id');
 		var idsubform = $("#idsubform").val();
@@ -199,5 +165,30 @@ $(document).ready(function(){
 		
 		window.location.href = "responder.php?idlev=" + idlev + "&idsubform=" + idsubform + "&idpreg="+idpregunta+"&lang=" + getUrlParameter('lang');
 	});
+	$(".cerrarsesion").on('click', function(){
+		$.post("server/session.php",{ 
+			action: "deleteall"
+			},function(respuesta){
+				window.location.href = "index.php?lang=" + getUrlParameter("lang");
+				console.log("cierra sesion");
+			});
+	});
 	
+	$(".usuarios").on('click', function(){
+		window.location.href = "usuarios.php?lang=" + getUrlParameter("lang");
+	});
+	$(".edicion").on('click', function(){
+		
+		if(getUrlParameter("edit") == 1){
+			window.location.href = "recorrer.php?emp="+getUrlParameter("emp")+"&idlev="+getUrlParameter("idlev")+"&lang=" + getUrlParameter("lang");
+		}else{
+			window.location.href = "recorrer.php?emp="+getUrlParameter("emp")+"&idlev="+getUrlParameter("idlev")+"&lang=" + getUrlParameter("lang") +"&edit=1";
+		}
+	});
+	$(".editor").on('click', function(){
+		window.location.href = "editor.php";
+	});
+	$(".gestionempresas").on('click', function(){
+		window.location.href = "empresas.php?lang=" + getUrlParameter("lang");
+	});
 });

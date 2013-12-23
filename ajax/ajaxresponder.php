@@ -16,7 +16,7 @@ if($action == 'insert'){
 		$idnode = (int)$_POST['idnode'];
 		$idpregunta = (int)$_POST['idpregunta'];
 		$idempresa= (int)$_POST['idempresa'];
-		$respsubpregunta = $_POST['respsubpregunta'];
+		$respsubpregunta = mysql_real_escape_string($_POST['respsubpregunta']);
 		$emailuser = $_SESSION['usuario'];
 		
 		$user = DBQueryReturnArray("SELECT * FROM users WHERE email = '$emailuser'");

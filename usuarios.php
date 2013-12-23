@@ -1,12 +1,17 @@
 ﻿<?php
 require_once('DB/db.php');
 require_once('lib.php');
-
 session_start();
 
 //checkiamos si las sessions están settiadas
-if(checkSession($_SESSION['ultimoacceso'], $_SESSION['usuario'], $_SESSION['empresa'], $_SESSION['idioma'])){
-	$_SESSION['ultimoacceso'] = time();
+if(isset($_SESSION['ultimoacceso']) && isset($_SESSION['usuario']) && isset($_SESSION['idioma'])){
+	if(checkSession($_SESSION['ultimoacceso'], $_SESSION['usuario'], $_SESSION['idioma'])){
+		$_SESSION['ultimoacceso'] = time();
+	}else{
+		header( 'Location: index.php' );
+	}
+}else{
+	header( 'Location: index.php' );
 }
 
 //obetenemos el lenguaje de la página.
@@ -58,23 +63,17 @@ if(isset($_GET['edit'])){
 	
 <div id="users" data-role="page" >
 	
-	
-	<div data-theme="b" data-display="overlay" data-position="right" data-role="panel" id="mypanel">
-		<h2 id="usernamebutton"><?php echo $USER[0]['name']." ".$USER[0]['lastname'];?></h2>
-		<a href="#" id="cerrarsesion"><?php echo get_string("logout", $lang)?></a> <br>
-		<a href="#" id="usuarios"><?php echo get_string("config", $lang)?></a><br>
-		<a href="#header" data-rel="close"><?php echo get_string("close", $lang)?></a>
-    <!-- panel content goes here -->
-	</div><!-- /panel -->
+	<?php echo print_panel($USER,$lang);?>
 
 	<div data-role="header" class="header" data-position="fixed" role="banner" data-theme="b">
-	    <a href="#" id="backbutton" data-icon="arrow-l"><?php echo get_string("back", $lang);?></a>
+	    <a href="#" data-rel="back" data-icon="arrow-l"><?php echo get_string("back", $lang);?></a>
 	    <h1><?php echo get_string("users", $lang); ?>	</h1>
-	    <a href="#mypanel" data-icon="bars"><?php echo get_string("config", $lang);?></a>
+	    <a href="#mypanel" data-icon="bars"><?php echo get_string("options", $lang);?></a>
 	</div>
 
-	
 	<div data-role="content" class="container"> 
+		<?php echo print_navbar_config('Gestionar Usuarios');?>
+		
 		<h2><?php echo get_string("userslist", $lang); ?>	</h2>
 
 		<table data-role="table" id="table-column-toggle" data-mode="columntoggle" class="ui-responsive table-stroke">
@@ -121,18 +120,12 @@ if(isset($_GET['edit'])){
 </div>
 <div id="newuser" data-role="page" >
 
-	<div data-theme="b" data-display="overlay" data-position="right" data-role="panel" id="mypanel">
-		<h2 id="usernamebutton"></h2>
-		<a href="#" id="cerrarsesion"><?php echo get_string("logout", $lang)?></a> <br>
-		<a href="#" id="usuarios"><?php echo get_string("config", $lang)?></a><br>
-		<a href="#header" data-rel="close"><?php echo get_string("close", $lang)?></a>
-    <!-- panel content goes here -->
-	</div><!-- /panel -->
+	<?php echo print_panel($USER,$lang);?>
 
 	<div data-role="header" class="header" data-position="fixed" role="banner" data-theme="b">
 	    <a href="#users"  data-icon="arrow-l"><?php echo get_string("back", $lang);?></a>
 	    <h1><?php echo get_string("users", $lang); ?></h1>
-	    <a href="#mypanel" data-icon="bars"><?php echo get_string("config", $lang);?></a>
+	    <a href="#mypanel" data-icon="bars"><?php echo get_string("options", $lang);?></a>
 	</div>
 
 	<div data-role="content" class="container"> 

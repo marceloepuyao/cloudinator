@@ -8,14 +8,21 @@ $action = $_POST['action'];
 if($action == 'insert'){
 
 	try {
-		$check = DBQuery("SELECT * FROM levantamientos WHERE titulo = '$_POST[titulo]' AND empresaid = '$_POST[empresaid]'");
+		$titulo = mysql_real_escape_string($_POST['titulo']);
+		$empresaid = (int)($_POST['empresaid']);
+		$info = mysql_real_escape_string($_POST['info']);
+		$forms = $_POST['forms'];
+		$contactado = mysql_real_escape_string($_POST['contactado']);
+		$area = mysql_real_escape_string($_POST['area']);
+		
+		$check = DBQuery("SELECT * FROM levantamientos WHERE titulo = '$titulo' AND empresaid = '$empresaid'");
 		if($check->num_rows > 0){
 			$data = array(
 				'result' => false,
 			);
 		}else{
 			DBQuery("INSERT INTO `levantamientos` (`id`, `titulo`, `empresaid`, `info`,`formsactivos`, `conctadopor`, `areacontacto`, `completitud`, `created`, `modified` ) VALUES 
-				(NULL, '$_POST[titulo]', '$_POST[empresaid]', '$_POST[info]','$_POST[forms]','$_POST[contactado]', '$_POST[area]','0','".date("Y-m-d H:i:s")."','".date("Y-m-d H:i:s")."' );
+				(NULL, '$titulo', '$empresaid', '$_POST[info]','$forms','$contactado', '$area','0','".date("Y-m-d H:i:s")."','".date("Y-m-d H:i:s")."' );
 				");
 			
 			$info = DBQueryReturnArray("SELECT MAX(id) as id FROM levantamientos");
@@ -62,14 +69,22 @@ if($action == 'insert'){
 	
 	try {
 		
-		$query = "UPDATE  `levantamientos` SET  `titulo` =  '$_POST[titulo]', `empresaid` =  $_POST[empresaid], `info` =  '$_POST[info]',`formsactivos` =  '$_POST[forms]', `conctadopor` =  '$_POST[contactado]',`areacontacto` =  '$_POST[area]',`modified` =  '".date("Y-m-d H:i:s")."'
-				WHERE  `levantamientos`.`id` =$_POST[idlev];";
+		$titulo = mysql_real_escape_string($_POST['titulo']);
+		$empresaid = (int)($_POST['empresaid']);
+		$info = mysql_real_escape_string($_POST['info']);
+		$forms = $_POST['forms'];
+		$contactado = mysql_real_escape_string($_POST['contactado']);
+		$area = mysql_real_escape_string($_POST['area']);
+		$idlev = (int)($_POST['idlev']);
+		
+		$query = "UPDATE  `levantamientos` SET  `titulo` =  '$titulo', `empresaid` =  '$empresaid', `info` =  '$info',`formsactivos` =  '$forms', `conctadopor` =  '$contactado',`areacontacto` =  '$area',`modified` =  '".date("Y-m-d H:i:s")."'
+				WHERE  `levantamientos`.`id` = '$idlev';";
 		DBQuery($query);
 	
 		
 		$data = array(
 			'result' => true,
-			'id'=>$_POST['idlev']
+			'id'=>$idlev
 		);
 		
 		print($json->encode($data));

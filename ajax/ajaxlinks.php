@@ -5,7 +5,10 @@ require_once('../DB/db.php');
 $json = new Services_JSON();
 
 try {	
-	$query = "SELECT * FROM links WHERE tree='".$_POST['tree']."'";
+	$tree = (int)$_POST['tree'];
+	
+	
+	$query = "SELECT * FROM links WHERE tree='$tree'";
 	$datos = DBQueryReturnArray($query);
 	$data = array(
 		'result' => true,
