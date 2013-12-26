@@ -31,7 +31,11 @@ function ajaxPostLink(action, name, source, target, tree, typetarget, xtarget, y
 		}
 	});
 }
-	
+function deleltelinesinfo(){
+	var a = A.all('.aui-diagram-builder-connector-name');
+	//db1.connector.hide();
+	a.remove();
+}
 function ajaxPostNodo(action, name, type, posx, posy, tree){
 	A.io.request('ajax/ajaxpost.php', {
 		autoLoad: true,
@@ -1430,8 +1434,6 @@ var DiagramNode = A.Component.create({
 			}else{
 				var typetarget = "end";
 			}
-			
-			
 			if(instance.get(BOUNDING_BOX).getAttribute("class").lastIndexOf("end") != -1){
 				console.log('diagramNode', diagramNode);
 				ajaxPostNodo('insert', nameend, typetarget, diagramNode.get(BOUNDING_BOX).getXY()[0] - 278, diagramNode.get(BOUNDING_BOX).getXY()[1] -59, getQueryStringByName('id'));
@@ -1441,6 +1443,9 @@ var DiagramNode = A.Component.create({
 				ajaxPostNodo('insert', nameend, typetarget, diagramNode.get(BOUNDING_BOX).getXY()[0] - 278, diagramNode.get(BOUNDING_BOX).getXY()[1] -59, getQueryStringByName('id'));
 				alert("No se puede conectar dos nodos del mismo tipo");
 				
+			}else if(diagramNode.get(BOUNDING_BOX).getAttribute("class").lastIndexOf("end")!=-1 && instance.get(BOUNDING_BOX).getAttribute("class").lastIndexOf("condition")!=-1){
+				
+				alert("No puedes conectar un nodo pregunta con un nodo fin");
 			}else{
 				//ajaxPostLink("insert", "", namestart, nameend, getQueryStringByName('id'), typetarget, diagramNode.get(BOUNDING_BOX).getXY()[0] - 278, diagramNode.get(BOUNDING_BOX).getXY()[1] -59);
 				A.io.request('ajax/ajaxpost.php', {
@@ -1474,6 +1479,7 @@ var DiagramNode = A.Component.create({
 									})
 								);
 							}
+							deleltelinesinfo();
 						},
 						failure: function(){noticeSaving('warning');}
 					}

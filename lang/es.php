@@ -91,6 +91,15 @@ $dicc = array(
 	'reports' => 'Reportes',
 
 	'editor' => 'Editar Formularios',
-	'options' => 'Opciones'
+	'options' => 'Opciones',
+
+	'home' => 'Inicio',
+	'listlevantamientos' => 'Lista de levantamientos',
+	'managingcompanies' => 'Gestión de Empresas',
+	'managingusers' => 'Gestión de Usuarios',
+	'selectcompany' => 'Seleccione Empresa a Entrevistar',
+	'companylist' => 'Lista de Empresas',
+	'lastquestion' => 'Pregunta Anterior',
+	'quit'=> 'Abandonar'
 	);
 ?>

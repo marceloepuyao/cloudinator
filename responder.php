@@ -102,7 +102,7 @@ if($pregunta == null){
 	
 	<div data-role="content">
 	
-		<?php echo print_navbar(0, $empresa['id'], $idlevantamiento, $subform['megatree']);?>
+		<?php echo print_navbar(0, $empresa['id'], $idlevantamiento, $subform['megatree'], $idsubform, $lang);?>
 		
 		<?php if ($pregunta != null){ ?>
 		
@@ -120,8 +120,8 @@ if($pregunta == null){
 						</div>
 			<?php } ?>
 		<fieldset class="ui-grid-a">
-		                    <div class="ui-block-a"><button id="responderback" data-idreg ="<?php echo $registroanteriorid;?>"data-idsubform="<?php echo $idsubform; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-theme="d">Pregunta anterior</button></div>
-		                    <div class="ui-block-b"><button id="responderquit" data-emp="<?php echo $empresa['id']; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-theme="d">Abandonar</button></div>
+		                    <div class="ui-block-a"><button id="responderback" data-idreg ="<?php echo $registroanteriorid;?>"data-idsubform="<?php echo $idsubform; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-theme="d"><?php echo get_string('lastquestion', $lang);?></button></div>
+		                    <div class="ui-block-b"><button id="responderquit" data-emp="<?php echo $empresa['id']; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-theme="d"><?php echo get_string('quit', $lang);?></button></div>
 		 </fieldset>
 		</div>
 		<?php } ?>

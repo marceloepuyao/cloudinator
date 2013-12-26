@@ -1,6 +1,7 @@
 <?php
 require_once('../JSON.php');
 require_once('../DB/db.php');
+require_once '../lib.php';
 $json = new Services_JSON();
 
 if( array_key_exists('getIdFromName', $_POST)){
@@ -94,6 +95,10 @@ if(array_key_exists('nodo', $_POST) || array_key_exists('link', $_POST)){
 						";
 						
 						DBQuery($query);
+						
+						//*************** Conexión MAGENTO
+						//addProductMagento($name);			
+						//*************** Fin conexión MAGENTO
 			
 						$data = array(
 							'result' => true
@@ -103,7 +108,7 @@ if(array_key_exists('nodo', $_POST) || array_key_exists('link', $_POST)){
 				} catch (Exception $e) {
 					$data = array(
 						'result' => false,
-						'exception' => $e
+						'exception' => var_dump($e)
 					);
 					print($json->encode($data));
 				}

@@ -67,7 +67,7 @@ if($idempresa){
 			padding: 0 50px;
 		}
 </style>
-<title>Gestión de Empresas</title>
+<title><?php echo get_string('managingcompanies', $lang);?></title>
 </head>
 <body class="api jquery-mobile home blog single-autho">
 <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
@@ -79,11 +79,11 @@ if($idempresa){
 
 	<div data-role="header" class="header" data-position="fixed" role="banner" data-theme="b">
 	    <a href="#"  data-rel="back" data-icon="arrow-l"><?php echo get_string("back", $lang)?></a>
-	    <h1><?php echo "Gestión de Empresas"; ?>	</h1>
+	    <h1><?php echo get_string('managingcompanies', $lang); ?>	</h1>
 	    <a href="#mypanel" data-icon="bars"><?php echo get_string("options", $lang)?></a>
 	</div>
 	<div class="container">
-		<?php echo print_navbar_config("Gestión de Empresas");?>
+		<?php echo print_navbar_config(get_string('managingcompanies', $lang), $lang);?>
 	
 		<?php if($idempresa){?>
 		
@@ -123,14 +123,14 @@ if($idempresa){
 				</li>
  			</ul>	
 		<?php }else{?>
-			<h2><?php echo "Lista de Empresas" ?>	</h2>
+			<h2><?php echo get_string('companylist', $lang); ?>	</h2>
 
 			<table data-role="table" id="table-column-toggle" data-mode="columntoggle" class="ui-responsive table-stroke">
 			     <thead>
 			       <tr>
-			       	<th><?php echo "Nombre"; ?></th>
-			       	<th><?php echo "Industria"; ?></th>
-			         <th data-priority="4"><abbr title="Info"><?php echo "Información Adicional"; ?></abbr></th>
+			       	<th><?php echo get_string('namecompany', $lang); ?></th>
+			       	<th><?php echo get_string('industry', $lang); ?></th>
+			         <th data-priority="4"><abbr title="Info"><?php echo get_string('companyinformation', $lang); ?></abbr></th>
 			          <th data-priority="7"><?php echo get_string("delete", $lang); ?></th>
 			          <th data-priority="8"><?php echo get_string("edit", $lang); ?></th>
 			       </tr>

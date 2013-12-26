@@ -72,7 +72,7 @@ if(isset($_GET['edit'])){
 	</div>
 
 	<div data-role="content" class="container"> 
-		<?php echo print_navbar_config('Gestionar Usuarios');?>
+		<?php echo print_navbar_config(get_string('managingusers', $lang), $lang);?>
 		
 		<h2><?php echo get_string("userslist", $lang); ?>	</h2>
 

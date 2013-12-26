@@ -85,7 +85,7 @@ $formularios = getAllFormularios();
 	
 	<div data-role="content">
 	
-		<?php echo print_navbar(1, 0, 0, 0);?>
+		<?php echo print_navbar(1, 0, 0, 0, 0, $lang);?>
 		<?php if($info != ""){?>
 		<h4><?php echo get_string("infocompany", $lang); ?></h4>
 

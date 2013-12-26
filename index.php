@@ -105,7 +105,7 @@ if(isset($_SESSION['ultimoacceso']) && isset($_SESSION['usuario']) && isset($_SE
 	</div>
 	<div data-role="content" id="content" class="jqm-content ui-content" >
 	<form action="">
-	<CENTER> <p><strong>Seleccione Empresa a Entrevistar</strong></p></CENTER> 
+	<CENTER> <p><strong><?php echo get_string('selectcompany', $lang);?></strong></p></CENTER> 
 	<table style="width: 100%; margin: 0 auto;">
 		<tr>
 			<td>
@@ -123,7 +123,7 @@ if(isset($_SESSION['ultimoacceso']) && isset($_SESSION['usuario']) && isset($_SE
 	</table>
 	<table style="width: 100%; margin: 0 auto;">
 	<tr>
-		<td><a href="#" id="btnEmpresa" data-role="button">Continuar</a></td>
+		<td><a href="#" id="btnEmpresa" data-role="button"><?php echo get_string("continue", $lang)?></a></td>
 	</tr>
 	</table>
 	</form>

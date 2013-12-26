@@ -226,6 +226,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 					}else{
 						noticeSaving('error');
 					}
+					deleltelinesinfo();
 				},
 				failure: function(data){
 					noticeSaving('warning');
@@ -455,7 +456,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 							ajaxPostNodo('update', movingnodename, 'condition', posix, posiy, getQueryStringByName('id')); //event.pageX no es la posicion exacta, porque concidera todo
 						}
 						
-						deleltelinesinfo();
+						
 						//A.one('#savechanges').setStyle('display', '');
 					},
 					'*:hit': function(event){

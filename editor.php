@@ -236,7 +236,7 @@ if($USER[0]['superuser'] != 1){
 		<h6 class="menu_subformularios">Subformularios no Publicados</h6>
 		<table id="table1" cellspacing="0" cellpadding="0" class="striped sortable">
 			<thead><tr>
-				<th id="formsubform">Formulario</th>
+				<th class="formsubform">Formulario</th>
 				<th>Creado</th>
 				<th>Acciones</th>
 			</tr></thead>
@@ -252,7 +252,7 @@ if($USER[0]['superuser'] != 1){
 		<h6 class="menu_subformularios">Subformularios Publicados</h6>
 		<table id="table2" cellspacing="0" cellpadding="0" class="striped sortable">
 			<thead><tr>
-				<th id="formsubform">Formulario</th>
+				<th class="formsubform">Formularios</th>
 				<th>Creado</th>
 				<th>Acciones</th>
 			</tr></thead>
@@ -652,9 +652,13 @@ if($USER[0]['superuser'] != 1){
 						cargarGrafos(); //actualizar la lista de Subformularios
 						addNotice("success", "El Subformulario ha sido publicado");
 					}else{
-						addNotice("error", "Error al publicar el Subformulario");
+						if(data.reason == "incomplete"){
+							addNotice("error", "Subformulario Incompleto");
+						}else{
+							addNotice("error", "Error al publicar el Subformulario");	
+						}
 						$('.loading').fadeOut();
-						console.log("Error en publicar Subformulario", data.exception);
+		
 					}
 				}
 			}).fail(function(data) {
@@ -824,12 +828,12 @@ if($USER[0]['superuser'] != 1){
 		if(getQueryStringByName('id')){
 			setNameToForm();
 			cargarGrafos(); //Carga la lista de Subformularios
-			$('#formsubform').text("Subformularios");
+			$('.formsubform').text("Subformularios");
 			$('.menu_subformularios').show();
 			$('.menu_formularios').remove();
 		}else{
 			loadMegaTrees(); //Carga la lista de Formularios
-			$('#formsubform').text("Formularios");
+			$('.formsubform').text("Formularios");
 			$('.menu_subformularios').remove();
 			$('.menu_formularios').show();
 		}

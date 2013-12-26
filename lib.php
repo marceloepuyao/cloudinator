@@ -377,7 +377,7 @@ function print_panel($USER, $lang, $edit= 0, $modeedittext = null){
 	}
 	if($USER[0]['superuser']){
 		$superuserhtml = "	<a href='#' class='editor'>".get_string('editor', $lang)."</a><br>
-							<a href='#' class='gestionempresas'>Gestión Empresas</a><br>
+							<a href='#' class='gestionempresas'>".get_string('managingcompanies', $lang)."</a><br>
 			";
 	}else{
 		$superuserhtml = "";
@@ -387,37 +387,75 @@ function print_panel($USER, $lang, $edit= 0, $modeedittext = null){
 		<h2>".$USER[0]['name']." ".$USER[0]['lastname']."</h2>
 		
 		".$edithtml.$superuserhtml."
-		<a href='#' class='usuarios'>Gestión Usuarios</a><br>
+		<a href='#' class='usuarios'>".get_string('managingusers', $lang)."</a><br>
 		<a href='#' class='cerrarsesion'> ".get_string('logout', $lang)."</a> <br>
 		<a href='#header' data-rel='close'>".get_string("close", $lang)."</a>
 	     </div><!-- /panel -->";
 	
 	return $panel;
 }
-function print_navbar($toindex, $idemp, $idlevantamiento, $idform ){
-	$navbar = '<a href="#" class="backtoIndex" data-icon="arrow-l">Inicio</a>';
+function print_navbar($toindex, $idemp, $idlevantamiento, $idform, $idsubform, $lang ){
+	$navbar = '<a href="#" class="backtoIndex" data-icon="arrow-l">'.get_string('home', $lang).'</a>';
 	
 	if($toindex){
-		$navbar .= ' >Lista de Levantamientos';
+		$navbar .= ' >'.get_string('listlevantamientos', $lang);
 		return $navbar;
 	}
-	$navbar .= ' > <a href="#" class="backtoLevantamiento" data-idemp="'.$idemp.'" data-icon="arrow-l">Lista de Levantamientos</a>';
+	$navbar .= ' > <a href="#" class="backtoLevantamiento" data-idemp="'.$idemp.'" data-icon="arrow-l">'.get_string('listlevantamientos', $lang).'</a>';
 	
-	if($idlevantamiento == 0){
-		$navbar .= ' > Levantamiento';
+	if($idsubform == 0){
+		
+		$levantamiento = getLevantamientobyId($idlevantamiento);
+		$navbar .= ' > '.$levantamiento['titulo'];
 		return $navbar;
 	}
-	$navbar .= ' > <a href="#" class="backtoRecorrer" data-idlev="'.$idlevantamiento.'" data-idform="'.$idform.'" data-icon="arrow-l">Levantamiento</a>';
 	
-	$navbar .= ' > Responder Subformulario';
+	$levantamiento = getLevantamientobyId($idlevantamiento);	
+	$subform = getSubForm($idsubform);
+	$navbar .= ' > <a href="#" class="backtoRecorrer" data-idlev="'.$idlevantamiento.'" data-idform="'.$idform.'" data-icon="arrow-l">'.$levantamiento['titulo'].'</a>';
+	
+	$navbar .= ' > '.$subform['name'];
 	return $navbar;
 	
 	
 }
 
-function print_navbar_config($text){
-	$navbar = '<a href="#" class="backtoIndex" data-icon="arrow-l">Inicio</a> > '.$text;
+function print_navbar_config($text, $lang){
+	$navbar = '<a href="#" class="backtoIndex" data-icon="arrow-l">'.get_string('home', $lang).'</a> > '.$text;
 	return $navbar;
+}
+
+function addProductMagento($name){
+	$config = parse_ini_file(dirname(__FILE__)."/config.ini", true);
+	$connconf = $config["magento"];
+	
+	$proxy = new SoapClient($connconf['magento_url']);
+	$sessionId = $proxy->login($connconf['magento_user'], $connconf['magento_pass']);
+	if($sessionId){
+		//si la conexión es posible agregar
+		$attributeSets = $proxy->call($sessionId, 'product_attribute_set.list');
+		$set = current($attributeSets);
+		$newProductData = array(
+		    'name'              => $name,
+		     // websites - Array of website ids to which you want to assign a new product
+		    'websites'          => array(1), // array(1,2,3,...)
+		    'short_description' => 'short description',
+		    'description'       => 'description',
+		    'status'            => 1,
+		    'weight'            => 0,
+		    'tax_class_id'      => 1,
+		    'categories'    	=> array(3),    //3 is the category id
+		    'price'             => 12.05
+		);
+		
+		// Create new product
+		$proxy->call($sessionId, 'product.create', array('simple', $set['set_id'], $name, $newProductData));
+		$proxy->call($sessionId, 'product_stock.update', array($name, array('qty'=>50, 'is_in_stock'=>1)));
+		return true;
+	}else{
+		return false;
+	}			
+	
 }
 
 	

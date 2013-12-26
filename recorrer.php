@@ -97,7 +97,7 @@ $formularios = DBQueryReturnArray($queryformularios);
 	</div>
 	
 	<div data-role="content">
-	<?php echo print_navbar(0, $empresa[0]['id'], 0, 0);?>
+	<?php echo print_navbar(0, $empresa[0]['id'], $idlevantamiento, 0, 0, $lang);?>
 	<!-- pop up dialogo -->
 		<h1><?php echo $titulo; ?></h1>
 		<p><?php echo $info; ?></p>
