@@ -10,7 +10,6 @@ if($action == 'login'){
  
 	try {	
 		$usu = mysql_real_escape_string($_POST["usu"]);
-		//$usu = $_POST["usu"];
 		$sql = "SELECT * FROM users WHERE email='$usu'";
 		
 		if ($resultado = DBQuery($sql)){

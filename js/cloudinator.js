@@ -180,7 +180,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 			}
 		}
 	});
-
+	
 	function andaABuscarLosLinks(treeID) {
 		A.io.request('ajax/ajaxlinks.php', {
 			dataType: 'json',

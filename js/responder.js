@@ -19,7 +19,7 @@ function responderpregunta(idnode, idlev, idsubform, idpregunta, respsubpregunta
 			
 			//si la respuesta es positiva se continua, si no mensaje de error
 			if(resp.result){
-				window.location.href = "responder.php?idlev=" + idlev + "&idsubform=" + idsubform + "&lang=" + getUrlParameter('lang');
+				window.location.href = "responder.php?idlev=" + idlev + "&idsubform=" + idsubform;
 			}else{
 				alert("problemas con escribir en la base de datos");
 			}
@@ -37,7 +37,7 @@ function borrarUltimaPreguntaRespondida(idsubform, idlev){
 			console.log("resp", resp);
 			//si la respuesta es positiva se continua, si no mensaje de error
 			if(resp.result){
-				window.location.href = "responder.php?idlev=" + idlev+"&idsubform="+idsubform+ "&lang=" + getUrlParameter('lang');
+				window.location.href = "responder.php?idlev=" + idlev+"&idsubform="+idsubform;
 			}else{
 				alert("problemas con escribir en la base de datos");
 			}
@@ -93,15 +93,15 @@ $(document).ready(function(){
 	$(".backtoRecorrer").on('click', function(){
 		var idlev = $(this).data('idlev');
 		var idform = $(this).data('idform');
-		window.location.href = "recorrer.php?idlev="+idlev+ "&lang=" + getUrlParameter('lang')+"&idform="+idform;
+		window.location.href = "recorrer.php?idlev="+idlev+ "&idform="+idform;
 
 	});
 	$(".backtoIndex").on('click', function(){
-		window.location.href = "index.php?lang=" + getUrlParameter("lang");
+		window.location.href = "index.php";
 	});
 	$(".backtoLevantamiento").on('click', function(){
 		var emp = $(this).data('idemp');
-		window.location.href = "levantamiento.php?emp="+emp+"&lang=" + getUrlParameter("lang");
+		window.location.href = "levantamiento.php?emp="+emp;
 	});
 	
 	$(".answer").on('click', function(){
@@ -117,7 +117,7 @@ $(document).ready(function(){
 	$("#responderquit").on('click', function(){
 		var emp = $(this).data('emp');
 		var idlev = $(this).data('idlev');
-		window.location.href = "recorrer.php?emp="+emp+"&idlev="+idlev+ "&lang=" + getUrlParameter('lang');
+		window.location.href = "recorrer.php?emp="+emp+"&idlev="+idlev;
 	});
 	
 	$("#responderback").on('click', function(){
@@ -127,7 +127,7 @@ $(document).ready(function(){
 		if(idreg == 0){
 			alert("No hay preguntas anteriores");
 		}else{
-			window.location.href = "responder.php?idlev=" + idlev + "&idsubform=" + idsubform + "&idpreg="+idreg+"&lang=" + getUrlParameter('lang');
+			window.location.href = "responder.php?idlev=" + idlev + "&idsubform=" + idsubform + "&idpreg="+idreg;
 		}
 		//delete ultima pregunta respondida
 		//borrarUltimaPreguntaRespondida(idsubform, idlev);
@@ -163,32 +163,32 @@ $(document).ready(function(){
 		var idsubform = $("#idsubform").val();
 		var idlev = $("#idlev").val();
 		
-		window.location.href = "responder.php?idlev=" + idlev + "&idsubform=" + idsubform + "&idpreg="+idpregunta+"&lang=" + getUrlParameter('lang');
+		window.location.href = "responder.php?idlev=" + idlev + "&idsubform=" + idsubform + "&idpreg="+idpregunta;
 	});
 	$(".cerrarsesion").on('click', function(){
 		$.post("server/session.php",{ 
 			action: "deleteall"
 			},function(respuesta){
-				window.location.href = "index.php?lang=" + getUrlParameter("lang");
+				window.location.href = "index.php";
 				console.log("cierra sesion");
 			});
 	});
 	
 	$(".usuarios").on('click', function(){
-		window.location.href = "usuarios.php?lang=" + getUrlParameter("lang");
+		window.location.href = "usuarios.php";
 	});
 	$(".edicion").on('click', function(){
 		
 		if(getUrlParameter("edit") == 1){
-			window.location.href = "recorrer.php?emp="+getUrlParameter("emp")+"&idlev="+getUrlParameter("idlev")+"&lang=" + getUrlParameter("lang");
+			window.location.href = "recorrer.php?emp="+getUrlParameter("emp")+"&idlev="+getUrlParameter("idlev");
 		}else{
-			window.location.href = "recorrer.php?emp="+getUrlParameter("emp")+"&idlev="+getUrlParameter("idlev")+"&lang=" + getUrlParameter("lang") +"&edit=1";
+			window.location.href = "recorrer.php?emp="+getUrlParameter("emp")+"&idlev="+getUrlParameter("idlev") +"&edit=1";
 		}
 	});
 	$(".editor").on('click', function(){
 		window.location.href = "editor.php";
 	});
 	$(".gestionempresas").on('click', function(){
-		window.location.href = "empresas.php?lang=" + getUrlParameter("lang");
+		window.location.href = "empresas.php";
 	});
 });
