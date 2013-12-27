@@ -186,4 +186,32 @@ if($action == 'insert'){
 		print($json->encode($data));
 	}
 	
+}else if($action == "cloneanswers"){
+
+	try {
+		$db = DBConnect();
+		$db->autocommit(FALSE);
+		$idlev = (int)$_POST['idlev'];
+		$idsubform = (int)$_POST['idsubform'];
+		$idform = (int)$_POST['idform'];
+		$nombre = $idsubform." cloned";
+
+		DBQuery("INSERT INTO `cloned` (`id`, `idlev`, `name`, `subformid`,`modified`, `formid` ) VALUES 
+				(NULL, $idlev , '$nombre', $idsubform, NULL , $idform );
+				");
+		$data = array(
+			'result' => true
+			);		
+		print($json->encode($data));
+	
+	} catch (Exception $e) {
+		$db->rollback();
+		$db->close();
+		$data = array(
+			'result' => false,
+			'exception' => $e
+			);
+		print($json->encode($data));
+	}
+	
 }

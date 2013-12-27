@@ -491,4 +491,24 @@ $(document).ready(function(){
         	alert("Tienes que llenar todos los campos");
         }
 	});
+	$(".cloneanswers").on('click', function(){
+		var idsubform = $(this).data('subform');
+		var idlev = $(this).data('levantamiento');
+		var idform = $(this).data('idform');
+		$.post("ajax/ajaxresponder.php",{ 
+			idlev: idlev,
+			idsubform: idsubform,
+			idform: idform,
+			action: 'cloneanswers'
+			},function(respuesta){
+				var resp = jQuery.parseJSON(respuesta);
+				if(resp.result){
+					window.location.href ="recorrer.php?idlev="+idlev+"&edit=1&idform="+idform;
+				}else{
+					alert("problemas con escribir en la base de datos");
+				}
+			});
+
+	});
+	
 });

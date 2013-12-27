@@ -55,14 +55,22 @@ function getSubForm($idsubform){
 	
 }
 
-function getQuestionAnswers($idsubform, $idlevantamiento){
+function getQuestionAnswers($idsubform, $idlevantamiento, $cloned = 0){
 	//se obtienen la última pregunta hecha.
-	$queryregistro = "SELECT * FROM registropreguntas WHERE levantamientoid = $idlevantamiento AND subformid = $idsubform order by created DESC limit 1";
+	if($cloned){
+		$queryregistro = "SELECT * FROM registropreguntas WHERE levantamientoid = $idlevantamiento AND clonedid = $cloned order by created DESC limit 1";
+	}else{
+		$queryregistro = "SELECT * FROM registropreguntas WHERE levantamientoid = $idlevantamiento AND subformid = $idsubform order by created DESC limit 1";
+	}	
 	$registro = DBQueryReturnArray($queryregistro);
 	//se obtiene la pregunta que viene... si no hay datos: la primera.
 	
 	//calcular completitud
-	$registrototal = DBQueryReturnArray("SELECT * FROM registropreguntas WHERE levantamientoid = $idlevantamiento AND subformid = $idsubform");
+	if($cloned){
+		$registrototal = DBQueryReturnArray("SELECT * FROM registropreguntas WHERE levantamientoid = $idlevantamiento AND clonedid = $cloned");
+	}else{
+		$registrototal = DBQueryReturnArray("SELECT * FROM registropreguntas WHERE levantamientoid = $idlevantamiento AND subformid = $idsubform");
+	}
 	$preguntascontestadas = count($registrototal);
 	$minimopreguntas = calcularMinimoPreguntas($idsubform);
 	$maximopreguntas = calcularMaximoPreguntas($idsubform);
@@ -330,6 +338,12 @@ function getSubFormsbyFormId($formid, $levantamientocreated){
 	
 	$subformularios = DBQueryReturnArray($querysubformularios);
 	return $subformularios;
+}
+function getClonedSubFormByFormId($formid, $levantamientoid){
+	$queryclonedsubform = "SELECT * FROM cloned WHERE formid = $formid AND idlev  = $levantamientoid";
+	$subformularios = DBQueryReturnArray($queryclonedsubform);
+	return $subformularios;
+	
 }
 function getNameByUserId($userid){
 	
