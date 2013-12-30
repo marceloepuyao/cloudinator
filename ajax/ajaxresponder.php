@@ -208,7 +208,7 @@ if($action == 'insert'){
 		$idlev = (int)$_POST['idlev'];
 		$idsubform = (int)$_POST['idsubform'];
 		$idform = (int)$_POST['idform'];
-		$nombre = $idsubform." cloned";
+		$nombre = mysql_real_escape_string($_POST['name']);
 
 		DBQuery("INSERT INTO `cloned` (`id`, `idlev`, `name`, `subformid`,`modified`, `formid` ) VALUES 
 				(NULL, $idlev , '$nombre', $idsubform, NULL , $idform );

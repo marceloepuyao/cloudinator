@@ -266,10 +266,7 @@ $(document).ready(function(){
 				}
 	       	 });
     	}
-    	
     });
-	
-
 	$(".backtoIndex").on('click', function(){
 		window.location.href = "index.php";
 	});
@@ -277,8 +274,6 @@ $(document).ready(function(){
 		var emp = $(this).data('idemp');
 		window.location.href = "levantamiento.php?emp="+emp;
 	});
-
- 
 	$(".ira").on('click', function(){
 		var idempresa = $(this).data('empresa');
 		var idlevantamiento = $(this).data('levantamiento');
@@ -341,7 +336,6 @@ $(document).ready(function(){
 			alert("faltan campos por llenar");
 		}
 	
-
 	});
 	$("#cancel").on('click', function(){
 		window.location.href = "levantamiento.php?emp="+getUrlParameter('emp');
@@ -503,20 +497,25 @@ $(document).ready(function(){
 		var idsubform = $(this).data('subform');
 		var idlev = $(this).data('levantamiento');
 		var idform = $(this).data('idform');
-		$.post("ajax/ajaxresponder.php",{ 
-			idlev: idlev,
-			idsubform: idsubform,
-			idform: idform,
-			action: 'cloneanswers'
-			},function(respuesta){
-				var resp = jQuery.parseJSON(respuesta);
-				if(resp.result){
-					window.location.href ="recorrer.php?idlev="+idlev+"&edit=1&idform="+idform;
-				}else{
-					alert("problemas con escribir en la base de datos");
-				}
-			});
-
+		var oldname = $(this).data('oldname');
+		
+		var name = prompt("Nombre del Subformulario clonado", oldname);
+		if(name != null){
+			$.post("ajax/ajaxresponder.php",{ 
+				idlev: idlev,
+				idsubform: idsubform,
+				idform: idform,
+				name:name,
+				action: 'cloneanswers'
+				},function(respuesta){
+					var resp = jQuery.parseJSON(respuesta);
+					if(resp.result){
+						window.location.href ="recorrer.php?idlev="+idlev+"&edit=1&idform="+idform;
+					}else{
+						alert("problemas con escribir en la base de datos");
+					}
+				});
+		}
 	});
 	
 	$(".gotoclone").on('click', function(){

@@ -156,7 +156,7 @@ $formularios = DBQueryReturnArray($queryformularios);
 						    <div data-role="popup" id="popupMenu<?php echo $subformulario['id'];?>" data-theme="d">
 						        <ul data-role="listview" data-inset="true" style="min-width:210px;" data-theme="d">
 						            <li><a class="<?php echo $class2;?>" data-subform="<?php echo $subformulario['id']; ?>" data-levantamiento="<?php echo $idlevantamiento; ?>" href="#"><?php echo get_string('gothrough', $lang);?></a></li>
-						            <li><a class="cloneanswers" data-idform="<?php echo $subformulario['megatree'];?>" data-subform="<?php echo $subformulario['id']; ?>" data-levantamiento="<?php echo $idlevantamiento; ?>" href="#"><?php echo get_string('clonesubform', $lang);?></a></li>
+						            <li><a class="cloneanswers" data-oldname="<?php echo $subformulario['name'];?>" data-idform="<?php echo $subformulario['megatree'];?>" data-subform="<?php echo $subformulario['id']; ?>" data-levantamiento="<?php echo $idlevantamiento; ?>" href="#"><?php echo get_string('clonesubform', $lang);?></a></li>
 						            <li><a class="deleteanswers" data-idclone="<?php echo 0;?>" data-idform="<?php echo $subformulario['megatree'];?>" data-idsubform="<?php echo $subformulario['id']; ?>" data-levantamiento="<?php echo $idlevantamiento; ?>" href="#"><?php echo get_string("deleteanswers", $lang);?></a></li>
 						        </ul>
 							</div>	
