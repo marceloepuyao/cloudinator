@@ -155,9 +155,9 @@ $formularios = DBQueryReturnArray($queryformularios);
 		            	<?php if($modeedit == 1){?>
 						    <div data-role="popup" id="popupMenu<?php echo $subformulario['id'];?>" data-theme="d">
 						        <ul data-role="listview" data-inset="true" style="min-width:210px;" data-theme="d">
-						            <li><a class="<?php echo $class2;?>" data-subform="<?php echo $subformulario['id']; ?>" data-levantamiento="<?php echo $idlevantamiento; ?>" href="#">Ir</a></li>
-						            <li><a class="cloneanswers" data-idform="<?php echo $subformulario['megatree'];?>" data-subform="<?php echo $subformulario['id']; ?>" data-levantamiento="<?php echo $idlevantamiento; ?>" href="#">Clonar</a></li>
-						            <li><a class="deleteanswers" data-idclone="<?php echo 0;?>" data-idform="<?php echo $subformulario['megatree'];?>" data-idsubform="<?php echo $subformulario['id']; ?>" data-levantamiento="<?php echo $idlevantamiento; ?>" href="#">Borrar Respuestas</a></li>
+						            <li><a class="<?php echo $class2;?>" data-subform="<?php echo $subformulario['id']; ?>" data-levantamiento="<?php echo $idlevantamiento; ?>" href="#"><?php echo get_string('gothrough', $lang);?></a></li>
+						            <li><a class="cloneanswers" data-idform="<?php echo $subformulario['megatree'];?>" data-subform="<?php echo $subformulario['id']; ?>" data-levantamiento="<?php echo $idlevantamiento; ?>" href="#"><?php echo get_string('clonesubform', $lang);?></a></li>
+						            <li><a class="deleteanswers" data-idclone="<?php echo 0;?>" data-idform="<?php echo $subformulario['megatree'];?>" data-idsubform="<?php echo $subformulario['id']; ?>" data-levantamiento="<?php echo $idlevantamiento; ?>" href="#"><?php echo get_string("deleteanswers", $lang);?></a></li>
 						        </ul>
 							</div>	
 					<?php }} ?>
@@ -199,8 +199,8 @@ $formularios = DBQueryReturnArray($queryformularios);
 		            	<?php if($modeedit == 1){?>
 						    <div data-role="popup" id="popupMenuClone<?php echo $subclone['id'];?>" data-theme="d">
 						        <ul data-role="listview" data-inset="true" style="min-width:210px;" data-theme="d">
-						            <li><a class="<?php echo $class2;?>" data-idclone="<?php echo $subclone['id']; ?>" data-subform="<?php echo 0; ?>" data-levantamiento="<?php echo $idlevantamiento; ?>" href="#">Ir</a></li>
-						            <li><a class="deleteanswers"  data-idform="<?php echo $subclone['formid'];?>" data-idsubform="<?php echo 0; ?>" data-idclone="<?php echo $subclone['id']; ?>" data-levantamiento="<?php echo $idlevantamiento; ?>" href="#">Borrar Respuestas</a></li>
+						            <li><a class="<?php echo $class2;?>" data-idclone="<?php echo $subclone['id']; ?>" data-subform="<?php echo 0; ?>" data-levantamiento="<?php echo $idlevantamiento; ?>" href="#"><?php echo get_string('gothrough', $lang);?></a></li>
+						            <li><a class="deleteanswers"  data-idform="<?php echo $subclone['formid'];?>" data-idsubform="<?php echo 0; ?>" data-idclone="<?php echo $subclone['id']; ?>" data-levantamiento="<?php echo $idlevantamiento; ?>" href="#"><?php echo get_string('deleteanswers', $lang);?></a></li>
 						            <li><a class="deleteclone" data-idform="<?php echo $subclone['formid'];?>"  data-levantamiento="<?php echo $idlevantamiento; ?>" data-idclone="<?php echo $subclone['id']; ?>"><?php echo get_string("delete", $lang);?></a></li>
 						        </ul>
 							</div>	

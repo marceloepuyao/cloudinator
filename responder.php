@@ -180,11 +180,12 @@ if($pregunta == null){
 								
 					<input type="hidden" name="idlev"  id="idlev"  value="<?php echo $idlevantamiento; ?>" >
 					<input type="hidden" name="idsubform"  id="idsubform"  value="<?php echo $idsubform; ?>" >
+					<input type="hidden" name="idclone"  id="idclone"  value="<?php echo $idclone; ?>" >
 					<input type="hidden" name="idpregunta" id="idpregunta"  value="<?php echo $pregunta['id']; ?>" >
 					
 					
 					<button id="respondersubpregunta" type='submit' data-theme='b' data-icon='check'>Continuar</button>
-		             <button id="omitirsubpregunta"  data-theme='c'  data-icon='delete'>Omitir</button>
+		            <button id="omitirsubpregunta"  data-theme='c'  data-icon='delete'>Omitir</button>
 		        </div>
 		   
 		</div>

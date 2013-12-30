@@ -237,7 +237,7 @@ if($action == 'insert'){
 		$idlev = (int)$_POST['idlev'];
 
 		DBQuery(" 	DELETE
-					FROm registropreguntas 
+					FROM registropreguntas 
 					WHERE clonedid = $idclone AND levantamientoid = $idlev ");
 		
 		DBQuery(" 	DELETE

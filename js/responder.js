@@ -20,9 +20,8 @@ function responderpregunta(idnode, idlev, idsubform, idpregunta, respsubpregunta
 			
 			//si la respuesta es positiva se continua, si no mensaje de error
 			if(resp.result){
-				if(idclone){
+				if(idclone!=0){
 					window.location.href = "responder.php?idlev=" + idlev + "&idclone=" + idclone;
-
 				}else{
 					window.location.href = "responder.php?idlev=" + idlev + "&idsubform=" + idsubform;
 				}
@@ -90,7 +89,6 @@ function SubPregunta(idpregunta, idnode, idlev, idsubform, idclone){
 			}else{
 				alert("problemas con escribir en la base de datos");
 			}
-		
 		});		
 }
 
@@ -142,6 +140,7 @@ $(document).ready(function(){
 	
 	$("#respondersubpregunta").on('click', function(){
 		var idsubform = $("#idsubform").val();
+		var idclone = $("#idclone").val();
 		var idlev = $("#idlev").val();
 		var idpregunta = $("#idpregunta").val();
 		var select = $("#select-choice").val();
@@ -154,15 +153,16 @@ $(document).ready(function(){
 			var response =textarea;
 		}
 		
-		responderpregunta(idnode, idlev, idsubform, idpregunta, response);
+		responderpregunta(idnode, idlev, idsubform, idpregunta, response, idclone);
 	});
 	$("#omitirsubpregunta").on('click', function(){
 		var idsubform = $("#idsubform").val();
+		var idclone = $("#idclone").val();
 		var idlev = $("#idlev").val();
 		var idpregunta = $("#idpregunta").val();
 		var idnode =$("#idnode").val(); 
 
-		responderpregunta(idnode, idlev, idsubform, idpregunta, "Omitida");
+		responderpregunta(idnode, idlev, idsubform, idpregunta, "Omitida", idclone);
 	});
 	$(".gobacktoquestion").on('click', function(){
 		var idpregunta = $(this).data('id');
