@@ -303,8 +303,15 @@ $(document).ready(function(){
 	$(".goto").on('click', function(){
 		var subform = $(this).data('subform');
 		var lev = $(this).data('levantamiento');
+		var idclone = $(this).data('idclone');
 		
-		window.location.href = "responder.php?idsubform="+subform+"&idlev="+lev;
+		if(idclone){
+			window.location.href = "responder.php?idclone="+idclone+"&idlev="+lev;
+		}else{
+			window.location.href = "responder.php?idsubform="+subform+"&idlev="+lev;
+		}
+		
+		
 	});
 	
 	$("#addlevantamiento").on('click', function(){
@@ -424,25 +431,26 @@ $(document).ready(function(){
 	});
 	
 	$(".edicion").on('click', function(){
-		
-		if(getUrlParameter("edit") == 1){
-			window.location.href = "recorrer.php?emp="+getUrlParameter("emp")+"&idlev="+getUrlParameter("idlev");
-		}else{
-			window.location.href = "recorrer.php?emp="+getUrlParameter("emp")+"&idlev="+getUrlParameter("idlev")+"&edit=1";
-		}
+		$.post("server/session.php",{
+			action: 'edit'
+			},function(respuesta){
+				window.location.href = "recorrer.php?emp="+getUrlParameter("emp")+"&idlev="+getUrlParameter("idlev");
+			});
 	});
 	$(".gestionempresas").on('click', function(){
 		window.location.href = "empresas.php";
 	});
 	
 	$(".deleteanswers").on('click', function(){
-		var idsubform = $(this).data('subform');
+		var idsubform = $(this).data('idsubform');
 		var idlev = $(this).data('levantamiento');
 		var idform = $(this).data('idform');
+		var idclone = $(this).data('idclone');
 		
 		$.post("ajax/ajaxresponder.php",{ 
 			idlev: idlev,
 			idsubform: idsubform,
+			idclone: idclone,
 			action: 'deleteall'
 			},function(respuesta){
 				var resp = jQuery.parseJSON(respuesta);
@@ -460,8 +468,8 @@ $(document).ready(function(){
         var textarea = $("#textarea").val();
 		
         
-        if(name != null && name != "" &&  industry != null && name != "" && textarea != null && textarea != ""){
-        	if(validateText(name) && validateText(industry) && validateLargeText(textarea)){
+        if(name != null && name != "" &&  industry != null && name != ""){
+        	if(validateText(name) && validateText(industry) && (validateLargeText(textarea) || textarea=="")){
         		crearEmpresa(name,industry,textarea, 0);
         	}else{
         		alert("Hay carácteres inválidos");
@@ -509,6 +517,33 @@ $(document).ready(function(){
 				}
 			});
 
+	});
+	
+	$(".gotoclone").on('click', function(){
+		var cloneid = $(this).data('cloneid');
+		var lev = $(this).data('levantamiento');
+		
+		window.location.href = "responder.php?idclone="+cloneid+"&idlev="+lev;
+	});
+	$(".deleteclone").on('click', function(){
+		var idclone = $(this).data('idclone');
+		var idlev = $(this).data('levantamiento');
+		var idform = $(this).data('idform');
+		
+		$.post("ajax/ajaxresponder.php",{ 
+			idclone: idclone,
+			idlev: idlev,
+			action: 'deleteclone'
+			},function(respuesta){
+				var resp = jQuery.parseJSON(respuesta);
+				if(resp.result){
+					window.location.href = "recorrer.php?idlev="+idlev+"&idform="+idform;
+				}else{
+					alert("problemas con escribir en la base de datos");
+				}
+			});
+		
+		
 	});
 	
 });

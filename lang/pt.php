@@ -96,6 +96,12 @@ $dicc = array(
 	'selectcompany' => 'Selecione Empresa para Entrevista',
 	'companylist' => 'Lista de Empresas',
 	'lastquestion' => 'Questão anterior',
-	'quit'=> 'Deixar'
+	'quit'=> 'Deixar',
+
+	'question'=> 'Rergunta',
+	'answer'=> 'Resposta',
+	'subanswer'=> 'Subresposta',
+	'date'=> 'Data',
+	'interviewer'=> 'Entrevistador'
 	);
 ?>

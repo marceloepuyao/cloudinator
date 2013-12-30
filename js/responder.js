@@ -3,7 +3,7 @@ function getUrlParameter(name) {
         (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
     );
 }
-function responderpregunta(idnode, idlev, idsubform, idpregunta, respsubpregunta){
+function responderpregunta(idnode, idlev, idsubform, idpregunta, respsubpregunta, idclone){
 	console.log("respsubpregunta",respsubpregunta);
 	$.post("ajax/ajaxresponder.php",{ 
 		idnode: idnode,
@@ -12,14 +12,20 @@ function responderpregunta(idnode, idlev, idsubform, idpregunta, respsubpregunta
 		action: 'insert',
 		idpregunta: idpregunta,
 		idempresa: getUrlParameter('emp'), 
-		respsubpregunta: respsubpregunta
+		respsubpregunta: respsubpregunta,
+		idclone: idclone
 		},function(respuesta){
 			console.log(respuesta);
 			var resp = jQuery.parseJSON(respuesta);
 			
 			//si la respuesta es positiva se continua, si no mensaje de error
 			if(resp.result){
-				window.location.href = "responder.php?idlev=" + idlev + "&idsubform=" + idsubform;
+				if(idclone){
+					window.location.href = "responder.php?idlev=" + idlev + "&idclone=" + idclone;
+
+				}else{
+					window.location.href = "responder.php?idlev=" + idlev + "&idsubform=" + idsubform;
+				}
 			}else{
 				alert("problemas con escribir en la base de datos");
 			}
@@ -44,7 +50,7 @@ function borrarUltimaPreguntaRespondida(idsubform, idlev){
 		});
 	}
 
-function SubPregunta(idpregunta, idnode, idlev, idsubform){
+function SubPregunta(idpregunta, idnode, idlev, idsubform, idclone){
 	
 	$.post("ajax/ajaxresponder.php",{ 
 		action: 'subpregunta',
@@ -79,7 +85,7 @@ function SubPregunta(idpregunta, idnode, idlev, idsubform){
 						$('#popupSubpregunta').popup("open");
 					}
 				}else{
-					responderpregunta(idnode, idlev, idsubform, idpregunta, null);
+					responderpregunta(idnode, idlev, idsubform, idpregunta, null, idclone);
 				}
 			}else{
 				alert("problemas con escribir en la base de datos");
@@ -110,9 +116,9 @@ $(document).ready(function(){
 		var idlev = $(this).data('idlev');	
 		var idsubform = $(this).data('idsubform');	
 		var idpregunta = $(this).data('idpregunta');
-		//var userid =  $(this).data('idpregunta');
+		var idclone =  $(this).data('idclone');
 		
-		SubPregunta(idpregunta, idnode, idlev, idsubform);
+		SubPregunta(idpregunta, idnode, idlev, idsubform, idclone);
 	});
 	$("#responderquit").on('click', function(){
 		var emp = $(this).data('emp');
@@ -160,10 +166,14 @@ $(document).ready(function(){
 	});
 	$(".gobacktoquestion").on('click', function(){
 		var idpregunta = $(this).data('id');
-		var idsubform = $("#idsubform").val();
-		var idlev = $("#idlev").val();
-		
-		window.location.href = "responder.php?idlev=" + idlev + "&idsubform=" + idsubform + "&idpreg="+idpregunta;
+		var idsubform = $(this).data('idsubform');
+		var idlev = $(this).data('idlev');
+		var idclone = $(this).data('idclone');
+		if(idclone){
+			window.location.href = "responder.php?idlev=" + idlev + "&idclone=" + idclone + "&idpreg="+idpregunta;
+		}else{
+			window.location.href = "responder.php?idlev=" + idlev + "&idsubform=" + idsubform + "&idpreg="+idpregunta;
+		}
 	});
 	$(".cerrarsesion").on('click', function(){
 		$.post("server/session.php",{ 

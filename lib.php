@@ -54,11 +54,18 @@ function getSubForm($idsubform){
 	return $subformularios[0];
 	
 }
+function getSubFormByCloneId($cloneid){
+	$cloned = DBQueryReturnArray("SELECT * FROM cloned WHERE id = $cloneid");
+	return getSubForm($cloned[0]['subformid']);
+	
+}
 
-function getQuestionAnswers($idsubform, $idlevantamiento, $cloned = 0){
+function getQuestionAnswers($idsubform, $idlevantamiento, $clonedid = 0){
 	//se obtienen la última pregunta hecha.
-	if($cloned){
-		$queryregistro = "SELECT * FROM registropreguntas WHERE levantamientoid = $idlevantamiento AND clonedid = $cloned order by created DESC limit 1";
+	if($clonedid){
+		$cloned = DBQueryReturnArray("SELECT * FROM cloned WHERE id = $clonedid");
+		$idsubform = $cloned[0]['subformid'];
+		$queryregistro = "SELECT * FROM registropreguntas WHERE levantamientoid = $idlevantamiento AND clonedid = $clonedid order by created DESC limit 1";
 	}else{
 		$queryregistro = "SELECT * FROM registropreguntas WHERE levantamientoid = $idlevantamiento AND subformid = $idsubform order by created DESC limit 1";
 	}	
@@ -66,8 +73,8 @@ function getQuestionAnswers($idsubform, $idlevantamiento, $cloned = 0){
 	//se obtiene la pregunta que viene... si no hay datos: la primera.
 	
 	//calcular completitud
-	if($cloned){
-		$registrototal = DBQueryReturnArray("SELECT * FROM registropreguntas WHERE levantamientoid = $idlevantamiento AND clonedid = $cloned");
+	if($clonedid){
+		$registrototal = DBQueryReturnArray("SELECT * FROM registropreguntas WHERE levantamientoid = $idlevantamiento AND clonedid = $clonedid");
 	}else{
 		$registrototal = DBQueryReturnArray("SELECT * FROM registropreguntas WHERE levantamientoid = $idlevantamiento AND subformid = $idsubform");
 	}
@@ -184,9 +191,15 @@ function calcularMaximoPreguntas($idsubform){
 	
 }
 
-function getQuestionById($idsubform, $idlevantamiento, $registroid){
+function getQuestionById($idsubform, $idlevantamiento, $registroid, $idclone){
 	
-	$queryregistro = "SELECT * FROM registropreguntas WHERE levantamientoid = $idlevantamiento AND subformid = $idsubform AND id = $registroid";
+	if($idclone){
+		$cloned = DBQueryReturnArray("SELECT * FROM cloned WHERE id = $idclone");
+		$idsubform = $cloned[0]['subformid'];
+		$queryregistro = "SELECT * FROM registropreguntas WHERE levantamientoid = $idlevantamiento AND clonedid = $idclone AND id = $registroid";
+	}else{
+		$queryregistro = "SELECT * FROM registropreguntas WHERE levantamientoid = $idlevantamiento AND subformid = $idsubform AND id = $registroid";
+	}
 	$registro = DBQueryReturnArray($queryregistro);
 	
 	$idpregunta = $registro[0]["preguntaid"];
@@ -202,9 +215,6 @@ function getQuestionById($idsubform, $idlevantamiento, $registroid){
 											FROM  links l
 											WHERE l.source = $idpregunta)");
 	return array("registro"=>$registro[0],"pregunta" =>$pregunta[0], "respuestas" => $respuestas, "ultimavisita"=>'Hace '.floor((time()-strtotime($registro[0]['created']))/(60*60*24)).' Días.', "completitud"=>0, "idregistro"=>$registro[0]['id']);
-	
-	
-	
 }
 
 function getRegistroAteriorConRegistroID($registroid, $idsubform, $idlev){
@@ -289,9 +299,13 @@ function getSession($sessionname){
 	return false;
 	
 }
-function getResumenSubform($idsubform, $idlevantamiento){
+function getResumenSubform($idsubform, $idlevantamiento, $idclone){
 	
-	$queryresumen = "SELECT * FROM registropreguntas where subformid = $idsubform AND levantamientoid = $idlevantamiento ORDER BY created";
+	if($idclone){
+		$queryresumen = "SELECT * FROM registropreguntas where clonedid = $idclone AND levantamientoid = $idlevantamiento ORDER BY created";
+	}else{
+		$queryresumen = "SELECT * FROM registropreguntas where subformid = $idsubform AND levantamientoid = $idlevantamiento ORDER BY created";
+	}
 	$resumen = DBQueryReturnArray($queryresumen);
 	return $resumen;
 	

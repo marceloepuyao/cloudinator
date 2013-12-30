@@ -105,10 +105,13 @@ $dicc = array(
 	'selectcompany' => 'Select Company to Interview',
 	'companylist' => 'Company List',
 	'lastquestion' => 'Last Question',
-	'quit'=> 'Quit'
-	
-	
-	
-	
-	);
+	'quit'=> 'Quit',
+
+	'question'=> 'Question',
+	'answer'=> 'Answer',
+	'subanswer'=> 'Subanswer',
+	'date'=> 'Date',
+	'interviewer'=> 'Interviewer'
+)
+
 ?>
