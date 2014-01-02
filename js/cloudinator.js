@@ -1,6 +1,8 @@
 var nodos = new Array();
 var links = new Array();
 var movingnodename = "";
+
+
 function getQueryStringByName(name) {
     name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
@@ -172,8 +174,6 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 			success: function() {					
 				var datos = this.get('responseData');
 				for (var i=0; i < datos.length; i++) {
-					//var id = datos[i].id;
-					//console.log("iddd", id);
 		   			nodos[i] = datos[i];
 	   			} 
 				cargaNodos();
@@ -205,7 +205,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 			}
 		});
 	}
-	function ajaxPostNodo(action, name, type, posx, posy, tree){
+	function ajaxPostNodo(action, name, type, posx, posy, tree, id){
 		A.io.request('ajax/ajaxpost.php', {
 			autoLoad: true,
 			method: 'POST',
@@ -216,7 +216,8 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 				tree: tree,
 				type: type,
 				posx: posx,
-				posy: posy
+				posy: posy,
+				id: id
 			},
 			on: {
 				success: function(data){
@@ -402,9 +403,9 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 	function cargaNodos() {
 		
 		var field = new Array();
-		//console.log("field", nodos);
 		for (var i=0; i < nodos.length; i++) {
 			var x = {};
+			x.idnode = nodos[i].id;
 			x.name = nodos[i].name;
 			x.type = nodos[i].type;
 			x.xy = [parseInt(nodos[i].posx), parseInt(nodos[i].posy)];
@@ -414,7 +415,6 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 			x.metaname = nodos[i].metaname;
 			field.push(x);
 		} 
-		
 
 		console.log('nodos', nodos[1]);
 		db1 = new A.DiagramBuilder(
@@ -425,44 +425,34 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 				srcNode: '#diagrambuilderCB',
 				on: {
 					 '*:drag': function(event) {
-						 
-						var drag = event.target;
-						var idnode = drag.get('node').getAttribute("id");
 						
-						if(drag.get('node').getAttribute("title") == "Pregunta"){
-							movingnodename= "" ;
-						}else if(drag.get('node').getAttribute("title")== "Respuesta"){
-							movingnodename= "";
-						}else if(drag.get('node').getAttribute("title")== "Fin"){
-							movingnodename= "";
-						}else{
-							movingnodename = A.one('#'+idnode).get('children').slice(-2).get('text')[0];
-						}
-						
-						deleltelinesinfo();
-						//noticeSaving('inprogress');
+							
 					},
 					'*:end': function(event){
-						
-						var containerXY = this.dropContainer.getXY();
-						
-						var posix = event.pageX - containerXY[0];
-						var posiy = event.pageY - containerXY[1];
-						
-						if(posix < 0 || posiy < 0){
-							//error message or simply do nothing
-						}else if(movingnodename != undefined && movingnodename != "" && movingnodename != null){
-							console.log("BORRAR", movingnodename);
-							ajaxPostNodo('update', movingnodename, 'condition', posix, posiy, getQueryStringByName('id')); //event.pageX no es la posicion exacta, porque concidera todo
+						var drag = event.target;
+						var diagramNode = A.Widget.getByNode(drag.get('dragNode'));
+						console.log("end", diagramNode);
+						if(diagramNode!= null){
+							var nodeid = diagramNode.get('idnode');
+							var type = diagramNode.get('type');
+							var name = diagramNode.get('name');
+							
+							var containerXY = this.dropContainer.getXY();
+							
+							var posix = event.pageX - containerXY[0];
+							var posiy = event.pageY - containerXY[1];
+							
+							if(posix < 0 || posiy < 0){
+								//error message or simply do nothing
+							}else if(nodeid != undefined && nodeid != "" && nodeid != null){
+								ajaxPostNodo('update', name, type, posix, posiy, getQueryStringByName('id'), nodeid); //event.pageX no es la posicion exacta, porque considera todo
+							}
 						}
 						
-						
-						//A.one('#savechanges').setStyle('display', '');
 					},
 					'*:hit': function(event){
-						//console.log("nueva pregunta: ", event.drag.get('node')); 
-						//console.log("hit drag", event.drag.get('node').getData);
 						
+			
 						var lastXY = event.drag.lastXY;
 						var containerXY = this.dropContainer.getXY();
 						
@@ -487,11 +477,9 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 							if(posix < 0 || posiy < 0){
 								//error message or simply do nothing
 							}else if(nodetype == "state" || nodetype == "condition" || nodetype == "end" ){
-								ajaxPostNodo('insert', nombre, nodetype, posix, posiy, getQueryStringByName('id'));
-							}else if(nodetype == "start"){
-								
-								
+								ajaxPostNodo('insert', nombre, nodetype, posix, posiy, getQueryStringByName('id'), null);
 							}
+							console.log("hit");
 							
 							var newField = instance.addField({
 								xy: [posix, posiy] ,
@@ -508,7 +496,6 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 					},
 					save: function(event) {
 						//aca se guardan los cambios
-						//noticeSaving('inprogress');
 						console.log('save', event.target.editingNode.get('name'));
 						//A.one('#savechanges').setStyle('display', '');
 					}

@@ -36,7 +36,7 @@ function deleltelinesinfo(){
 	//db1.connector.hide();
 	a.remove();
 }
-function ajaxPostNodo(action, name, type, posx, posy, tree){
+function ajaxPostNodo(action, name, type, posx, posy, tree, nodeid){
 	A.io.request('ajax/ajaxpost.php', {
 		autoLoad: true,
 		method: 'POST',
@@ -47,7 +47,8 @@ function ajaxPostNodo(action, name, type, posx, posy, tree){
 			tree: tree,
 			type: type,
 			posx: posx,
-			posy: posy
+			posy: posy,
+			nodeid: nodeid
 		},
 		on: {
 			start: function(){noticeSaving('inprogress');},
@@ -156,6 +157,7 @@ var Lang = A.Lang,
 	METADATA = 'metadata',
 	METATYPE = 'metatype',
 	METANAME	= 'metaname',
+	IDNODE = 'idnode',
 	DIAGRAM = 'diagram',
 	DIAGRAM_BUILDER_NAME = 'diagram-builder',
 	DIAGRAM_NODE = 'diagramNode',
@@ -532,13 +534,13 @@ var DiagramBuilder = A.Component.create({
 			if (selectedNode && !selectedNode.get(REQUIRED) && confirm(strings[DELETE_NODES_MESSAGE])) {
 				
 				//codigo implantado cloudinator team BORRAR NODO SELECCIONADO
-				var idparent = selectedNode.bodyNode.ancestor().getAttribute("id");
-				var nameid = A.one('#'+idparent).next().get('text');
-				ajaxPostNodo('delete', nameid, 'state', 0, 0, getQueryStringByName('id'));
+				var diagramNode = A.Widget.getByNode(selectedNode);
+				var nodeid = selectedNode.get('idnode');
+				var name = selectedNode.get('name');
+				
+				ajaxPostNodo('delete', name, 'state', 0, 0, getQueryStringByName('id'), nodeid);
 				//fin codigo implantado cloudinator team
-				
-				
-				
+	
 				selectedNode.close();
 				instance.editingNode = instance.selectedNode = null;
 				instance.stopEditing();
@@ -590,9 +592,6 @@ var DiagramBuilder = A.Component.create({
 				tabView.selectTab(A.DiagramBuilder.SETTINGS_TAB);
 				
 				var data = diagramNode.getProperties();
-				//data.push({'attributeName': "metadata", 'editor': new A.TextAreaCellEditor(), 'name': "Metadata", 'value': ""}); 
-				//data.push({'attributeName': "metatype", 'editor': new A.TextAreaCellEditor(), 'name': "Metatype", 'value': ""});
-				
 				instance.propertyList.set(DATA, data);
 	
 				
@@ -903,6 +902,9 @@ var DiagramBuilder = A.Component.create({
 		_onSave: function(event) {
 			var instance = this;
 			var editingNode = instance.editingNode;
+			var bleh = instance.editingNode;
+			console.log("nodo a editar", instance.propertyList);
+			console.log("nodo a editar 2", instance);
 			var editingConnector = instance.editingConnector;
 			var modelList = instance.propertyList.get(DATA);
 			var attributes = [];
@@ -923,6 +925,7 @@ var DiagramBuilder = A.Component.create({
 						metadata: attributes['metadata'],
 						metatype: attributes['metatype'],
 						metaname: attributes['metaname'],
+						idnode: attributes['idnode'],
 						tree: getQueryStringByName('id'),
 	
 					},
@@ -1104,6 +1107,10 @@ var DiagramNode = A.Component.create({
 			value: _EMPTY_STR,
 			validator: isString
 		},
+		idnode: {
+			value: _EMPTY_STR,
+			validator: isString
+		},
 		metatype: {
 			value: _EMPTY_STR,
 			validator: isString
@@ -1195,6 +1202,7 @@ var DiagramNode = A.Component.create({
 				name: 'Name',
 				type: 'Type',
 				metadata: 'Opciones',
+				idnode: 'Id del Nodo',
 				metaname: 'Subpregunta',
 				metatype: 'Tipo'
 			}
@@ -1247,7 +1255,7 @@ var DiagramNode = A.Component.create({
 
 		CONTROLS_TEMPLATE: '<div class="' + CSS_DB_CONTROLS + '"></div>',
 
-		SERIALIZABLE_ATTRS: [DESCRIPTION, NAME, METATYPE, METADATA,METANAME, REQUIRED, TYPE, WIDTH, HEIGHT, Z_INDEX, XY],
+		SERIALIZABLE_ATTRS: [IDNODE, DESCRIPTION, NAME, METATYPE, METADATA,METANAME, REQUIRED, TYPE, WIDTH, HEIGHT, Z_INDEX, XY],
 
 		initializer: function() {
 			var instance = this;
@@ -1436,11 +1444,11 @@ var DiagramNode = A.Component.create({
 			}
 			if(instance.get(BOUNDING_BOX).getAttribute("class").lastIndexOf("end") != -1){
 				console.log('diagramNode', diagramNode);
-				ajaxPostNodo('insert', nameend, typetarget, diagramNode.get(BOUNDING_BOX).getXY()[0] - 278, diagramNode.get(BOUNDING_BOX).getXY()[1] -59, getQueryStringByName('id'));
+				ajaxPostNodo('insert', nameend, typetarget, diagramNode.get(BOUNDING_BOX).getXY()[0] - 278, diagramNode.get(BOUNDING_BOX).getXY()[1] -59, getQueryStringByName('id'), 0);
 				alert("No puedes conectar un nodo fin");
 			}			
 			else if(instance.get(BOUNDING_BOX).getAttribute("class") == diagramNode.get(BOUNDING_BOX).getAttribute("class"))	{
-				ajaxPostNodo('insert', nameend, typetarget, diagramNode.get(BOUNDING_BOX).getXY()[0] - 278, diagramNode.get(BOUNDING_BOX).getXY()[1] -59, getQueryStringByName('id'));
+				ajaxPostNodo('insert', nameend, typetarget, diagramNode.get(BOUNDING_BOX).getXY()[0] - 278, diagramNode.get(BOUNDING_BOX).getXY()[1] -59, getQueryStringByName('id'), 0);
 				alert("No se puede conectar dos nodos del mismo tipo");
 				
 			}else if(diagramNode.get(BOUNDING_BOX).getAttribute("class").lastIndexOf("end")!=-1 && instance.get(BOUNDING_BOX).getAttribute("class").lastIndexOf("condition")!=-1){
@@ -1650,6 +1658,11 @@ var DiagramNode = A.Component.create({
 					attributeName: METADATA,
 					editor: new A.TextAreaCellEditor(),
 					name: strings[METADATA]
+				},
+				{
+					attributeName: IDNODE,
+					editor: false,
+					name: strings[IDNODE]
 				}
 				
 			];
@@ -1875,8 +1888,7 @@ var DiagramNode = A.Component.create({
 			//namestart = A.one('#'+nodeid).get('children').slice(-2).get('text')[0];
 			console.log("details", event);
 			
-			console.log(event);
-			
+			/*
 			if(event.newVal != event.prevVal){
 				A.io.request('ajax/ajaxpost.php', {
 					autoLoad: true,
@@ -1893,7 +1905,7 @@ var DiagramNode = A.Component.create({
 						success: function(data){
 							
 							if(this.get('responseData').result){
-								console.log(event.prevVal, "cambio a",  event.newVal, this.get('responseData') );
+								console.log(event.x, "cambio a",  event.newVal, this.get('responseData') );
 								noticeSaving('success');
 								/*
 								instance.eachConnector(function(connector, index, sourceNode) {
@@ -1902,7 +1914,7 @@ var DiagramNode = A.Component.create({
 									transition[(instance === sourceNode) ? SOURCE : TARGET] = event.newVal;
 									connector.set(TRANSITION, transition);
 								});
-								*/
+								*//*
 							}else{
 								noticeSaving('error');
 								alert("name already exist");
@@ -1915,6 +1927,7 @@ var DiagramNode = A.Component.create({
 			}else{
 				
 			}
+			*/
 			
 			
 			instance.eachConnector(function(connector, index, sourceNode) {
@@ -2263,10 +2276,7 @@ A.DiagramNodeEnd = A.Component.create({
 	ATTRS: {
 		type: {
 			value: END
-		}/*,
-		metadata: {
-			value: "casacascas"
-		}*/
+		}
 	},
 
 	EXTENDS: A.DiagramNodeState
