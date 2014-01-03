@@ -10,6 +10,12 @@ try {
 	
 	$query = "SELECT * FROM links WHERE tree='$tree'";
 	$datos = DBQueryReturnArray($query);
+	foreach ($datos as $dato){
+		
+		$source = DBQueryReturnArray("SELECT * FROM nodos WHERE id = '$dato[source]'");
+		$target = DBQueryReturnArray("SELECT * FROM nodos WHERE id = '$dato[target]'");
+		
+	}
 	$data = array(
 		'result' => true,
 		'datos' => $datos

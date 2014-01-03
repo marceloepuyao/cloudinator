@@ -21,6 +21,10 @@ function ajaxPostLink(action, name, source, target, tree, typetarget, xtarget, y
 				console.log('ajaxPostLink',this.get('responseData'));
 				if(this.get('responseData').result){
 					noticeSaving('success');
+					if(action == "delete"){
+						window.location.reload();
+					}
+					
 				}else{
 					noticeSaving('error');
 				}
@@ -457,12 +461,24 @@ var DiagramBuilder = A.Component.create({
 		connect: function(diagramNode1, diagramNode2, optConnector) {
 			var instance = this;
 
+			
 			if (isString(diagramNode1)) {
-				diagramNode1 = DiagramNode.getNodeByName(diagramNode1);
+				//diagramNode1 = DiagramNode.getNodeByName(diagramNode1);
+				
+				instance.get(FIELDS).each(function(diagramNode) {
+						if(diagramNode.get('idnode') == diagramNode1){
+							diagramNode1 = diagramNode;
+						}
+					});	
 			}
 
 			if (isString(diagramNode2)) {
-				diagramNode2 = DiagramNode.getNodeByName(diagramNode2);
+				//diagramNode2 = DiagramNode.getNodeByName(diagramNode2);
+				instance.get(FIELDS).each(function(diagramNode) {
+					if(diagramNode.get('idnode') == diagramNode2){
+						diagramNode2 = diagramNode;
+					}
+				});
 			}
 
 			if (diagramNode1 && diagramNode2) {
@@ -479,6 +495,7 @@ var DiagramBuilder = A.Component.create({
 
 			AArray.each(nodes, function(node) {
 				if (node.hasOwnProperty(SOURCE) && node.hasOwnProperty(TARGET)) {
+					//console.log("prueba de conexion", node.source, node.target, node.connector);
 					instance.connect(node.source, node.target, node.connector);
 				}
 			});
@@ -510,8 +527,8 @@ var DiagramBuilder = A.Component.create({
 					var transition = connector.get(TRANSITION);
 					
 					//C�digo implantado por cloudinator team
-					console.log('aca se elimina un conector', transition.source, transition.target);
-					ajaxPostLink("delete", "", transition.source, transition.target, getQueryStringByName('id'));
+					console.log('aca se elimina un conector', connector.get("name"));
+					ajaxPostLink("delete", connector.get("name"),0,0, getQueryStringByName('id'));
 					//Fin C�digo implantado por cloudinator team
 					
 
@@ -927,7 +944,6 @@ var DiagramBuilder = A.Component.create({
 						metaname: attributes['metaname'],
 						idnode: attributes['idnode'],
 						tree: getQueryStringByName('id'),
-	
 					},
 					on: {
 						start: function(){noticeSaving('inprogress');},
@@ -937,6 +953,8 @@ var DiagramBuilder = A.Component.create({
 								noticeSaving('success');
 							}else{
 								noticeSaving('error');
+								alert("No se pueden repetir nombres");
+								window.location.reload();
 							}
 						},
 						failure: function(){noticeSaving('warning');}
@@ -1282,7 +1300,6 @@ var DiagramNode = A.Component.create({
 
 			instance.get(BOUNDING_BOX).addClass(CSS_DIAGRAM_NODE+_DASH+instance.get(TYPE));
 		},
-
 		destructor: function() {
 			var instance = this;
 
@@ -1342,12 +1359,12 @@ var DiagramNode = A.Component.create({
 
 		connect: function(transition, optConnector) {
 			var instance = this;
-
 			transition = instance.addTransition(transition);
 
 			var connector = null;
 			var diagramNode = A.DiagramNode.getNodeByName(transition.target);
-
+			
+		
 			if (diagramNode) {
 				if (!instance.isTransitionConnected(transition)) {
 					var builder = instance.get(BUILDER);
@@ -1425,37 +1442,35 @@ var DiagramNode = A.Component.create({
 			var instance = this;
 			var dd = instance.boundaryDragDelegate.dd;
 			
-			//C�digo implantado cloudinator team
-			var idstart = instance.get(BOUNDING_BOX).getAttribute("id");
-			var idend = diagramNode.get(BOUNDING_BOX).getAttribute("id");
-			namestart = A.one('#'+idstart).get('children').slice(-2).get('text')[0];
-			nameend = A.one('#'+idend).get('children').slice(-2).get('text')[0];
+			//Código implantado cloudinator team
+			var start = A.Widget.getByNode(instance.get(BOUNDING_BOX));
+			var end = A.Widget.getByNode(diagramNode.get(BOUNDING_BOX));
+			
+			var idstart = A.Widget.getByNode(instance.get(BOUNDING_BOX)).get('idnode');
+			var idend = A.Widget.getByNode(diagramNode.get(BOUNDING_BOX)).get('idnode');
+
+			var namestart = start.get('name');
+			var nameend = end.get('name');
+			
+			var typesource = start.get('type');
+			var typetarget = end.get('type');
+			
+			console.log("nombre_start", idstart, namestart, typesource); 
+			console.log("nombre_end",idend,nameend , typetarget); 
 			
 			
-			console.log("nombre_start",instance.boundaryDragDelegate); 
-			console.log("nombre_end",diagramNode.get(BOUNDING_BOX).getXY()); 
-			
-			if(diagramNode.get(BOUNDING_BOX).getAttribute("class").lastIndexOf("state") != -1){
-				var typetarget = "state";
-			}else if(diagramNode.get(BOUNDING_BOX).getAttribute("class").lastIndexOf("condition") != -1){
-				var typetarget = "condition";
-			}else{
-				var typetarget = "end";
-			}
-			if(instance.get(BOUNDING_BOX).getAttribute("class").lastIndexOf("end") != -1){
-				console.log('diagramNode', diagramNode);
+			if(typesource == "end" ){
 				ajaxPostNodo('insert', nameend, typetarget, diagramNode.get(BOUNDING_BOX).getXY()[0] - 278, diagramNode.get(BOUNDING_BOX).getXY()[1] -59, getQueryStringByName('id'), 0);
 				alert("No puedes conectar un nodo fin");
 			}			
-			else if(instance.get(BOUNDING_BOX).getAttribute("class") == diagramNode.get(BOUNDING_BOX).getAttribute("class"))	{
+			else if(typesource == typetarget)	{
 				ajaxPostNodo('insert', nameend, typetarget, diagramNode.get(BOUNDING_BOX).getXY()[0] - 278, diagramNode.get(BOUNDING_BOX).getXY()[1] -59, getQueryStringByName('id'), 0);
 				alert("No se puede conectar dos nodos del mismo tipo");
 				
-			}else if(diagramNode.get(BOUNDING_BOX).getAttribute("class").lastIndexOf("end")!=-1 && instance.get(BOUNDING_BOX).getAttribute("class").lastIndexOf("condition")!=-1){
-				
+			}else if(typetarget == "end" && typesource == "condition"){
+				ajaxPostNodo('insert', nameend, typetarget, diagramNode.get(BOUNDING_BOX).getXY()[0] - 278, diagramNode.get(BOUNDING_BOX).getXY()[1] -59, getQueryStringByName('id'), 0);
 				alert("No puedes conectar un nodo pregunta con un nodo fin");
 			}else{
-				//ajaxPostLink("insert", "", namestart, nameend, getQueryStringByName('id'), typetarget, diagramNode.get(BOUNDING_BOX).getXY()[0] - 278, diagramNode.get(BOUNDING_BOX).getXY()[1] -59);
 				A.io.request('ajax/ajaxpost.php', {
 					autoLoad: true,
 					method: 'POST',
@@ -1466,7 +1481,10 @@ var DiagramNode = A.Component.create({
 						tree: getQueryStringByName('id'),
 						source: namestart,
 						target: nameend,
+						idsource: idstart,
+						idtarget: idend,
 						typetarget: typetarget,
+						typesource: typesource,
 						xtarget: diagramNode.get(BOUNDING_BOX).getXY()[0] - 278,
 						ytarget: diagramNode.get(BOUNDING_BOX).getXY()[1] - 59
 					},
@@ -1494,9 +1512,6 @@ var DiagramNode = A.Component.create({
 				});
 				
 				//Fin c�digo implantado cloudinator team
-				
-				
-				
 			}
 			
 			

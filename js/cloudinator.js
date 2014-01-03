@@ -30,6 +30,7 @@ function noticeSaving(state){
 		$('#notice-savechanges-success').css('display', 'none');
 		$('#notice-savechanges-inprogress').css('display', 'none');
 		$('#notice-savechanges-error').css('display', '');
+		
 		//$('#notice-savechanges-warning').css('display','');
 	}else if(state == "warning"){
 		$('body').css('cursor', 'auto');
@@ -47,7 +48,6 @@ function noticeSaving(state){
 		$('#notice-savechanges-error').css('display', 'none');
 		//$('#notice-savechanges-warning').css('display','none');
 	}
-
 }
 function noticeDeletedAndReleased(){
 	$.ajax({
@@ -112,6 +112,11 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 			}
 		});
 	});
+	function getNameByNodeId(nodeid){
+		
+		
+		
+	}
 	function cambianombre(){
 		var newname = prompt("Nuevo Nombre","");
 		if (newname!=null && newname!="" && newname.length>0){
@@ -185,7 +190,9 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 		A.io.request('ajax/ajaxlinks.php', {
 			dataType: 'json',
 			method: 'POST',
-			data: {tree: treeID},
+			data: {
+				tree: treeID
+				},
 			on: {
 				success: function() {
 					var response = this.get('responseData');
@@ -431,7 +438,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 					'*:end': function(event){
 						var drag = event.target;
 						var diagramNode = A.Widget.getByNode(drag.get('dragNode'));
-						console.log("end", diagramNode);
+						console.log("end", drag.get('dragNode'));
 						if(diagramNode!= null){
 							var nodeid = diagramNode.get('idnode');
 							var type = diagramNode.get('type');
@@ -525,13 +532,15 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 		for (var i=0; i < links.length; i++) {
 			var x = {};
 			x.connector = {};
-			x.connector.name = links[i].name;
+			x.connector.name = links[i].id;
 			
 			for(var j=0; j < nodos.length; j++) {
 				if(nodos[j].id == links[i].source){
-					x.source = nodos[j].name;
+					var a = A.Widget.getByNode('[data-nodeId=' + BuildNodeName(nodos[j].name) + ']');
+					console.log("a", a);
+					x.source = nodos[j].id;
 				}else if(nodos[j].id == links[i].target){
-					x.target = nodos[j].name;
+					x.target = nodos[j].id;
 				}
 			}
 			connectors.push(x);
@@ -542,6 +551,9 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 		createmetadatatable();
 		deleltelinesinfo();
 		ajaxFormNamebyId(getQueryStringByName('id'));
+	}
+	function BuildNodeName(name) {
+		return 'diagramNode' + '_' + 'field' + '_' + name.replace(/[^a-z0-9.:_\-]/ig, '_');
 	}
 	
 	function deleltelinesinfo(){
