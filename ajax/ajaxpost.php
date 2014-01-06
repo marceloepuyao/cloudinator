@@ -94,14 +94,18 @@ if(array_key_exists('nodo', $_POST) || array_key_exists('link', $_POST)){
 						(NULL, $tree, '$name', '$type', '$posx', '$posy', null, null, null);
 						";
 						
-						DBQuery($query);
+						$result = DBQuery($query);
+						
+						$id = DBQueryReturnArray("SELECT id from nodos ORDER BY id DESC ");
 						
 						//*************** Conexión MAGENTO
 						//addProductMagento($name);			
 						//*************** Fin conexión MAGENTO
 			
 						$data = array(
-							'result' => true
+							'result' => true,
+							'id' => $id[0]['id']
+							
 						);
 					}
 					print($json->encode($data));

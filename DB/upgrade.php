@@ -384,7 +384,6 @@ if ($version < 2013122702) {
 	echo '</hr>';
 }
 
-
 /*
 //EJEMPLO: (RECUERDE CAMBIAR "AAAAMMDDNN" POR EL NUMERO DE ACTUALIZACION A = Año, M = Mes, D = Dia, N = Numero)
 

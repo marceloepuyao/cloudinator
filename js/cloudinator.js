@@ -212,7 +212,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 			}
 		});
 	}
-	function ajaxPostNodo(action, name, type, posx, posy, tree, id){
+	function ajaxPostNodo(action, name, type, posx, posy, tree, id, instance){
 		A.io.request('ajax/ajaxpost.php', {
 			autoLoad: true,
 			method: 'POST',
@@ -228,8 +228,15 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 			},
 			on: {
 				success: function(data){
-					console.log('ajaxPostNodo', this.get('responseData'));
 					if(this.get('responseData').result){
+						if(action == "insert"){
+							var newField = instance.addField({
+								xy: [posx, posy] ,
+								type: type,
+								name: name, 
+								idnode: this.get('responseData').id
+							});
+						}
 						noticeSaving('success');
 					}else{
 						noticeSaving('error');
@@ -438,7 +445,6 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 					'*:end': function(event){
 						var drag = event.target;
 						var diagramNode = A.Widget.getByNode(drag.get('dragNode'));
-						console.log("end", drag.get('dragNode'));
 						if(diagramNode!= null){
 							var nodeid = diagramNode.get('idnode');
 							var type = diagramNode.get('type');
@@ -476,7 +482,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 
 						if (instance.isAvailableFieldsDrag(drag)) {
 							var availableField = drag.get('node').getData('availableField');
-							
+	
 							var nodetype = availableField.get("type");
 							
 							var nombre = "nuevonombre " + parseInt(Math.random()*10000) ;
@@ -484,16 +490,9 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 							if(posix < 0 || posiy < 0){
 								//error message or simply do nothing
 							}else if(nodetype == "state" || nodetype == "condition" || nodetype == "end" ){
-								ajaxPostNodo('insert', nombre, nodetype, posix, posiy, getQueryStringByName('id'), null);
+								ajaxPostNodo('insert', nombre, nodetype, posix, posiy, getQueryStringByName('id'), null, instance);
 							}
-							console.log("hit");
-							
-							var newField = instance.addField({
-								xy: [posix, posiy] ,
-								type: nodetype,
-								name: nombre
-							});
-
+		
 							//instance.select(newField);
 							deleltelinesinfo();
 							
@@ -537,7 +536,6 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 			for(var j=0; j < nodos.length; j++) {
 				if(nodos[j].id == links[i].source){
 					var a = A.Widget.getByNode('[data-nodeId=' + BuildNodeName(nodos[j].name) + ']');
-					console.log("a", a);
 					x.source = nodos[j].id;
 				}else if(nodos[j].id == links[i].target){
 					x.target = nodos[j].id;

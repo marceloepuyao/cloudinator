@@ -1455,20 +1455,26 @@ var DiagramNode = A.Component.create({
 			var typesource = start.get('type');
 			var typetarget = end.get('type');
 			
+			console.log("object real", start);
 			console.log("nombre_start", idstart, namestart, typesource); 
 			console.log("nombre_end",idend,nameend , typetarget); 
 			
-			
 			if(typesource == "end" ){
-				ajaxPostNodo('insert', nameend, typetarget, diagramNode.get(BOUNDING_BOX).getXY()[0] - 278, diagramNode.get(BOUNDING_BOX).getXY()[1] -59, getQueryStringByName('id'), 0);
+				if(idend != null ){
+					ajaxPostNodo('insert', nameend, typetarget, diagramNode.get(BOUNDING_BOX).getXY()[0] - 278, diagramNode.get(BOUNDING_BOX).getXY()[1] -59, getQueryStringByName('id'), 0);
+				}
 				alert("No puedes conectar un nodo fin");
 			}			
 			else if(typesource == typetarget)	{
-				ajaxPostNodo('insert', nameend, typetarget, diagramNode.get(BOUNDING_BOX).getXY()[0] - 278, diagramNode.get(BOUNDING_BOX).getXY()[1] -59, getQueryStringByName('id'), 0);
+				if(idend != null ){
+					ajaxPostNodo('insert', nameend, typetarget, diagramNode.get(BOUNDING_BOX).getXY()[0] - 278, diagramNode.get(BOUNDING_BOX).getXY()[1] -59, getQueryStringByName('id'), 0);
+				}
 				alert("No se puede conectar dos nodos del mismo tipo");
 				
 			}else if(typetarget == "end" && typesource == "condition"){
-				ajaxPostNodo('insert', nameend, typetarget, diagramNode.get(BOUNDING_BOX).getXY()[0] - 278, diagramNode.get(BOUNDING_BOX).getXY()[1] -59, getQueryStringByName('id'), 0);
+				if(idend != null ){
+					ajaxPostNodo('insert', nameend, typetarget, diagramNode.get(BOUNDING_BOX).getXY()[0] - 278, diagramNode.get(BOUNDING_BOX).getXY()[1] -59, getQueryStringByName('id'), 0);
+				}
 				alert("No puedes conectar un nodo pregunta con un nodo fin");
 			}else{
 				A.io.request('ajax/ajaxpost.php', {
