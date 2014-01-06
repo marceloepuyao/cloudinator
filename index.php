@@ -90,7 +90,7 @@ if(isset($_SESSION['ultimoacceso']) && isset($_SESSION['usuario']) && isset($_SE
         </header>
         <article data-role="content">
             <p><?php echo get_string("namepassinvalid", $lang)?></p>
-            <a href="#" data-role="button" data-rel="back"><?php echo get_string("accept", $lang)?></a>
+            <a href="#" id="acceptButton" data-role="button" data-rel="back"><?php echo get_string("accept", $lang)?></a>
         </article>
     </section>
     

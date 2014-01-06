@@ -19,6 +19,7 @@ function login(){
          }
          else{
              $.mobile.changePage('#pageError', 'pop', true, true);
+             //$("#acceptButton").focus();
          }
      });
 }
