@@ -277,7 +277,7 @@ $formularios = DBQueryReturnArray($queryformularios);
 				echo "<h3 > Clonado: ".$form['name']."-".$subformulario['name']."</h3>";
 			
 				
-				$tablaresumen = getResumenSubform($subformulario['id'], $idlevantamiento, 0);
+				$tablaresumen = getResumenSubform($subformulario['id'], $idlevantamiento, $clone['id']);
 				
 				if(count($tablaresumen)>0){
 
