@@ -459,9 +459,9 @@ var DiagramBuilder = A.Component.create({
 		},
 
 		connect: function(diagramNode1, diagramNode2, optConnector) {
+					
 			var instance = this;
 
-			
 			if (isString(diagramNode1)) {
 				//diagramNode1 = DiagramNode.getNodeByName(diagramNode1);
 				
@@ -471,6 +471,7 @@ var DiagramBuilder = A.Component.create({
 						}
 					});	
 			}
+			
 
 			if (isString(diagramNode2)) {
 				//diagramNode2 = DiagramNode.getNodeByName(diagramNode2);
@@ -482,6 +483,7 @@ var DiagramBuilder = A.Component.create({
 			}
 
 			if (diagramNode1 && diagramNode2) {
+				console.log("diagram", diagramNode2.get(NAME));
 				diagramNode1.connect(diagramNode2.get(NAME), optConnector);
 			}
 			
@@ -1360,9 +1362,10 @@ var DiagramNode = A.Component.create({
 		connect: function(transition, optConnector) {
 			var instance = this;
 			transition = instance.addTransition(transition);
-
-			var connector = null;
+			console.log("transition", transition);
 			var diagramNode = A.DiagramNode.getNodeByName(transition.target);
+			var connector = null;
+			
 			
 		
 			if (diagramNode) {
@@ -1748,7 +1751,7 @@ var DiagramNode = A.Component.create({
 			var instance = this;
 
 			instance.get(TRANSITIONS).each(function(transition) {
-				instance.connect(transition, transition.connector);
+				instance.connect(transition, transition.connector, this);
 			});
 		},
 

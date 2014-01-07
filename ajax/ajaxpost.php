@@ -156,7 +156,7 @@ if(array_key_exists('nodo', $_POST) || array_key_exists('link', $_POST)){
 					$metatype = mysql_real_escape_string($_POST['metatype']);
 					$idnode = (int)$_POST['idnode'];
 					
-					/*
+					
 					$queryifexist = "SELECT * FROM nodos WHERE id = $idnode AND tree = $tree";
 					$ifexist = DBQueryReturnArray($queryifexist);
 			
@@ -168,7 +168,7 @@ if(array_key_exists('nodo', $_POST) || array_key_exists('link', $_POST)){
 						$nifexist2 = count($ifexist2);
 					}
 					if($nifexist2==0){
-					*/
+					
 						$query = "UPDATE `nodos` SET `name` = '$name', `metaname` =  '$metaname', `metadata` =  '$metadata', `metatype` = '$metatype' WHERE `nodos`.`id` = $idnode AND `nodos`.`tree` = $tree;";
 			
 						DBQuery($query);
@@ -177,13 +177,13 @@ if(array_key_exists('nodo', $_POST) || array_key_exists('link', $_POST)){
 							'result' => true,
 							'nifexist' => 0
 						);
-						/*
+						
 					}else{
 						$data = array(
 							'result' => false,
 							'nifexist' => $nifexist2
 						);
-					}*/
+					}
 					print($json->encode($data));
 				} catch (Exception $e) {
 					$data = array(
@@ -302,10 +302,9 @@ if(array_key_exists('nodo', $_POST) || array_key_exists('link', $_POST)){
 						(NULL, $tree, '$target', '$typetarget', $xtarget, $ytarget, null, null, null);";
 						DBQuery($insertnode);
 						
-						$prequerytarget = "SELECT id FROM nodos WHERE name = '$target' and tree = $tree;";
-						$data2 = DBQuery($prequerytarget);
-						$row = $data2->fetch_assoc();
-						$idtarget = $row['id'];
+						$prequerytarget = "SELECT id FROM nodos ORDER BY id DESC;";
+						$data2 = DBQueryReturnArray($prequerytarget);
+						$idtarget = $data2[0]['id'];
 					}
 					
 					$problem = false;
