@@ -86,15 +86,15 @@ $formularios = getAllFormularios();
 	<div data-role="content">
 	
 		<?php echo print_navbar(1, 0, 0, 0, 0, $lang);?>
-		<?php if($info != ""){?>
-		<h4><?php echo get_string("infocompany", $lang); ?></h4>
+		<?php if(false){//$info != ""){?>
+		<h2><?php echo get_string("infocompany", $lang); ?></h2>
 
 		<p id="infoempresa" > <?php echo $info; ?></p>
 		<br>
 		<?php }?>
 		<?php if($levantamientos){?>
 		
-		<h4 ><?php echo get_string("recordlevantamientos", $lang)?></h4>
+		<h2><?php echo get_string("recordlevantamientos", $lang)?></h2>
 		
 		<table data-role="table" id="table-column-toggle" data-mode="columntoggle" class="ui-responsive table-stroke">
 		     <thead>

@@ -227,96 +227,90 @@ $formularios = DBQueryReturnArray($queryformularios);
 	<div data-role="content">
 		<h1>Reporte Levantamiento : <?php echo $levantamiento['titulo'];?></h1>
 		
-		<?php foreach ($formularios as $form){ 
-
-			$subformularios = getSubFormsbyFormId($form['id'], $levantamiento['created']);
-			?>
-			
-			<?php foreach($subformularios as $subformulario) {?>
-				<h3><?php echo $form['name']."-".$subformulario['name'];?></h3>
-				<?php 
+		<?php 			
+			foreach ($formularios as $form){ 
+	
+				$subformularios = getSubFormsbyFormId($form['id'], $levantamiento['created']);
+				?>
 				
-				$tablaresumen = getResumenSubform($subformulario['id'], $idlevantamiento, 0);
+				<?php foreach($subformularios as $subformulario) {?>
+					<h3><?php echo $form['name']."-".$subformulario['name'];?></h3>
+					<?php 
+					
+					$tablaresumen = getResumenSubform($subformulario['id'], $idlevantamiento, 0);
+					
+					if(count($tablaresumen)>0){
+	
+						?> 
+						<table data-role="table" id="movie-table" data-mode="columntoggle" class="ui-body-d ui-shadow table-stripe ui-responsive">
+					         <thead>
+					           <tr class="ui-bar-d">
+					             <th>Pregunta</th>
+					             <th>Respuesta</th>
+					             <th> Subrespuesta</th>
+					             <th>Fecha</th>
+					           </tr>
+					         </thead>
+					         <tbody>
+					         <?php foreach ($tablaresumen as $preguntas){?>
+					         
+					           <tr>
+					             <th><?php echo getContentByNodeId($preguntas['preguntaid']); ?></th>
+					             <td><?php echo getContentByNodeId($preguntas['respuestaid']); ?></td>
+					             <td><?php echo $preguntas['respsubpregunta']; ?></td>
+					             <td><?php echo $preguntas['created']; ?></td>
+					           </tr>
+					           
+					        <?php $lastregistro = $preguntas['id'];}?>
+					           
+					         </tbody>
+				       </table>
+						<?php 	
+					}else{
+						echo "Subformulario no respondido";	
+					}
+				}	
 				
-				if(count($tablaresumen)>0){
-
-					?> 
-					<table data-role="table" id="movie-table" data-mode="columntoggle" class="ui-body-d ui-shadow table-stripe ui-responsive">
-				         <thead>
-				           <tr class="ui-bar-d">
-				             <th>Pregunta</th>
-				             <th>Respuesta</th>
-				             <th> Subrespuesta</th>
-				             <th>Fecha</th>
-				           </tr>
-				         </thead>
-				         <tbody>
-				         <?php foreach ($tablaresumen as $preguntas){?>
-				         
-				           <tr>
-				             <th><?php echo getContentByNodeId($preguntas['preguntaid']); ?></th>
-				             <td><?php echo getContentByNodeId($preguntas['respuestaid']); ?></td>
-				             <td><?php echo $preguntas['respsubpregunta']; ?></td>
-				             <td><?php echo $preguntas['created']; ?></td>
-				           </tr>
-				           
-				        <?php $lastregistro = $preguntas['id'];}?>
-				           
-				         </tbody>
-			       </table>
-					<?php 	
-				}else{
-					echo "Subformulario no respondido";	
-				}
-			}	
-			
-			$cloneds = getClonedSubFormByFormId($form['id'], $levantamiento['id']);
-			foreach($cloneds as $clone) {
-				//$form = getSubFormByCloneId($clone['id']);
-										
-				echo "<h3 > Clonado: ".$form['name']."-".$subformulario['name']."</h3>";
-			
+				$cloneds = getClonedSubFormByFormId($form['id'], $levantamiento['id']);
+				foreach($cloneds as $clone) {
+					//$form = getSubFormByCloneId($clone['id']);
+											
+					echo "<h3 > Clonado: ".$form['name']."-".$subformulario['name']."</h3>";
 				
-				$tablaresumen = getResumenSubform($subformulario['id'], $idlevantamiento, $clone['id']);
-				
-				if(count($tablaresumen)>0){
-
-					?> 
-					<table data-role="table" id="movie-table" data-mode="columntoggle" class="ui-body-d ui-shadow table-stripe ui-responsive">
-				         <thead>
-				           <tr class="ui-bar-d">
-				             <th>Pregunta</th>
-				             <th>Respuesta</th>
-				             <th> Subrespuesta</th>
-				             <th>Fecha</th>
-				           </tr>
-				         </thead>
-				         <tbody>
-				         <?php foreach ($tablaresumen as $preguntas){?>
-				         
-				           <tr>
-				             <th><?php echo getContentByNodeId($preguntas['preguntaid']); ?></th>
-				             <td><?php echo getContentByNodeId($preguntas['respuestaid']); ?></td>
-				             <td><?php echo $preguntas['respsubpregunta']; ?></td>
-				             <td><?php echo $preguntas['created']; ?></td>
-				           </tr>
-				           
-				        <?php $lastregistro = $preguntas['id'];}?>
-				           
-				         </tbody>
-			       </table>
-					<?php 	
-				}else{
-					echo "Subformulario no respondido";	
-				}
-			}	
-			
-			
-			
-			
-			
-			
-			
+					
+					$tablaresumen = getResumenSubform($subformulario['id'], $idlevantamiento, $clone['id']);
+					
+					if(count($tablaresumen)>0){
+	
+						?> 
+						<table data-role="table" id="movie-table" data-mode="columntoggle" class="ui-body-d ui-shadow table-stripe ui-responsive">
+					         <thead>
+					           <tr class="ui-bar-d">
+					             <th>Pregunta</th>
+					             <th>Respuesta</th>
+					             <th> Subrespuesta</th>
+					             <th>Fecha</th>
+					           </tr>
+					         </thead>
+					         <tbody>
+					         <?php foreach ($tablaresumen as $preguntas){?>
+					         
+					           <tr>
+					             <th><?php echo getContentByNodeId($preguntas['preguntaid']); ?></th>
+					             <td><?php echo getContentByNodeId($preguntas['respuestaid']); ?></td>
+					             <td><?php echo $preguntas['respsubpregunta']; ?></td>
+					             <td><?php echo $preguntas['created']; ?></td>
+					           </tr>
+					           
+					        <?php $lastregistro = $preguntas['id'];}?>
+					           
+					         </tbody>
+				       </table>
+						<?php 	
+					}else{
+						echo "Subformulario no respondido";	
+					}
+				}	
 		}?>
 	</div>
 

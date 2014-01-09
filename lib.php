@@ -255,7 +255,7 @@ function getLevantamientobyId($idlevantamiento){
 
 function getAllFormularios(){
 	
-	$queryformularios = "SELECT * FROM megatrees";
+	$queryformularios = "SELECT * FROM megatrees WHERE deleted = 0 AND visible = 1";
 	$formularios = DBQueryReturnArray($queryformularios);
 	return $formularios;
 }
