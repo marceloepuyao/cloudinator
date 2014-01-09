@@ -147,12 +147,12 @@ if(isset($_GET['edit'])){
  				
  				<li data-role="fieldcontain">
 		            <label for="password"><?php echo $iduseredit!=0?get_string('newpass', $lang):get_string("password", $lang); ?></label>
- 					<input name="password" id="password" value="<?php echo $iduseredit!=0?"nochange":"";?>" data-clear-btn="true" type="password">		        
+ 					<input name="password" id="password" value="<?php echo $iduseredit!=0?"":"";?>" data-clear-btn="true" type="password">		        
  				</li>
  				
  				<li data-role="fieldcontain">
 		            <label for="repassword"><?php echo get_string("repeatpassword", $lang); ?></label>
- 					<input name="repassword" id="repassword" value="<?php echo $iduseredit!=0?"nochange":"";?>" data-clear-btn="true" type="password">		        
+ 					<input name="repassword" id="repassword" value="<?php echo $iduseredit!=0?"":"";?>" data-clear-btn="true" type="password">		        
  				</li>
  				
 

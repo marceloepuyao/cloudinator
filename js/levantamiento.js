@@ -387,16 +387,36 @@ $(document).ready(function(){
 		
 		var editto = $(this).data('editto');
 		
-		if(validateText(nombres) && validateText(apellidos) && validateEmail(email) && password != "" && validateText(idioma) && repassword != ""){
-			if(password == repassword){
-				newuser(nombres,apellidos,email,password, idioma, superusuario, editto);
+		if(editto){
+			if(validateText(nombres) && validateText(apellidos) && validateEmail(email) && validateText(idioma)){
+				
+				if(password == repassword){
+					newuser(nombres,apellidos,email,password, idioma, superusuario, editto);
+				}else{
+					alert("Error en Contraseña");
+				}
 			}else{
-				alert("Error en Contraseña");
+				alert("Hay Carácteres Inválidos");
 			}
 
+			
 		}else{
-			alert("Hay Carácteres Inválidos");
+			if(validateText(nombres) && validateText(apellidos) && validateEmail(email) && password != "" && validateText(idioma) && repassword != ""){
+				if(password == repassword){
+					newuser(nombres,apellidos,email,password, idioma, superusuario, editto);
+				}else{
+					alert("Error en Contraseña");
+				}
+
+			}else{
+				alert("Hay Carácteres Inválidos");
+			}
+			
 		}
+		
+		
+		
+		
 	});
 	$(".deleteuser").on('click', function(){
 		var iduser = $(this).data('iduser');
