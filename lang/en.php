@@ -111,7 +111,9 @@ $dicc = array(
 	'answer'=> 'Answer',
 	'subanswer'=> 'Subanswer',
 	'date'=> 'Date',
-	'interviewer'=> 'Interviewer'
+	'interviewer'=> 'Interviewer',
+
+	'subquestion' => 'Subquestion'
 )
 
 ?>

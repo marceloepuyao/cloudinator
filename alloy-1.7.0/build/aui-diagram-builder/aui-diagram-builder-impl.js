@@ -1628,11 +1628,11 @@ var DiagramNode = A.Component.create({
 			var strings = instance.getStrings();
 
 			return [
-				{
+				/*{
 					attributeName: DESCRIPTION,
 					editor: new A.TextAreaCellEditor(),
 					name: strings[DESCRIPTION]
-				},
+				},*/
 				{
 					attributeName: NAME,
 					editor: new A.TextCellEditor({
@@ -1682,12 +1682,12 @@ var DiagramNode = A.Component.create({
 					attributeName: METADATA,
 					editor: new A.TextAreaCellEditor(),
 					name: strings[METADATA]
-				},
+				}/*,
 				{
 					attributeName: IDNODE,
 					editor: false,
 					name: strings[IDNODE]
-				}
+				}*/
 				
 			];
 		},

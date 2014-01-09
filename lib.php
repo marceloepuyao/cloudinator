@@ -302,9 +302,9 @@ function getSession($sessionname){
 function getResumenSubform($idsubform, $idlevantamiento, $idclone){
 	
 	if($idclone){
-		$queryresumen = "SELECT * FROM registropreguntas where clonedid = $idclone AND levantamientoid = $idlevantamiento ORDER BY created";
+		$queryresumen = "SELECT rp.*, n.metaname as subpregunta FROM registropreguntas rp, nodos n where rp.clonedid = $idclone AND rp.levantamientoid = $idlevantamiento AND rp.respuestaid = n.id ORDER BY rp.created";
 	}else{
-		$queryresumen = "SELECT * FROM registropreguntas where subformid = $idsubform AND levantamientoid = $idlevantamiento ORDER BY created";
+		$queryresumen = "SELECT rp.*, n.metaname as subpregunta  FROM registropreguntas rp, nodos n where rp.subformid = $idsubform AND rp.levantamientoid = $idlevantamiento AND rp.respuestaid = n.id  ORDER BY rp.created";
 	}
 	$resumen = DBQueryReturnArray($queryresumen);
 	return $resumen;
@@ -325,11 +325,11 @@ function checkSession($lastaccess, $usuario,$idioma){
 	if($usuario == ""){
 		return false;
 	}
-	//si el tiempo del último acceso es mayor que el tiempo de ahora en 5 minunos devuelve false
+	//si el tiempo del último acceso es mayor que el tiempo de ahora en 20 minunos devuelve false
 	$time = time(); 
 	if($lastaccess){
-		//Aquí es donde se settea el tiempo de las session, ahora está en 5 min
-		if(($time - $lastaccess)  < 5*60){
+		//Aquí es donde se settea el tiempo de las session, ahora está en 20 min
+		if(($time - $lastaccess)  < 20*60){
 			return true;
 		}else{
 			//se eliminan las cookies y se devuelve false

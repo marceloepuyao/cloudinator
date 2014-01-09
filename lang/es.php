@@ -106,6 +106,8 @@ $dicc = array(
 	'answer'=> 'Respuesta',
 	'subanswer'=> 'Subrespuesta',
 	'date'=> 'Fecha',
-	'interviewer'=> 'Entrevistador'
+	'interviewer'=> 'Entrevistador',
+	
+	'subquestion' => 'Subpregunta'
 	);
 ?>

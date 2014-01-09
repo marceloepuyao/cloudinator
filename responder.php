@@ -127,9 +127,7 @@ if($pregunta == null){
            	<div class="ui-block-b"><button id="responderquit" data-emp="<?php echo $empresa['id']; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-theme="d"><?php echo get_string('quit', $lang);?></button></div>
 		 </fieldset>
 		</div>
-		<?php } ?>
-		
-		<?php if ($pregunta == null): ?>
+		<?php }else if ($pregunta == null){ ?>
 		<h2><?php echo get_string('endreached', $lang);?></h2>
 		
 		<table data-role="table" id="movie-table" data-mode="columntoggle" class="ui-body-d ui-shadow table-stripe ui-responsive">
@@ -137,6 +135,7 @@ if($pregunta == null){
 	           <tr class="ui-bar-d">
 	             <th><?php echo get_string('question', $lang);?></th>
 	             <th><?php echo get_string('answer', $lang);?></th>
+	             <th><?php echo get_string('subquestion', $lang);?></th>
 	             <th><?php echo get_string('subanswer', $lang);?></th>
 	             <th><?php echo get_string('date', $lang);?></th>
 	             <th><?php echo get_string('interviewer', $lang);?></th>
@@ -149,6 +148,7 @@ if($pregunta == null){
 	           <tr>
 	             <th><a class="gobacktoquestion" data-idlev="<?php echo $idlevantamiento;?>" data-idclone="<?php echo $idclone;?>" data-idsubform="<?php echo $idsubform;?>" data-id="<?php echo $preguntas['id'];?>" href="#"><?php echo getContentByNodeId($preguntas['preguntaid']); ?></a></th>
 	             <td><?php echo getContentByNodeId($preguntas['respuestaid']); ?></td>
+	              <td><?php echo $preguntas['subpregunta']; ?></td>
 	             <td><?php echo $preguntas['respsubpregunta']; ?></td>
 	             <td><?php echo $preguntas['created']; ?></td>
 	             <td><?php echo getNameByUserId($preguntas['userid']); ?></td>
@@ -164,7 +164,7 @@ if($pregunta == null){
                     <div class="ui-block-a"><button id="responderback" data-idreg="<?php echo $lastregistro;?>" data-idsubform="<?php echo $idsubform; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-theme="d"><?php echo get_string('lastquestion', $lang);?></button></div>
                     <div class="ui-block-b"><button id="responderquit" data-emp="<?php echo $empresa['id']; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-theme="d"><?php echo get_string('continue', $lang);?></button></div>
 		 	</fieldset>
-		<?php endif; ?>
+		<?php } ?>
 		<div data-role="popup" id="popupSubpregunta" data-theme="a" class="ui-corner-all">
 		    
 		        <div id="formsubpregunta" style="padding:10px 20px;">

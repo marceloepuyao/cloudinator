@@ -53,7 +53,7 @@ function SubPregunta(idpregunta, idnode, idlev, idsubform, idclone){
 	
 	$.post("ajax/ajaxresponder.php",{ 
 		action: 'subpregunta',
-		idpregunta: idpregunta
+		idpregunta: idnode
 		},function(respuesta){
 			var resp = jQuery.parseJSON(respuesta);
 			//si la respuesta es positiva se continua, si no mensaje de error

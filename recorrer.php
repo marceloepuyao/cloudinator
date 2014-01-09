@@ -272,7 +272,7 @@ $formularios = DBQueryReturnArray($queryformularios);
 			
 			$cloneds = getClonedSubFormByFormId($form['id'], $levantamiento['id']);
 			foreach($cloneds as $clone) {
-				$form = getSubFormByCloneId($clone['id']);
+				//$form = getSubFormByCloneId($clone['id']);
 										
 				echo "<h3 > Clonado: ".$form['name']."-".$subformulario['name']."</h3>";
 			
