@@ -933,7 +933,7 @@ var DiagramBuilder = A.Component.create({
 					attributes[model.get(ATTRIBUTE_NAME)] = model.get(VALUE);
 					
 				});
-				
+				console.log("IDNODE", attributes['idnode']);
 				A.io.request('ajax/ajaxpost.php', {
 					autoLoad: true,
 					method: 'POST',
@@ -956,7 +956,7 @@ var DiagramBuilder = A.Component.create({
 							}else{
 								noticeSaving('error');
 								alert("No se pueden repetir nombres");
-								window.location.reload();
+								//window.location.reload();
 							}
 						},
 						failure: function(){noticeSaving('warning');}
@@ -1682,12 +1682,12 @@ var DiagramNode = A.Component.create({
 					attributeName: METADATA,
 					editor: new A.TextAreaCellEditor(),
 					name: strings[METADATA]
-				}/*,
+				},
 				{
 					attributeName: IDNODE,
 					editor: false,
 					name: strings[IDNODE]
-				}*/
+				}
 				
 			];
 		},
