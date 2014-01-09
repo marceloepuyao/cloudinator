@@ -16,7 +16,7 @@ function crearEmpresa(name,industry,textarea){
 			var resp = jQuery.parseJSON(respuesta);
 			
 			if(resp.result){
-				window.location.href = "levantamiento.php?emp="+resp.id + "&lang=" + getUrlParameter('lang');
+				window.location.href = "levantamiento.php?emp="+resp.id;
 			}else{
 				if(resp.exception == "existing"){
 					alert("Nombre ocupado");
@@ -31,7 +31,7 @@ function crearEmpresa(name,industry,textarea){
 $(document).ready(function(){
 	
 	$("#backbutton").on('click', function(){
-		window.location.href = "index.php?lang=" + getUrlParameter('lang');
+		window.location.href = "index.php";
 	});
 	//alert($(window).width() );
 	$(window).resize(function() {
@@ -62,7 +62,7 @@ $(document).ready(function(){
 	});
 	$("#cancel").on('click', function(){
 		
-		window.location.href = "index.php?lang=" + getUrlParameter('lang');
+		window.location.href = "index.php";
 	});
 	
 	

@@ -321,6 +321,68 @@ if ($version < 2013121900) {
 	}
 	echo '</hr>';
 }
+if ($version < 2013122700) {
+	echo '<hr>';
+	echo '<h4>Actualización N° 2013-12-27-00</h4>';
+	try {
+		//acá escribo el script de actualización
+		DBQuery("CREATE TABLE cloned (
+		id int(100) not null auto_increment primary key,
+		idlev int(50) NOT NULL,
+		name varchar(50) NOT NULL,
+		subformid int(50) NOT NULL,
+		modified timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+	");
+		//actualiazo la versión
+		DBQuery("UPDATE cloudinator_upgrades SET version = '2013122700' WHERE id = 1");
+
+		//mensaje:
+		echo 'Creado tabla para guardar información de respuestas de subformularios clonados';
+		
+	} catch (Exception $e) {
+		echo "Error en actualización<br>$e<br>";
+	}
+	echo '</hr>';
+}
+
+if ($version < 2013122701) {
+	echo '<hr>';
+	echo '<h4>Actualización N° 2013-12-27-01</h4>';
+	try {
+		//acá escribo el script de actualización
+		DBQuery("ALTER TABLE registropreguntas ADD clonedid int(50) NULL");
+		DBQuery("ALTER TABLE registropreguntas MODIFY COLUMN subformid int(100) NULL");
+		
+		//actualiazo la versión
+		DBQuery("UPDATE cloudinator_upgrades SET version = '2013122701' WHERE id = 1");
+
+		//mensaje:
+		echo 'Modificación de registro de respuestas para que lea subformularios clonados';
+		
+	} catch (Exception $e) {
+		echo "Error en actualización<br>$e<br>";
+	}
+	echo '</hr>';
+}
+if ($version < 2013122702) {
+	echo '<hr>';
+	echo '<h4>Actualización N° 2013-12-27-02</h4>';
+	try {
+		//acá escribo el script de actualización
+		DBQuery("ALTER TABLE cloned ADD formid int(50) NULL");
+		
+		//actualiazo la versión
+		DBQuery("UPDATE cloudinator_upgrades SET version = '2013122702' WHERE id = 1");
+
+		//mensaje:
+		echo 'Modificación tabla cloned';
+		
+	} catch (Exception $e) {
+		echo "Error en actualización<br>$e<br>";
+	}
+	echo '</hr>';
+}
 
 /*
 //EJEMPLO: (RECUERDE CAMBIAR "AAAAMMDDNN" POR EL NUMERO DE ACTUALIZACION A = Año, M = Mes, D = Dia, N = Numero)

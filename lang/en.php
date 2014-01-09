@@ -96,8 +96,25 @@ $dicc = array(
 
 	'editor' => 'Edit Forms', 
 
-	'options' => 'Options'
+	'options' => 'Options',
 	
-	
-	);
+	'home' => 'Home',
+	'listlevantamientos' => 'List of gathering of information',
+	'managingcompanies' => 'Managing Companies',
+	'managingusers' => 'Managing Users',
+	'selectcompany' => 'Select Company to Interview',
+	'companylist' => 'Company List',
+	'lastquestion' => 'Last Question',
+	'quit'=> 'Quit',
+
+	'question'=> 'Question',
+	'answer'=> 'Answer',
+	'subanswer'=> 'Subanswer',
+	'date'=> 'Date',
+	'interviewer'=> 'Interviewer',
+
+	'subquestion' => 'Subquestion',
+	'addnewcompany' => 'Add New Company'
+)
+
 ?>

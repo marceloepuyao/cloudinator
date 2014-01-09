@@ -140,10 +140,13 @@ if($USER[0]['superuser'] != 1){
 							<span style="cursor:pointer">
 								<a id="back"  class="aui-tab-label">Volver</a>
 							</span>
+							<a href=#><span id="help" style ="font-style: italic;"><img src="content/help_icon.png" class = "notification-icon">
+							</span></a>
 							<span id="notice-savechanges-success" style = "display: none; font-weight: bold;"><img src="content/success.png" class = "notification-icon"> Guardado.</span>
 							<span id="notice-savechanges-inprogress" style ="display: none; font-style: italic;"><img src="content/wait.gif" class = "notification-icon"> Guardando.</span>
 							<span id="notice-savechanges-error" style ="display: none; font-weight: bold; font-style: italic;"><img src="content/error.png" class = "notification-icon"> No Guardado.</span>
-							<span id="notice-savechanges-warning" style ="display: none; font-weight: bold; font-style: italic;"><img src="content/warning.png" class = "notification-icon"> ¡Se perdió la conección con el servidor!</span>
+							<span id="notice-savechanges-warning" style ="display: none; font-weight: bold; font-style: italic;"><img src="content/warning.png" class = "notification-icon"> ¡Se perdió la conección con el servidor!</span>				
+							
 						</div>
 						<div class="aui-diagram-builder-drop-container" >
 						</div>

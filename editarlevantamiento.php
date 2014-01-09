@@ -99,9 +99,10 @@ $users = DBQueryReturnArray($queryusers);
 		        <li data-role="fieldcontain">
 		            <label for="formularios"><?php echo get_string("forms", $lang)?>:</label>
 		            	<fieldset data-role="controlgroup" id="formularios">
-		            	<?php foreach($formularios as $key => $formulario) { 
+		            	<?php 
+		            	foreach($formularios as $key => $formulario) { 
 		            		if (in_array($formulario['id'], $formsactivos)){ ?>
-					    	<input name="<?php echo $formulario['id']; ?>" id="<?php echo $formulario['id']; ?>" checked="" type="checkbox">
+					    	<input name="<?php echo $formulario['id']; ?>" id="<?php echo $formulario['id']; ?>" checked type="checkbox">
 					    	<?php }else{?>
 					    	<input name="<?php echo $formulario['id']; ?>" id="<?php echo $formulario['id']; ?>" type="checkbox">
 					    	<?php }?>

@@ -236,7 +236,7 @@ if($USER[0]['superuser'] != 1){
 		<h6 class="menu_subformularios">Subformularios no Publicados</h6>
 		<table id="table1" cellspacing="0" cellpadding="0" class="striped sortable">
 			<thead><tr>
-				<th id="formsubform">Formulario</th>
+				<th class="formsubform">Formulario</th>
 				<th>Creado</th>
 				<th>Acciones</th>
 			</tr></thead>
@@ -252,7 +252,7 @@ if($USER[0]['superuser'] != 1){
 		<h6 class="menu_subformularios">Subformularios Publicados</h6>
 		<table id="table2" cellspacing="0" cellpadding="0" class="striped sortable">
 			<thead><tr>
-				<th id="formsubform">Formulario</th>
+				<th class="formsubform">Formularios</th>
 				<th>Creado</th>
 				<th>Acciones</th>
 			</tr></thead>
@@ -297,9 +297,9 @@ if($USER[0]['superuser'] != 1){
 					$.each(data.datos, function( i, item ) {
 						if(item.deleted == 0 && item.megatree == getQueryStringByName('id')){
 							if(item.released == 0){
-								$('#tablabody').append('<tr><td value="'+item.name+'"><a href="cloudinator.php?id='+item.id+'">'+item.name+'</a></td><td value="'+item.created+'">'+item.created+'</td><td><abbr title="Publicar"><a href="#" onclick="publicarSubformulario('+item.id+');"><i class="icon-share icon-2x"></i></a></abbr> <abbr title="Cambiar Nombre"><a href="#" onclick="cambiarNombreSubform('+item.id+');"><i class="icon-edit icon-2x"></i></a></abbr> <abbr title="Clonar"><a href="#" onclick="preclonar('+item.id+');"><i class="icon-copy icon-2x"></i></a></abbr> <abbr title="Borrar"><a href="#" onclick="borrarsubformulario('+item.id+');"><i class="icon-trash icon-2x"></i></a></abbr></td></tr>');
+								$('#tablabody').append('<tr><td value="'+item.name+'"><a href="cloudinator.php?id='+item.id+'">'+item.name+'</a></td><td value="'+item.created+'">'+item.created+'</td><td><abbr title="Publicar"><a href="#" onclick="publicarSubformulario('+item.id+');"><i class="icon-share icon-2x"></i></a></abbr> <abbr title="Cambiar Nombre"><a href="#" onclick="cambiarNombreSubform('+item.id+');"><i class="icon-edit icon-2x"></i></a></abbr> <abbr title="Clonar"><a href="#" onclick="preclonar('+item.id+',\''+item.name+'\');"><i class="icon-copy icon-2x"></i></a></abbr> <abbr title="Borrar"><a href="#" onclick="borrarsubformulario('+item.id+');"><i class="icon-trash icon-2x"></i></a></abbr></td></tr>');
 							}else{
-								$('#tabla2body').append('<tr><td value="'+item.name+'"><a href="cloudinator.php?id='+item.id+'">'+item.name+'</a></td><td value="'+item.created+'">'+item.created+'</td><td><abbr title="Clonar"><a href="#" onclick="preclonar('+item.id+');"><i class="icon-copy icon-2x"></i></a></abbr> <abbr title="Borrar"><a href="#" onclick="borrarsubformulario('+item.id+');"><i class="icon-trash icon-2x"></i></a></abbr></td></tr>');
+								$('#tabla2body').append('<tr><td value="'+item.name+'"><a href="cloudinator.php?id='+item.id+'">'+item.name+'</a></td><td value="'+item.created+'">'+item.created+'</td><td><abbr title="Clonar"><a href="#" onclick="preclonar('+item.id+', \''+item.name+'\');"><i class="icon-copy icon-2x"></i></a></abbr> <abbr title="Borrar"><a href="#" onclick="borrarsubformulario('+item.id+');"><i class="icon-trash icon-2x"></i></a></abbr></td></tr>');
 							}
 						}
 					});
@@ -329,9 +329,9 @@ if($USER[0]['superuser'] != 1){
 						if(item.deleted == 0){
 							if(item.visible == 0){
 								//$('#formlist').append('<option value="'+item.id+'">'+item.name+'</option>');
-								$('#tablabody').append('<tr><td value="'+item.name+'"><a href="editor.php?id='+item.id+'">'+item.name+'</a></td><td value="'+item.created+'">'+item.created+'</td><td><abbr title="Cambiar Nombre"><a href="#" onclick="cambiarNombreForm('+item.id+');"><i class="icon-edit icon-2x"></i></a></abbr> <abbr title="Mostrar"><a href="#" onclick="mostrarFormulario('+item.id+');"><i class="icon-eye-open icon-2x"></i></a></abbr> <abbr title="Borrar"><a href="#" onclick="borrarformulario('+item.id+');"><i class="icon-trash icon-2x"></i></a></abbr></td></tr>');
+								$('#tablabody').append('<tr><td value="'+item.name+'"><a href="editor.php?id='+item.id+'">'+item.name+'</a></td><td value="'+item.created+'">'+item.created+'</td><td><abbr title="Cambiar Nombre"><a href="#" onclick="cambiarNombreForm('+item.id+', "'+item.name+'");"><i class="icon-edit icon-2x"></i></a></abbr> <abbr title="Mostrar"><a href="#" onclick="mostrarFormulario('+item.id+');"><i class="icon-eye-open icon-2x"></i></a></abbr> <abbr title="Borrar"><a href="#" onclick="borrarformulario('+item.id+');"><i class="icon-trash icon-2x"></i></a></abbr></td></tr>');
 							}else{
-								$('#tabla2body').append('<tr><td value="'+item.name+'"><a href="editor.php?id='+item.id+'">'+item.name+'</a></td><td value="'+item.created+'">'+item.created+'</td><td><abbr title="Cambiar Nombre"><a href="#" onclick="cambiarNombreForm('+item.id+');"><i class="icon-edit icon-2x"></i></a></abbr> <abbr title="Ocultar"><a href="#" onclick="ocultarFormulario('+item.id+');"><i class="icon-eye-close icon-2x"></i></a></abbr> <abbr title="Borrar"><a href="#" onclick="borrarformulario('+item.id+');"><i class="icon-trash icon-2x"></i></a></abbr></td></tr>');
+								$('#tabla2body').append('<tr><td value="'+item.name+'"><a href="editor.php?id='+item.id+'">'+item.name+'</a></td><td value="'+item.created+'">'+item.created+'</td><td><abbr title="Cambiar Nombre"><a href="#" onclick="cambiarNombreForm('+item.id+', "'+item.name+'");"><i class="icon-edit icon-2x"></i></a></abbr> <abbr title="Ocultar"><a href="#" onclick="ocultarFormulario('+item.id+');"><i class="icon-eye-close icon-2x"></i></a></abbr> <abbr title="Borrar"><a href="#" onclick="borrarformulario('+item.id+');"><i class="icon-trash icon-2x"></i></a></abbr></td></tr>');
 							}
 						}
 					});
@@ -370,10 +370,11 @@ if($USER[0]['superuser'] != 1){
 			addNotice("error", "Error al acceder a la lista de Grafos");
 		});
 	}
-	function preclonar(id){
+	function preclonar(id, oldname){
 		loadFormList();
 		$('.blackout').fadeIn();
 		$('#cloneFormName').data("copyid", id);
+		$('#textNameCloneForm').val(oldname);
 		$('#cloneFormName').slideDown();
 		$('#textNameCloneForm').focus();
 		console.log("#clone on click", id, $('#cloneFormName').data("copyid"));
@@ -652,9 +653,13 @@ if($USER[0]['superuser'] != 1){
 						cargarGrafos(); //actualizar la lista de Subformularios
 						addNotice("success", "El Subformulario ha sido publicado");
 					}else{
-						addNotice("error", "Error al publicar el Subformulario");
+						if(data.reason == "incomplete"){
+							addNotice("error", "Subformulario Incompleto");
+						}else{
+							addNotice("error", "Error al publicar el Subformulario");	
+						}
 						$('.loading').fadeOut();
-						console.log("Error en publicar Subformulario", data.exception);
+		
 					}
 				}
 			}).fail(function(data) {
@@ -667,8 +672,8 @@ if($USER[0]['superuser'] != 1){
 
 		}
 	}
-	function cambiarNombreForm(id){
-		var newNameForm = prompt("Ingrese el nuevo nombre para el Formulario","");
+	function cambiarNombreForm(id, oldname){
+		var newNameForm = prompt("Ingrese el nuevo nombre para el Formulario",oldname);
 		if (newNameForm!=null && newNameForm!="" && newNameForm.length>0){
 			$.ajax({
 				url: 'ajax/ajaxMegaTrees.php',
@@ -824,12 +829,12 @@ if($USER[0]['superuser'] != 1){
 		if(getQueryStringByName('id')){
 			setNameToForm();
 			cargarGrafos(); //Carga la lista de Subformularios
-			$('#formsubform').text("Subformularios");
+			$('.formsubform').text("Subformularios");
 			$('.menu_subformularios').show();
 			$('.menu_formularios').remove();
 		}else{
 			loadMegaTrees(); //Carga la lista de Formularios
-			$('#formsubform').text("Formularios");
+			$('.formsubform').text("Formularios");
 			$('.menu_subformularios').remove();
 			$('.menu_formularios').show();
 		}

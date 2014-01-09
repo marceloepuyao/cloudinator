@@ -30,10 +30,12 @@ if(isset($_GET['idlev'])){
 
 $modeedit = 0;
 $modeedittext = get_string('editmode', $lang);
-if(isset($_GET['edit'])){
-	if($_GET['edit'] == 1){
+if(isset($_SESSION['edit'])){
+	if($_SESSION['edit'] == 1){
 		$modeedit = 1;
 		$modeedittext = get_string('exiteditmode', $lang);
+	}else{
+		$modeedit = 0;
 	}
 }
 
@@ -97,7 +99,7 @@ $formularios = DBQueryReturnArray($queryformularios);
 	</div>
 	
 	<div data-role="content">
-	<?php echo print_navbar(0, $empresa[0]['id'], 0, 0);?>
+	<?php echo print_navbar(0, $empresa[0]['id'], $idlevantamiento, 0, 0, $lang);?>
 	<!-- pop up dialogo -->
 		<h1><?php echo $titulo; ?></h1>
 		<p><?php echo $info; ?></p>
@@ -106,7 +108,8 @@ $formularios = DBQueryReturnArray($queryformularios);
 
 				//get all the subform
 				$subformularios = getSubFormsbyFormId($formulario['id'], $levantamiento['created']);
-				$total = count($subformularios);
+				$subformcloned = getClonedSubFormByFormId($formulario['id'], $levantamiento['id']);
+				$total = count($subformularios) + count($subformcloned);
 				$datacollapsed = "";
 				if(isset($_GET['idform'])){
 					if($_GET['idform'] == $formulario['id']){
@@ -141,7 +144,7 @@ $formularios = DBQueryReturnArray($queryformularios);
 							}
 							
 						?>
-						<li class="<?php echo $class; ?>" data-subform="<?php echo $subformulario['id']; ?>" data-levantamiento="<?php echo $idlevantamiento; ?>">
+						<li class="<?php echo $class; ?>" data-idclone="<?php echo 0; ?>"  data-subform="<?php echo $subformulario['id']; ?>" data-levantamiento="<?php echo $idlevantamiento; ?>">
 							<a href="#popupMenu<?php echo $subformulario['id'];?>" data-rel="popup"  data-inline="true" data-transition="slideup" data-icon="gear" data-theme="e">
 					    		<h3><?php echo $subformulario['name']; ?> </h3>
 				                <p><strong><?php echo get_string("lastvisit", $lang)?>: <?php echo $ultimavisita; ?></strong></p>
@@ -152,21 +155,59 @@ $formularios = DBQueryReturnArray($queryformularios);
 		            	<?php if($modeedit == 1){?>
 						    <div data-role="popup" id="popupMenu<?php echo $subformulario['id'];?>" data-theme="d">
 						        <ul data-role="listview" data-inset="true" style="min-width:210px;" data-theme="d">
-						            <li><a class="<?php echo $class2;?>" data-subform="<?php echo $subformulario['id']; ?>" data-levantamiento="<?php echo $idlevantamiento; ?>" href="#">Ir</a></li>
-						            <li><a href="#">Clonar</a></li>
-						            <li><a class="deleteanswers" data-idform="<?php echo $subformulario['megatree'];?>" data-subform="<?php echo $subformulario['id']; ?>" data-levantamiento="<?php echo $idlevantamiento; ?>" href="#">Borrar Respuestas</a></li>
-						            <li><a href="#"><?php echo get_string("delete", $lang)?></a></li>
+						            <li><a class="<?php echo $class2;?>" data-subform="<?php echo $subformulario['id']; ?>" data-levantamiento="<?php echo $idlevantamiento; ?>" href="#"><?php echo get_string('gothrough', $lang);?></a></li>
+						            <li><a class="cloneanswers" data-oldname="<?php echo $subformulario['name'];?>" data-idform="<?php echo $subformulario['megatree'];?>" data-subform="<?php echo $subformulario['id']; ?>" data-levantamiento="<?php echo $idlevantamiento; ?>" href="#"><?php echo get_string('clonesubform', $lang);?></a></li>
+						            <li><a class="deleteanswers" data-idclone="<?php echo 0;?>" data-idform="<?php echo $subformulario['megatree'];?>" data-idsubform="<?php echo $subformulario['id']; ?>" data-levantamiento="<?php echo $idlevantamiento; ?>" href="#"><?php echo get_string("deleteanswers", $lang);?></a></li>
 						        </ul>
 							</div>	
-		            	
-		            	
+					<?php }} ?>
+					
+					
+					
+					
+					<?php //Acá van los clonados 
+					foreach($subformcloned as $key2 => $subclone) {
+							if(getSubForm($subclone['subformid'])){
+								$questionandanswers = getQuestionAnswers($subclone['subformid'], $idlevantamiento, $subclone['id']);
+								extract($questionandanswers); //devuelve $pregunta, $respuestas $ultimavisita, $completitud
+								if($pregunta == null){
+									$pregunta = array("name"=>get_string('endreached', $lang));
+									$completitud = "100%";
+								}
+								$class = "gotoclone";
+								$class2 = "goto";
+							}else{
+								$pregunta['name'] = get_string('incompleteform', $lang);
+								$ultimavisita = "nunca";
+								$completitud = 0;
+								$class = "dontgoto";
+								$class2 = "dontgoto";
+							}
+							if($modeedit == 1){
+								$class = "dontgotoclone";
+							}
+							
+						?>
+						<li class="<?php echo $class; ?>" data-cloneid="<?php echo $subclone['id']; ?>" data-levantamiento="<?php echo $idlevantamiento; ?>">
+							<a href="#popupMenuClone<?php echo $subclone['id'];?>" data-rel="popup"  data-inline="true" data-transition="slideup" data-icon="gear" data-theme="e">
+					    		<h3><?php echo $subclone['name']; ?> </h3>
+				                <p><strong><?php echo get_string("lastvisit", $lang)?>: <?php echo $ultimavisita; ?></strong></p>
+				                <p><?php echo get_string("nextquestion", $lang)?>: <?php echo $pregunta['name']; ?></p>
+				                <p class="ui-li-aside"><strong><?php echo get_string("completeness", $lang)?>: <?php echo $completitud; ?></strong></p>
+			            	</a>
+		            	</li>
+		            	<?php if($modeedit == 1){?>
+						    <div data-role="popup" id="popupMenuClone<?php echo $subclone['id'];?>" data-theme="d">
+						        <ul data-role="listview" data-inset="true" style="min-width:210px;" data-theme="d">
+						            <li><a class="<?php echo $class2;?>" data-idclone="<?php echo $subclone['id']; ?>" data-subform="<?php echo 0; ?>" data-levantamiento="<?php echo $idlevantamiento; ?>" href="#"><?php echo get_string('gothrough', $lang);?></a></li>
+						            <li><a class="deleteanswers"  data-idform="<?php echo $subclone['formid'];?>" data-idsubform="<?php echo 0; ?>" data-idclone="<?php echo $subclone['id']; ?>" data-levantamiento="<?php echo $idlevantamiento; ?>" href="#"><?php echo get_string('deleteanswers', $lang);?></a></li>
+						            <li><a class="deleteclone" data-idform="<?php echo $subclone['formid'];?>"  data-levantamiento="<?php echo $idlevantamiento; ?>" data-idclone="<?php echo $subclone['id']; ?>"><?php echo get_string("delete", $lang);?></a></li>
+						        </ul>
+							</div>	
 					<?php }} ?>
 		        </ul>
 	    	</div>
-	    	
 			<?php } ?>
-			
-			
 			<div data-role="controlgroup">
 		    <a id="report" href="#report" data-role="button"><?php echo get_string('reports', $lang)?></a>
 			</div>	
@@ -186,48 +227,90 @@ $formularios = DBQueryReturnArray($queryformularios);
 	<div data-role="content">
 		<h1>Reporte Levantamiento : <?php echo $levantamiento['titulo'];?></h1>
 		
-		<?php foreach ($formularios as $form){ 
-
-			$subformularios = getSubFormsbyFormId($form['id'], $levantamiento['created']);
-			?>
-			
-			<?php foreach($subformularios as $subformulario) {?>
-				<h3><?php echo $form['name']."-".$subformulario['name'];?></h3>
-				<?php 
+		<?php 			
+			foreach ($formularios as $form){ 
+	
+				$subformularios = getSubFormsbyFormId($form['id'], $levantamiento['created']);
+				?>
 				
-				$tablaresumen = getResumenSubform($subformulario['id'], $idlevantamiento);
+				<?php foreach($subformularios as $subformulario) {?>
+					<h3><?php echo $form['name']."-".$subformulario['name'];?></h3>
+					<?php 
+					
+					$tablaresumen = getResumenSubform($subformulario['id'], $idlevantamiento, 0);
+					
+					if(count($tablaresumen)>0){
+	
+						?> 
+						<table data-role="table" id="movie-table" data-mode="columntoggle" class="ui-body-d ui-shadow table-stripe ui-responsive">
+					         <thead>
+					           <tr class="ui-bar-d">
+					             <th>Pregunta</th>
+					             <th>Respuesta</th>
+					             <th> Subrespuesta</th>
+					             <th>Fecha</th>
+					           </tr>
+					         </thead>
+					         <tbody>
+					         <?php foreach ($tablaresumen as $preguntas){?>
+					         
+					           <tr>
+					             <th><?php echo getContentByNodeId($preguntas['preguntaid']); ?></th>
+					             <td><?php echo getContentByNodeId($preguntas['respuestaid']); ?></td>
+					             <td><?php echo $preguntas['respsubpregunta']; ?></td>
+					             <td><?php echo $preguntas['created']; ?></td>
+					           </tr>
+					           
+					        <?php $lastregistro = $preguntas['id'];}?>
+					           
+					         </tbody>
+				       </table>
+						<?php 	
+					}else{
+						echo "Subformulario no respondido";	
+					}
+				}	
 				
-				if(count($tablaresumen)>0){
-
-					?> 
-					<table data-role="table" id="movie-table" data-mode="columntoggle" class="ui-body-d ui-shadow table-stripe ui-responsive">
-				         <thead>
-				           <tr class="ui-bar-d">
-				             <th>Pregunta</th>
-				             <th>Respuesta</th>
-				             <th> Subrespuesta</th>
-				             <th>Fecha</th>
-				           </tr>
-				         </thead>
-				         <tbody>
-				         <?php foreach ($tablaresumen as $preguntas){?>
-				         
-				           <tr>
-				             <th><?php echo getContentByNodeId($preguntas['preguntaid']); ?></th>
-				             <td><?php echo getContentByNodeId($preguntas['respuestaid']); ?></td>
-				             <td><?php echo $preguntas['respsubpregunta']; ?></td>
-				             <td><?php echo $preguntas['created']; ?></td>
-				           </tr>
-				           
-				        <?php $lastregistro = $preguntas['id'];}?>
-				           
-				         </tbody>
-			       </table>
-					<?php 	
-				}else{
-					echo "Subformulario no respondido";	
-				}
-			}	
+				$cloneds = getClonedSubFormByFormId($form['id'], $levantamiento['id']);
+				foreach($cloneds as $clone) {
+					//$form = getSubFormByCloneId($clone['id']);
+											
+					echo "<h3 > Clonado: ".$form['name']."-".$subformulario['name']."</h3>";
+				
+					
+					$tablaresumen = getResumenSubform($subformulario['id'], $idlevantamiento, $clone['id']);
+					
+					if(count($tablaresumen)>0){
+	
+						?> 
+						<table data-role="table" id="movie-table" data-mode="columntoggle" class="ui-body-d ui-shadow table-stripe ui-responsive">
+					         <thead>
+					           <tr class="ui-bar-d">
+					             <th>Pregunta</th>
+					             <th>Respuesta</th>
+					             <th> Subrespuesta</th>
+					             <th>Fecha</th>
+					           </tr>
+					         </thead>
+					         <tbody>
+					         <?php foreach ($tablaresumen as $preguntas){?>
+					         
+					           <tr>
+					             <th><?php echo getContentByNodeId($preguntas['preguntaid']); ?></th>
+					             <td><?php echo getContentByNodeId($preguntas['respuestaid']); ?></td>
+					             <td><?php echo $preguntas['respsubpregunta']; ?></td>
+					             <td><?php echo $preguntas['created']; ?></td>
+					           </tr>
+					           
+					        <?php $lastregistro = $preguntas['id'];}?>
+					           
+					         </tbody>
+				       </table>
+						<?php 	
+					}else{
+						echo "Subformulario no respondido";	
+					}
+				}	
 		}?>
 	</div>
 

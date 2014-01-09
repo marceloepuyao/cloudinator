@@ -1,6 +1,7 @@
 <?php
 require_once('../JSON.php');
 require_once('../DB/db.php');
+require_once '../lib.php';
 $json = new Services_JSON();
 
 if( array_key_exists('getIdFromName', $_POST)){
@@ -93,28 +94,36 @@ if(array_key_exists('nodo', $_POST) || array_key_exists('link', $_POST)){
 						(NULL, $tree, '$name', '$type', '$posx', '$posy', null, null, null);
 						";
 						
-						DBQuery($query);
+						$result = DBQuery($query);
+						
+						$id = DBQueryReturnArray("SELECT id from nodos ORDER BY id DESC ");
+						
+						//*************** Conexión MAGENTO
+						//addProductMagento($name);			
+						//*************** Fin conexión MAGENTO
 			
 						$data = array(
-							'result' => true
+							'result' => true,
+							'id' => $id[0]['id']
+							
 						);
 					}
 					print($json->encode($data));
 				} catch (Exception $e) {
 					$data = array(
 						'result' => false,
-						'exception' => $e
+						'exception' => var_dump($e)
 					);
 					print($json->encode($data));
 				}
 			}else if($nodo == 'update'){
-				$name = mysql_real_escape_string($_POST['name']);
+				$id = mysql_real_escape_string($_POST['id']);
 				$tree = (int)$_POST['tree'];
 				$posx = (int)$_POST['posx'];
 				$posy = (int)$_POST['posy'];
 				
 				try {
-					$queryifexist = "SELECT id FROM nodos WHERE name = '$name' AND tree = '$tree'";
+					$queryifexist = "SELECT id FROM nodos WHERE id = '$id' AND tree = '$tree'";
 					$ifexist = DBQuery($queryifexist);
 					$nifexist = $ifexist->num_rows;
 					if($nifexist != 1){
@@ -123,7 +132,7 @@ if(array_key_exists('nodo', $_POST) || array_key_exists('link', $_POST)){
 							'exception' => 'NombreNoEncontrado'
 						);
 					}else{
-						$query = "UPDATE  `nodos` SET  `posx` =  $posx, `posy` =  $posy WHERE  `nodos`.`name` ='$name' AND `nodos`.`tree` = $tree;";
+						$query = "UPDATE  `nodos` SET  `posx` =  $posx, `posy` =  $posy WHERE  `nodos`.`id` ='$id' AND `nodos`.`tree` = $tree;";
 						DBQuery($query);
 						$data = array(
 							'result' => true
@@ -142,28 +151,37 @@ if(array_key_exists('nodo', $_POST) || array_key_exists('link', $_POST)){
 				try {
 					$name = mysql_real_escape_string($_POST['name']);
 					$tree = (int)$_POST['tree'];
-					$metaname = $_POST['metaname'];
-					$metadata = $_POST['metadata'];
-					$metatype = $_POST['metatype'];
+					$metaname = mysql_real_escape_string($_POST['metaname']);
+					$metadata = mysql_real_escape_string($_POST['metadata']);
+					$metatype = mysql_real_escape_string($_POST['metatype']);
+					$idnode = (int)$_POST['idnode'];
 					
-					$queryifexist = "SELECT * FROM nodos WHERE name = '$name' AND tree = $tree";
-					$ifexist = DBQuery($queryifexist);
-					$nifexist = $ifexist->num_rows;
-					if($nifexist == 1){
 					
-						$query = "UPDATE `nodos` SET `metaname` =  '$metaname', `metadata` =  '$metadata', `metatype` = '$metatype' WHERE `nodos`.`name` = '$name' AND `nodos`.`tree` = $tree;";
+					$queryifexist = "SELECT * FROM nodos WHERE id = $idnode AND tree = $tree";
+					$ifexist = DBQueryReturnArray($queryifexist);
+			
+					
+					$nifexist2 = 0;
+					if($ifexist[0]['name'] != $name){
+						$queryifexist2 = "SELECT * FROM nodos WHERE name = '$name' AND tree = $tree";
+						$ifexist2 = DBQueryReturnArray($queryifexist2);
+						$nifexist2 = count($ifexist2);
+					}
+					if($nifexist2==0){
+					
+						$query = "UPDATE `nodos` SET `name` = '$name', `metaname` =  '$metaname', `metadata` =  '$metadata', `metatype` = '$metatype' WHERE `nodos`.`id` = $idnode AND `nodos`.`tree` = $tree;";
 			
 						DBQuery($query);
 			
 						$data = array(
 							'result' => true,
-							'nifexist' => $nifexist
+							'nifexist' => 0
 						);
 						
 					}else{
 						$data = array(
 							'result' => false,
-							'nifexist' => $nifexist
+							'nifexist' => $nifexist2
 						);
 					}
 					print($json->encode($data));
@@ -177,20 +195,18 @@ if(array_key_exists('nodo', $_POST) || array_key_exists('link', $_POST)){
 			}else if($nodo == 'delete'){
 				try {
 					$name = mysql_real_escape_string($_POST['name']);
+					$nodeid = (int)($_POST['nodeid']);
 					$tree = (int)$_POST['tree'];
 					
-					$queryidnodo = "SELECT id FROM `nodos`  WHERE `nodos`.`name`='$name' AND `nodos`.`tree` = $tree;";
-					$dataqueryidnodo = DBQuery($queryidnodo);
-					$aux = $dataqueryidnodo->fetch_assoc();
-					$idnodo = $aux['id'];
-					
-					$linksources = "DELETE FROM `links` WHERE `links`.`source` = '$idnodo'  AND `links`.`tree` = $tree;";
+					//borramos los link donde el nodo es la fuente
+					$linksources = "DELETE FROM `links` WHERE `links`.`source` = '$nodeid'  AND `links`.`tree` = $tree;";
 					DBQuery($linksources);
 					
-					$linktarget = "DELETE FROM `links` WHERE `links`.`target` = '$idnodo'  AND `links`.`tree` = $tree;";
+					//borramos los link donde el nodo es el target
+					$linktarget = "DELETE FROM `links` WHERE `links`.`target` = '$nodeid'  AND `links`.`tree` = $tree;";
 					DBQuery($linktarget);
 					
-					$query = "DELETE FROM `nodos` WHERE `nodos`.`name`='$name' AND `nodos`.`tree` = $tree;";
+					$query = "DELETE FROM `nodos` WHERE `nodos`.`id`='$nodeid' AND `nodos`.`tree` = $tree;";
 					DBQuery($query);
 
 					$data = array(
@@ -270,45 +286,31 @@ if(array_key_exists('nodo', $_POST) || array_key_exists('link', $_POST)){
 				try {
 					$source = mysql_real_escape_string($_POST['source']);
 					$target = mysql_real_escape_string($_POST['target']);
+					$idsource = (int)($_POST['idsource']);
+					$idtarget = (int)($_POST['idtarget']);
 					$typetarget = mysql_real_escape_string($_POST['typetarget']);
+					$typesource = mysql_real_escape_string($_POST['typesource']);
 					$tree = (int)$_POST['tree'];
 					$xtarget = (int)$_POST['xtarget'];
 					$ytarget = (int)$_POST['ytarget'];
 					$name = mysql_real_escape_string($_POST['name']);
+						
 					
 					
-					$prequerysource = "SELECT id, type FROM nodos WHERE name = '$source' and tree = $tree;";
-					$data1 = DBQuery($prequerysource);
-					$row = $data1->fetch_assoc();
-					$sourceid = $row['id'];
-					$sourcetype = $row['type'];
-					
-					$prequerytarget = "SELECT id, type FROM nodos WHERE name = '$target' and tree = $tree;";
-					$data2 = DBQuery($prequerytarget);
-					$exist = $data2->num_rows;
-					
-					if($exist > 0){
-						//$prequerytarget = "SELECT id, type FROM nodos WHERE name = '$_POST[target]' and tree = $_POST[tree];";
-						//$data3 = DBQuery($prequerytarget);
-						$row = $data2->fetch_assoc();
-						$targetid = $row['id'];
-						$targettype = $row['type'];
-					}else{
+					if($idtarget == 0){
 						$insertnode = "INSERT INTO `nodos` (`id`, `tree`, `name`, `type`, `posx`, `posy`, `metaname`, `metadata`, `metatype`) VALUES 
 						(NULL, $tree, '$target', '$typetarget', $xtarget, $ytarget, null, null, null);";
 						DBQuery($insertnode);
 						
-						//$prequerytarget = "SELECT id FROM nodos WHERE name = '$_POST[target]' and tree = $_POST[tree];";
-						$data2 = DBQuery($prequerytarget);
-						$row = $data2->fetch_assoc();
-						$targetid = $row['id'];
-						$targettype = $row['type'];
+						$prequerytarget = "SELECT id FROM nodos ORDER BY id DESC;";
+						$data2 = DBQueryReturnArray($prequerytarget);
+						$idtarget = $data2[0]['id'];
 					}
 					
 					$problem = false;
-					if($sourcetype == "state"){
+					if($typesource == "state"){
 						
-						$nodoublelinkquery = "SELECT id FROM links WHERE source = $sourceid AND tree = $tree";
+						$nodoublelinkquery = "SELECT id FROM links WHERE source = $idsource AND tree = $tree";
 						$nodoublelinks = DBQuery($nodoublelinkquery);
 						
 						if($nodoublelinks->num_rows >= 1){
@@ -316,7 +318,7 @@ if(array_key_exists('nodo', $_POST) || array_key_exists('link', $_POST)){
 						}
 					}
 					
-					$queryloop = "SELECT id FROM links WHERE source = $targetid AND target = $sourceid AND tree = $tree";
+					$queryloop = "SELECT id FROM links WHERE source = $idtarget AND target = $idsource AND tree = $tree";
 					$loop = DBQuery($queryloop);
 					if($loop->num_rows >= 1){
 						$problem = true;
@@ -325,7 +327,7 @@ if(array_key_exists('nodo', $_POST) || array_key_exists('link', $_POST)){
 					if(!$problem){
 						
 						$query = "INSERT INTO `links` (`id`, `tree`, `name`, `source`, `target`) VALUES 
-						(NULL, $tree, '$name', $sourceid, $targetid);";
+						(NULL, $tree, '$name', $idsource, $idtarget);";
 						
 						DBQuery($query);
 						
@@ -336,6 +338,7 @@ if(array_key_exists('nodo', $_POST) || array_key_exists('link', $_POST)){
 					}else{
 						$data = array(
 							'result' => false,
+							'problem' => true
 						);
 						print($json->encode($data));
 					}
@@ -370,22 +373,10 @@ if(array_key_exists('nodo', $_POST) || array_key_exists('link', $_POST)){
 				}
 			}elseif ($link == 'delete') {
 				try {
-					$source = mysql_real_escape_string($_POST['source']);
-					$target = mysql_real_escape_string($_POST['target']);
-					$name =  mysql_real_escape_string($_POST['name']);
+					$name =  (int)($_POST['name']);
 					$tree = (int)$_POST['tree'];
 					
-					$prequerysource = "SELECT id FROM nodos WHERE name = '$source' and tree = $tree;";
-					$data1 = DBQuery($prequerysource);
-					$aux1 = $data1->fetch_assoc();
-					$sourceid = $aux1['id'];
-					
-					$prequerytarget = "SELECT id FROM nodos WHERE name = '$target' and tree = $tree;";
-					$data2 = DBQuery($prequerytarget);
-					$aux2 = $data2->fetch_assoc();
-					$targetid = $aux2['id'];
-					
-					$query = "DELETE FROM `links` WHERE `links`.`source`='$sourceid' AND `links`.`target` ='$targetid' AND `links`.`tree` =$tree;";
+					$query = "DELETE FROM `links` WHERE `links`.`id`='$name' AND `links`.`tree` =$tree;";
 
 					DBQuery($query);
 

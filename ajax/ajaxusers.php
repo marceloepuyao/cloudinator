@@ -81,7 +81,7 @@ if($action == 'insert'){
 		$email = mysql_real_escape_string($_POST["email"]);
 		$name = mysql_real_escape_string($_POST["nombres"]);
 		$lastname = mysql_real_escape_string($_POST["apellidos"]);
-		if($_POST["password"] == "nochange"){
+		if($_POST["password"] == ""){
 			$password = 0;
 		}else{
 		    $password = crypt($_POST["password"]);

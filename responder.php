@@ -21,12 +21,17 @@ $lang = getLang();
 $USER = DBQueryReturnArray("SELECT * FROM users WHERE email = '$_SESSION[usuario]'");
 
 //comprobar que las variables estén bien
-if(isset($_GET['idlev']) && isset($_GET['idsubform'])){
-	//Obtengo el id del subform que estoy completanto
-	$idsubform = (int)$_GET['idsubform'];
-	//Obtengo el id del levantamiento.
+if(isset($_GET['idlev']) ){
 	$idlevantamiento = (int)$_GET['idlev'];
-
+}
+if(isset($_GET['idsubform'])){	
+	$idsubform = (int)$_GET['idsubform'];
+	$idclone = 0;
+	$subform = getSubForm($idsubform);
+}else if(isset($_GET['idclone'])){
+	$idclone = (int)$_GET['idclone'];
+	$idsubform = 0;
+	$subform = getSubFormByCloneId($idclone);
 }else{
 	header( 'Location: notfound.html' ) ;
 }
@@ -39,26 +44,27 @@ if(isset($_GET['idpreg'])){
 }
 
 //obtenemos el subformulaio, si está incompleto devuelve false
-if(!$subform = getSubForm($idsubform)){
-	die("El subformulario está incompleto, por favor avisar a administrador del sistema");
+if(!$subform){
+	die("El subformulario está incompleto, por favor avisar al administrador del sistema");
 }
+$form = getFormbySubformId($subform['id'] );
+
 //get empresa
 $empresa = getEmpresaByLevantamientoId($idlevantamiento);
 
 //si esta consultando por una pregunta ya respondida
 if($idpregunta){
-	
 	//obtengo la info de la pregunta por id
-	$questionandanswers = getQuestionById($idsubform, $idlevantamiento, $idpregunta);
-	
+	$questionandanswers = getQuestionById($idsubform, $idlevantamiento, $idpregunta, $idclone);
 	extract($questionandanswers); //devuelve $pregunta, $respuestas, $ultimavisita, $completitud
 	$registroanterior = getRegistroAteriorConRegistroID($idregistro, $idsubform, $idlevantamiento);
 	$registroanteriorid = $registroanterior['id'];
 	
 	
+	
 }else{
 	//veo cual fue la última pregunta respondida (según levantamiento y subform). si no hay, tomo la primera.
-	$questionandanswers = getQuestionAnswers($idsubform, $idlevantamiento);
+	$questionandanswers = getQuestionAnswers($idsubform, $idlevantamiento, $idclone);
 	
 	extract($questionandanswers); //devuelve $pregunta, $respuestas, $ultimavisita, $completitud, $idregistro
 	$registroanteriorid = $idregistro;
@@ -66,7 +72,7 @@ if($idpregunta){
 
 //si no hay pregunta es por que se ha llegado a final, se muestra resumen de respuestas.
 if($pregunta == null){
-	$tablaresumen = getResumenSubform($idsubform, $idlevantamiento);
+	$tablaresumen = getResumenSubform($idsubform, $idlevantamiento, $idclone);
 }
 
 
@@ -95,14 +101,14 @@ if($pregunta == null){
 	<?php echo print_panel($USER,$lang);?>
 
 	<div data-role="header" data-theme="b">
-	    <a href="#" class="backtoRecorrer" data-form= "<?php echo $subform['megatree'];?>" data-emp="<?php echo $empresa['id']; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-icon="arrow-l"><?php echo get_string("back", $lang)?></a>
+	    <a href="#" class="backtoRecorrer" data-idform="<?php echo $form['id']; ?>" data-emp="<?php echo $empresa['id']; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-icon="arrow-l"><?php echo get_string("back", $lang)?></a>
 	    <h1> <?php echo $empresa['nombre']?></h1>
 	    <a href="#mypanel" data-icon="bars"><?php echo get_string("options", $lang)?></a>
 	</div>
 	
 	<div data-role="content">
 	
-		<?php echo print_navbar(0, $empresa['id'], $idlevantamiento, $subform['megatree']);?>
+		<?php echo print_navbar(0, $empresa['id'], $idlevantamiento, $subform['megatree'], $idsubform, $lang);?>
 		
 		<?php if ($pregunta != null){ ?>
 		
@@ -115,36 +121,37 @@ if($pregunta == null){
 							$tipo = "b";
 						}
 					}?>
-				    	<div  data-userid="<?php echo $USER[0]['id'];?>" data-idsubform="<?php echo $idsubform; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-idnode="<?php echo $respuesta['id']; ?>" data-idpregunta="<?php echo $pregunta['id']; ?>" class="answer" data-theme="<?php echo $tipo;?>" data-role="button" data-iconpos="top">
+				    	<div  data-userid="<?php echo $USER[0]['id'];?>" data-idclone="<?php echo $idclone; ?>" data-idsubform="<?php echo $idsubform; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-idnode="<?php echo $respuesta['id']; ?>" data-idpregunta="<?php echo $pregunta['id']; ?>" class="answer" data-theme="<?php echo $tipo;?>" data-role="button" data-iconpos="top">
 							<h3><?php echo $respuesta['name']; ?></h3>
 						</div>
 			<?php } ?>
 		<fieldset class="ui-grid-a">
-		                    <div class="ui-block-a"><button id="responderback" data-idreg ="<?php echo $registroanteriorid;?>"data-idsubform="<?php echo $idsubform; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-theme="d">Pregunta anterior</button></div>
-		                    <div class="ui-block-b"><button id="responderquit" data-emp="<?php echo $empresa['id']; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-theme="d">Abandonar</button></div>
+        	<div class="ui-block-a"><button id="responderback" data-idreg ="<?php echo $registroanteriorid;?>" data-idclone="<?php echo $idsubform; ?>" data-idsubform="<?php echo $idsubform; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-theme="d"><?php echo get_string('lastquestion', $lang);?></button></div>
+           	<div class="ui-block-b"><button id="responderquit" data-idform="<?php echo $form['id']; ?>"   data-emp="<?php echo $empresa['id']; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-theme="d"><?php echo get_string('quit', $lang);?></button></div>
 		 </fieldset>
 		</div>
-		<?php } ?>
-		
-		<?php if ($pregunta == null): ?>
+		<?php }else if ($pregunta == null){ ?>
 		<h2><?php echo get_string('endreached', $lang);?></h2>
 		
 		<table data-role="table" id="movie-table" data-mode="columntoggle" class="ui-body-d ui-shadow table-stripe ui-responsive">
 	         <thead>
 	           <tr class="ui-bar-d">
-	             <th>Pregunta</th>
-	             <th>Respuesta</th>
-	             <th>Subrespuesta</th>
-	             <th>Fecha</th>
-	             <th>Entrevistador</th>
+	             <th><?php echo get_string('question', $lang);?></th>
+	             <th><?php echo get_string('answer', $lang);?></th>
+	             <th><?php echo get_string('subquestion', $lang);?></th>
+	             <th><?php echo get_string('subanswer', $lang);?></th>
+	             <th><?php echo get_string('date', $lang);?></th>
+	             <th><?php echo get_string('interviewer', $lang);?></th>
+	             
 	           </tr>
 	         </thead>
 	         <tbody>
 	         <?php foreach ($tablaresumen as $preguntas){?>
 	         
 	           <tr>
-	             <th><a class="gobacktoquestion" data-idlev="<?php echo $idlevantamiento;?>" data-idsubform="<?php echo $idsubform;?>" data-id="<?php echo $preguntas['id'];?>" href="#"><?php echo getContentByNodeId($preguntas['preguntaid']); ?></a></th>
+	             <th><a class="gobacktoquestion" data-idlev="<?php echo $idlevantamiento;?>" data-idclone="<?php echo $idclone;?>" data-idsubform="<?php echo $idsubform;?>" data-id="<?php echo $preguntas['id'];?>" href="#"><?php echo getContentByNodeId($preguntas['preguntaid']); ?></a></th>
 	             <td><?php echo getContentByNodeId($preguntas['respuestaid']); ?></td>
+	              <td><?php echo $preguntas['subpregunta']; ?></td>
 	             <td><?php echo $preguntas['respsubpregunta']; ?></td>
 	             <td><?php echo $preguntas['created']; ?></td>
 	             <td><?php echo getNameByUserId($preguntas['userid']); ?></td>
@@ -157,10 +164,11 @@ if($pregunta == null){
 				
 				
 			<fieldset class="ui-grid-a">
-                    <div class="ui-block-a"><button id="responderback" data-idreg="<?php echo $lastregistro;?>" data-idsubform="<?php echo $idsubform; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-theme="d">Pregunta anterior</button></div>
-                    <div class="ui-block-b"><button id="responderquit" data-emp="<?php echo $empresa['id']; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-theme="d">Continuar</button></div>
+                    <div class="ui-block-a"><button id="responderback" data-idreg="<?php echo $lastregistro;?>" data-idsubform="<?php echo $idsubform; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-theme="d"><?php echo get_string('lastquestion', $lang);?></button></div>
+                    <div class="ui-block-b"><button id="responderquit" data-idform="<?php echo $form['id']; ?>" data-emp="<?php echo $empresa['id']; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-theme="d"><?php echo get_string('continue', $lang);?></button></div>
+		 			 			
 		 	</fieldset>
-		<?php endif; ?>
+		<?php } ?>
 		<div data-role="popup" id="popupSubpregunta" data-theme="a" class="ui-corner-all">
 		    
 		        <div id="formsubpregunta" style="padding:10px 20px;">
@@ -176,11 +184,12 @@ if($pregunta == null){
 								
 					<input type="hidden" name="idlev"  id="idlev"  value="<?php echo $idlevantamiento; ?>" >
 					<input type="hidden" name="idsubform"  id="idsubform"  value="<?php echo $idsubform; ?>" >
+					<input type="hidden" name="idclone"  id="idclone"  value="<?php echo $idclone; ?>" >
 					<input type="hidden" name="idpregunta" id="idpregunta"  value="<?php echo $pregunta['id']; ?>" >
 					
 					
 					<button id="respondersubpregunta" type='submit' data-theme='b' data-icon='check'>Continuar</button>
-		             <button id="omitirsubpregunta"  data-theme='c'  data-icon='delete'>Omitir</button>
+		            <button id="omitirsubpregunta"  data-theme='c'  data-icon='delete'>Omitir</button>
 		        </div>
 		   
 		</div>

@@ -1,6 +1,8 @@
 var nodos = new Array();
 var links = new Array();
 var movingnodename = "";
+
+
 function getQueryStringByName(name) {
     name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
@@ -28,6 +30,7 @@ function noticeSaving(state){
 		$('#notice-savechanges-success').css('display', 'none');
 		$('#notice-savechanges-inprogress').css('display', 'none');
 		$('#notice-savechanges-error').css('display', '');
+		
 		//$('#notice-savechanges-warning').css('display','');
 	}else if(state == "warning"){
 		$('body').css('cursor', 'auto');
@@ -45,7 +48,6 @@ function noticeSaving(state){
 		$('#notice-savechanges-error').css('display', 'none');
 		//$('#notice-savechanges-warning').css('display','none');
 	}
-
 }
 function noticeDeletedAndReleased(){
 	$.ajax({
@@ -110,6 +112,11 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 			}
 		});
 	});
+	function getNameByNodeId(nodeid){
+		
+		
+		
+	}
 	function cambianombre(){
 		var newname = prompt("Nuevo Nombre","");
 		if (newname!=null && newname!="" && newname.length>0){
@@ -172,20 +179,20 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 			success: function() {					
 				var datos = this.get('responseData');
 				for (var i=0; i < datos.length; i++) {
-					//var id = datos[i].id;
-					//console.log("iddd", id);
 		   			nodos[i] = datos[i];
 	   			} 
 				cargaNodos();
 			}
 		}
 	});
-
+	
 	function andaABuscarLosLinks(treeID) {
 		A.io.request('ajax/ajaxlinks.php', {
 			dataType: 'json',
 			method: 'POST',
-			data: {tree: treeID},
+			data: {
+				tree: treeID
+				},
 			on: {
 				success: function() {
 					var response = this.get('responseData');
@@ -205,7 +212,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 			}
 		});
 	}
-	function ajaxPostNodo(action, name, type, posx, posy, tree){
+	function ajaxPostNodo(action, name, type, posx, posy, tree, id, instance){
 		A.io.request('ajax/ajaxpost.php', {
 			autoLoad: true,
 			method: 'POST',
@@ -216,16 +223,25 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 				tree: tree,
 				type: type,
 				posx: posx,
-				posy: posy
+				posy: posy,
+				id: id
 			},
 			on: {
 				success: function(data){
-					console.log('ajaxPostNodo', this.get('responseData'));
 					if(this.get('responseData').result){
+						if(action == "insert"){
+							var newField = instance.addField({
+								xy: [posx, posy] ,
+								type: type,
+								name: name, 
+								idnode: this.get('responseData').id
+							});
+						}
 						noticeSaving('success');
 					}else{
 						noticeSaving('error');
 					}
+					deleltelinesinfo();
 				},
 				failure: function(data){
 					noticeSaving('warning');
@@ -401,9 +417,9 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 	function cargaNodos() {
 		
 		var field = new Array();
-		//console.log("field", nodos);
 		for (var i=0; i < nodos.length; i++) {
 			var x = {};
+			x.idnode = nodos[i].id;
 			x.name = nodos[i].name;
 			x.type = nodos[i].type;
 			x.xy = [parseInt(nodos[i].posx), parseInt(nodos[i].posy)];
@@ -413,7 +429,6 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 			x.metaname = nodos[i].metaname;
 			field.push(x);
 		} 
-		
 
 		console.log('nodos', nodos[1]);
 		db1 = new A.DiagramBuilder(
@@ -424,44 +439,33 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 				srcNode: '#diagrambuilderCB',
 				on: {
 					 '*:drag': function(event) {
-						 
-						var drag = event.target;
-						var idnode = drag.get('node').getAttribute("id");
 						
-						if(drag.get('node').getAttribute("title") == "Pregunta"){
-							movingnodename= "" ;
-						}else if(drag.get('node').getAttribute("title")== "Respuesta"){
-							movingnodename= "";
-						}else if(drag.get('node').getAttribute("title")== "Fin"){
-							movingnodename= "";
-						}else{
-							movingnodename = A.one('#'+idnode).get('children').slice(-2).get('text')[0];
-						}
-						
-						deleltelinesinfo();
-						//noticeSaving('inprogress');
+							
 					},
 					'*:end': function(event){
-						
-						var containerXY = this.dropContainer.getXY();
-						
-						var posix = event.pageX - containerXY[0];
-						var posiy = event.pageY - containerXY[1];
-						
-						if(posix < 0 || posiy < 0){
-							//error message or simply do nothing
-						}else if(movingnodename != undefined && movingnodename != "" && movingnodename != null){
-							console.log("BORRAR", movingnodename);
-							ajaxPostNodo('update', movingnodename, 'condition', posix, posiy, getQueryStringByName('id')); //event.pageX no es la posicion exacta, porque concidera todo
+						var drag = event.target;
+						var diagramNode = A.Widget.getByNode(drag.get('dragNode'));
+						if(diagramNode!= null){
+							var nodeid = diagramNode.get('idnode');
+							var type = diagramNode.get('type');
+							var name = diagramNode.get('name');
+							
+							var containerXY = this.dropContainer.getXY();
+							
+							var posix = event.pageX - containerXY[0];
+							var posiy = event.pageY - containerXY[1];
+							
+							if(posix < 0 || posiy < 0){
+								//error message or simply do nothing
+							}else if(nodeid != undefined && nodeid != "" && nodeid != null){
+								ajaxPostNodo('update', name, type, posix, posiy, getQueryStringByName('id'), nodeid); //event.pageX no es la posicion exacta, porque considera todo
+							}
 						}
 						
-						deleltelinesinfo();
-						//A.one('#savechanges').setStyle('display', '');
 					},
 					'*:hit': function(event){
-						//console.log("nueva pregunta: ", event.drag.get('node')); 
-						//console.log("hit drag", event.drag.get('node').getData);
 						
+			
 						var lastXY = event.drag.lastXY;
 						var containerXY = this.dropContainer.getXY();
 						
@@ -478,7 +482,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 
 						if (instance.isAvailableFieldsDrag(drag)) {
 							var availableField = drag.get('node').getData('availableField');
-							
+	
 							var nodetype = availableField.get("type");
 							
 							var nombre = "nuevonombre " + parseInt(Math.random()*10000) ;
@@ -486,18 +490,9 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 							if(posix < 0 || posiy < 0){
 								//error message or simply do nothing
 							}else if(nodetype == "state" || nodetype == "condition" || nodetype == "end" ){
-								ajaxPostNodo('insert', nombre, nodetype, posix, posiy, getQueryStringByName('id'));
-							}else if(nodetype == "start"){
-								
-								
+								ajaxPostNodo('insert', nombre, nodetype, posix, posiy, getQueryStringByName('id'), null, instance);
 							}
-							
-							var newField = instance.addField({
-								xy: [posix, posiy] ,
-								type: nodetype,
-								name: nombre
-							});
-
+		
 							//instance.select(newField);
 							deleltelinesinfo();
 							
@@ -507,7 +502,6 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 					},
 					save: function(event) {
 						//aca se guardan los cambios
-						//noticeSaving('inprogress');
 						console.log('save', event.target.editingNode.get('name'));
 						//A.one('#savechanges').setStyle('display', '');
 					}
@@ -537,13 +531,14 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 		for (var i=0; i < links.length; i++) {
 			var x = {};
 			x.connector = {};
-			x.connector.name = links[i].name;
+			x.connector.name = links[i].id;
 			
 			for(var j=0; j < nodos.length; j++) {
 				if(nodos[j].id == links[i].source){
-					x.source = nodos[j].name;
+					var a = A.Widget.getByNode('[data-nodeId=' + BuildNodeName(nodos[j].name) + ']');
+					x.source = nodos[j].id;
 				}else if(nodos[j].id == links[i].target){
-					x.target = nodos[j].name;
+					x.target = nodos[j].id;
 				}
 			}
 			connectors.push(x);
@@ -554,6 +549,9 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 		createmetadatatable();
 		deleltelinesinfo();
 		ajaxFormNamebyId(getQueryStringByName('id'));
+	}
+	function BuildNodeName(name) {
+		return 'diagramNode' + '_' + 'field' + '_' + name.replace(/[^a-z0-9.:_\-]/ig, '_');
 	}
 	
 	function deleltelinesinfo(){

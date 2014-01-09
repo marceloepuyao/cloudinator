@@ -1,6 +1,7 @@
 <?php
 require_once('../JSON.php');
 require_once('../DB/db.php');
+require_once('../lib.php');
 
 $json = new Services_JSON();
 
@@ -151,13 +152,27 @@ if(isset($_POST['type'])) { //DEPRICATED: por favor usar ajaxMegaTrees.php, acti
 }else if(isset($_POST['action']) && $_POST['action'] == "release") {
 	try {
 		$id = (int)$_POST['id'];
-		DBQuery("UPDATE trees SET released = 1 WHERE id = $id");
-		$data = array(
-			'result' => true
-		);
+		
+		//first we check if the subform is complete ;)
+		if($subform = getSubForm($id)){
+			DBQuery("UPDATE trees SET released = 1 WHERE id = $id");
+			$data = array(
+				'result' => true
+			);
+			
+		}else{
+			$data = array(
+				'result' => false,
+				'reason' => "incomplete"
+			);
+		}
+		
+		
+		
 	}catch (Exception $e){
 		$data = array(
 			'result' => false,
+			'reason' => "error",
 			'exception' => $e
 		);
 	}

@@ -87,6 +87,24 @@ $dicc = array(
 	'reports' => 'Relatório',
 
 	'editor' => 'Editar Formulários',
-	'options' => 'Opções'
+	'options' => 'Opções',
+
+	'home' => 'Início',
+	'listlevantamientos' => 'Lista de Levantamientos',
+	'managingcompanies' => 'Gestão do Empresas',
+	'managingusers' => 'Gestão do Utilizador',
+	'selectcompany' => 'Selecione Empresa para Entrevista',
+	'companylist' => 'Lista de Empresas',
+	'lastquestion' => 'Questão anterior',
+	'quit'=> 'Deixar',
+
+	'question'=> 'Rergunta',
+	'answer'=> 'Resposta',
+	'subanswer'=> 'Subresposta',
+	'date'=> 'Data',
+	'interviewer'=> 'Entrevistador',
+
+	'subquestion' => 'Subpergunta',
+	'addnewcompany' => 'Adicionar Nova Empresa'
 	);
 ?>

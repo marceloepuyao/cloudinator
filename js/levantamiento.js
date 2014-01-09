@@ -15,10 +15,11 @@ function login(){
      	
      	var obj = jQuery.parseJSON(respuesta);
          if (obj.result == true) {
-         		window.location.href = "index.php?lang="+obj.lang;
+         		window.location.href = "index.php";
          }
          else{
              $.mobile.changePage('#pageError', 'pop', true, true);
+             //$("#acceptButton").focus();
          }
      });
 }
@@ -46,9 +47,9 @@ function guardarlevantamiento(titulo, info, contactado, area, forms, idlev){
 			if(obj.result){
 	        	console.log("la respuesta es", obj.id );
 	        	if(action == "insert"){
-	        		window.location.href = "recorrer.php?emp="+getUrlParameter("emp")+'&idlev='+obj.id + "&lang=" + getUrlParameter("lang");
+	        		window.location.href = "recorrer.php?emp="+getUrlParameter("emp")+'&idlev='+obj.id;
 	        	}else if(action == "update"){
-	        		window.location.href = "levantamiento.php?emp="+getUrlParameter("emp") + "&lang=" + getUrlParameter("lang");
+	        		window.location.href = "levantamiento.php?emp="+getUrlParameter("emp") ;
 	        	}
 			}else{
 				console.log("error en guardarlevantamiento", obj.exception);
@@ -132,9 +133,9 @@ function crearEmpresa(name,industry,textarea, empresaid){
 			
 			if(resp.result){
 				if(empresaid==0){
-					window.location.href = "levantamiento.php?emp="+resp.id + "&lang=" + getUrlParameter('lang');
+					window.location.href = "levantamiento.php?emp="+resp.id;
 				}else{
-					window.location.href = "empresas.php?lang=" + getUrlParameter('lang');
+					window.location.href = "empresas.php";
 				}
 				
 			}else{
@@ -169,7 +170,7 @@ function newuser(nombres,apellidos,email,password, idioma, superusuario, editto)
 			
 			var response = jQuery.parseJSON(respuesta);
 			if(response.result){
-				window.location.href = "usuarios.php?lang="+getUrlParameter("lang");
+				window.location.href = "usuarios.php";
 			}else{
 				console.log("error guardar información del usuario", response.exception);
 			}
@@ -184,7 +185,7 @@ function deleteuser(iduser){
 		},function(respuesta){			
 			var response = jQuery.parseJSON(respuesta);
 			if(response.result){
-				window.location.href = "usuarios.php?lang="+getUrlParameter("lang");
+				window.location.href = "usuarios.php";
 			}else{
 				if(response.sameperson){
 					alert("No puedes borrarte a ti mismo");
@@ -202,7 +203,7 @@ function deletecompany(idcompany){
 		},function(respuesta){			
 			var response = jQuery.parseJSON(respuesta);
 			if(response.result){
-				window.location.href = "empresas.php?lang="+getUrlParameter("lang");
+				window.location.href = "empresas.php";
 			}else{
 				console.log("error en eliminar empresa", response.exception);
 			}	
@@ -252,36 +253,32 @@ $(document).ready(function(){
     	var empresa = $("#select-choice-1").val();
     	
     	if(empresa == "new"){
-    		window.location.href = "nuevaempresa.php?lang="+getUrlParameter('lang');
+    		window.location.href = "nuevaempresa.php";
+    	}else{
+	    	$.post("server/login.php",{
+	       	 action: "empresa",
+	       	 empresa : empresa
+	       	 },function(respuesta){
+	       		 var resp = jQuery.parseJSON(respuesta);
+				if(resp.result){
+					window.location.href = "levantamiento.php?emp="+empresa;
+				}else{
+					alert("Error al seleccionar empresa");
+				}
+	       	 });
     	}
-    	$.post("server/login.php",{
-       	 action: "empresa",
-       	 empresa : empresa
-       	 },function(respuesta){
-       		 var resp = jQuery.parseJSON(respuesta);
-			if(resp.result){
-				window.location.href = "levantamiento.php?emp="+empresa+ "&lang=" + getUrlParameter('lang');
-			}else{
-				alert("Error al seleccionar empresa");
-			}
-       	 });
-    	
     });
-	
-
 	$(".backtoIndex").on('click', function(){
-		window.location.href = "index.php?lang=" + getUrlParameter("lang");
+		window.location.href = "index.php";
 	});
 	$(".backtoLevantamiento").on('click', function(){
 		var emp = $(this).data('idemp');
-		window.location.href = "levantamiento.php?emp="+emp+"&lang=" + getUrlParameter("lang");
+		window.location.href = "levantamiento.php?emp="+emp;
 	});
-
- 
 	$(".ira").on('click', function(){
 		var idempresa = $(this).data('empresa');
 		var idlevantamiento = $(this).data('levantamiento');
-		window.location.href = "recorrer.php?emp="+idempresa+"&idlev="+idlevantamiento + "&lang=" + getUrlParameter("lang");
+		window.location.href = "recorrer.php?emp="+idempresa+"&idlev="+idlevantamiento;
 	});
 	
 	$(".delete").on('click', function(){
@@ -302,8 +299,15 @@ $(document).ready(function(){
 	$(".goto").on('click', function(){
 		var subform = $(this).data('subform');
 		var lev = $(this).data('levantamiento');
+		var idclone = $(this).data('idclone');
 		
-		window.location.href = "responder.php?idsubform="+subform+"&idlev="+lev + "&lang=" + getUrlParameter("lang");
+		if(idclone){
+			window.location.href = "responder.php?idclone="+idclone+"&idlev="+lev;
+		}else{
+			window.location.href = "responder.php?idsubform="+subform+"&idlev="+lev;
+		}
+		
+		
 	});
 	
 	$("#addlevantamiento").on('click', function(){
@@ -333,10 +337,9 @@ $(document).ready(function(){
 			alert("faltan campos por llenar");
 		}
 	
-
 	});
 	$("#cancel").on('click', function(){
-		window.location.href = "levantamiento.php?emp="+getUrlParameter('emp') + "&lang=" + getUrlParameter("lang");
+		window.location.href = "levantamiento.php?emp="+getUrlParameter('emp');
 	});
 	
 	$(".editor").on('click', function(){
@@ -345,12 +348,12 @@ $(document).ready(function(){
 	
 	$(".edit").on('click', function(){
 		var idlevantamiento = $(this).data('id');
-		window.location.href = "editarlevantamiento.php?id="+idlevantamiento + "&emp=" + getUrlParameter("emp")+"&lang=" + getUrlParameter("lang");
+		window.location.href = "editarlevantamiento.php?id="+idlevantamiento + "&emp=" + getUrlParameter("emp");
 	});
 	
 	$("#mainback").on('click', function(){
 		var idlevantamiento = $(this).data('id');
-		window.location.href = "levantamiento.php?emp="+getUrlParameter('emp') + "&lang=" + getUrlParameter("lang");
+		window.location.href = "levantamiento.php?emp="+getUrlParameter('emp');
 	});
 	
 	$("#usernamebutton").on('click', function(){
@@ -362,7 +365,7 @@ $(document).ready(function(){
 		$.post("server/session.php",{ 
 			action: "deleteall"
 			},function(respuesta){
-				window.location.href = "index.php?lang=" + getUrlParameter("lang");
+				window.location.href = "index.php";
 				console.log("cierra sesion");
 				
 			});
@@ -370,7 +373,7 @@ $(document).ready(function(){
 	
 	$(".usuarios").on('click', function(){
 
-		window.location.href = "usuarios.php?lang=" + getUrlParameter("lang");
+		window.location.href = "usuarios.php";
 	});
 	
 	$("#acceptnewuser").on('click', function(){
@@ -384,16 +387,34 @@ $(document).ready(function(){
 		
 		var editto = $(this).data('editto');
 		
-		if(validateText(nombres) && validateText(apellidos) && validateEmail(email) && password != "" && validateText(idioma) && repassword != ""){
-			if(password == repassword){
-				newuser(nombres,apellidos,email,password, idioma, superusuario, editto);
+		if(editto){
+			if(validateText(nombres) && validateText(apellidos) && validateEmail(email) && validateText(idioma)){
+				
+				if(password == repassword){
+					newuser(nombres,apellidos,email,password, idioma, superusuario, editto);
+				}else{
+					alert("Error en Contraseña");
+				}
 			}else{
-				alert("Error en Contraseña");
+				alert("Hay Carácteres Inválidos");
 			}
-
 		}else{
-			alert("Hay Carácteres Inválidos");
+			if(validateText(nombres) && validateText(apellidos) && validateEmail(email) && password != "" && validateText(idioma) && repassword != ""){
+				if(password == repassword){
+					newuser(nombres,apellidos,email,password, idioma, superusuario, editto);
+				}else{
+					alert("Error en Contraseña");
+				}
+
+			}else{
+				alert("Hay Carácteres Inválidos");
+			}
+			
 		}
+		
+		
+		
+		
 	});
 	$(".deleteuser").on('click', function(){
 		var iduser = $(this).data('iduser');
@@ -401,11 +422,11 @@ $(document).ready(function(){
 	});
 	$(".edituser").on('click', function(){
 		var iduser = $(this).data('iduser');
-		window.location.href = "usuarios.php?lang=" + getUrlParameter("lang") + "&edit="+iduser+"#newuser";
+		window.location.href = "usuarios.php?edit="+iduser+"#newuser";
 	});
 	
 	$("#tonewuser").on('click', function(){
-		window.location.href = "usuarios.php?lang=" + getUrlParameter("lang") +"#newuser";
+		window.location.href = "usuarios.php#newuser";
 	});
 	
 	$(".deletecompany").on('click', function(){
@@ -419,34 +440,35 @@ $(document).ready(function(){
 	});
 	$(".editcompany").on('click', function(){
 		var idcompany = $(this).data('idcompany');
-		window.location.href = "empresas.php?lang=" + getUrlParameter("lang") + "&emp="+idcompany;
+		window.location.href = "empresas.php?emp="+idcompany;
 	});
 	
 	$(".edicion").on('click', function(){
-		
-		if(getUrlParameter("edit") == 1){
-			window.location.href = "recorrer.php?emp="+getUrlParameter("emp")+"&idlev="+getUrlParameter("idlev")+"&lang=" + getUrlParameter("lang");
-		}else{
-			window.location.href = "recorrer.php?emp="+getUrlParameter("emp")+"&idlev="+getUrlParameter("idlev")+"&lang=" + getUrlParameter("lang") +"&edit=1";
-		}
+		$.post("server/session.php",{
+			action: 'edit'
+			},function(respuesta){
+				window.location.href = "recorrer.php?emp="+getUrlParameter("emp")+"&idlev="+getUrlParameter("idlev");
+			});
 	});
 	$(".gestionempresas").on('click', function(){
-		window.location.href = "empresas.php?lang=" + getUrlParameter("lang");
+		window.location.href = "empresas.php";
 	});
 	
 	$(".deleteanswers").on('click', function(){
-		var idsubform = $(this).data('subform');
+		var idsubform = $(this).data('idsubform');
 		var idlev = $(this).data('levantamiento');
 		var idform = $(this).data('idform');
+		var idclone = $(this).data('idclone');
 		
 		$.post("ajax/ajaxresponder.php",{ 
 			idlev: idlev,
 			idsubform: idsubform,
+			idclone: idclone,
 			action: 'deleteall'
 			},function(respuesta){
 				var resp = jQuery.parseJSON(respuesta);
 				if(resp.result){
-					window.location.href ="recorrer.php?idlev="+idlev+"&lang="+getUrlParameter("lang")+"&edit=1&idform="+idform;
+					window.location.href ="recorrer.php?idlev="+idlev+"&edit=1&idform="+idform;
 				}else{
 					alert("problemas con escribir en la base de datos");
 				}
@@ -459,8 +481,8 @@ $(document).ready(function(){
         var textarea = $("#textarea").val();
 		
         
-        if(name != null && name != "" &&  industry != null && name != "" && textarea != null && textarea != ""){
-        	if(validateText(name) && validateText(industry) && validateLargeText(textarea)){
+        if(name != null && name != "" &&  industry != null && name != ""){
+        	if(validateText(name) && validateText(industry) && (validateLargeText(textarea) || textarea=="")){
         		crearEmpresa(name,industry,textarea, 0);
         	}else{
         		alert("Hay carácteres inválidos");
@@ -489,5 +511,60 @@ $(document).ready(function(){
         }else{
         	alert("Tienes que llenar todos los campos");
         }
+	});
+	$(".cloneanswers").on('click', function(){
+		var idsubform = $(this).data('subform');
+		var idlev = $(this).data('levantamiento');
+		var idform = $(this).data('idform');
+		var oldname = $(this).data('oldname');
+		
+		var name = prompt("Nombre del Subformulario clonado", oldname);
+		if(name != null){
+			$.post("ajax/ajaxresponder.php",{ 
+				idlev: idlev,
+				idsubform: idsubform,
+				idform: idform,
+				name:name,
+				action: 'cloneanswers'
+				},function(respuesta){
+					var resp = jQuery.parseJSON(respuesta);
+					if(resp.result){
+						window.location.href ="recorrer.php?idlev="+idlev+"&edit=1&idform="+idform;
+					}else{
+						alert("problemas con escribir en la base de datos");
+					}
+				});
+		}
+	});
+	
+	$(".gotoclone").on('click', function(){
+		var cloneid = $(this).data('cloneid');
+		var lev = $(this).data('levantamiento');
+		
+		window.location.href = "responder.php?idclone="+cloneid+"&idlev="+lev;
+	});
+	$(".deleteclone").on('click', function(){
+		var idclone = $(this).data('idclone');
+		var idlev = $(this).data('levantamiento');
+		var idform = $(this).data('idform');
+		
+		$.post("ajax/ajaxresponder.php",{ 
+			idclone: idclone,
+			idlev: idlev,
+			action: 'deleteclone'
+			},function(respuesta){
+				var resp = jQuery.parseJSON(respuesta);
+				if(resp.result){
+					window.location.href = "recorrer.php?idlev="+idlev+"&idform="+idform;
+				}else{
+					alert("problemas con escribir en la base de datos");
+				}
+			});
+		
+		
+	});
+	
+	$("#tonewcompany").on('click', function(){
+		window.location.href = "nuevaempresa.php";
 	});
 });

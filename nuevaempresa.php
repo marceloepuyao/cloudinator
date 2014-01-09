@@ -57,12 +57,12 @@ $catarray = getCategories();
 
 
 			<ul data-role="listview" data-inset="true">
-				<li data-role="fieldcontain"><label for="new-name-empresa"><?php echo get_string("namecompany", $lang);?>:</label> 
+				<li data-role="fieldcontain"><label for="new-name-empresa"><?php echo get_string("namecompany", $lang);?></label> 
 					<input name="new-name-empresa" maxlength="75" id="new-name-empresa"
 					value="" data-clear-btn="true" type="text">
 				</li>
 				<li data-role="fieldcontain"><label for="industry"
-					class="select"><?php echo get_string("industry", $lang);?>:</label> <select name="industry"
+					class="select"><?php echo get_string("industry", $lang);?></label> <select name="industry"
 					id="industry">
 						
 						<?php foreach ($catarray as $cat){;?>
@@ -71,7 +71,7 @@ $catarray = getCategories();
 						
 				</select>
 				</li>
-				<li data-role="fieldcontain"><label for="textarea"><?php echo get_string("companyinformation", $lang);?>:</label> 
+				<li data-role="fieldcontain"><label for="textarea"><?php echo get_string("companyinformation", $lang);?></label> 
 					<textarea cols="40" maxlength="500" rows="8" name="textarea" id="textarea"></textarea>
 				</li>
 				<li class="ui-body ui-body-b">

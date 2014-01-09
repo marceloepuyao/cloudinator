@@ -54,15 +54,30 @@ function getSubForm($idsubform){
 	return $subformularios[0];
 	
 }
+function getSubFormByCloneId($cloneid){
+	$cloned = DBQueryReturnArray("SELECT * FROM cloned WHERE id = $cloneid");
+	return getSubForm($cloned[0]['subformid']);
+	
+}
 
-function getQuestionAnswers($idsubform, $idlevantamiento){
+function getQuestionAnswers($idsubform, $idlevantamiento, $clonedid = 0){
 	//se obtienen la última pregunta hecha.
-	$queryregistro = "SELECT * FROM registropreguntas WHERE levantamientoid = $idlevantamiento AND subformid = $idsubform order by created DESC limit 1";
+	if($clonedid){
+		$cloned = DBQueryReturnArray("SELECT * FROM cloned WHERE id = $clonedid");
+		$idsubform = $cloned[0]['subformid'];
+		$queryregistro = "SELECT * FROM registropreguntas WHERE levantamientoid = $idlevantamiento AND clonedid = $clonedid order by created DESC limit 1";
+	}else{
+		$queryregistro = "SELECT * FROM registropreguntas WHERE levantamientoid = $idlevantamiento AND subformid = $idsubform order by created DESC limit 1";
+	}	
 	$registro = DBQueryReturnArray($queryregistro);
 	//se obtiene la pregunta que viene... si no hay datos: la primera.
 	
 	//calcular completitud
-	$registrototal = DBQueryReturnArray("SELECT * FROM registropreguntas WHERE levantamientoid = $idlevantamiento AND subformid = $idsubform");
+	if($clonedid){
+		$registrototal = DBQueryReturnArray("SELECT * FROM registropreguntas WHERE levantamientoid = $idlevantamiento AND clonedid = $clonedid");
+	}else{
+		$registrototal = DBQueryReturnArray("SELECT * FROM registropreguntas WHERE levantamientoid = $idlevantamiento AND subformid = $idsubform");
+	}
 	$preguntascontestadas = count($registrototal);
 	$minimopreguntas = calcularMinimoPreguntas($idsubform);
 	$maximopreguntas = calcularMaximoPreguntas($idsubform);
@@ -176,9 +191,15 @@ function calcularMaximoPreguntas($idsubform){
 	
 }
 
-function getQuestionById($idsubform, $idlevantamiento, $registroid){
+function getQuestionById($idsubform, $idlevantamiento, $registroid, $idclone){
 	
-	$queryregistro = "SELECT * FROM registropreguntas WHERE levantamientoid = $idlevantamiento AND subformid = $idsubform AND id = $registroid";
+	if($idclone){
+		$cloned = DBQueryReturnArray("SELECT * FROM cloned WHERE id = $idclone");
+		$idsubform = $cloned[0]['subformid'];
+		$queryregistro = "SELECT * FROM registropreguntas WHERE levantamientoid = $idlevantamiento AND clonedid = $idclone AND id = $registroid";
+	}else{
+		$queryregistro = "SELECT * FROM registropreguntas WHERE levantamientoid = $idlevantamiento AND subformid = $idsubform AND id = $registroid";
+	}
 	$registro = DBQueryReturnArray($queryregistro);
 	
 	$idpregunta = $registro[0]["preguntaid"];
@@ -194,9 +215,6 @@ function getQuestionById($idsubform, $idlevantamiento, $registroid){
 											FROM  links l
 											WHERE l.source = $idpregunta)");
 	return array("registro"=>$registro[0],"pregunta" =>$pregunta[0], "respuestas" => $respuestas, "ultimavisita"=>'Hace '.floor((time()-strtotime($registro[0]['created']))/(60*60*24)).' Días.', "completitud"=>0, "idregistro"=>$registro[0]['id']);
-	
-	
-	
 }
 
 function getRegistroAteriorConRegistroID($registroid, $idsubform, $idlev){
@@ -237,7 +255,7 @@ function getLevantamientobyId($idlevantamiento){
 
 function getAllFormularios(){
 	
-	$queryformularios = "SELECT * FROM megatrees";
+	$queryformularios = "SELECT * FROM megatrees WHERE deleted = 0 AND visible = 1";
 	$formularios = DBQueryReturnArray($queryformularios);
 	return $formularios;
 }
@@ -281,9 +299,13 @@ function getSession($sessionname){
 	return false;
 	
 }
-function getResumenSubform($idsubform, $idlevantamiento){
+function getResumenSubform($idsubform, $idlevantamiento, $idclone){
 	
-	$queryresumen = "SELECT * FROM registropreguntas where subformid = $idsubform AND levantamientoid = $idlevantamiento ORDER BY created";
+	if($idclone){
+		$queryresumen = "SELECT rp.*, n.metaname as subpregunta FROM registropreguntas rp, nodos n where rp.clonedid = $idclone AND rp.levantamientoid = $idlevantamiento AND rp.respuestaid = n.id ORDER BY rp.created";
+	}else{
+		$queryresumen = "SELECT rp.*, n.metaname as subpregunta  FROM registropreguntas rp, nodos n where rp.subformid = $idsubform AND rp.levantamientoid = $idlevantamiento AND rp.respuestaid = n.id  ORDER BY rp.created";
+	}
 	$resumen = DBQueryReturnArray($queryresumen);
 	return $resumen;
 	
@@ -303,11 +325,11 @@ function checkSession($lastaccess, $usuario,$idioma){
 	if($usuario == ""){
 		return false;
 	}
-	//si el tiempo del último acceso es mayor que el tiempo de ahora en 5 minunos devuelve false
+	//si el tiempo del último acceso es mayor que el tiempo de ahora en 20 minunos devuelve false
 	$time = time(); 
 	if($lastaccess){
-		//Aquí es donde se settea el tiempo de las session, ahora está en 5 min
-		if(($time - $lastaccess)  < 5*60){
+		//Aquí es donde se settea el tiempo de las session, ahora está en 20 min
+		if(($time - $lastaccess)  < 20*60){
 			return true;
 		}else{
 			//se eliminan las cookies y se devuelve false
@@ -330,6 +352,12 @@ function getSubFormsbyFormId($formid, $levantamientocreated){
 	
 	$subformularios = DBQueryReturnArray($querysubformularios);
 	return $subformularios;
+}
+function getClonedSubFormByFormId($formid, $levantamientoid){
+	$queryclonedsubform = "SELECT * FROM cloned WHERE formid = $formid AND idlev  = $levantamientoid";
+	$subformularios = DBQueryReturnArray($queryclonedsubform);
+	return $subformularios;
+	
 }
 function getNameByUserId($userid){
 	
@@ -377,7 +405,7 @@ function print_panel($USER, $lang, $edit= 0, $modeedittext = null){
 	}
 	if($USER[0]['superuser']){
 		$superuserhtml = "	<a href='#' class='editor'>".get_string('editor', $lang)."</a><br>
-							<a href='#' class='gestionempresas'>Gestión Empresas</a><br>
+							<a href='#' class='gestionempresas'>".get_string('managingcompanies', $lang)."</a><br>
 			";
 	}else{
 		$superuserhtml = "";
@@ -387,37 +415,81 @@ function print_panel($USER, $lang, $edit= 0, $modeedittext = null){
 		<h2>".$USER[0]['name']." ".$USER[0]['lastname']."</h2>
 		
 		".$edithtml.$superuserhtml."
-		<a href='#' class='usuarios'>Gestión Usuarios</a><br>
+		<a href='#' class='usuarios'>".get_string('managingusers', $lang)."</a><br>
 		<a href='#' class='cerrarsesion'> ".get_string('logout', $lang)."</a> <br>
 		<a href='#header' data-rel='close'>".get_string("close", $lang)."</a>
 	     </div><!-- /panel -->";
 	
 	return $panel;
 }
-function print_navbar($toindex, $idemp, $idlevantamiento, $idform ){
-	$navbar = '<a href="#" class="backtoIndex" data-icon="arrow-l">Inicio</a>';
+function print_navbar($toindex, $idemp, $idlevantamiento, $idform, $idsubform, $lang ){
+	$navbar = '<a href="#" class="backtoIndex" data-icon="arrow-l">'.get_string('home', $lang).'</a>';
 	
 	if($toindex){
-		$navbar .= ' >Lista de Levantamientos';
+		$navbar .= ' >'.get_string('listlevantamientos', $lang);
 		return $navbar;
 	}
-	$navbar .= ' > <a href="#" class="backtoLevantamiento" data-idemp="'.$idemp.'" data-icon="arrow-l">Lista de Levantamientos</a>';
+	$navbar .= ' > <a href="#" class="backtoLevantamiento" data-idemp="'.$idemp.'" data-icon="arrow-l">'.get_string('listlevantamientos', $lang).'</a>';
 	
-	if($idlevantamiento == 0){
-		$navbar .= ' > Levantamiento';
+	if($idsubform == 0){
+		
+		$levantamiento = getLevantamientobyId($idlevantamiento);
+		$navbar .= ' > '.$levantamiento['titulo'];
 		return $navbar;
 	}
-	$navbar .= ' > <a href="#" class="backtoRecorrer" data-idlev="'.$idlevantamiento.'" data-idform="'.$idform.'" data-icon="arrow-l">Levantamiento</a>';
 	
-	$navbar .= ' > Responder Subformulario';
+	$levantamiento = getLevantamientobyId($idlevantamiento);	
+	$subform = getSubForm($idsubform);
+	$navbar .= ' > <a href="#" class="backtoRecorrer" data-idlev="'.$idlevantamiento.'" data-idform="'.$idform.'" data-icon="arrow-l">'.$levantamiento['titulo'].'</a>';
+	
+	$navbar .= ' > '.$subform['name'];
 	return $navbar;
 	
 	
 }
 
-function print_navbar_config($text){
-	$navbar = '<a href="#" class="backtoIndex" data-icon="arrow-l">Inicio</a> > '.$text;
+function print_navbar_config($text, $lang){
+	$navbar = '<a href="#" class="backtoIndex" data-icon="arrow-l">'.get_string('home', $lang).'</a> > '.$text;
 	return $navbar;
+}
+
+function addProductMagento($name){
+	$config = parse_ini_file(dirname(__FILE__)."/config.ini", true);
+	$connconf = $config["magento"];
+	
+	$proxy = new SoapClient($connconf['magento_url']);
+	$sessionId = $proxy->login($connconf['magento_user'], $connconf['magento_pass']);
+	if($sessionId){
+		//si la conexión es posible agregar
+		$attributeSets = $proxy->call($sessionId, 'product_attribute_set.list');
+		$set = current($attributeSets);
+		$newProductData = array(
+		    'name'              => $name,
+		     // websites - Array of website ids to which you want to assign a new product
+		    'websites'          => array(1), // array(1,2,3,...)
+		    'short_description' => 'short description',
+		    'description'       => 'description',
+		    'status'            => 1,
+		    'weight'            => 0,
+		    'tax_class_id'      => 1,
+		    'categories'    	=> array(3),    //3 is the category id
+		    'price'             => 12.05
+		);
+		
+		// Create new product
+		$proxy->call($sessionId, 'product.create', array('simple', $set['set_id'], $name, $newProductData));
+		$proxy->call($sessionId, 'product_stock.update', array($name, array('qty'=>50, 'is_in_stock'=>1)));
+		return true;
+	}else{
+		return false;
+	}			
+	
+}
+function getFormbySubformId($idsubform){
+	
+	$query = "SELECT * FROM megatrees WHERE id = (SELECT megatree FROM trees WHERE id = $idsubform )";
+	$tree = DBQueryReturnArray($query);
+	return $tree[0];
 }
 
 	
