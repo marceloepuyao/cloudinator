@@ -47,6 +47,8 @@ if(isset($_GET['idpreg'])){
 if(!$subform){
 	die("El subformulario está incompleto, por favor avisar al administrador del sistema");
 }
+$form = getFormbySubformId($subform['id'] );
+
 //get empresa
 $empresa = getEmpresaByLevantamientoId($idlevantamiento);
 
@@ -57,6 +59,7 @@ if($idpregunta){
 	extract($questionandanswers); //devuelve $pregunta, $respuestas, $ultimavisita, $completitud
 	$registroanterior = getRegistroAteriorConRegistroID($idregistro, $idsubform, $idlevantamiento);
 	$registroanteriorid = $registroanterior['id'];
+	
 	
 	
 }else{
@@ -124,7 +127,7 @@ if($pregunta == null){
 			<?php } ?>
 		<fieldset class="ui-grid-a">
         	<div class="ui-block-a"><button id="responderback" data-idreg ="<?php echo $registroanteriorid;?>" data-idclone="<?php echo $idsubform; ?>" data-idsubform="<?php echo $idsubform; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-theme="d"><?php echo get_string('lastquestion', $lang);?></button></div>
-           	<div class="ui-block-b"><button id="responderquit" data-emp="<?php echo $empresa['id']; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-theme="d"><?php echo get_string('quit', $lang);?></button></div>
+           	<div class="ui-block-b"><button id="responderquit" data-idform="<?php echo $form['id']; ?>"   data-emp="<?php echo $empresa['id']; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-theme="d"><?php echo get_string('quit', $lang);?></button></div>
 		 </fieldset>
 		</div>
 		<?php }else if ($pregunta == null){ ?>
@@ -162,7 +165,8 @@ if($pregunta == null){
 				
 			<fieldset class="ui-grid-a">
                     <div class="ui-block-a"><button id="responderback" data-idreg="<?php echo $lastregistro;?>" data-idsubform="<?php echo $idsubform; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-theme="d"><?php echo get_string('lastquestion', $lang);?></button></div>
-                    <div class="ui-block-b"><button id="responderquit" data-emp="<?php echo $empresa['id']; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-theme="d"><?php echo get_string('continue', $lang);?></button></div>
+                    <div class="ui-block-b"><button id="responderquit" data-idform="<?php echo $form['id']; ?>" data-emp="<?php echo $empresa['id']; ?>" data-idlev="<?php echo $idlevantamiento; ?>" data-theme="d"><?php echo get_string('continue', $lang);?></button></div>
+		 			 			
 		 	</fieldset>
 		<?php } ?>
 		<div data-role="popup" id="popupSubpregunta" data-theme="a" class="ui-corner-all">

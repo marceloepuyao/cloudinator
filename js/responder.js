@@ -121,7 +121,8 @@ $(document).ready(function(){
 	$("#responderquit").on('click', function(){
 		var emp = $(this).data('emp');
 		var idlev = $(this).data('idlev');
-		window.location.href = "recorrer.php?emp="+emp+"&idlev="+idlev;
+		var idform = $(this).data('idform');
+		window.location.href = "recorrer.php?emp="+emp+"&idlev="+idlev+ "&idform="+idform;
 	});
 	
 	$("#responderback").on('click', function(){

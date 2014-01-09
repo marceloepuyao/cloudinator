@@ -485,6 +485,12 @@ function addProductMagento($name){
 	}			
 	
 }
+function getFormbySubformId($idsubform){
+	
+	$query = "SELECT * FROM megatrees WHERE id = (SELECT megatree FROM trees WHERE id = $idsubform )";
+	$tree = DBQueryReturnArray($query);
+	return $tree[0];
+}
 
 	
 	
