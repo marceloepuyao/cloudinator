@@ -398,8 +398,6 @@ $(document).ready(function(){
 			}else{
 				alert("Hay Carácteres Inválidos");
 			}
-
-			
 		}else{
 			if(validateText(nombres) && validateText(apellidos) && validateEmail(email) && password != "" && validateText(idioma) && repassword != ""){
 				if(password == repassword){
@@ -566,4 +564,7 @@ $(document).ready(function(){
 		
 	});
 	
+	$("#tonewcompany").on('click', function(){
+		window.location.href = "nuevaempresa.php";
+	});
 });

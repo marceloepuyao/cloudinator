@@ -108,6 +108,7 @@ $dicc = array(
 	'date'=> 'Fecha',
 	'interviewer'=> 'Entrevistador',
 	
-	'subquestion' => 'Subpregunta'
+	'subquestion' => 'Subpregunta',
+	'addnewcompany' => 'Agregar Nueva Empresa'
 	);
 ?>

@@ -150,6 +150,10 @@ if($idempresa){
 			     </tbody>
 			   </table>
 		<?php }?>
+			<div data-role="controlgroup">
+		    	<a href="#" id="tonewcompany" data-role="button"><?php echo get_string("addnewcompany", $lang); ?></a>
+			</div>
+		
 	</div>
 </div>
 <script src="js/levantamiento.js" type="text/javascript"></script>
