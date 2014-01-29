@@ -3,16 +3,11 @@
 /* @var $model Companies */
 
 $this->breadcrumbs=array(
-	'Companies'=>array('index'),
-	'Create',
+	Yii::t('contentForm', 'managingcompanies')=>array('index'),
+	Yii::t('contentForm', 'newcompany'),
 );
-/*
- $this->menu=array(
- array('label'=>'List Companies', 'url'=>array('index')),
- array('label'=>'Manage Companies', 'url'=>array('admin')),
- );*/
 ?>
 
-<h2>Create Companies</h2>
+<h2><?php echo Yii::t('contentForm', 'newcompany');?></h2>
 
 <?php $this->renderPartial('_form', array('model'=>$model)); ?>

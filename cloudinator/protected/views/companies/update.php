@@ -8,14 +8,7 @@ $this->breadcrumbs=array(
 	$model->nombre,
 );
 
-$this->menu=array(
-array('label'=>'List Companies', 'url'=>array('index')),
-array('label'=>'Create Companies', 'url'=>array('create')),
-array('label'=>'View Companies', 'url'=>array('view', 'id'=>$model->id)),
-array('label'=>'Manage Companies', 'url'=>array('admin')),
-);
 ?>
-
 <h2>
 	<?php echo $model->nombre; ?>
 </h2>

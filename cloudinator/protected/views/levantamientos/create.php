@@ -8,7 +8,7 @@
 $this->setPageTitle($company['nombre']." - ".Yii::t('contentForm', 'newlevantamiento'));
 
 $this->breadcrumbs=array(
-	Yii::t('contentForm', 'recordlevantamientos')=>array('index'),
+	Yii::t('contentForm', 'recordlevantamientos')=>array('index', 'id'=>$model->id),
 	Yii::t('contentForm', 'newlevantamiento'),
 );
 

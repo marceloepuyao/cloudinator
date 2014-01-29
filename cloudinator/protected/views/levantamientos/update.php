@@ -11,12 +11,6 @@ $this->breadcrumbs=array(
 	Yii::t('contentForm', 'edit'),
 );
 
-$this->menu=array(
-array('label'=>'List Levantamientos', 'url'=>array('index')),
-array('label'=>'Create Levantamientos', 'url'=>array('create')),
-array('label'=>'View Levantamientos', 'url'=>array('view', 'id'=>$model->id)),
-array('label'=>'Manage Levantamientos', 'url'=>array('admin')),
-);
 ?>
 
 <h1>

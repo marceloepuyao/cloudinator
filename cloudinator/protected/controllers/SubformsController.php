@@ -45,13 +45,72 @@ class SubformsController extends Controller
 				'users'=>array('@'),
 			),*/
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('index','view', 'create','update', 'admin','delete', 'release'),
+				'actions'=>array('index','view', 'create','update', 'admin','delete', 'release', 'clone'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),
 			),
 		);
+	}
+	public function actionClone($id){
+		
+		$model = new Subforms();
+		$modeltoclone = $this->loadModel($id);
+		Yii::app()->user->returnUrl = $this->createUrl('editor/subforms', array('id'=>$modeltoclone->megatree));
+		if(isset($_POST['Subforms']))
+		{
+			$model->attributes=$_POST['Subforms'];
+			$model->megatree = $modeltoclone->megatree;
+			$model->created = date("Y-m-d H:i:s");
+			$model->modified = date("Y-m-d H:i:s");
+			$convert = array();
+			if($model->save()){
+				$nodos = Nodos::model()->findAll("tree = $modeltoclone->id");
+				foreach ($nodos as $nodo){
+					$nodonuevo = new Nodos();
+					$nodonuevo->attributes = array("tree"=>$model->id, 
+													"name"=>$nodo->name, 
+													"type"=>$nodo->type, 
+													"posx"=>$nodo->posx, 
+													"posy"=>$nodo->posy, 
+													"metaname"=>$nodo->metaname, 
+													"metadata"=>$nodo->metadata, 
+													"metatype"=>$nodo->metatype, 
+													"modified"=>date("Y-m-d H:i:s"),
+													);
+					$nodonuevo->save();
+					$convert[$nodo->id] =(int)$nodonuevo->id;
+				}
+				//die(var_dump($convert));
+				$links = Links::model()->findAll("tree = $modeltoclone->id");
+				$debug = array();
+				foreach ($links as $link){
+					
+					if(isset($convert[$link->target]) && isset($convert[$link->source]) ){
+						$target = Nodos::model()->find("id = ".$convert[$link->target]);
+						$source = Nodos::model()->find("id = ".$convert[$link->source]);
+					
+						$linknuevo = new Links();
+						$linknuevo->attributes = array("tree"=>$model->id, 
+													"name"=>$link->name, 
+													"source"=>$source->id, 
+													"target"=>$target->id, 
+													"modified"=>date("Y-m-d H:i:s"),
+													);
+						$linknuevo->save();
+					}
+				}
+				
+				$this->redirect(array('editor/subforms','id'=>$model->megatree));
+			}
+		}
+		
+		$this->render('clone', array(
+					'model'=>$model,
+					'modeltoclone'=>$modeltoclone,
+					));
+		
 	}
 
 	/**
@@ -60,8 +119,10 @@ class SubformsController extends Controller
 	 */
 	public function actionCreate($id)
 	{
+		
 		$model=new Subforms;
 		$form = Forms::model()->find("id=$id");
+		Yii::app()->user->returnUrl = $this->createUrl('editor/subforms', array('id'=>$form->id));
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -90,7 +151,7 @@ class SubformsController extends Controller
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
-
+		Yii::app()->user->returnUrl = $this->createUrl('editor/subforms', array('id'=>$model->megatree));
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 

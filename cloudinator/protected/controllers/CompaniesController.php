@@ -81,9 +81,14 @@ class CompaniesController extends Controller
 		if(isset($_POST['Companies']))
 		{
 			$model->attributes=$_POST['Companies'];
+			$model->modified = date("Y-m-d H:i:s");
 			if($model->save())
-			$this->redirect($this->createUrl('levantamientos/index', array('companyid'=>$model->id)));
+			{
+				Yii::app()->user->setState('companyid', $model->id);
+				$this->redirect($this->createUrl('levantamientos/index', array('companyid'=>$model->id)));
+			}
 		}
+		
 
 		$this->render('create',array(
 			'model'=>$model,
@@ -106,6 +111,7 @@ class CompaniesController extends Controller
 		if(isset($_POST['Companies']))
 		{
 			$model->attributes=$_POST['Companies'];
+			$model->modified = date("Y-m-d H:i:s");
 			if($model->save())
 			$this->redirect(array('view','id'=>$model->id));
 		}
@@ -122,11 +128,10 @@ class CompaniesController extends Controller
 	 */
 	public function actionDelete($id)
 	{
-		$this->loadModel($id)->delete();
+		$this->loadModel($id)->delete(); //TODO: delete levantamientos, registro de pregutnas
 
-		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax']))
-		$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+		$this->redirect($this->createUrl('index'));
 	}
 
 	/**

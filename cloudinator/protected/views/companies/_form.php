@@ -38,7 +38,7 @@
 
 	<div class="row">
 	<?php echo $form->labelEx($model,'industria'); ?>
-	<?php echo $form->textField($model,'industria',array('size'=>50,'maxlength'=>50)); ?>
+	<?php echo $form->dropDownList($model, 'industria', Industries::getIndustries());?>
 	<?php echo $form->error($model,'industria'); ?>
 	</div>
 

@@ -81,7 +81,7 @@ $this->breadcrumbs=array(
 															'label' => 'Clonar',
 															'htmlOptions' => array("data-ajax"=>"false"),
 															'imageUrl' => Yii::app()->baseUrl.'/images/clone.jpg',
-															'url'=>'Yii::app()->createUrl("forms/setnovisible", array("id"=>$data->id))',
+															'url'=>'Yii::app()->createUrl("subforms/clone", array("id"=>$data->id))',
 															),
 													'delete'=>array(
 															'label' => 'Eliminar',

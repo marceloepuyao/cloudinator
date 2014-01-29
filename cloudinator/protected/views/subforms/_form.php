@@ -23,7 +23,7 @@
 
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Crear' : 'Guardar'); ?>
-		<?php echo CHtml::button('Cancelar', array('submit' => array('editor/forms'))); ?>
+		<?php echo CHtml::button('Cancelar', array('submit' => Yii::app()->user->returnUrl )); ?>
 	</div>
 
 <?php $this->endWidget(); ?>
