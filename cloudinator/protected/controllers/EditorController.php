@@ -26,7 +26,7 @@ class EditorController extends Controller
 	{
 		return array(
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('index','forms', 'subforms','upgrade', 'cloudinator'),
+				'actions'=>array('index','forms', 'subforms','upgrade', 'cloudinator', 'installdb'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -88,6 +88,11 @@ class EditorController extends Controller
 	public function actionUpgrade()
 	{
 		$this->renderPartial('upgrade');
+	}
+	
+	public function actionInstallDB()
+	{
+		$this->renderPartial('installdb');
 	}
 
 	// Uncomment the following methods and override them if needed

@@ -49,7 +49,7 @@ if($version < 2013082700){
 	try{
 		//aqui se escribe el código
 		Yii::app()->db->createCommand("INSERT INTO `users` (`id`, `email`, `name`, `lastname`, `password`, `firstaccess` , `lastaccess`, `lang`, `modified`) VALUES 
-			(NULL, 'admin', 'Sr', 'Admin', '".sha1('pepito.P0')."', '".time()."', '".time()."' , 'es', '".time()."'  )
+			(NULL, 'admin', 'Sr', 'Admin', '".crypt('pepito.P0')."', '".time()."', '".time()."' , 'es', '".time()."'  )
 			")->execute();;
 		//actualiazo la versión
 		Yii::app()->db->createCommand("UPDATE cloudinator_upgrades SET version = '2013082700' WHERE id = 1")->execute();

@@ -1,6 +1,6 @@
 Instrucciones:
 
-- Crear el archivo "config.ini" en la carpeta raiz de Cloudinator a partir del archivo "config-example.ini"
+- Crear el archivo "config.ini" en la carpeta cloudinator/assets a partir del archivo "config-example.ini"
 
 - Modificar el archivo "config.ini" y poner los datos de la base de datos
 
@@ -11,6 +11,6 @@ Instrucciones:
 			Deny from all
 		</Files>
 
-- Ejecute www.example.com/cloudinator/DB/installDB.php
+- Ejecute /cloudinator/editor/installdb.php
 
 - Ejecute www.example.com/cloudinator/DB/upgrade.php

@@ -22,7 +22,7 @@ class UserIdentity extends CUserIdentity
 		$user= Users::model()->find("LOWER(email)=?", array(strtolower($this->username)));
 		if($user===null)
 			$this->errorCode=self::ERROR_USERNAME_INVALID;
-		elseif(sha1($this->password)!==$user->password)
+		elseif(crypt($this->password, $user->password)!==$user->password)
 			$this->errorCode=self::ERROR_PASSWORD_INVALID;
 		else{
 

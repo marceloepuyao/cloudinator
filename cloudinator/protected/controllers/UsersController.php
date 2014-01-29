@@ -84,8 +84,8 @@ class UsersController extends Controller
 			$model->modified = date("Y-m-d H:i:s");
 			
 			if($model->validate()){
-				$model->password = sha1($model->password);
-				$model->confirmpassword = sha1($model->confirmpassword);
+				$model->password = crypt($model->password);
+				$model->confirmpassword = $model->password;
 				if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 			}
@@ -119,7 +119,7 @@ class UsersController extends Controller
 				$model->confirmpassword = $model->password;
 				$model->newpassword = $model->password;
 			}else{
-				$model->password = sha1($model->newpassword);
+				$model->password = crypt($model->newpassword);
 				//$model->confirmpassword = sha1($model->confirmpassword);
 			}
 			

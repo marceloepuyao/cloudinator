@@ -63,11 +63,15 @@ $model->titulo,
 		</div>
 		<? }?>
 	</div>
-	<form action="<?php echo Yii::app()->request->baseUrl."/levantamientos/reports/id/".$model->id;?>" data-ajax="false">
+	
 			<div class="row buttons">
-			<?php echo CHtml::submitButton(Yii::t('contentForm', 'reports')); ?>
+			<?php echo CHtml::button(Yii::t('contentForm', 'reports'), array("submit"=>$this->createUrl('levantamientos/reports', array("id"=>$model->id)), "data-ajax"=>"false")); ?>
 			</div>
-		</form>
+			<?php /*
+			<div class="row buttons">
+			<?php echo CHtml::button(Yii::t('contentForm', 'back'), array("submit"=>$this->createUrl('index', array('companyid'=>$model->empresaid)), "data-ajax"=>"false")); ?>
+			</div> */?>
+		
 		
 		
 		
