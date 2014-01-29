@@ -30,8 +30,10 @@ $model->titulo,
 							
 							if(Yii::app()->user->getState('editmode')==1){
 								$url = "#popupMenu".$subform->id;
+								$datarel = "data-rel = 'popup'";
 							}else{
 								$url = $this->createUrl('respuestas/index', array('subformid'=>$subform->id, 'levantamientoid'=>$model->id));      
+								$datarel = "rel='external'";
 							}
 						
 						}else{
@@ -42,7 +44,7 @@ $model->titulo,
 						}
 						?>
 						<li class="" data-idclone="0"  data-subform="4" data-levantamiento="3">
-								<a href="<?php echo $url;?>" data-rel="popup" data-inline="true" data-transition="slideup" data-icon="gear" data-theme="e">
+								<a href="<?php echo $url;?>" <?php echo $datarel;?> data-inline="true" data-transition="slideup" data-icon="gear" data-theme="e">
 						    		<h3><?php echo $subform->name?></h3>
 					                <p><strong><?php echo Yii::t('contentForm', 'lastvisit');?>: <?php echo $ultimavisita;?></strong></p>
 					                <p><?php echo Yii::t('contentForm', 'nextquestion').": "; echo ($pregunta!=null)?($pregunta['name']):(Yii::t('contentForm', 'endreached'));?></p>

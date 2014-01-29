@@ -159,6 +159,8 @@ class RespuestasController extends Controller
 		
 		extract(MyUtils::getLastQuestionBySubform($subformid, $levantamientoid));
 		
+		$subform = Subforms::model()->find("id = $subformid");
+		$levantamiento = Levantamientos::model()->find("id = $levantamientoid");
 		if($pregunta != null){//si quedan preguntas por responder, manda a ActionResponder($id)
 
 			//$model = $this->loadModel($id);
@@ -171,17 +173,18 @@ class RespuestasController extends Controller
 														->where("id IN (SELECT target FROM links WHERE source =:source  )", array(':source'=>$pregunta['id']))
 														->queryAll(); ;
 			
+														
 			$this->render('preguntar',array(
 				'pregunta'=>$pregunta,
 				'respuestas'=>$respuestas,
-				'subformid'=>$subformid, 
-				'levantamientoid'=>$levantamientoid,
+				'subform'=>$subform, 
+				'levantamiento'=>$levantamiento,
 				
 			));
 	
 		}else{//si no quedan, imprime todas las preguntas ya contestadas
-			$levantamiento = Levantamientos::model()->find("id = $levantamientoid");
-			$subform = Subforms::model()->find("id = $subformid");
+			
+			
 			$dataProvider=new CActiveDataProvider('Respuestas', array(
 				'criteria'=>array(
 					'condition' => "levantamientoid=$levantamientoid AND subformid=$subformid",
