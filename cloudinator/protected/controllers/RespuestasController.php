@@ -124,7 +124,7 @@ class RespuestasController extends Controller
 
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax']))
-			$this->redirect('levantamiento/'.$levantamientoid);
+			$this->redirect(array('levantamientos/view', 'id'=>$levantamientoid));
 	}
 
 	/**
@@ -185,11 +185,21 @@ class RespuestasController extends Controller
 		}else{//si no quedan, imprime todas las preguntas ya contestadas
 			
 			
+			$sql="	SELECT 
+						r.*,
+						pregunta.name AS preguntaname, 
+						respuesta.name AS respuestaname 
+					FROM registropreguntas r 
+						INNER JOIN nodos AS pregunta ON r.preguntaid = pregunta.id 
+						INNER JOIN nodos AS respuesta ON r.respuestaid = respuesta.id
+					WHERE r.levantamientoid = $levantamientoid AND subformid = $subformid";
+			$dataProvider=new CSqlDataProvider($sql);
+			/*
 			$dataProvider=new CActiveDataProvider('Respuestas', array(
 				'criteria'=>array(
 					'condition' => "levantamientoid=$levantamientoid AND subformid=$subformid",
 			),
-			));
+			));*/
 			
 			$this->render('index',array(
 				'dataProvider'=>$dataProvider,

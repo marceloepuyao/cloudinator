@@ -6,7 +6,7 @@
 // This is the main Web application configuration. Any writable
 // CWebApplication properties can be configured here.
 
-$config = parse_ini_file("/assets/config.ini", true);
+$config = parse_ini_file("config.ini", true);
 $connconf = $config["mysql"];
 
 return array(

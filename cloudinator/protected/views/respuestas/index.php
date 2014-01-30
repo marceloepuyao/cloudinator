@@ -18,25 +18,21 @@ $this->breadcrumbs=array(
 							'htmlOptions' => array("data-ajax"=>"false"),
 							'columns'=>array(
 								array(
-						            'name'=>'preguntaid',
+						            'name'=>'preguntaname',
 									'type'=>'raw',
-						            'value'=>'CHtml::link(Nodos::model()->find("id=$data->preguntaid")->name, array("respuestas/index",
-                                         "subformid"=>'.$subform->id.',
-                                         "levantamientoid"=>'.$levantamiento->id.',
-                                         "pregid"=>"$data->id"))',
+						            
 						        ),
 						        array(
-						            'name'=>'respuestaid',
-						            'value'=>'Nodos::model()->find("id=$data->respuestaid")->name'
+						            'name'=>'respuestaname',
+						            
 						        ),
 								'respsubpregunta',
 						         array(
 						            'name'=>'userid',
-						            'value'=>'$data->userid?(Users::model()->find("id=$data->userid")->name." ".Users::model()->find("id=$data->userid")->lastname):(0)'
 						        ),
 								'created',
 								),
-								));?>
+							));?>
 								
 	<div class="row buttons">
 	<?php echo CHtml::button(Yii::t('contentForm', 'back'),array(
