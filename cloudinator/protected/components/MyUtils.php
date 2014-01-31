@@ -1,22 +1,34 @@
 <?php
 class MyUtils {
 
-        public static function getLastQuestionBySubform($idsubform, $idlevantamiento)
+    public static function getLastQuestionBySubform($idsubform, $idlevantamiento, $idcloned = 0)
 	{
-		$criteria = new CDbCriteria;  
-		$criteria->addCondition('subformid = '.$idsubform);
-		$criteria->addCondition('levantamientoid = '.$idlevantamiento);
-		$criteria->order = 'created DESC';
+		if($idcloned){
+			$cloned = Clones::model()->find("id = $idcloned");
+			//$idsubform = $cloned->subformid;
+			$criteria = new CDbCriteria;  
+			$criteria->addCondition('clonedid = '.$idcloned);
+			$criteria->addCondition('levantamientoid = '.$idlevantamiento);
+			$criteria->order = 'created DESC';	
+		
+		}else{
+			$criteria = new CDbCriteria;  
+			$criteria->addCondition('subformid = '.$idsubform);
+			$criteria->addCondition('levantamientoid = '.$idlevantamiento);
+			$criteria->order = 'created DESC';	
+		}
+		
 		$registro =  Respuestas::model()->find($criteria);
+		$registrotodas =  Respuestas::model()->findAll($criteria);
 		
 		
 		//CALCULO DE COMPLETITUD
-		$preguntascontestadas = count($registro);
+		$preguntascontestadas = count($registrotodas);
 		$minimopreguntas = MyUtils::calcularMinimoPreguntas($idsubform);
 		$maximopreguntas = MyUtils::calcularMaximoPreguntas($idsubform);
 		
 		
-		//TODO: completitud máxima no se está ocupando y está mal calculada
+		//TODO: completitud mï¿½xima no se estï¿½ ocupando y estï¿½ mal calculada
 		$completitudminima = round(($preguntascontestadas / $minimopreguntas )*100, 1);
 		if($completitudminima > 100){
 			$completitudminima = 100;

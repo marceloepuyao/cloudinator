@@ -1,6 +1,10 @@
 ﻿<?php
 /* @var $this LevantamientosController */
 /* @var $model Levantamientos */
+/*'forms'=>$forms,
+			'data' => $data,
+			'company' => $company,
+			'clones'=> $cloned,*/
 $this->setPageTitle($company['nombre']);
 $this->breadcrumbs=array(
 Yii::t('contentForm', 'recordlevantamientos')=>array('index', 'companyid'=>$model->empresaid),
@@ -22,7 +26,8 @@ $model->titulo,
 			<h2><?php echo $form->name?></h2> 
 				<ul data-role="listview" data-theme="d"  data-divider-theme="d">
 					<?php $subforms = $data[$form->id];?>
-					<li data-role="list-divider"><?php echo Yii::t('contentForm', 'subforms');?><span class="ui-li-count"><?php echo count($subforms);?></span></li>
+					<?php $cloned = $clones[$form->id];	?>
+					<li data-role="list-divider"><?php echo Yii::t('contentForm', 'subforms');?><span class="ui-li-count"><?php echo count($subforms)+count($cloned);?></span></li>
 					<?php 
 					foreach ($subforms as $subform){
 						if(MyUtils::checkSubForm($subform->id)){
@@ -61,27 +66,60 @@ $model->titulo,
 							</div>
 			            
 		            <?php }}?>
+		           
+		            <?php 
+		            	
+		            	foreach ($cloned as $clon){
+							if(MyUtils::checkSubForm($clon->subformid)){
+								extract(MyUtils::getLastQuestionBySubform($clon->subformid, $clon->idlev, $clon->id)); //$pregunta  $respuestas, $ultimavisita, $completitud, $idregistro
+								
+								if(Yii::app()->user->getState('editmode')==1){
+									$url = "#popupMenuClone".$clon->id;
+									$datarel = "data-rel = 'popup'";
+								}else{
+									$url = $this->createUrl('respuestas/index', array('subformid'=>$clon->subformid, 'levantamientoid'=>$model->id,  'cloneid'=>$clon->id));      
+									$datarel = "rel='external'";
+								}
+							
+							}else{
+								$pregunta['name'] = Yii::t('contentForm', 'incompleteform');
+								$ultimavisita = Yii::t('contentForm', 'never');
+								$completitud = "0%";
+								$url = "";
+							}
+							?>
+							<li class="" data-idclone="0"  data-subform="4" data-levantamiento="3">
+									<a href="<?php echo $url;?>" <?php echo $datarel;?> data-inline="true" data-transition="slideup" data-icon="gear" data-theme="e">
+							    		<h3><?php echo $clon->name?></h3>
+						                <p><strong><?php echo Yii::t('contentForm', 'lastvisit');?>: <?php echo $ultimavisita;?></strong></p>
+						                <p><?php echo Yii::t('contentForm', 'nextquestion').": "; echo ($pregunta!=null)?($pregunta['name']):(Yii::t('contentForm', 'endreached'));?></p>
+						                <p class="ui-li-aside"><strong>Completitud: <?php echo $completitud;?></strong></p>
+					            	</a>
+				            </li>
+				            <?php if(Yii::app()->user->getState('editmode')==1){?>
+				            	<div data-role="popup" id="popupMenuClone<?php echo $clon->id;?>" data-theme="d">
+							        <ul data-role="listview" data-inset="true" style="min-width:210px;" data-theme="d"> 
+							            <li><a rel="external" href="<?php echo $this->createUrl('respuestas/index', array('subformid'=>$clon->subformid, 'levantamientoid'=>$model->id, 'cloneid'=>$clon->id));?>"><?php echo Yii::t('contentForm', 'gothrough');?></a></li>   				
+										<li><?php echo  CHtml::link(CHtml::encode(Yii::t('contentForm', 'delete')), array('clones/delete', 'id'=>$clon->id),
+										  array(
+										    'submit'=>array('clones/delete', 'id'=>$clon->id),
+										    'class' => 'delete','confirm'=>'¿Estás Seguro?'
+										  )
+										);?></li>
+							            <li><a rel="external" href="<?php echo $this->createUrl('respuestas/deleterespuestas', array('subformid'=>$clon->subformid, 'levantamientoid'=>$model->id,  'cloneid'=>$clon->id));?>"><?php echo Yii::t('contentForm', 'deleteanswers');?></a></li>
+							        </ul>
+								</div>
+			            
+		            <?php }}?>
+
 				</ul>
 		</div>
 		<? }?>
 	</div>
 	
-			<div class="row buttons">
-			<?php echo CHtml::button(Yii::t('contentForm', 'reports'), array("submit"=>$this->createUrl('levantamientos/reports', array("id"=>$model->id)), "data-ajax"=>"false")); ?>
-			</div>
-			<?php /*
-			<div class="row buttons">
-			<?php echo CHtml::button(Yii::t('contentForm', 'back'), array("submit"=>$this->createUrl('index', array('companyid'=>$model->empresaid)), "data-ajax"=>"false")); ?>
-			</div> */?>
+	<div class="row buttons">
+	<?php echo CHtml::button(Yii::t('contentForm', 'reports'), array("submit"=>$this->createUrl('levantamientos/reports', array("id"=>$model->id)), "data-ajax"=>"false")); ?>
+	</div>
+	<?php 
 		
 		
-		
-		
-		
-		<div data-role="popup" id="popupMenu<?php echo $subform->id;?>" data-theme="d">
-	        <ul data-role="listview" data-inset="true" style="min-width:210px;" data-theme="d"> 
-	            <li><a  href="<?php echo $this->createUrl('respuestas/index', array('subformid'=>$subform->id, 'levantamientoid'=>$model->id));?>"><?php echo Yii::t('contentForm', 'gothrough');?></a></li>   
-	            <li><a  href="<?php echo $this->createUrl('subforms/clone', array('id'=>$subform->id, 'levantamientoid'=>$model->id));?>"><?php echo Yii::t('contentForm', 'clonesubform');?></a></li>
-	            <li><a  href="<?php echo $this->createUrl('respuestas/delete', array('subformid'=>$subform->id, 'levantamientoid'=>$model->id));?>"><?php echo Yii::t('contentForm', 'deleteanswers');?></a></li>
-	        </ul>
-		</div>

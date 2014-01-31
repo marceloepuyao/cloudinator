@@ -9,6 +9,7 @@
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'subforms-form',
 	'enableAjaxValidation'=>false,
+	'focus'=>array($model,'name'),
 )); ?>
 
 	<p class="note"><span class="required">*</span> Campo Requerido.</p>

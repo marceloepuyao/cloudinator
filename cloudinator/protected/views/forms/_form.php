@@ -13,6 +13,7 @@
 	// There is a call to performAjaxValidation() commented in generated controller code.
 	// See class documentation of CActiveForm for details on this.
 	'enableAjaxValidation'=>false,
+	'focus'=>array($model,'name'),
 )); ?>
 
 	<p class="note"><span class="required">*</span> Campo Requerido.</p>

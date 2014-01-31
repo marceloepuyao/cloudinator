@@ -3,7 +3,8 @@
 /*'pregunta'=>$pregunta,
 				'respuestas'=>$respuestas,
 				'subform'=>$subform, 
-				'levantamiento'=>$levantamiento,*/
+				'levantamiento'=>$levantamiento,
+				'cloneid'=>$cloneid,*/
 
 
 $this->breadcrumbs=array(
@@ -24,7 +25,7 @@ $this->breadcrumbs=array(
 			$theme = "b";
 		}?>
 		
-		<a href="<?php echo $this->createUrl('respuestas/index', array('subformid'=>$subform->id, 'levantamientoid' =>$levantamiento->id, 'respid'=>$respuesta['id'], 'pregid'=>$pregunta['id']));?>"  data-theme="<?php echo $theme;?>"  rel="external"  data-role="button" data-iconpos="top">
+		<a href="<?php echo $this->createUrl('respuestas/index', array('subformid'=>$subform->id, 'levantamientoid' =>$levantamiento->id,'cloneid'=>$cloneid, 'respid'=>$respuesta['id'], 'pregid'=>$pregunta['id']));?>"  data-theme="<?php echo $theme;?>"  rel="external"  data-role="button" data-iconpos="top">
 			<?php echo $respuesta['name']?>
 		</a>
 <?php }?>

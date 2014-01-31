@@ -79,11 +79,13 @@ class LevantamientosController extends Controller
 		
 		
 		$data = array();
+		$cloned = array();
 		foreach ($forms as $form){
-			$data[$form['id']] = Subforms::model()->findAll("megatree = $form[id]");
+			$data[$form['id']] = Subforms::model()->findAll("megatree = $form[id] AND (deleted = 0 OR 
+											(deleted = 1 AND modified > '$model->created'))");
+			$cloned[$form['id']] = Clones::model()->findAll("formid = $form[id] AND idlev  = $model->id");
 		}
-	
-		
+
 		//get subforms
 		$criteria2 = new CDbCriteria;  
 		$criteria2->addCondition('megatree IN '.$in);
@@ -96,6 +98,7 @@ class LevantamientosController extends Controller
 			'forms'=>$forms,
 			'data' => $data,
 			'company' => $company,
+			'clones'=> $cloned,
 		));
 	}
 

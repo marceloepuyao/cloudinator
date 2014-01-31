@@ -102,11 +102,12 @@ class SiteController extends Controller
 
 		Yii::app()->user->returnUrl = $this->createUrl('site/selectcompany');
 		// if it is ajax validation request
+		/*
 		if(isset($_POST['ajax']) && $_POST['ajax']==='login-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
-		}
+		}*/
 
 		// collect user input data
 		if(isset($_POST['SelectCompanyForm']))
@@ -115,17 +116,17 @@ class SiteController extends Controller
 			// validate user input and redirect to the previous page if valid
 
 			if($model->attributes['company']== 'new'){
-				$this->redirect($this->createUrl('companies/create')); //Yii::app()->request->baseUrl."/companies/index"
+				$this->redirect($this->createUrl('companies/create'));
 			}
 
 			if($model->validate()){ //TODO:validar si existe la empresa
-				Yii::app()->user->setState('companyid',$model->company);  //acá se settea el id de la empresa
+				Yii::app()->user->setState('companyid',$model->company);  //acï¿½ se settea el id de la empresa
 				$this->redirect($this->createUrl('levantamientos/index', array('companyid'=>$model->company)));
 				
 			}
 		}
-		// display the login form
-		$this->render('index',array('model'=>$model, 'companynames'=>$companynames));
+		// display the select company form
+		$this->render('selectcompany',array('model'=>$model, 'companynames'=>$companynames));
 
 	}
 

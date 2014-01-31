@@ -2,7 +2,8 @@
 /* @var $this RespuestasController */
 /* @var $dataProvider CActiveDataProvider */
 /* 'levantamiento' => $levantamiento,
-				'subform' => $subform,*/
+				'subform' => $subform,
+				'cloneid' => $cloneid,*/
 
 $this->breadcrumbs=array(
 	Yii::t('contentForm', 'recordlevantamientos')=>array('levantamientos/index', 'companyid'=>$levantamiento->empresaid),
@@ -18,20 +19,28 @@ $this->breadcrumbs=array(
 							'htmlOptions' => array("data-ajax"=>"false"),
 							'columns'=>array(
 								array(
-						            'name'=>'preguntaname',
+						            'name'=>'Pregunta',
 									'type'=>'raw',
 									'value'=>'CHtml::link($data["preguntaname"], array("respuestas/index",
                                          "subformid"=>"'.$subform->id.'",
                                          "levantamientoid"=>"'.$levantamiento->id.'",
+                                         "cloneid"=>"'.$cloneid.'",
                                          "pregid"=> $data["preguntaid"] ))', 
 						        ),
 						        array(
-						            'name'=>'respuestaname',
+						            'name'=>'Respuesta',
+						        	'value'=>'$data["respuestaname"]',
 						            
 						        ),
-								'respsubpregunta',
+						        array(
+						            'name'=>'Respuesta Subpregunta',
+						        	'value'=>'$data["respsubpregunta"]',
+						            
+						        ),
 						         array(
 						            'name'=>'userid',
+						            'value'=>'$data["userid"]?(Users::model()->find("id=$data[userid]")->name." ".Users::model()->find("id=$data[userid]")->lastname):(0)'
+						            
 						        ),
 								'created',
 								),

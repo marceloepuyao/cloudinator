@@ -130,20 +130,28 @@ class RespuestasController extends Controller
 	/**
 	 * Lists all models.
 	 */
-	public function actionIndex($subformid, $levantamientoid, $respid= 0, $pregid=0)
+	public function actionIndex($subformid, $levantamientoid, $cloneid = 0, $respid= 0, $pregid=0)
 	{
 		//if envio solo pregunta, vuelvo atrás, y 
 		
+		
 		$subform = Subforms::model()->find("id = $subformid");
+		
 		$levantamiento = Levantamientos::model()->find("id = $levantamientoid");
 		
 
-		
+		//entra aca si estoy retrocediendo a una pregunta ya contestada
 		if($respid == 0 && $pregid != 0){
-					
-			$record = Respuestas::model()->find("subformid=$subformid AND 
+
+			if($cloneid){
+				$record = Respuestas::model()->find("clonedid=$cloneid AND 
 												levantamientoid = $levantamientoid AND
 												preguntaid = $pregid");
+			}else{
+				$record = Respuestas::model()->find("subformid=$subformid AND 
+												levantamientoid = $levantamientoid AND
+												preguntaid = $pregid");
+			}
 			if($record['id']){
 				$pregunta = Yii::app()->db->createCommand()->select('*')
 														->from('nodos')
@@ -161,6 +169,7 @@ class RespuestasController extends Controller
 					'subform'=>$subform, 
 					'levantamiento'=>$levantamiento,
 					'record'=>$record["respuestaid"],
+					'cloneid' => $cloneid,
 					
 				));
 				Yii::app()->end();
@@ -170,23 +179,35 @@ class RespuestasController extends Controller
 		if($respid != 0 && $pregid != 0){
 			
 			//si el registro existe
-			$record = Respuestas::model()->find("subformid=$subformid AND 
+			if($cloneid){
+				$record = Respuestas::model()->find("clonedid=$cloneid AND 
 												levantamientoid = $levantamientoid AND
 												preguntaid = $pregid");
+			}else{
+				$record = Respuestas::model()->find("subformid=$subformid AND 
+												levantamientoid = $levantamientoid AND
+												preguntaid = $pregid");
+			}
 			
 			if($record['id']){
 				//si la resupesta no camba, no se hace nada....//si la respuesta cambia se borra el registro y las respuestan que le siguen.
 				if($record['respuestaid'] != $respid){
 					
-					$recordtodelete = Respuestas::model()->deleteAll(array("condition"=>"subformid=$subformid AND 
+					if($cloneid){
+						$recordtodelete = Respuestas::model()->deleteAll(array("condition"=>"clonedid=$cloneid AND 
 												levantamientoid = $levantamientoid AND
 												id > ".$record['id']));
+					}else{
+						$recordtodelete = Respuestas::model()->deleteAll(array("condition"=>"subformid=$subformid AND 
+												levantamientoid = $levantamientoid AND
+												id > ".$record['id']));
+					}
 					$record = $this->loadModel($record['id']);
 					$record->created = date("Y-m-d H:i:s");
 					$record->respuestaid = $respid;
 					if($record->save()){
 						//$this->redirect(array('view','id'=>$registro->id));
-						$this->redirect(array('index','subformid'=>$subformid, 'levantamientoid'=>$levantamientoid));
+						$this->redirect(array('index','subformid'=>$subformid, 'levantamientoid'=>$levantamientoid, 'cloneid'=>$cloneid));
 					}else{
 						die(var_dump($record->getErrors()));
 					}
@@ -194,20 +215,27 @@ class RespuestasController extends Controller
 				
 			}else{
 			
+				if($cloneid == 0){
+					$cloneid = null;
+					$subformidsave = $subformid;
+				}else{
+					$subformidsave = 0;
+				}
 				$registro = new Respuestas();
 				$registro->attributes = array(	'preguntaid'=>$pregid,
 												'respuestaid'=>$respid,
-												'subformid'=>$subformid,
+												'subformid'=>$subformidsave,
 												'levantamientoid'=>$levantamientoid,
 												'formid'=>0,
 												'userid'=> Yii::app()->user->id,
 												'empresaid'=> Yii::app()->user->getState('companyid'),
 												'created'=> date("Y-m-d H:i:s"),
+												'clonedid'=>$cloneid,
 											);		
 				$registro->validate();
 				if($registro->save()){
 					//$this->redirect(array('view','id'=>$registro->id));
-					$this->redirect(array('index','subformid'=>$subformid, 'levantamientoid'=>$levantamientoid));
+					$this->redirect(array('index','subformid'=>$subformid, 'levantamientoid'=>$levantamientoid, 'cloneid'=>$cloneid));
 				}else{
 					die(var_dump($registro->getErrors()));
 				}
@@ -216,7 +244,7 @@ class RespuestasController extends Controller
 		
 		Yii::app()->user->returnUrl = $this->createUrl('levantamientos/view', array('id'=>$levantamientoid));
 		
-		extract(MyUtils::getLastQuestionBySubform($subformid, $levantamientoid));
+		extract(MyUtils::getLastQuestionBySubform($subformid, $levantamientoid, $cloneid));
 		
 		if($pregunta != null){//si quedan preguntas por responder, manda a ActionResponder($id)
 
@@ -236,6 +264,7 @@ class RespuestasController extends Controller
 				'respuestas'=>$respuestas,
 				'subform'=>$subform, 
 				'levantamiento'=>$levantamiento,
+				'cloneid'=>$cloneid,
 				'record'=>0,
 				
 			));
@@ -243,14 +272,27 @@ class RespuestasController extends Controller
 		}else{//si no quedan, imprime todas las preguntas ya contestadas
 			
 			
-			$sql="	SELECT 
-						r.*,
-						pregunta.name AS preguntaname, 
-						respuesta.name AS respuestaname 
-					FROM registropreguntas r 
-						INNER JOIN nodos AS pregunta ON r.preguntaid = pregunta.id 
-						INNER JOIN nodos AS respuesta ON r.respuestaid = respuesta.id
-					WHERE r.levantamientoid = $levantamientoid AND subformid = $subformid";
+			if($cloneid){
+				$sql="	SELECT 
+							r.*,
+							pregunta.name AS preguntaname, 
+							respuesta.name AS respuestaname 
+						FROM registropreguntas r 
+							INNER JOIN nodos AS pregunta ON r.preguntaid = pregunta.id 
+							INNER JOIN nodos AS respuesta ON r.respuestaid = respuesta.id
+						WHERE r.levantamientoid = $levantamientoid AND clonedid = $cloneid";
+			}else{
+				$sql="	SELECT 
+							r.*,
+							pregunta.name AS preguntaname, 
+							respuesta.name AS respuestaname 
+						FROM registropreguntas r 
+							INNER JOIN nodos AS pregunta ON r.preguntaid = pregunta.id 
+							INNER JOIN nodos AS respuesta ON r.respuestaid = respuesta.id
+						WHERE r.levantamientoid = $levantamientoid AND subformid = $subformid";
+			}
+			
+			
 			$dataProvider=new CSqlDataProvider($sql);
 			/*
 			$dataProvider=new CActiveDataProvider('Respuestas', array(
@@ -263,6 +305,7 @@ class RespuestasController extends Controller
 				'dataProvider'=>$dataProvider,
 				'levantamiento' => $levantamiento,
 				'subform' => $subform,
+				'cloneid' => $cloneid,
 			));
 		}
 	}

@@ -1,6 +1,6 @@
 <?php
 
-$config = parse_ini_file(dirname(__FILE__)."/../config.ini", true);
+$config = parse_ini_file("../../protected/config/config.ini", true); //dirname(__FILE__).
 $connconf = $config["mysql"];
 
 function DBConnect(){
