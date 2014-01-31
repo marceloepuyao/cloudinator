@@ -7,7 +7,7 @@
 
 
 $this->breadcrumbs=array(
-	Yii::t('contentForm', 'recordlevantamientos')=>array('index', 'companyid'=>$levantamiento->empresaid),
+	Yii::t('contentForm', 'recordlevantamientos')=>array('levantamientos/index', 'companyid'=>$levantamiento->empresaid),
 	$levantamiento->titulo=> array('levantamientos/view', 'id'=>$levantamiento->id),
 	'responder',
 );
@@ -19,7 +19,12 @@ $this->breadcrumbs=array(
 
 <div data-role="collapsible-set" data-theme="a" data-content-theme="d" data-iconpos="right">
 <?php foreach ($respuestas as $respuesta){ ?>
-		<a  href="<?php echo $this->createUrl('respuestas/index', array('subformid'=>$subform->id, 'levantamientoid' =>$levantamiento->id, 'respid'=>$respuesta['id'], 'pregid'=>$pregunta['id']));?>"  data-theme="c"  rel="external"  data-role="button" data-iconpos="top">
+		<?php $theme = "c";
+		if($respuesta['id']==$record){
+			$theme = "b";
+		}?>
+		
+		<a href="<?php echo $this->createUrl('respuestas/index', array('subformid'=>$subform->id, 'levantamientoid' =>$levantamiento->id, 'respid'=>$respuesta['id'], 'pregid'=>$pregunta['id']));?>"  data-theme="<?php echo $theme;?>"  rel="external"  data-role="button" data-iconpos="top">
 			<?php echo $respuesta['name']?>
 		</a>
 <?php }?>

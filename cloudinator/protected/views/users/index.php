@@ -5,7 +5,7 @@
 $this->setPageTitle(Yii::t('contentForm', 'managingusers'));
 
 $this->breadcrumbs=array(
-Yii::t('contentForm', 'managingusers')=>array('index'),
+Yii::t('contentForm', 'managingusers'),
 );
 
 Yii::app()->clientScript->registerScript('search', "

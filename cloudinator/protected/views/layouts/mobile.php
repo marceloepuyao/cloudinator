@@ -90,7 +90,7 @@
 				}
 				?>
 				</h2>
-				<?php if(Yii::app()->user->getState('superuser')){?>
+				<?php if(Yii::app()->user->getState('roles')){?>
 					<a href="<?php echo Yii::app()->request->baseUrl.'/editor'; ?>" rel="external" data-icon="arrow-l">Editar Formularios </a><br />
 					
 				<?php }?>
@@ -98,7 +98,7 @@
 				<a href='<?php echo Yii::app()->request->baseUrl;?>/users'  rel="external"
 					class='usuarios'><?php echo Yii::t('contentForm', 'managingusers')?>
 				</a><br />
-				<?php if(!Yii::app()->user->isGuest){if(Yii::app()->user->superuser){?>
+				<?php if(!Yii::app()->user->isGuest){if(Yii::app()->user->roles){?>
 				<a href='<?php echo Yii::app()->request->baseUrl;?>/companies' rel="external"><?php echo Yii::t('contentForm', 'managingcompanies')?>  
 				</a><br />
 				<?php }}?>

@@ -55,7 +55,7 @@ $model->titulo,
 			            	<div data-role="popup" id="popupMenu<?php echo $subform->id;?>" data-theme="d">
 						        <ul data-role="listview" data-inset="true" style="min-width:210px;" data-theme="d"> 
 						            <li><a rel="external" href="<?php echo $this->createUrl('respuestas/index', array('subformid'=>$subform->id, 'levantamientoid'=>$model->id));?>"><?php echo Yii::t('contentForm', 'gothrough');?></a></li>   
-						            <li><a rel="external" href="<?php echo $this->createUrl('subforms/clone', array('id'=>$subform->id, 'levantamientoid'=>$model->id));?>"><?php echo Yii::t('contentForm', 'clonesubform');?></a></li>
+						            <li><a rel="external" href="<?php echo $this->createUrl('clones/create', array('id'=>$subform->id, 'levid'=>$model->id));?>"><?php echo Yii::t('contentForm', 'clonesubform');?></a></li>
 						            <li><a rel="external" href="<?php echo $this->createUrl('respuestas/deleterespuestas', array('subformid'=>$subform->id, 'levantamientoid'=>$model->id));?>"><?php echo Yii::t('contentForm', 'deleteanswers');?></a></li>
 						        </ul>
 							</div>

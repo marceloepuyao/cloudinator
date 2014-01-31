@@ -20,7 +20,10 @@ $this->breadcrumbs=array(
 								array(
 						            'name'=>'preguntaname',
 									'type'=>'raw',
-						            
+									'value'=>'CHtml::link($data["preguntaname"], array("respuestas/index",
+                                         "subformid"=>"'.$subform->id.'",
+                                         "levantamientoid"=>"'.$levantamiento->id.'",
+                                         "pregid"=> $data["preguntaid"] ))', 
 						        ),
 						        array(
 						            'name'=>'respuestaname',

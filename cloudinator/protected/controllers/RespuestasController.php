@@ -132,35 +132,92 @@ class RespuestasController extends Controller
 	 */
 	public function actionIndex($subformid, $levantamientoid, $respid= 0, $pregid=0)
 	{
+		//if envio solo pregunta, vuelvo atrás, y 
+		
+		$subform = Subforms::model()->find("id = $subformid");
+		$levantamiento = Levantamientos::model()->find("id = $levantamientoid");
+		
+
+		
+		if($respid == 0 && $pregid != 0){
+					
+			$record = Respuestas::model()->find("subformid=$subformid AND 
+												levantamientoid = $levantamientoid AND
+												preguntaid = $pregid");
+			if($record['id']){
+				$pregunta = Yii::app()->db->createCommand()->select('*')
+														->from('nodos')
+														->where('id=:id', array(':id'=>$record['preguntaid']))
+														->queryRow(); 
+				$respuestas = Yii::app()->db->createCommand()->select('*')
+															->from('nodos')
+															->where("id IN (SELECT target FROM links WHERE source =:source  )", array(':source'=>$pregunta['id']))
+															->queryAll(); ;
+				
+															
+				$this->render('preguntar',array(
+					'pregunta'=>$pregunta,
+					'respuestas'=>$respuestas,
+					'subform'=>$subform, 
+					'levantamiento'=>$levantamiento,
+					'record'=>$record["respuestaid"],
+					
+				));
+				Yii::app()->end();
+			}
+		}
 		//if envio respuesta, respondo
 		if($respid != 0 && $pregid != 0){
 			
-			$registro = new Respuestas();
-			$registro->attributes = array(	'preguntaid'=>$pregid,
-											'respuestaid'=>$respid,
-											'subformid'=>$subformid,
-											'levantamientoid'=>$levantamientoid,
-											'formid'=>0,
-											'userid'=> Yii::app()->user->id,
-											'empresaid'=> Yii::app()->user->getState('companyid'),
-											'created'=> date("Y-m-d H:i:s"),
-										);		
-			$registro->validate();
-			if($registro->save()){
-				//$this->redirect(array('view','id'=>$registro->id));
-				$this->redirect(array('index','subformid'=>$subformid, 'levantamientoid'=>$levantamientoid));
-			}else{
-				die(var_dump($registro->getErrors()));
-			}
+			//si el registro existe
+			$record = Respuestas::model()->find("subformid=$subformid AND 
+												levantamientoid = $levantamientoid AND
+												preguntaid = $pregid");
 			
+			if($record['id']){
+				//si la resupesta no camba, no se hace nada....//si la respuesta cambia se borra el registro y las respuestan que le siguen.
+				if($record['respuestaid'] != $respid){
+					
+					$recordtodelete = Respuestas::model()->deleteAll(array("condition"=>"subformid=$subformid AND 
+												levantamientoid = $levantamientoid AND
+												id > ".$record['id']));
+					$record = $this->loadModel($record['id']);
+					$record->created = date("Y-m-d H:i:s");
+					$record->respuestaid = $respid;
+					if($record->save()){
+						//$this->redirect(array('view','id'=>$registro->id));
+						$this->redirect(array('index','subformid'=>$subformid, 'levantamientoid'=>$levantamientoid));
+					}else{
+						die(var_dump($record->getErrors()));
+					}
+				}
+				
+			}else{
+			
+				$registro = new Respuestas();
+				$registro->attributes = array(	'preguntaid'=>$pregid,
+												'respuestaid'=>$respid,
+												'subformid'=>$subformid,
+												'levantamientoid'=>$levantamientoid,
+												'formid'=>0,
+												'userid'=> Yii::app()->user->id,
+												'empresaid'=> Yii::app()->user->getState('companyid'),
+												'created'=> date("Y-m-d H:i:s"),
+											);		
+				$registro->validate();
+				if($registro->save()){
+					//$this->redirect(array('view','id'=>$registro->id));
+					$this->redirect(array('index','subformid'=>$subformid, 'levantamientoid'=>$levantamientoid));
+				}else{
+					die(var_dump($registro->getErrors()));
+				}
+			}
 		}
 		
 		Yii::app()->user->returnUrl = $this->createUrl('levantamientos/view', array('id'=>$levantamientoid));
 		
 		extract(MyUtils::getLastQuestionBySubform($subformid, $levantamientoid));
 		
-		$subform = Subforms::model()->find("id = $subformid");
-		$levantamiento = Levantamientos::model()->find("id = $levantamientoid");
 		if($pregunta != null){//si quedan preguntas por responder, manda a ActionResponder($id)
 
 			//$model = $this->loadModel($id);
@@ -179,6 +236,7 @@ class RespuestasController extends Controller
 				'respuestas'=>$respuestas,
 				'subform'=>$subform, 
 				'levantamiento'=>$levantamiento,
+				'record'=>0,
 				
 			));
 	

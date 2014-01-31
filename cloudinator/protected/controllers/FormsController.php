@@ -39,7 +39,7 @@ class FormsController extends Controller
 
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array('index','view', 'admin','delete', 'create','update', 'setvisible', 'setnovisible'),
-				'users'=>array('admin'),
+				'roles'=>array("admin"),
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),

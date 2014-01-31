@@ -39,7 +39,14 @@ class UserIdentity extends CUserIdentity
 			$this->setState('name', $user->name) ;
 			$this->setState('lang', $user->lang) ;
 			$this->setState('lastname', $user->lastname) ;
-			$this->setState('superuser',$user->superuser);
+			$this->setState('superuser', $user->superuser) ;
+			if($user->superuser){
+				$role = "admin";
+			}else{
+				$role = "preventa";
+			}
+			
+			$this->setState('roles',$role);
 
 			$this->errorCode=self::ERROR_NONE;
 		}
@@ -49,4 +56,11 @@ class UserIdentity extends CUserIdentity
     {
         return $this->_id;
     }
+	public function getIsAdmin() {
+	    $user = $this->loadUser(Yii::app()->user->id);
+	    if ($user === null) {
+	        return false;
+	    }
+	    return intval($user->user_level_id) == AccountModule::USER_LEVEL_ADMIN;
+	}
 }
