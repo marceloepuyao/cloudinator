@@ -144,7 +144,7 @@ try {
 }
 echo '<hr>';
 echo '<h3>La instalacion a finalizado</h3>';
-echo '<h2>Si la instalación fue exitosa, por favor instale las datos: <a href="installdatos>Instalar Actualizaciones</a></h2>';
+echo '<h2>Si la instalación fue exitosa, por favor instale las datos: <a href="installdatos">Instalar Actualizaciones</a></h2>';
 echo '</center>';
 
 

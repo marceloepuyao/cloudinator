@@ -41,12 +41,12 @@ class AdminController extends Controller
 	
 	public function actionInstalldb()
 	{
-		$this->renderPartial('installdb');
+		$this->renderPartial('installDB');
 	}
 
 	public function actionInstalldatos()
 	{
-		$this->renderPartial('installdatos');
+		$this->renderPartial('installDatos');
 		
 	}
 
