@@ -26,13 +26,13 @@ class AdminController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('installdb'),
+				'actions'=>array('installdb', 'installdatos'),
 				'users'=>array('*'),
-			),
+			),/*
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('upgrade', 'admin'),
+				'actions'=>array('installdb', 'admin'),
 				'users'=>array('admin'),
-			),
+			),*/
 			array('deny',  // deny all users
 				'users'=>array('*'),
 			),
@@ -44,14 +44,9 @@ class AdminController extends Controller
 		$this->renderPartial('installdb');
 	}
 
-	public function actionUpgrade()
+	public function actionInstalldatos()
 	{
-		$this->renderPartial('upgrade');
-		
-	}
-	public function actionAdmin()
-	{
-		$this->render('admin');
+		$this->renderPartial('installdatos');
 		
 	}
 
