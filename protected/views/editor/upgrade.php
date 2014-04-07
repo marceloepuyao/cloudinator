@@ -6,7 +6,6 @@
 </head>
 <body>
 <?php
-require_once('db.php');
 
 echo '<a href="../editor/">Volver</a>';
 echo '<center><br><h2>Actualización de la Base de Datos</h2><br>';
