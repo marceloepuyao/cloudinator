@@ -1,5 +1,4 @@
 <?php
-require_once('db.php');
 $config = parse_ini_file(Yii::app()->basePath."/config/config.ini" , true);//"/../config/config.ini", true);
 $connconf = $config["mysql"];
 
