@@ -5,10 +5,9 @@
 </head>
 <body>
 <?php
-$config = parse_ini_file("/../../assets/config.ini", true);
+$config = parse_ini_file(Yii::app()->request->baseUrl."/protected/config/config.ini", true);
 $connconf = $config["mysql"];
-echo crypt("pepito.P0");
-/*
+
 echo '<a href="../editor.php">Volver</a>';
 echo '<center><br><h2>Instalacion de la base de datos</h2><br>';
 echo '<hr>';
