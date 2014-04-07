@@ -26,8 +26,12 @@ class EditorController extends Controller
 	{
 		//die(var_dump(Yii::app()->user->checkAccess("admin")))  ;
 		return array(
+			array('allow',  // allow all users to perform 'index' and 'view' actions
+				'actions'=>array('installdb', 'upgrade'),
+				'users'=>array('*'),
+			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('index','forms', 'subforms','upgrade', 'cloudinator', 'installdb'),
+				'actions'=>array('index','forms', 'subforms', 'cloudinator'),
 				'roles'=>array("admin"),
 			),	
 			array('deny',  // deny all users
