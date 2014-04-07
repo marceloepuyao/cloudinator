@@ -5,7 +5,7 @@
 </head>
 <body>
 <?php
-$config = parse_ini_file(Yii::app()->request->baseUrl."/protected/config/config.ini", true);
+$config = parse_ini_file(Yii::app()->basePath."/config/config.ini" , true);
 $connconf = $config["mysql"];
 
 echo '<a href="../editor.php">Volver</a>';
@@ -158,4 +158,4 @@ echo '</center>';
 
 echo '<a href="../editor.php">Volver</a>';
 ?>
-</body>*/
+</body>
