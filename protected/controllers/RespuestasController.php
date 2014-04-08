@@ -114,10 +114,13 @@ class RespuestasController extends Controller
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
 	 * @param integer $id the ID of the model to be deleted
 	 */
-	public function actionDeleteRespuestas($subformid, $levantamientoid)
+	public function actionDeleteRespuestas($subformid, $levantamientoid, $cloneid)
 	{
-		
-		$preguntas = Respuestas::model()->findAll("subformid = $subformid AND levantamientoid = $levantamientoid");
+		if($cloneid){
+			$preguntas = Respuestas::model()->findAll("clonedid = $cloneid AND levantamientoid = $levantamientoid");
+		}else{
+			$preguntas = Respuestas::model()->findAll("subformid = $subformid AND levantamientoid = $levantamientoid");
+		}
 		foreach ($preguntas as $pregunta){
 			$pregunta->delete();
 		}
