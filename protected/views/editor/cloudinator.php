@@ -108,7 +108,7 @@
 					<div class="aui-diagram-builder-canvas">
 						<div id="EditForm" class="aui-tabview-list aui-widget-hd" style="height: 25px;">
 							<span>
-								<strong id="SubFormName"><?php echo "Subformulario: ".$subformulario->name;?></strong>
+								<strong id="SubFormName"><?php echo "Producto: ".$subformulario->name;?></strong>
 							</span>
 							<span style="cursor:pointer">
 								<a href="<?php echo Yii::app()->request->baseUrl."/editor/subforms/".$subformulario->megatree;?>" class="aui-tab-label">Volver</a>

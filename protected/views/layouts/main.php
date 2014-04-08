@@ -143,14 +143,17 @@
 <div class="container" id="page">
 
 	<div id="header">
-		<div id="logo"><?php echo CHtml::encode(Yii::app()->name); ?></div>
+		<div id="logo">
+		<?php $imghtml= CHtml::image(Yii::app()->request->baseUrl.'/images/logosonda.jpg', 'DORE'); ?>
+		<?php echo CHtml::link($imghtml, array('datos/admin'));?>
+		</div>
 	</div><!-- header -->
 
 	<div id="mainmenu">
 		<?php $this->widget('zii.widgets.CMenu',array(
 			'items'=>array(
 				/*array('label'=>'Nuevo Formulario', 'url'=>array('forms/create'), 'visible'=>!Yii::app()->user->isGuest),*/
-				array('label'=>'Volver a Recorrer Formularios', 'url'=>array('site/index'), 'visible'=>!Yii::app()->user->isGuest),
+				array('label'=>'Volver a Modo Ejecutor', 'url'=>array('site/index'), 'visible'=>!Yii::app()->user->isGuest),
 				array('label'=>'Actualizaciones', 'url'=>array('/editor/upgrade'), 'visible'=>!Yii::app()->user->isGuest),
 				//array('label'=>'Contact', 'url'=>array('/site/contact'), 'visible'=>!Yii::app()->user->isGuest),
 				array('label'=>'Cerrar Sesión ('.Yii::app()->user->name.' '.Yii::app()->user->lastname.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)

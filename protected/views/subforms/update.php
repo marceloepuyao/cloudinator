@@ -4,7 +4,7 @@
 
 $this->breadcrumbs=array(
 	'Editor Formularios'=>array('editor/forms'),
-	'Editor Subformularios'=>array('editor/subforms','id'=>$model->megatree),
+	'Editor Productos'=>array('editor/subforms','id'=>$model->megatree),
 	'Actualizar '.$model->name,
 );
 ?>

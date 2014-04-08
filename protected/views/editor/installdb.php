@@ -10,26 +10,7 @@ $connconf = $config["mysql"];
 
 echo '<a href="../editor.php">Volver</a>';
 echo '<center><br><h2>Instalacion de la base de datos</h2><br>';
-echo '<hr>';
-//borrar tablas si existen
-echo '<h3>Borrando DB "'.$connconf['mysql_database'].'"</h3>';
-try {
-	Yii::app()->db->createCommand('DROP DATABASE '.$connconf['mysql_database'])->execute();
-	echo 'Se ha borrado la database "'.$connconf['mysql_database'].'" exitosamente';
-} catch (Exception $e) {
-	echo 'Se intento borrar la database "'.$connconf['mysql_database'].'", si esta es su primera instalacion ignore este error<br>';
-	echo $e;
-}
-echo '<hr>';
-//crear database "cloudinator"
-echo '<h3>Creando DB "'.$connconf['mysql_database'].'"</h3>';
-try {
-	Yii::app()->db->createCommand('CREATE DATABASE '.$connconf['mysql_database'].' CHARACTER SET utf8 COLLATE utf8_general_ci')->execute();
-	echo 'Base de datos "'.$connconf['mysql_database'].'" creada exitosamente';
-} catch (Exception $e) {
-	echo 'Error al crear la base de datos "'.$connconf['mysql_database'].'", por favor creela manualmente<br>';
-	echo $e;
-}
+
 echo '<hr>';
 //crear tabla "nodos"
 echo '<h3>Creando Tabla "nodos"</h3>';
@@ -152,10 +133,10 @@ try {
 }
 echo '<hr>';
 echo '<h3>La instalacion a finalizado</h3>';
-echo '<h2>Si la instalación fue exitosa, por favor instale las actualizaciones: <a href="upgrade.php">Instalar Actualizaciones</a></h2>';
+echo '<h2>Si la instalación fue exitosa, por favor instale las actualizaciones: <a href="upgrade">Instalar Actualizaciones</a></h2>';
 echo '</center>';
 
 
-echo '<a href="../editor.php">Volver</a>';
+echo '<a href="editor">Volver</a>';
 ?>
 </body>

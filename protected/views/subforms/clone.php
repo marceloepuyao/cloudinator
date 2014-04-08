@@ -5,12 +5,12 @@
 
 $this->breadcrumbs=array(
 	'Editor Formularios'=>array('editor/forms'),
-	'Editor Subformularios'=>array('editor/subforms', 'id'=>$modeltoclone->megatree),
-	'Clonar Subformulario: '.$modeltoclone->name,
+	'Editor Producto'=>array('editor/subforms', 'id'=>$modeltoclone->megatree),
+	'Clonar Producto: '.$modeltoclone->name,
 );
 
 ?>
-<h2>Clonar Subformulario: <?php echo $modeltoclone->name;?></h2>
+<h2>Clonar Producto: <?php echo $modeltoclone->name;?></h2>
 
 
 <?php $this->renderPartial('_form', array('model'=>$model)); ?>

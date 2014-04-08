@@ -66,7 +66,7 @@ return array(
 	'lastvisit' => 'Última visita',
 	'nextquestion' => 'Siguiente Pregunta',
 	'completeness' => 'Completitud',
-	'subforms' => 'Subformularios',
+	'subforms' => 'Productos',
 
 	'userslist' => 'Lista de Usuarios',
 

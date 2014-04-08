@@ -71,7 +71,7 @@ return array(
 	'lastvisit' => 'Last Visit',
 	'nextquestion' => 'Next Question',
 	'completeness' => 'Completeness',
-	'subforms' => 'Subforms',
+	'subforms' => 'Products',
 
 	'userslist' => 'Users List',
 

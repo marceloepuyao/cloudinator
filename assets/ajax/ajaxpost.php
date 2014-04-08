@@ -164,7 +164,8 @@ if(array_key_exists('nodo', $_POST) || array_key_exists('link', $_POST)){
 					$nifexist2 = 0;
 					
 					if($ifexist[0]['name'] != $name){
-						$queryifexist2 = "SELECT * FROM nodos WHERE name = '$name' AND tree = $tree AND id NOT IN $idnode";
+						
+						$queryifexist2 = "SELECT * FROM nodos WHERE name = '$name' AND tree = $tree AND id NOT IN ($idnode)";
 						$ifexist2 = DBQueryReturnArray($queryifexist2);
 						$nifexist2 = count($ifexist2);
 					}
@@ -185,6 +186,7 @@ if(array_key_exists('nodo', $_POST) || array_key_exists('link', $_POST)){
 							'nifexist' => $nifexist2
 						);
 					}
+				
 					print($json->encode($data));
 				} catch (Exception $e) {
 					$data = array(

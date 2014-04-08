@@ -66,12 +66,11 @@ class LevantamientosController extends Controller
 		//get forms
 		$in = "(";
 		//$model->formsactivos = str_replace(array("[", "]", "\""), "",  $model->formsactivos  );
-		$levantamientoarray = explode(',',$model->formsactivos);
-		if($levantamientoarray[0] != ""){
-			foreach($levantamientoarray as $lev) {
-				$in = $in.$lev.",";
-			}
+		$levantamientoarray = unserialize($model->formsactivos);
+		foreach($levantamientoarray as $lev) {
+			$in = $in.$lev.",";
 		}
+		
 		$in = $in."-1)";
 		$criteria = new CDbCriteria;  
 		$criteria->addCondition('id IN '.$in);
@@ -114,7 +113,9 @@ class LevantamientosController extends Controller
 		$forms = Forms::model()->findAll();
 		$formsnames = array();
 		foreach ($forms as $form){
-			$formsnames[$form['id']] = $form['name'];
+			if($form['visible']==1 && $form['deleted']==0){
+				$formsnames[$form['id']] = $form['name'];
+			}
 		}
 
 		$users = Users::model()->findAll();
@@ -130,7 +131,7 @@ class LevantamientosController extends Controller
 		{
 			$model->attributes=$_POST['Levantamientos'];
 			 if($_POST['Levantamientos']['forms']!=='')
-             	$model->formsactivos=implode(',',$_POST['Levantamientos']['forms']);//converting to string...
+             	$model->formsactivos=serialize($_POST['Levantamientos']['forms']);//converting to string...
 			
 			$model->modified = date("Y-m-d H:i:s");
 			$model->empresaid = Yii::app()->user->getState('companyid');
@@ -163,7 +164,9 @@ class LevantamientosController extends Controller
 		
 		$formsnames = array();
 		foreach ($forms as $form){
-			$formsnames[$form['id']] = $form['name'];
+			if($form['visible']==1 && $form['deleted']==0){
+				$formsnames[$form['id']] = $form['name'];
+			}
 		}
 
 		$users = Users::model()->findAll();
@@ -172,25 +175,20 @@ class LevantamientosController extends Controller
 			$usersnames[$user['id']] = $user['email'];
 		}
 
-		$forms = Forms::model()->findAll();
-		$formsnames = array();
-		foreach ($forms as $form){
-			$formsnames[$form['id']] = $form['name'];
-		}
-
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
 		if(isset($_POST['Levantamientos']))
 		{
 			$model->attributes=$_POST['Levantamientos'];
+			if($_POST['Levantamientos']['forms']!=='')
+				$model->formsactivos = serialize($_POST['Levantamientos']['forms']);
 			$model->modified = date("Y-m-d H:i:s");
 			if($model->save())
-			$this->redirect(array('view','id'=>$model->id));
+				$this->redirect(array('view','id'=>$model->id));
 		}
-		$model->forms=explode(',',$model->formsactivos);
+		$model->forms=unserialize($model->formsactivos);
 		$company = Companies::model()->find("id=".Yii::app()->user->getState('companyid'));
-
 		$this->render('update',array(
 			'model'=>$model,
 			'forms'=>$formsnames,

@@ -11,36 +11,26 @@ echo '<a href="../editor/">Volver</a>';
 echo '<center><br><h2>Actualización de la Base de Datos</h2><br>';
 
 //si existe la tabla cloudinator saco la version de ahí si no la setteo 
-try{
-	try{
-		$query = 'SELECT * FROM cloudinator_upgrades';
-		$datos = Yii::app()->db->createCommand($query)->queryRow();
-
-		$version = $datos['version'];
-	}catch(Exception $e){
-		Yii::app()->db->createCommand("CREATE TABLE cloudinator_upgrades (
-				id int(100) not null auto_increment primary key,
-				name varchar(50) NOT NULL,
-				version varchar(25) NOT NULL,
-				modified timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP) 
-				ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;");
-
-		Yii::app()->db->createCommand("INSERT INTO `cloudinator_upgrades` (`id`, `name`, `version`, `modified`) VALUES 
-			(NULL, 'cloudinator', '2013082600', '".time()."');
-			")->execute();
-
-		echo '<hr>';
-		echo 'Se ha creado la tabla cloudinator_upgrades';
-		echo '</hr>';
-
-		$version = 2013082600;
-	}
+try {
+	$query = 'SELECT * FROM cloudinator_upgrades';
+	$datos = Yii::app()->db->createCommand($query)->queryRow();
+	$version = $datos['version'];
 }catch (Exception $e){
+	Yii::app()->db->createCommand("CREATE TABLE cloudinator_upgrades (
+		id int(100) not null auto_increment primary key,
+		name varchar(50) NOT NULL,
+		version varchar(25) NOT NULL,
+		modified timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP) 
+		ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;")->execute();
+	Yii::app()->db->createCommand("INSERT INTO `cloudinator_upgrades` (`id`, `name`, `version`, `modified`) VALUES 
+	(NULL, 'cloudinator', '2013082600', '".time()."');
+	")->execute();
 	echo '<hr>';
-	echo "Error en actualización<br>$e<br>";
+	echo 'Se ha creado la tabla cloudinator_upgrades';
 	echo '</hr>';
-}
 
+	$version = 2013082600;
+}
 
 if($version < 2013082700){
 	echo '<hr>';
@@ -496,6 +486,29 @@ if ($version < 2014012701) {
 
 		//mensaje:
 		echo 'Prueba de Actualalización II con Yii Framework';
+		
+	} catch (Exception $e) {
+		echo "Error en actualización<br>$e<br>";
+	}
+	echo '</hr>';
+}
+if ($version < 2014040800) {
+	echo '<hr>';
+	echo '<h4>Actualización N° 2014-04-08-00</h4>';
+	try {
+		//acá escribo el script de actualización
+		$levantamientos = Yii::app()->db->createCommand("SELECT * FROM levantamientos")->queryAll();
+		foreach ($levantamientos as $lv){
+			$array = explode(",", $lv['formsactivos']);
+			Yii::app()->db->createCommand("UPDATE levantamientos SET formsactivos = '".serialize($array)."' WHERE id = ".$lv['id'])->execute();
+			
+		}
+
+		//actualiazo la versión
+		Yii::app()->db->createCommand("UPDATE cloudinator_upgrades SET version = '2014040800' WHERE id = 1")->execute();
+
+		//mensaje:
+		echo 'formactivos de leventamientos serializado';
 		
 	} catch (Exception $e) {
 		echo "Error en actualización<br>$e<br>";

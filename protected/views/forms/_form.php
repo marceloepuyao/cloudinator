@@ -28,7 +28,7 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'visible'); ?>
-		<?php echo $form->radioButton($model,'visible'); ?>
+		<?php echo $form->checkBox($model,'visible'); ?>
 		<?php echo $form->error($model,'visible'); ?>
 	</div>
 

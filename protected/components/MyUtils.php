@@ -23,23 +23,9 @@ class MyUtils {
 		
 		
 		//CALCULO DE COMPLETITUD
-		$preguntascontestadas = count($registrotodas);
-		$minimopreguntas = MyUtils::calcularMinimoPreguntas($idsubform);
-		$maximopreguntas = MyUtils::calcularMaximoPreguntas($idsubform);
+		$completitud = MyUtils::completitudSubForm($idlevantamiento, $idsubform, $idcloned);
 		
 		
-		//TODO: completitud m�xima no se est� ocupando y est� mal calculada
-		$completitudminima = round(($preguntascontestadas / $minimopreguntas )*100, 1);
-		if($completitudminima > 100){
-			$completitudminima = 100;
-		}
-		$completitudmaxima = round(($preguntascontestadas/$maximopreguntas)*100, 1);
-		
-		if($completitudmaxima == $completitudminima ){
-			$completitud = $completitudminima."%";
-		}else{
-			$completitud = $completitudmaxima."% - ".$completitudminima."%";
-		}
 		//FIN CALCULO DE COMPLETITUD
 		
 		if($registro !== NULL){
@@ -123,6 +109,55 @@ class MyUtils {
 		}
 		return true;
 	}
+	public static function completitudSubForm($idlevantamiento, $idsubform, $idcloned){
+		
+		if($idcloned){
+			$cloned = Clones::model()->find("id = $idcloned");
+			//$idsubform = $cloned->subformid;
+			$criteria = new CDbCriteria;  
+			$criteria->addCondition('clonedid = '.$idcloned);
+			$criteria->addCondition('levantamientoid = '.$idlevantamiento);
+			$criteria->order = 'created DESC';	
+		
+		}else{
+			$criteria = new CDbCriteria;  
+			$criteria->addCondition('subformid = '.$idsubform);
+			$criteria->addCondition('levantamientoid = '.$idlevantamiento);
+			$criteria->order = 'created DESC';	
+		}
+		
+		$registro =  Respuestas::model()->find($criteria);
+		$registrotodas =  Respuestas::model()->findAll($criteria);
+		
+		$preguntascontestadas = count($registrotodas);
+		$minimopreguntas = MyUtils::calcularMinimoPreguntas($idsubform);
+		$maximopreguntas = MyUtils::calcularMaximoPreguntas($idsubform);
+		
+		
+		//TODO: completitud m�xima no se est� ocupando y est� mal calculada
+		$completitudminima = round(($preguntascontestadas / $minimopreguntas )*100, 1);
+		if($completitudminima > 100){
+			$completitudminima = 100;
+		}
+		$completitudmaxima = round(($preguntascontestadas/$maximopreguntas)*100, 1);
+		
+		if($completitudmaxima == $completitudminima ){
+			$completitud = $completitudminima."%";
+		}else{
+			$completitud = $completitudmaxima."% - ".$completitudminima."%";
+		}
+		
+		return $completitud;
+		
+	}
+	
+	public static function completitudForm($idlevantamiento, $idform){
+		
+		
+		
+		
+	}
+	
 	private static function calcularMinimoPreguntas($idsubform){
 		
 		

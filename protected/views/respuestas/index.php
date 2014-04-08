@@ -12,7 +12,7 @@ $this->breadcrumbs=array(
 );
 ?>
 
-<h3>Subformulario: <?php echo $subform->name?></h3>
+<h3>Producto: <?php echo $subform->name?></h3>
 <?php
 			$this->widget('zii.widgets.grid.CGridView', array(
 							'dataProvider'=>$dataProvider,

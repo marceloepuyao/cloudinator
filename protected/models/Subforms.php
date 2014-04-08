@@ -58,7 +58,7 @@ class Subforms extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'name' => 'Nombre Subformulario',
+			'name' => 'Nombre Producto',
 			'megatree' => 'Megatree',
 			'deleted' => 'Deleted',
 			'created' => 'Creado',
