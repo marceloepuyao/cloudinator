@@ -145,7 +145,7 @@
 	<div id="header">
 		<div id="logo">
 		<?php $imghtml= CHtml::image(Yii::app()->request->baseUrl.'/images/logosonda.jpg', 'DORE'); ?>
-		<?php echo CHtml::link($imghtml, array('datos/admin'));?>
+		<?php echo CHtml::link($imghtml, array('editor/forms'));?>
 		</div>
 	</div><!-- header -->
 

@@ -114,7 +114,7 @@ class RespuestasController extends Controller
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
 	 * @param integer $id the ID of the model to be deleted
 	 */
-	public function actionDeleteRespuestas($subformid, $levantamientoid, $cloneid)
+	public function actionDeleteRespuestas($subformid, $levantamientoid, $cloneid = null)
 	{
 		if($cloneid){
 			$preguntas = Respuestas::model()->findAll("clonedid = $cloneid AND levantamientoid = $levantamientoid");
@@ -133,7 +133,7 @@ class RespuestasController extends Controller
 	/**
 	 * Lists all models.
 	 */
-	public function actionIndex($subformid, $levantamientoid, $cloneid = 0, $respid= 0, $pregid=0)
+	public function actionIndex($subformid, $levantamientoid, $cloneid = 0, $respid= 0, $pregid=0, $subresp=NULL)
 	{
 		//if envio solo pregunta, vuelvo atrás, y 
 		
@@ -182,14 +182,17 @@ class RespuestasController extends Controller
 		if($respid != 0 && $pregid != 0){
 			
 			//si el registro existe
+			//$subresp = $subresp==null?"":$subresp;
 			if($cloneid){
 				$record = Respuestas::model()->find("clonedid=$cloneid AND 
 												levantamientoid = $levantamientoid AND
-												preguntaid = $pregid");
+												preguntaid = $pregid AND
+												respsubpregunta = '$subresp'");
 			}else{
 				$record = Respuestas::model()->find("subformid=$subformid AND 
 												levantamientoid = $levantamientoid AND
-												preguntaid = $pregid");
+												preguntaid = $pregid AND
+												respsubpregunta = '$subresp'");
 			}
 			
 			if($record['id']){
@@ -208,8 +211,8 @@ class RespuestasController extends Controller
 					$record = $this->loadModel($record['id']);
 					$record->created = date("Y-m-d H:i:s");
 					$record->respuestaid = $respid;
+					$record->respsubpregunta = $subresp;
 					if($record->save()){
-						//$this->redirect(array('view','id'=>$registro->id));
 						$this->redirect(array('index','subformid'=>$subformid, 'levantamientoid'=>$levantamientoid, 'cloneid'=>$cloneid));
 					}else{
 						die(var_dump($record->getErrors()));
@@ -229,6 +232,7 @@ class RespuestasController extends Controller
 												'respuestaid'=>$respid,
 												'subformid'=>$subformidsave,
 												'levantamientoid'=>$levantamientoid,
+												'respsubpregunta'=>$subresp,
 												'formid'=>0,
 												'userid'=> Yii::app()->user->id,
 												'empresaid'=> Yii::app()->user->getState('companyid'),

@@ -52,7 +52,7 @@ class MyUtils {
 				return array("pregunta" =>$pregunta, "respuestas" => null, "ultimavisita"=>floor((time()-strtotime($registro->created))/(60*60*24))==0?"today":floor((time()-strtotime($registro->created))/(60*60*24))."days ago", "completitud"=>$completitud, "idregistro"=> $registro->id);
 			}else{
 				
-				return array("pregunta" =>null, "respuestas" => null, "ultimavisita"=>floor((time()-strtotime($registro->created))/(60*60*24))==0?"today":floor((time()-strtotime($registro->created))/(60*60*24))."days ago", "completitud"=>"100%", "idregistro"=> $registro->id);
+				return array("pregunta" =>null, "respuestas" => null, "ultimavisita"=>floor((time()-strtotime($registro->created))/(60*60*24))==0?"today":floor((time()-strtotime($registro->created))/(60*60*24))."days ago", "completitud"=>array(0=>100), "idregistro"=> $registro->id);
 				
 			}
 			
@@ -71,7 +71,7 @@ class MyUtils {
 											FROM  links l
 											WHERE l.source = '".$pregunta['id']."');")->queryAll();
 		}
-		return array("pregunta" =>$pregunta, "respuestas" => $respuestas, "ultimavisita"=>Yii::t('contentForm', 'never'), "completitud"=>"0%", "idregistro"=> null);
+		return array("pregunta" =>$pregunta, "respuestas" => $respuestas, "ultimavisita"=>Yii::t('contentForm', 'never'), "completitud"=>array(0=>"0"), "idregistro"=> null);
 		
 	}
 	
@@ -141,10 +141,13 @@ class MyUtils {
 		}
 		$completitudmaxima = round(($preguntascontestadas/$maximopreguntas)*100, 1);
 		
-		if($completitudmaxima == $completitudminima ){
-			$completitud = $completitudminima."%";
+		$completitud = array();
+		$completitud[] = $completitudminima;
+		
+		if(!$completitudmaxima == $completitudminima ){
+			$completitud[] = $completitudmaxima;
 		}else{
-			$completitud = $completitudmaxima."% - ".$completitudminima."%";
+			$completitud[] = null;
 		}
 		
 		return $completitud;

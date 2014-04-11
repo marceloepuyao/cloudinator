@@ -81,7 +81,7 @@ class LevantamientosController extends Controller
 		$cloned = array();
 		foreach ($forms as $form){
 			$data[$form['id']] = Subforms::model()->findAll("megatree = $form[id] AND (deleted = 0 OR 
-											(deleted = 1 AND modified > '$model->created'))");
+											(deleted = 1 AND created < '$model->created' AND modified > '$model->created'))");
 			$cloned[$form['id']] = Clones::model()->findAll("formid = $form[id] AND idlev  = $model->id");
 		}
 
@@ -256,14 +256,8 @@ class LevantamientosController extends Controller
 		$model=$this->loadModel($id);
 		Yii::app()->user->returnUrl = $this->createUrl('levantamientos/'.$model->id);
 		//get forms
-		$in = "(";
-		$levantamientoarray = explode(',',$model->formsactivos);
-		if($levantamientoarray[0] != ""){
-			foreach($levantamientoarray as $lev) {
-				$in = $in.$lev.",";
-			}
-		}
-		$in = $in."-1)";
+		$levantamientoarray = unserialize($model->formsactivos);
+		$in = "(".implode(",", $levantamientoarray).")";
 		$criteria = new CDbCriteria;  
 		$criteria->addCondition('id IN '.$in);
 		$forms = Forms::model()->findAll($criteria);

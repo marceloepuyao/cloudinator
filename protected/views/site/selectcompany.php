@@ -11,9 +11,12 @@ Yii::t('contentForm', 'home'),
 );*/
 ?>
 
+
+
 <h2 style="text-align: center" >
 	<?php echo Yii::t('contentForm', 'selectcompany');?>
 </h2>
+
 
 <div class="form">
 <?php $form=$this->beginWidget('CActiveForm', array(

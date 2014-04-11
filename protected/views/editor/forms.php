@@ -13,6 +13,8 @@ $this->breadcrumbs=array(
 	<?php echo CHtml::submitButton("Nuevo Formulario"); ?>
 	</div>
 </form>
+
+<div style ="float:left;width:47%;">
 <h2>Formularios Visibles</h2>
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
@@ -49,7 +51,9 @@ $this->breadcrumbs=array(
 								),
 								),
 								));?>
-
+</div>
+								
+<div style ="float:right;width:47%;">
 <h2>Formularios Ocultos</h2>						
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 							'dataProvider'=>$formnovisibles,
@@ -89,7 +93,7 @@ $this->breadcrumbs=array(
 								),
 								));?>
 								
-								
+								</div>
 
 
 

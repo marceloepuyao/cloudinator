@@ -22,6 +22,7 @@ $model->titulo,
 <h2><?php echo $model->titulo;?></h2>
 	<div data-role="collapsible-set" data-theme="b" data-content-theme="d" >
 		<?php foreach ($forms as $form){ ?>
+		<?php $completitudform = array();?>
 		<div data-role="collapsible" data-collapsed="true">
 			<h2><?php echo $form->name?></h2> 
 				<ul data-role="listview" data-theme="d"  data-divider-theme="d">
@@ -32,7 +33,7 @@ $model->titulo,
 					foreach ($subforms as $subform){
 						if(MyUtils::checkSubForm($subform->id)){
 							extract(MyUtils::getLastQuestionBySubform($subform->id, $model->id)); //$pregunta  $respuestas, $ultimavisita, $completitud, $idregistro
-							
+							//die(var_dump($completitud));
 							if(Yii::app()->user->getState('editmode')==1){
 								$url = "#popupMenu".$subform->id;
 								$datarel = "data-rel = 'popup'";
@@ -44,7 +45,8 @@ $model->titulo,
 						}else{
 							$pregunta['name'] = Yii::t('contentForm', 'incompleteform');
 							$ultimavisita = Yii::t('contentForm', 'never');
-							$completitud = "0%";
+							$completitud = array();
+							$completitud[] = 0;
 							$url = "";
 						}
 						?>
@@ -53,7 +55,7 @@ $model->titulo,
 						    		<h3><?php echo $subform->name?></h3>
 					                <p><strong><?php echo Yii::t('contentForm', 'lastvisit');?>: <?php echo $ultimavisita;?></strong></p>
 					                <p><?php echo Yii::t('contentForm', 'nextquestion').": "; echo ($pregunta!=null)?($pregunta['name']):(Yii::t('contentForm', 'endreached'));?></p>
-					                <p class="ui-li-aside"><strong>Completitud: <?php echo $completitud;?></strong></p>
+					                <p class="ui-li-aside"><strong>Completitud: <?php echo $completitud[0]."%"; echo isset($completitud[1])?" - ".$completitud[1]."%":"";?></strong></p>
 				            	</a>
 			            </li>
 			            <?php if(Yii::app()->user->getState('editmode')==1){?>
@@ -63,9 +65,12 @@ $model->titulo,
 						            <li><a rel="external" href="<?php echo $this->createUrl('clones/create', array('id'=>$subform->id, 'levid'=>$model->id));?>"><?php echo Yii::t('contentForm', 'clonesubform');?></a></li>
 						            <li><a rel="external" href="<?php echo $this->createUrl('respuestas/deleterespuestas', array('subformid'=>$subform->id, 'levantamientoid'=>$model->id));?>"><?php echo Yii::t('contentForm', 'deleteanswers');?></a></li>
 						        </ul>
-							</div>
-			            
-		            <?php }}?>
+							</div>        
+		            <?php }
+		            
+					$completitudform[] = isset($completitud[1])?round(($completitud[0]+$completitud[1])/2, 2):round($completitud[0], 2);
+					
+					}?>
 		           
 		            <?php 
 		            	
@@ -84,7 +89,8 @@ $model->titulo,
 							}else{
 								$pregunta['name'] = Yii::t('contentForm', 'incompleteform');
 								$ultimavisita = Yii::t('contentForm', 'never');
-								$completitud = "0%";
+								$completitud = array();
+								$completitud[] = 0;
 								$url = "";
 							}
 							?>
@@ -93,7 +99,7 @@ $model->titulo,
 							    		<h3><?php echo $clon->name?></h3>
 						                <p><strong><?php echo Yii::t('contentForm', 'lastvisit');?>: <?php echo $ultimavisita;?></strong></p>
 						                <p><?php echo Yii::t('contentForm', 'nextquestion').": "; echo ($pregunta!=null)?($pregunta['name']):(Yii::t('contentForm', 'endreached'));?></p>
-						                <p class="ui-li-aside"><strong>Completitud: <?php echo $completitud;?></strong></p>
+						                <p class="ui-li-aside"><strong>Completitud: <?php echo $completitud[0]."%"; echo isset($completitud[1])?" - ".$completitud[1]."%":"";?></strong></p>
 					            	</a>
 				            </li>
 				            <?php if(Yii::app()->user->getState('editmode')==1){?>
@@ -110,7 +116,10 @@ $model->titulo,
 							        </ul>
 								</div>
 			            
-		            <?php }}?>
+		            <?php }
+		            	$completitudform[] = isset($completitud[1])?round(($completitud[0]+$completitud[1])/2, 2):round($completitud[0], 2);
+		            	}?>
+		            <li data-role="list-divider">Completitud del Formulario : <?php echo round(array_sum($completitudform)/count($completitudform), 2)."%";?></li>
 
 				</ul>
 		</div>
@@ -120,6 +129,4 @@ $model->titulo,
 	<div class="row buttons">
 	<?php echo CHtml::button(Yii::t('contentForm', 'reports'), array("submit"=>$this->createUrl('levantamientos/reports', array("id"=>$model->id)), "data-ajax"=>"false")); ?>
 	</div>
-	<?php 
-		
-		
+

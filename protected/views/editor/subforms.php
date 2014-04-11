@@ -11,11 +11,14 @@ $this->breadcrumbs=array(
 );
 ?>
 <h2><?php echo "Formulario: ".$formulario->name; ?></h2>
+<p>Los Formularios publicados no se pueden editar </p>
 <form style="text-align: right; vertical-align: top;" action="<?php echo Yii::app()->request->baseUrl."/subforms/create/id/".$formulario->id;?>" data-ajax="false">
 	<div class="row buttons">
 	<?php echo CHtml::submitButton("Nuevo Producto"); ?>
 	</div>
 </form>
+
+<div style ="float:left;width:45%;">
 <h2>Productos publicados</h2>
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 							'dataProvider'=>$subformpublicados,
@@ -52,6 +55,9 @@ $this->breadcrumbs=array(
 								),
 								));?>
 								
+</div>
+
+<div style ="float:right;width:45%;">
 <h2>Productos no publicados</h2>
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 							'dataProvider'=>$subformnopublicados,
@@ -92,3 +98,4 @@ $this->breadcrumbs=array(
 								),
 								),
 								));?>
+</div>

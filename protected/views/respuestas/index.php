@@ -51,4 +51,6 @@ $this->breadcrumbs=array(
                           'submit'=>$this->createUrl('levantamientos/view',array('id'=>$levantamiento->id))
                           )); ?>
 	</div>
+	
+
 

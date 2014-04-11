@@ -20,6 +20,7 @@ Yii::t('contentForm', 'recordlevantamientos'),
 <?php echo Yii::t('contentForm', 'recordlevantamientos');?>
 </h2>
 
+
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'levantamientos-grid',
 	'dataProvider'=>$dataProvider,
