@@ -25,7 +25,11 @@ Yii::t('contentForm', 'recordlevantamientos'),
 	'id'=>'levantamientos-grid',
 	'dataProvider'=>$dataProvider,
 	'columns'=>array(
-				'titulo',
+				array(
+		            'name'=>'titulo',
+					'type'=>'raw',
+		            'value'=>'CHtml::link($data->titulo,array("levantamientos/$data->id"))',
+		        ),
 				'modified',
 				'info',
 				array(
@@ -35,7 +39,7 @@ Yii::t('contentForm', 'recordlevantamientos'),
 							'view'=>array(
 									'label'=>'Recorrer',
 									'imageUrl' => Yii::app()->baseUrl.'/images/play-icon.png',
-									'htmlOptions' => array("data-ajax"=>"false"),
+									'htmlOptions' => array("data-ajax"=>"false", 'class' => 'grid-view rounded'),
 									),
 					),
 				),

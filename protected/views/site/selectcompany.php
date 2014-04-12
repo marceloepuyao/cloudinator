@@ -16,7 +16,16 @@ Yii::t('contentForm', 'home'),
 <h2 style="text-align: center" >
 	<?php echo Yii::t('contentForm', 'selectcompany');?>
 </h2>
+<?php 
 
+		$names = array();
+		$companynames[0] =  Yii::t('contentForm', 'newcompany');
+		foreach ($companies as $company){
+			$companynames[$company['id']] = $company['nombre'];
+		}
+ 		//die(var_dump($companynames));
+
+?>
 
 <div class="form">
 <?php $form=$this->beginWidget('CActiveForm', array(
@@ -25,7 +34,7 @@ Yii::t('contentForm', 'home'),
         'clientOptions'=>array(
                 'validateOnSubmit'=>true,
         ),  
-	'htmlOptions' => array("data-ajax"=>"false"),
+	'htmlOptions' => array("data-ajax"=>"false", 'class' => 'grid-view rounded'),   
 )); ?>
 	<p class="note">
 		<span class="required">*</span>

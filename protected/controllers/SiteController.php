@@ -92,13 +92,7 @@ class SiteController extends Controller
 	public function actionSelectCompany(){
 		$model=new SelectCompanyForm;
 		$companies = Companies::model()->findAll();
-
-		$companynames = array();
-		$companynames['new'] =  Yii::t('contentForm', 'newcompany');
-		foreach ($companies as $company){
-			$companynames[$company['id']] = $company['nombre'];
-		}
-
+		
 
 		Yii::app()->user->returnUrl = $this->createUrl('site/selectcompany');
 
@@ -108,7 +102,7 @@ class SiteController extends Controller
 			$model->attributes=$_POST['SelectCompanyForm'];
 			// validate user input and redirect to the previous page if valid
 
-			if($model->attributes['company']== 'new'){
+			if($model->attributes['company']== 0){
 				$this->redirect($this->createUrl('companies/create'));
 			}
 
@@ -119,8 +113,9 @@ class SiteController extends Controller
 			}
 		}
 		// display the select company form
-		$this->render('selectcompany',array('model'=>$model, 'companynames'=>$companynames));
+		$this->render('selectcompany',array('model'=>$model, 'companies'=>$companies));
 
+		
 	}
 
 	/**

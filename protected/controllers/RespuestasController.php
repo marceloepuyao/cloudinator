@@ -301,12 +301,6 @@ class RespuestasController extends Controller
 			
 			
 			$dataProvider=new CSqlDataProvider($sql);
-			/*
-			$dataProvider=new CActiveDataProvider('Respuestas', array(
-				'criteria'=>array(
-					'condition' => "levantamientoid=$levantamientoid AND subformid=$subformid",
-			),
-			));*/
 			
 			$this->render('index',array(
 				'dataProvider'=>$dataProvider,

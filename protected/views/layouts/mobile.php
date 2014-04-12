@@ -3,41 +3,41 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="language" content="en" />
-
-<!-- blueprint CSS framework> 
-	<!--end css-->
-<!--[if lt IE 8]>
-	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/ie.css" media="screen, projection" />
-	<![endif]-->
-	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/screen.css" media="screen, projection" />
-	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/print.css" media="print" />
-
-<!-- jquery mobile -->
-<link rel="stylesheet"
-	href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css" />
-<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-<script
-	src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
-
-
-<link rel="stylesheet" type="text/css"
-	href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="language" content="en" />
+	
+	<!-- blueprint CSS framework> 
+		<!--end css-->
+	<!--[if lt IE 8]>
+		<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/ie.css" media="screen, projection" />
+		<![endif]-->
+		<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/screen.css" media="screen, projection" />
+		<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/print.css" media="print" />
+	
+	<!-- jquery mobile -->
+	<link rel="stylesheet"
+		href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css" />
+	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<script
+		src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
+	
+	
 	<link rel="stylesheet" type="text/css"
-	href="<?php echo Yii::app()->request->baseUrl; ?>/css/form.css" />
-
-<style type="text/css" media="screen">
-	.container {
-		padding-right: 20%;
-		padding-left: 20%;
-	},
-	a {
-		rel: external
-	}
-</style>
-<?php Yii::app()->clientScript->registerCoreScript('jquery');?>
-<title><?php echo CHtml::encode($this->pageTitle); ?></title>
+		href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.css" />
+		<link rel="stylesheet" type="text/css"
+		href="<?php echo Yii::app()->request->baseUrl; ?>/css/form.css" />
+	
+	<style type="text/css" media="screen">
+		.container {
+			padding-right: 20%;
+			padding-left: 20%;
+		},
+		a {
+			rel: external
+		}
+	</style>
+	<?php Yii::app()->clientScript->registerCoreScript('jquery');?>
+	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
 </head>
 
 <body>
@@ -45,7 +45,7 @@
 			<h1>
 			<?php echo $this->pageTitle; ?>
 			</h1>
-			
+
 			<?php if(Yii::app()->user->isGuest){?>
 				<a id="popup" href="#popupNested" data-rel="popup" data-role="button"
 					data-inline="true" data-icon="bars" data-theme="b"
@@ -53,11 +53,12 @@
 				</a>
 			<?php }else{?>
 				<a href="<?php echo Yii::app()->user->returnUrl; ?>" rel="external" data-icon="arrow-l"><?php echo Yii::t('contentForm', 'back')?> </a>
-				<a href="#mypanel" data-icon="bars"><?php echo Yii::t('contentForm', 'options');?>
+				<a href="#right-panel" data-icon="bars" data-iconpos="notext" data-shadow="false" data-iconshadow="false"><?php echo Yii::t('contentForm', 'options');?>
 				</a>
 			<?php }?>
 			
 		</div>
+		
 
 		<div data-role="popup" id="popupNested" data-theme="none">
 			<fieldset data-role="controlgroup">
@@ -80,33 +81,30 @@
 		)); ?>
 			<!-- breadcrumbs -->
 		<?php }?>
-
-			<div data-theme='b' data-display='overlay' data-position='right'
-				data-role='panel' id='mypanel'>
-				<h2>
-				<?php
-				if(!Yii::app()->user->isGuest){
-					echo Yii::app()->user->name." ".Yii::app()->user->lastname;
-				}
-				?>
-				</h2>
-				<?php if(Yii::app()->user->getState('roles')){?>
-					<a href="<?php echo Yii::app()->request->baseUrl.'/editor'; ?>" rel="external" data-icon="arrow-l">Editar Formularios </a><br />
+		
+			<div data-role="panel" data-display='overlay' data-position='right' id="right-panel" data-theme="c">
+		        <ul data-role="listview" data-theme="d">
+		            <li data-icon="delete"><a href="#" data-rel="close"><?php echo Yii::t('contentForm', 'close')?></a></li>
+		            <li data-role="list-divider"><?php echo Yii::t('contentForm', 'options');?></li>
+		            <?php if(Yii::app()->user->getState('roles')=="admin"){?>
+						<li><a href="<?php echo Yii::app()->request->baseUrl.'/editor'; ?>" rel="external" data-icon="arrow-l">Editar Formularios </a></li>
+					<?php }?>
+		            <li><a href='<?php echo Yii::app()->request->baseUrl;?>/users'  rel="external"
+						class='usuarios'><?php echo Yii::t('contentForm', 'managingusers')?></a>
+					</li>
+					<?php if(Yii::app()->user->getState('roles')=="admin"){?>
+						<li><a href='<?php echo Yii::app()->request->baseUrl;?>/companies' rel="external"><?php echo Yii::t('contentForm', 'managingcompanies')?>  
+						</a></li>
+					<?php }?>
 					
-				<?php }?>
+			        <li><a href='<?php echo Yii::app()->request->baseUrl;?>/site/logout' rel="external"
+					class='cerrarsesion'><?php echo Yii::t('contentForm', 'logout')?> </a></li>
 
-				<a href='<?php echo Yii::app()->request->baseUrl;?>/users'  rel="external"
-					class='usuarios'><?php echo Yii::t('contentForm', 'managingusers')?>
-				</a><br />
-				<?php if(!Yii::app()->user->isGuest){if(Yii::app()->user->roles){?>
-				<a href='<?php echo Yii::app()->request->baseUrl;?>/companies' rel="external"><?php echo Yii::t('contentForm', 'managingcompanies')?>  
-				</a><br />
-				<?php }}?>
-				<a href='<?php echo Yii::app()->request->baseUrl;?>/site/logout' rel="external"
-					class='cerrarsesion'><?php echo Yii::t('contentForm', 'logout')?> </a>
-				<br /> <a href='#header' data-rel='close'><?php echo Yii::t('contentForm', 'close')?>
-				</a>
-			</div>
+		        </ul>
+		        <div data-role="collapsible" data-inset="false" data-iconpos="right" data-theme="d" data-content-theme="d">
+		        
+		        </div><!-- /collapsible -->
+		    </div><!-- /panel -->
 
 			<?php echo $content; ?>
 
@@ -144,7 +142,7 @@ $( document ).ready(function() {
 
 
 </script>
-
+		
 
 </body>
 

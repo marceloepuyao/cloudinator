@@ -53,7 +53,7 @@ $this->breadcrumbs=array(
 						<input type="hidden" name="pregid"  id="pregid"  value="<?php echo $pregunta['id']; ?>" >
    
 
-			            <button type="submit" data-theme="b" rel="external" data-icon="check">Continuar</button>
+			            <button type="submit" data-theme="b" rel="external" data-rel="external"  data-icon="check">Continuar</button>
 			        </div>
 			    </form>
 			</div>

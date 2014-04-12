@@ -59,15 +59,6 @@ class ClonesController extends Controller
 			$model->formid = $subform->megatree;
 			$model->modified = date("Y-m-d H:i:s");
 			if($model->save()){
-				$registros = Respuestas::model()->findAll("subformid = $id AND levantamientoid = $levid");
-				foreach ($registros as $registro){
-					$nuevo = new Respuestas();
-					$nuevo->attributes  = $registro->attributes;
-					$nuevo->clonedid = $model->id;
-					$nuevo->created = date("Y-m-d H:i:s");
-					$nuevo->save();
-				}
-				
 				$this->redirect(array('levantamientos/view','id'=>$levid));
 			}
 		}
