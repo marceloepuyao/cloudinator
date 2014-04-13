@@ -74,8 +74,7 @@ $this->breadcrumbs=array(
 											'buttons' => array(
 													'update'=>array(
 															'htmlOptions' => array("data-ajax"=>"false"),
-															'click'=>'function(){alert("Going down!");}',
-															
+															'url'=>'Yii::app()->createUrl("forms/update", array("id"=>$data->id))',
 															),
 													'novisible'=>array(
 															'label' => 'Dejar Visible',

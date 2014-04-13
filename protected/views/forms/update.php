@@ -8,6 +8,6 @@ $this->breadcrumbs=array(
 );
 
 ?>
-<h2>Actualizar <?php echo $model->name;?>.<?php echo $model->id; ?></h2>
+<h2>Actualizar <?php echo $model->name;?></h2>
 
 <?php $this->renderPartial('_form', array('model'=>$model)); ?>

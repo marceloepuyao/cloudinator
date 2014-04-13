@@ -64,16 +64,10 @@ class LevantamientosController extends Controller
 		$model = $this->loadModel($id);
 		Yii::app()->user->returnUrl = $this->createUrl('levantamientos/index', array('companyid'=>$model->empresaid));
 		//get forms
-		$in = "(";
-		//$model->formsactivos = str_replace(array("[", "]", "\""), "",  $model->formsactivos  );
 		$levantamientoarray = unserialize($model->formsactivos);
-		foreach($levantamientoarray as $lev) {
-			$in = $in.$lev.",";
-		}
-		
-		$in = $in."-1)";
+		$in = implode(",", $levantamientoarray);
 		$criteria = new CDbCriteria;  
-		$criteria->addCondition('id IN '.$in);
+		$criteria->addCondition('id IN ('.$in.')');
 		$forms = Forms::model()->findAll($criteria);
 		
 		
@@ -84,12 +78,6 @@ class LevantamientosController extends Controller
 											(deleted = 1 AND created < '$model->created' AND modified > '$model->created'))");
 			$cloned[$form['id']] = Clones::model()->findAll("formid = $form[id] AND idlev  = $model->id");
 		}
-
-		//get subforms
-		$criteria2 = new CDbCriteria;  
-		$criteria2->addCondition('megatree IN '.$in);
-		$criteria2->addCondition('ORDER by ID');
-		//$subforms = Subforms::model()->findAll();
 		
 		$company = Companies::model()->find("id=".Yii::app()->user->getState('companyid'));
 		$this->render('view',array(
