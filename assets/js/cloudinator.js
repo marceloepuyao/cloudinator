@@ -165,6 +165,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 								idnode: this.get('responseData').id
 							});
 						}
+						console.log('action', action, 'realizada con éxito', this.get('responseData'));
 						noticeSaving('success');
 					}else{
 						noticeSaving('error');
@@ -173,6 +174,7 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 				},
 				failure: function(data){
 					noticeSaving('warning');
+					console.log('failure', this.get('responseData'));
 				},
 				start: function(){
 					noticeSaving('inprogress');
