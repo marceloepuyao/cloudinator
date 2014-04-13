@@ -156,6 +156,8 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 			},
 			on: {
 				success: function(data){
+					console.log("fue success", data, "response",this.get('responseData'));
+					
 					if(this.get('responseData').result){
 						if(action == "insert"){
 							var newField = instance.addField({
@@ -173,11 +175,13 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 					deleltelinesinfo();
 				},
 				failure: function(data){
+					console.log("fue failure", data, "response",this.get('responseData'));
 					noticeSaving('warning');
 					console.log('failure', this.get('responseData'));
 				},
 				error: function(jqxhr,textStatus,errorThrown)
                 {
+					console.log("fue error");
                     console.log(jqxhr);
                     console.log(textStatus);
                     console.log(errorThrown);  
