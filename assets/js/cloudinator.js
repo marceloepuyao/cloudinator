@@ -176,6 +176,12 @@ AUI().use('aui-io-request', 'aui-diagram-builder', function(A){
 					noticeSaving('warning');
 					console.log('failure', this.get('responseData'));
 				},
+				error: function(jqxhr,textStatus,errorThrown)
+                {
+                    console.log(jqxhr);
+                    console.log(textStatus);
+                    console.log(errorThrown);  
+                },
 				start: function(){
 					noticeSaving('inprogress');
 					console.log('borrar', action);
