@@ -64,7 +64,7 @@ if(isset($_POST['action'])) {
 	}else if($_POST['action']=="add"){
 		try {
 			//primero comprobamos si existe un subform con el mismo nombre en el form
-			$name = mysql_real_escape_string($_POST['name']);
+			$name = $_POST['name'];
 			$check = DBQuery("SELECT * FROM megatrees WHERE name = '$name' AND deleted = 0");
 			if($check->num_rows > 0){
 				$data = array(
@@ -131,7 +131,7 @@ if(isset($_POST['action'])) {
 		print($json->encode($data));
 	}else if($_POST['action']=="newName"){
 		try {
-			$nuevonombre = mysql_real_escape_string($_POST['nuevonombre']);
+			$nuevonombre = $_POST['nuevonombre'];
 			$id = (int)$_POST['id'];
 			$response = DBQuery("SELECT * FROM megatrees WHERE name = '$nuevonombre'");
 			if($response->num_rows > 0){

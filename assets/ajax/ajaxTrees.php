@@ -7,7 +7,7 @@ $json = new Services_JSON();
 
 if(isset($_POST['type'])) { //DEPRICATED: por favor usar ajaxMegaTrees.php, action="add", name="<newname>"
 	try {
-		$name = mysql_real_escape_string($_POST['name']);
+		$name = $_POST['name'];
 		
 		DBQuery("INSERT INTO `megatrees` (`id`, `name`, `chain`, `deleted`, `created`, `modified` ) VALUES 
 			(NULL, '$name', NULL, 0, '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."' );
@@ -26,7 +26,7 @@ if(isset($_POST['type'])) { //DEPRICATED: por favor usar ajaxMegaTrees.php, acti
 		print($json->encode($data));
 	}
 }else if(isset($_POST['clonename'])) {
-	$name = mysql_real_escape_string($_POST['name']);
+	$name = $_POST['name'];
 	$to = (int)$_POST['to'];
 	//primero comprobamos si existe un subform con el mismo nombre en el form
 	$idclone = $_POST['clonename'];
@@ -108,7 +108,7 @@ if(isset($_POST['type'])) { //DEPRICATED: por favor usar ajaxMegaTrees.php, acti
 	}
 }else if(isset($_POST['name'])) {
 	try {
-		$name = mysql_real_escape_string($_POST['name']);
+		$name = $_POST['name'];
 		$megatree = (int)$_POST['megatree'];
 		//primero comprobamos si existe un subform con el mismo nombre en el form
 		$check = DBQuery("SELECT * FROM trees WHERE name = '$name' AND megatree = $megatree AND deleted = 1");
@@ -198,7 +198,7 @@ if(isset($_POST['type'])) { //DEPRICATED: por favor usar ajaxMegaTrees.php, acti
 	print($json->encode($data));
 }else if(isset($_POST['nuevonombre'])) {
 	try {
-		$nuevonombre = mysql_real_escape_string($_POST['nuevonombre']);
+		$nuevonombre = $_POST['nuevonombre'];
 		$tree = (int)$_POST['tree'];
 		
 		$response = DBQuery("SELECT * FROM trees WHERE name = '$nuevonombre' AND megatree = (SELECT megatree FROM trees WHERE id = $tree)");

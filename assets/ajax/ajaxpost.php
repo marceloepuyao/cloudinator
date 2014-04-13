@@ -4,8 +4,9 @@ require_once('../DB/db.php');
 require_once '../lib.php';
 $json = new Services_JSON();
 
+
 if( array_key_exists('getIdFromName', $_POST)){
-	$name = mysql_real_escape_string($_POST['getIdFromName']);
+	$name = $_POST['getIdFromName'];
 	$tree = (int)$_POST['tree'];
 	try {
 		$query = "SELECT id FROM nodos WHERE name = '$name' AND tree = $tree;";
@@ -69,13 +70,13 @@ if(array_key_exists('nodo', $_POST) || array_key_exists('link', $_POST)){
 	}
 	if(!$deletedOrReleased){
 		if ( array_key_exists('nodo', $_POST) ) {
-			$nodo = mysql_real_escape_string($_POST['nodo']);
+			$nodo = $_POST['nodo'];
 			if($nodo == 'insert'){
 				try {
 					
-					$name = mysql_real_escape_string($_POST['name']);
+					$name = $_POST['name'];
 					$tree = (int)$_POST['tree'];
-					$type = mysql_real_escape_string($_POST['type']);
+					$type = $_POST['type'];
 					$posx = (int)$_POST['posx'];
 					$posy = (int)$_POST['posy'];
 					
@@ -117,7 +118,7 @@ if(array_key_exists('nodo', $_POST) || array_key_exists('link', $_POST)){
 					print($json->encode($data));
 				}
 			}else if($nodo == 'update'){
-				$id = mysql_real_escape_string($_POST['id']);
+				$id = $_POST['id'];
 				$tree = (int)$_POST['tree'];
 				$posx = (int)$_POST['posx'];
 				$posy = (int)$_POST['posy'];
@@ -149,11 +150,11 @@ if(array_key_exists('nodo', $_POST) || array_key_exists('link', $_POST)){
 				}
 			}else if($nodo == 'updateMeta'){
 				try {
-					$name = mysql_real_escape_string($_POST['name']);
+					$name = $_POST['name'];
 					$tree = (int)$_POST['tree'];
-					$metaname = mysql_real_escape_string($_POST['metaname']);
-					$metadata = mysql_real_escape_string($_POST['metadata']);
-					$metatype = mysql_real_escape_string($_POST['metatype']);
+					$metaname = $_POST['metaname'];
+					$metadata = $_POST['metadata'];
+					$metatype = $_POST['metatype'];
 					$idnode = (int)$_POST['idnode'];
 					
 					
@@ -197,7 +198,7 @@ if(array_key_exists('nodo', $_POST) || array_key_exists('link', $_POST)){
 				}
 			}else if($nodo == 'delete'){
 				try {
-					$name = mysql_real_escape_string($_POST['name']);
+					$name = $_POST['name'];
 					$nodeid = (int)($_POST['nodeid']);
 					$tree = (int)$_POST['tree'];
 					
@@ -225,7 +226,7 @@ if(array_key_exists('nodo', $_POST) || array_key_exists('link', $_POST)){
 				}
 			}else if($nodo == 'newname'){ //METODO OFICIAL PARA CAMBIAR NOMBRE DE NODOS! (adivinando segun Klaus)
 				try {
-					$name = mysql_real_escape_string($_POST['name']);
+					$name = $_POST['name'];
 					$tree = (int)$_POST['tree'];
 					
 					$queryifexist = "SELECT id FROM nodos WHERE name = '$name' AND tree = $tree ";
@@ -236,7 +237,7 @@ if(array_key_exists('nodo', $_POST) || array_key_exists('link', $_POST)){
 							'result' => false
 						);
 					}else{
-						$id = mysql_real_escape_string($_POST['id']);
+						$id = $_POST['id'];
 						$queryid = "SELECT id FROM nodos 
 						WHERE name = '$id' AND tree = $tree;";
 						$dataid = DBQuery($queryid);
@@ -261,8 +262,8 @@ if(array_key_exists('nodo', $_POST) || array_key_exists('link', $_POST)){
 				}
 			}else if($nodo == 'newnameTEST'){ //ESTO SE USA? DEBE SER BORRADO ?
 				try {
-					$newname = mysql_real_escape_string($_POST['newname']);
-					$oldname = mysql_real_escape_string($_POST['oldname']);
+					$newname = $_POST['newname'];
+					$oldname = $_POST['oldname'];
 					$tree = (int)$_POST['tree'];
 					
 					$query = "UPDATE  `nodos` SET  `name` =  '$newname' WHERE  `nodos`.`name` ='$oldname' AND `nodos`.`tree` ='$tree';";
@@ -287,16 +288,16 @@ if(array_key_exists('nodo', $_POST) || array_key_exists('link', $_POST)){
 			$link = $_POST['link'];
 			if($link == 'insert'){
 				try {
-					$source = mysql_real_escape_string($_POST['source']);
-					$target = mysql_real_escape_string($_POST['target']);
+					$source = $_POST['source'];
+					$target = $_POST['target'];
 					$idsource = (int)($_POST['idsource']);
 					$idtarget = (int)($_POST['idtarget']);
-					$typetarget = mysql_real_escape_string($_POST['typetarget']);
-					$typesource = mysql_real_escape_string($_POST['typesource']);
+					$typetarget = $_POST['typetarget'];
+					$typesource = $_POST['typesource'];
 					$tree = (int)$_POST['tree'];
 					$xtarget = (int)$_POST['xtarget'];
 					$ytarget = (int)$_POST['ytarget'];
-					$name = mysql_real_escape_string($_POST['name']);
+					$name = $_POST['name'];
 						
 					
 					
@@ -357,7 +358,7 @@ if(array_key_exists('nodo', $_POST) || array_key_exists('link', $_POST)){
 				try {
 					$source = (int)$_POST['source'];
 					$target = (int)$_POST['target'];
-					$name =  mysql_real_escape_string($_POST['name']);
+					$name =  $_POST['name'];
 					$tree = (int)$_POST['tree'];
 					$query = "UPDATE  `links` SET  `target` = '$source', `source` = '$target' WHERE `links`.`name` ='$name' AND `nodos`.`tree` =$tree;";
 
