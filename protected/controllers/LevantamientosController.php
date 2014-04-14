@@ -74,9 +74,9 @@ class LevantamientosController extends Controller
 		$data = array();
 		$cloned = array();
 		foreach ($forms as $form){
-			$data[$form['id']] = Subforms::model()->findAll("megatree = $form[id] AND (deleted = 0 OR 
+			$data[$form['id']] = Subforms::model()->findAll("megatree = ".$form['id']." AND (deleted = 0 OR 
 											(deleted = 1 AND created < '$model->created' AND modified > '$model->created'))");
-			$cloned[$form['id']] = Clones::model()->findAll("formid = $form[id] AND idlev  = $model->id");
+			$cloned[$form['id']] = Clones::model()->findAll("formid = ".$form['id']." AND idlev  = $model->id");
 		}
 		
 		$company = Companies::model()->find("id=".Yii::app()->user->getState('companyid'));
