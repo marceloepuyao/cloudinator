@@ -1,4 +1,10 @@
 #################
+## Cloudinator
+#################
+
+config.ini
+
+#################
 ## Eclipse
 #################
 
@@ -193,7 +199,6 @@ $RECYCLE.BIN/
 *.egg
 *.egg-info
 dist/
-build/
 eggs/
 parts/
 var/
@@ -210,6 +215,6 @@ pip-log.txt
 
 #Translations
 *.mo
-
+.svn
 #Mr Developer
 .mr.developer.cfg

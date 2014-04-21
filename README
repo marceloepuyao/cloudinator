@@ -1,0 +1,22 @@
+Instrucciones:
+
+- Es neceserio crear una base de datos
+
+- Crear el archivo "config.ini" en la carpeta cloudinator/protected/config/ a partir del archivo "config-example.ini"
+
+- Modificar el archivo "config.ini" con los datos de la base de datos
+
+- Recuerde configurar su servidor httpd para que no entregue archivos *.ini (Seguridad)
+	Esto se hace agregando las siguientes lineas en el archivo "/etc/httpd/conf/httpd.conf":
+		<Files *.ini>  
+			Order deny,allow
+			Deny from all
+		</Files>
+
+- Ejecute /cloudinator/editor/installdb.php
+
+- Ejecute /cloudinator/DB/upgrade.php
+
+- Ingrese a cloudinator con las credenciales:
+	email: admin
+	 pass: pepito.P0
