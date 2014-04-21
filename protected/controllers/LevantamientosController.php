@@ -65,28 +65,40 @@ class LevantamientosController extends Controller
 		Yii::app()->user->returnUrl = $this->createUrl('levantamientos/index', array('companyid'=>$model->empresaid));
 		//get forms
 		$levantamientoarray = unserialize($model->formsactivos);
-		$in = implode(",", $levantamientoarray);
+		$in = $levantamientoarray!=""?implode(",", $levantamientoarray):"0";
 		$criteria = new CDbCriteria;  
 		$criteria->addCondition('id IN ('.$in.')');
 		$forms = Forms::model()->findAll($criteria);
+		$company = Companies::model()->find("id=".Yii::app()->user->getState('companyid'));
 		
-		
-		$data = array();
-		$cloned = array();
-		foreach ($forms as $form){
-			$data[$form['id']] = Subforms::model()->findAll("megatree = ".$form['id']." AND (deleted = 0 OR 
-											(deleted = 1 AND created < '$model->created' AND modified > '$model->created'))");
-			$cloned[$form['id']] = Clones::model()->findAll("formid = ".$form['id']." AND idlev  = $model->id");
+		if(!$model->formsactivos){
+			
+			$this->render('error',array(
+					'model'=>$model,
+					'company' => $company,
+			));
+			
+		}else{
+			$data = array();
+			$cloned = array();
+			foreach ($forms as $form){
+				$data[$form['id']] = Subforms::model()->findAll("megatree = ".$form['id']." AND (deleted = 0 OR
+						(deleted = 1 AND created < '$model->created' AND modified > '$model->created'))");
+						$cloned[$form['id']] = Clones::model()->findAll("formid = ".$form['id']." AND idlev  = $model->id");
+			}
+			
+			
+			$this->render('view',array(
+					'model'=>$model,
+					'forms'=>$forms,
+					'data' => $data,
+					'company' => $company,
+					'clones'=> $cloned,
+			));
+			
 		}
 		
-		$company = Companies::model()->find("id=".Yii::app()->user->getState('companyid'));
-		$this->render('view',array(
-			'model'=>$model,
-			'forms'=>$forms,
-			'data' => $data,
-			'company' => $company,
-			'clones'=> $cloned,
-		));
+		
 	}
 
 	/**

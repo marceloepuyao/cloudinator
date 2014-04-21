@@ -9,6 +9,6 @@ $this->breadcrumbs=array(
 
 ?>
 
-<h2>Nuevo formulario</h2>
+<h2>Nueva Propuesta Tipo</h2>
 
 <?php $this->renderPartial('_form', array('model'=>$model)); ?>

@@ -59,7 +59,7 @@ class Forms extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'name' => 'Nombre Formulario',
+			'name' => 'Nombre Propuesta Tipo',
 			'chain' => 'Chain',
 			'deleted' => 'Deleted',
 			'created' => 'Creado',

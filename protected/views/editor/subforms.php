@@ -6,11 +6,11 @@
  */
 
 $this->breadcrumbs=array(
-	'Editor Formularios'=>array('/editor'),
-	'Editor Productos',
+	'Propuestas Tipo'=>array('/editor'),
+	'Productos de '.$formulario->name,
 );
 ?>
-<h2><?php echo "Productos de Formulario ".$formulario->name; ?></h2>
+<h2><?php echo "Propuesta Tipo: ".$formulario->name; ?></h2>
 <p>(*) Los Productos publicados no se pueden editar </p>
 <form style="text-align: right; vertical-align: top;" action="<?php echo Yii::app()->request->baseUrl."/subforms/create/id/".$formulario->id;?>" data-ajax="false">
 	<div class="row buttons">

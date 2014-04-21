@@ -4,18 +4,23 @@
  'formnovisibles'=>$formnovisibles,*/
 
 $this->breadcrumbs=array(
-	'Editor Formularios',
+	'Propuestas Tipo',
 );
 ?>
-<br />
+<br/>
+<?php /*
+(*) Notas:<br/>
+-Las Propuesta Tipo sirven para hacer agrupaciones de productos.<br/>
+-Las Propuesta Tipo Ocultas no serán visibles en la interfaz de ejecutor.<br/>
+*/?>
+
 <form style="text-align: right; vertical-align: top;" action="<?php echo Yii::app()->request->baseUrl."/forms/create";?>" data-ajax="false">
 	<div class="row buttons">
-	<?php echo CHtml::submitButton("Nuevo Formulario"); ?>
+	<?php echo CHtml::submitButton("Nueva Propuesta Tipo"); ?>
 	</div>
 </form>
-
 <div style ="float:left;width:47%;">
-<h2>Formularios Visibles</h2>
+<h3>Propuestas Tipo Visibles</h3>
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 							'dataProvider'=>$formvisibles,
@@ -54,14 +59,14 @@ $this->breadcrumbs=array(
 </div>
 								
 <div style ="float:right;width:47%;">
-<h2>Formularios Ocultos</h2>						
+<h3>Propuestas Tipo Ocultas</h3>						
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 							'dataProvider'=>$formnovisibles,
 							'htmlOptions' => array("data-ajax"=>"false"),
 							
 							'columns'=>array(
 								 array(
-						            'name'=>'Nombre Formulario',
+						            'name'=>'name',
 								 	'type'=>'raw',
 						            'value'=>'CHtml::link("$data->name",array("editor/subforms",
                                          "id"=>"$data->id"))',
@@ -93,6 +98,10 @@ $this->breadcrumbs=array(
 								));?>
 								
 								</div>
+
+						
+								
+								
 
 
 

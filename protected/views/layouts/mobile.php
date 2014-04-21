@@ -87,7 +87,7 @@
 		            <li data-icon="delete"><a href="#" data-rel="close"><?php echo Yii::t('contentForm', 'close')?></a></li>
 		            <li data-role="list-divider"><?php echo Yii::t('contentForm', 'options');?></li>
 		            <?php if(Yii::app()->user->getState('roles')=="admin"){?>
-						<li><a href="<?php echo Yii::app()->request->baseUrl.'/editor'; ?>" rel="external" data-icon="arrow-l">Editar Formularios </a></li>
+						<li><a href="<?php echo Yii::app()->request->baseUrl.'/editor'; ?>" rel="external" data-icon="arrow-l">Administración</a></li>
 					<?php }?>
 		            <li><a href='<?php echo Yii::app()->request->baseUrl;?>/users'  rel="external"
 						class='usuarios'><?php echo Yii::t('contentForm', 'managingusers')?></a>
