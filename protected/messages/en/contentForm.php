@@ -20,7 +20,7 @@ return array(
 
 	'contactedby' => 'Contacted By',
 	'contactedarea' => 'Contacted Area',
-	'forms' => 'Forms',
+	'forms' => 'Proposals',
 	'continue' => 'Continue',
 	'yes' => 'Yes',
 
@@ -86,7 +86,7 @@ return array(
 	'confirmpassword' => 'Confirm Password',
 
 	'endreached' => 'You have reached the end',
-	'incompleteform' => 'Incomplete form. Please contact the admin',
+	'incompleteform' => 'Incomplete Product. Please contact the admin',
 
 	'editmode'=>'Edit mode',
 	'exiteditmode'=>'Exit edit mode',
@@ -98,7 +98,7 @@ return array(
 	'never' => 'Never',
 	'reports' => 'Reports',
 
-	'editor' => 'Edit Forms', 
+	'editor' => 'Edit Proposals', 
 
 	'options' => 'Options',
 

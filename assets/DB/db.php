@@ -14,6 +14,7 @@ function DBConnect(){
 			throw new Exception('Unable to connect to database [' . $db->connect_error . ']', 1);
 		}
 	}
+	$db->set_charset("utf8");
 
 	return $db;
 }
@@ -29,6 +30,7 @@ function DBQuery($query){
 			throw new Exception('Unable to connect to database [' . $db->connect_error . ']', 1);
 		}
 	}
+	$db->set_charset("utf8");
 	if(!$result = $db->query($query)){
 	    throw new Exception('There was an error running the query [' . $db->error . ']', 1);
 	}
@@ -59,6 +61,7 @@ function DBQueryReturnArray($query){
 			throw new Exception('Unable to connect to database [' . $db->connect_error . ']', 1);
 		}
 	}
+	$db->set_charset("utf8");
 	if(!$result = $db->query($query)){
 	    throw new Exception('There was an error running the query [' . $db->error . ']', 1);
 	}

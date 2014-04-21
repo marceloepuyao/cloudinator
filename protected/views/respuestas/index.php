@@ -38,11 +38,15 @@ $this->breadcrumbs=array(
 						            
 						        ),
 						         array(
-						            'name'=>'userid',
+						            'name'=>'Entrevistador',
 						            'value'=>'$data["userid"]?(Users::model()->find("id=$data[userid]")->name." ".Users::model()->find("id=$data[userid]")->lastname):(0)'
 						            
 						        ),
-								'created',
+								array(
+										'name'=>'Creado',
+										'value'=>'$data["created"]',
+								
+								),
 								),
 							));?>
 								

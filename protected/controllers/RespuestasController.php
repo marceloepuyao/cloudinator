@@ -119,7 +119,7 @@ class RespuestasController extends Controller
 		if($cloneid){
 			$preguntas = Respuestas::model()->findAll("clonedid = $cloneid AND levantamientoid = $levantamientoid");
 		}else{
-			$preguntas = Respuestas::model()->findAll("subformid = $subformid AND levantamientoid = $levantamientoid");
+			$preguntas = Respuestas::model()->findAll("subformid = $subformid AND levantamientoid = $levantamientoid AND clonedid is null");
 		}
 		foreach ($preguntas as $pregunta){
 			$pregunta->delete();
@@ -135,7 +135,7 @@ class RespuestasController extends Controller
 	 */
 	public function actionIndex($subformid, $levantamientoid, $cloneid = 0, $respid= 0, $pregid=0, $subresp=NULL)
 	{
-		//if envio solo pregunta, vuelvo atrás, y 
+
 		
 		
 		$subform = Subforms::model()->find("id = $subformid");
@@ -181,33 +181,46 @@ class RespuestasController extends Controller
 		//if envio respuesta, respondo
 		if($respid != 0 && $pregid != 0){
 			
-			//si el registro existe
-			//$subresp = $subresp==null?"":$subresp;
+			//busco si hay registro
 			if($cloneid){
 				$record = Respuestas::model()->find("clonedid=$cloneid AND 
 												levantamientoid = $levantamientoid AND
-												preguntaid = $pregid AND
-												respsubpregunta = '$subresp'");
+												preguntaid = $pregid ");
 			}else{
 				$record = Respuestas::model()->find("subformid=$subformid AND 
 												levantamientoid = $levantamientoid AND
-												preguntaid = $pregid AND
-												respsubpregunta = '$subresp'");
+												preguntaid = $pregid ");
 			}
 			
 			if($record['id']){
-				//si la resupesta no camba, no se hace nada....//si la respuesta cambia se borra el registro y las respuestan que le siguen.
-				if($record['respuestaid'] != $respid){
+				
+				//si la respuesta cambia entra en el if
+				//si la subrespuesta cambia entra al otro if
+				//si la resupesta no camba, no se hace nada....
+				
+				if($record['respuestaid'] != $respid || $record['respsubpregunta'] != $subresp){
 					
-					if($cloneid){
-						$recordtodelete = Respuestas::model()->deleteAll(array("condition"=>"clonedid=$cloneid AND 
-												levantamientoid = $levantamientoid AND
-												id > ".$record['id']));
-					}else{
-						$recordtodelete = Respuestas::model()->deleteAll(array("condition"=>"subformid=$subformid AND 
-												levantamientoid = $levantamientoid AND
-												id > ".$record['id']));
+					
+					// si cambia el camino, se borran el registro que le seguía
+					// si el camino seguía igual, se cambia solo la pregunta
+					$reg = Yii::app()->db->createCommand(" SELECT target FROM links 
+													WHERE tree = $subformid AND source = ".$record['respuestaid']."")->queryRow();
+					$res = Yii::app()->db->createCommand(" SELECT target FROM links
+													WHERE tree = $subformid AND source = $respid")->queryRow();
+				
+					if($reg["target"] != $res["target"]){
+						if($cloneid){
+							$recordtodelete = Respuestas::model()->deleteAll(array("condition"=>"clonedid=$cloneid AND
+									levantamientoid = $levantamientoid AND
+									id > ".$record['id']));
+						}else{
+						$recordtodelete = Respuestas::model()->deleteAll(array("condition"=>"subformid=$subformid AND
+								levantamientoid = $levantamientoid AND
+								id > ".$record['id']));
+						}
+						
 					}
+					
 					$record = $this->loadModel($record['id']);
 					$record->created = date("Y-m-d H:i:s");
 					$record->respuestaid = $respid;

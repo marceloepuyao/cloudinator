@@ -20,7 +20,7 @@ return array(
 
 	'contactedby' => 'Contactado por',
 	'contactedarea' => 'Área de Contacto',
-	'forms' => 'Formularios',
+	'forms' => 'Propuestas Tipo',
 	'continue' => 'Continuar',
 	'yes' => 'Si',
 
@@ -81,7 +81,7 @@ return array(
 	'confirmpassword' => 'Confirme Contraseña',
 
 	'endreached' => 'Se ha llegado al final',
-	'incompleteform' => 'Formulario incompleto, por favor comuniquese con el administrador',
+	'incompleteform' => 'Producto incompleto, por favor comuniquese con el administrador',
 
 
 	'editmode'=>'Modo edición',
@@ -94,7 +94,7 @@ return array(
 	'never' => 'Nunca',
 	'reports' => 'Reportes',
 
-	'editor' => 'Editar Formularios',
+	'editor' => 'Editar Propuestas Tipo',
 	'options' => 'Opciones',
 
 	'home' => 'Inicio',

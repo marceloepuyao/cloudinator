@@ -6,7 +6,7 @@
 $this->setPageTitle($company['nombre']);
 
 $this->breadcrumbs=array(
-Yii::t('contentForm', 'recordlevantamientos'),
+Yii::t('contentForm', 'recordlevantamientos')." - ".$company['nombre'],
 );
 
 /*

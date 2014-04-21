@@ -76,6 +76,7 @@
 		<div id="page" data-role="content">
 		<?php if(isset($this->breadcrumbs)){?>
 		<?php $this->widget('zii.widgets.CBreadcrumbs', array(
+				'homeLink'=>CHtml::link('Seleccionar Empresa', array('/site/selectcompany')),
 				'links'=>$this->breadcrumbs,
 				'htmlOptions' => array("data-ajax"=>"false"),
 		)); ?>

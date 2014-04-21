@@ -516,6 +516,28 @@ if ($version < 2014040800) {
 	echo '</hr>';
 }
 
+
+
+
+if ($version < 2014042100) {
+	echo '<hr>';
+	echo '<h4>Actualización N° 2014-04-21-00</h4>';
+	try {
+		//acá escribo el script de actualización
+		//Yii::app()->db->createCommand("SET character_set_results = 'utf8', character_set_client = 'utf8', character_set_connection = 'utf8', character_set_database = 'utf8', character_set_server = 'utf8'")->execute();
+
+		//actualiazo la versión
+		Yii::app()->db->createCommand("UPDATE cloudinator_upgrades SET version = '2014042100' WHERE id = 1")->execute();
+
+		//mensaje:
+		echo 'database en UTF 8';
+
+	} catch (Exception $e) {
+		echo "Error en actualización<br>$e<br>";
+	}
+	echo '</hr>';
+}
+
 /*
 //EJEMPLO: (RECUERDE CAMBIAR "AAAAMMDDNN" POR EL NUMERO DE ACTUALIZACION A = Año, M = Mes, D = Dia, N = Numero)
 

@@ -9,13 +9,13 @@ class MyUtils {
 			$criteria = new CDbCriteria;  
 			$criteria->addCondition('clonedid = '.$idcloned);
 			$criteria->addCondition('levantamientoid = '.$idlevantamiento);
-			$criteria->order = 'created DESC';	
+			$criteria->order = 'id DESC';	
 		
 		}else{
 			$criteria = new CDbCriteria;  
 			$criteria->addCondition('subformid = '.$idsubform);
 			$criteria->addCondition('levantamientoid = '.$idlevantamiento);
-			$criteria->order = 'created DESC';	
+			$criteria->order = 'id DESC';	
 		}
 		
 		$registro =  Respuestas::model()->find($criteria);

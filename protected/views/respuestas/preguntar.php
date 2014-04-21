@@ -30,9 +30,10 @@ $this->breadcrumbs=array(
 				<?php echo $respuesta['name']?>
 			</a>
 			<div data-role="popup" id="popup<?php echo $respuesta['id'];?>" data-theme="b" rel="external" class="ui-corner-all">
-			    <form>
-			        <div style="padding:10px 20px;">
+			    <form data-ajax="false">
+			        <div style="padding:10px 20px;" data-theme="b" rel="external" >
 			            <h3><?php echo $respuesta['metaname'];  ?></h3>
+			         
 			            <?php if($respuesta['metatype'] == "textarea"){?>
 			            	<input name="subresp" id="un" value="" placeholder="<?php echo $respuesta['metadata'];?>" data-theme="b" type="text">
 
@@ -52,8 +53,7 @@ $this->breadcrumbs=array(
 						<input type="hidden" name="respid" id="respid"  value="<?php echo $respuesta['id']; ?>" >
 						<input type="hidden" name="pregid"  id="pregid"  value="<?php echo $pregunta['id']; ?>" >
    
-
-			            <button type="submit" data-theme="b" rel="external" data-rel="external"  data-icon="check">Continuar</button>
+						<input type="submit" data-ajax="false" data-theme="b" rel="external" data-rel="external"  data-icon="check" value="Continuar"/>
 			        </div>
 			    </form>
 			</div>
